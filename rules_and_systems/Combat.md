@@ -36,13 +36,55 @@ Committed units beyond the cap are **Reserves**.
 
 ## 2. Unit Stats (baseline)
 
-| Unit Type | Attack Die | Defense Die | Hit Points | Notes |
-|----------|------------|-------------|------------|------|
-| Infantry | d6 | d6 | 1 | baseline |
-| Cavalry | d8 | d6 | 2 | tougher, punchier |
-| Archers | d6 | d4 | 1 | **Pre-Strike** when on the Battle Line |
+| Unit Type     | Attack Die | Defense Die | Hit Points | Notes                                  |
+| ------------- | ---------- | ----------- | ---------- | -------------------------------------- |
+| Infantry      | d6         | d6          | 1          | baseline                               |
+| Cavalry       | d8         | d6          | 2          | tougher, punchier                      |
+| Archers       | d6         | d4          | 1          | **Pre-Strike** when on the Battle Line |
+| Lord (Leader) | (varies)   | (varies)    | (varies)   | defined on the Lord Sheet; see §2.1    |
 
 ---
+
+## 2.1 Lords as Units (canon)
+
+In *Aeonis*, each player’s **Lord** is also a **unit on the board** (a single unique “Leader” token).
+
+### 2.1.1 Lord stats (defined on each Lord Sheet)
+
+Each Lord Sheet must specify the Lord unit’s:
+
+- **Attack Die**
+- **Defense Die**
+- **Hit Points**
+- **Movement Range**
+
+### 2.1.2 Lord rules (what makes them different)
+
+- **Counts as a unit:** A Lord occupies hexes, moves, commits to battles, and can be placed on the Battle Line like any other unit.
+- **Battle Line Cap:** A Lord **counts toward** the Battle Line Cap when on the line.
+- **Not destroyed:** When a Lord’s HP reaches 0, it is **defeated** (see §2.1.4) instead of being destroyed.
+- **Ability gating (default):** Your Lord’s abilities are available while your Lord is **not captured**. If an ability requires your Lord to be committed to a battle (or part of a moving group), it will say so.
+
+### 2.1.3 Tracking Lord damage
+
+- Lord HP can be tracked with a small dial, tokens, or a 3-step track.
+- **Heal timing (default):** At **Round Start**, each Lord heals to full HP (unless a card/ability says otherwise).
+
+### 2.1.4 Defeating and capturing a Lord
+
+When a Lord’s HP reaches 0 during a battle:
+
+- The Lord is **captured** by the opposing side (remove the Lord token from the map and place it with the capturing player as a reminder).
+- The capturing player immediately gains:
+  - **+2 Renown** (see `Renown.md`)
+  - **2 VP** (see `Victory.md`)
+- The captured Lord’s owner:
+  - May still take turns and play normally, but **cannot score additional VP** while their Lord is captured.
+- **Release timing (default):** At **Cleanup & Checks** of the current round, all captured Lords are **released** and return to their owner’s **Home City** at full HP.
+
+Note:
+
+- A released Lord returning to the map does not cost AP and does not count as a Move action.
 
 ## 3. Battle Setup
 

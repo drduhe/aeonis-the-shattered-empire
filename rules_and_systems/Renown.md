@@ -19,7 +19,7 @@ Renown represents the fame and influence of a Lord across the realm. It reflects
 ## Earning Renown
 
 1. **Military Feats:**
-   - Defeating enemy Lords: **+2 Renown**.
+   - Defeating enemy Lords: **+2 Renown**. (See `Combat.md`, §2.1.4.)
    - Capturing enemy-controlled hexes: **+1 Renown** per hex.
 
 2. **Diplomatic Achievements:**
@@ -57,5 +57,5 @@ Renown represents the fame and influence of a Lord across the realm. It reflects
 To balance runaway Renown, players could lose points for:
 
 - Losing battles: **-1 Renown**.
-- Being captured: **-2 Renown**.
+- Being captured (your Lord captured): **-2 Renown** at the end of the round.
 - Breaking alliances: **-1 Renown**.

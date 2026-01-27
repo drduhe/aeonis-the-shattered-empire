@@ -66,8 +66,8 @@ Players earn **Victory Points (VP)** throughout the game by achieving key object
 
 ### **6. Combat and Capture**
 
-- Defeating or capturing an enemy Lord earns **2 VP** and temporarily weakens their influence.
-- **Captured Lords Can’t Score Points:** If your Lord is captured, you can still play but cannot score additional VP until they’re rescued.
+- **Defeating a Lord (canon):** When an enemy **Lord unit** is reduced to 0 HP, it is **captured** and you immediately gain **2 VP**. (See `Combat.md`, §2.1.4.)
+- **Captured Lords Can’t Score Points:** If your Lord is captured, you can still play but cannot score additional VP until your Lord is released (default: **end of the round**).
 
 *Why It Works:* Adds risk-reward dynamics to aggressive strategies.
 

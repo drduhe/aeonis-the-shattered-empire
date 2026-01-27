@@ -22,6 +22,7 @@ This is the minimal component list needed to run the **First Playable** packet. 
   - 2× **Lakes**
 
 - **Player units** (per player, for 2–4 players):
+  - 1× Lord / Leader token
   - 10× Infantry tokens
   - 4× Cavalry tokens
   - 4× Archer tokens
@@ -50,6 +51,7 @@ This is the minimal component list needed to run the **First Playable** packet. 
   - Renown tracker per player
   - VP tracker per player
   - Population tracker per player (Pool + Cap)
+  - Lord HP tracker per player (or wound tokens)
   - Speaker token
 
 - **Dice**:

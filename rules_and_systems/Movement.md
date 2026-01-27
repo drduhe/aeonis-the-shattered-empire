@@ -58,6 +58,7 @@ Each unit type interacts with the movement system differently, creating strategi
 | **Infantry**       | 1 hex                      | No special movement bonuses, effective for defense.       |
 | **Cavalry**        | 2 hexes                    | Can traverse Plains at 1 AP per 2 hexes for rapid movement.|
 | **Archers**        | 1 hex                      | Gain bonuses when moving into Forests.                   |
+| **Lord (Leader)**  | varies                     | Defined on the Lord Sheet; uses normal terrain costs unless a Lord ability says otherwise. |
 | **Advanced Units** | Varies                     | Examples: Flying units ignore terrain penalties.          |
 
 ---
