@@ -1,0 +1,525 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Aeonis: The Shattered Empire — a TI4-scale fantasy strategy board game. Explore rules, lore, and faction docs in a beautiful content browser."
+    />
+    <title>Aeonis: The Shattered Empire</title>
+
+    <meta name="theme-color" content="#0b1020" />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Aeonis: The Shattered Empire" />
+    <meta
+      property="og:description"
+      content="Aeonis: The Shattered Empire — a TI4-scale fantasy strategy board game. Explore rules, lore, and faction docs in a beautiful content browser."
+    />
+    <meta property="og:image" content="favicon.svg" />
+
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Aeonis: The Shattered Empire" />
+    <meta
+      name="twitter:description"
+      content="Aeonis: The Shattered Empire — a TI4-scale fantasy strategy board game. Explore rules, lore, and faction docs in a beautiful content browser."
+    />
+    <meta name="twitter:image" content="favicon.svg" />
+
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,350;9..144,550;9..144,700&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="app.css" />
+
+    <script defer src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/dompurify@3.0.8/dist/purify.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github-dark.min.css"
+    />
+    <script defer src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/highlight.min.js"></script>
+
+    <script defer src="app.js"></script>
+  </head>
+
+  <body>
+    <a class="skip-link" href="#browse">Skip to content browser</a>
+
+    <header class="topbar" role="banner">
+      <div class="container topbar__inner">
+        <a class="brand" href="#top" aria-label="Aeonis home">
+          <span class="brand__mark" aria-hidden="true">
+            <img class="brand__markImg" src="marketing/assets/aeonis_logo_mark.png" alt="" />
+          </span>
+          <span class="brand__text">
+            <img
+              class="brand__lockup"
+              src="marketing/assets/aeonis_wordmark_lockup.png"
+              alt="Aeonis: The Shattered Empire"
+              decoding="async"
+            />
+            <span class="brand__name brand__fallback">Aeonis</span>
+            <span class="brand__tag brand__fallback">The Shattered Empire</span>
+          </span>
+        </a>
+
+        <nav class="nav" aria-label="Primary">
+          <a class="nav__link" href="#overview">Overview</a>
+          <a class="nav__link" href="#lords">Lords</a>
+          <a class="nav__link" href="#pillars">Pillars</a>
+          <a class="nav__link" href="#browse">Browse</a>
+          <a class="nav__link" href="#about">About</a>
+        </nav>
+
+        <div class="topbar__actions">
+          <button
+            class="btn btn--ghost topbar__menuBtn"
+            id="menuToggle"
+            type="button"
+            aria-label="Open menu"
+            aria-controls="mobileNav"
+            aria-expanded="false"
+          >
+            <span class="btn__icon" aria-hidden="true">≡</span>
+            <span class="btn__label">Menu</span>
+          </button>
+          <button class="btn btn--ghost" id="themeToggle" type="button" aria-label="Toggle theme">
+            <span class="btn__icon" aria-hidden="true">◐</span>
+            <span class="btn__label">Theme</span>
+          </button>
+          <a class="btn btn--primary" href="#browse">
+            <span class="btn__label">Open Codex</span>
+            <span class="btn__icon" aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <div class="mobileNav" id="mobileNav" hidden>
+      <div class="container mobileNav__inner" aria-label="Mobile navigation">
+        <a class="mobileNav__link" data-nav="overview" href="#overview">Overview</a>
+        <a class="mobileNav__link" data-nav="lords" href="#lords">Lords</a>
+        <a class="mobileNav__link" data-nav="pillars" href="#pillars">Pillars</a>
+        <a class="mobileNav__link" data-nav="browse" href="#browse">Browse</a>
+        <a class="mobileNav__link" data-nav="about" href="#about">About</a>
+      </div>
+    </div>
+
+    <main id="top" class="main" role="main">
+      <section class="hero" aria-label="Hero">
+        <div class="container hero__inner">
+          <div class="hero__copy">
+            <p class="kicker">TI4-scale fantasy grand strategy</p>
+            <h1 class="hero__title">
+              <span class="hero__titleMain">Claim the Shattered Throne</span>
+              <span class="hero__titleTagline">— through war, wizardry, wealth, or will.</span>
+            </h1>
+            <p class="hero__lede">
+              In a realm ruled by the whispers of the <strong>Speaking Stones</strong>, Lords rebuild empires from ruin.
+              <strong>Aeonis: The Shattered Empire</strong> is a “big strategy” board game of rotating turns, ruthless diplomacy,
+              arcane discovery, and border wars across a living map.
+            </p>
+            <p class="hero__meta">
+              Best for tables that love negotiation, timing windows, and “one more turn” deals.
+            </p>
+            <div class="hero__cta">
+              <a class="btn btn--primary btn--lg" href="#browse">
+                <span class="btn__label">Open the Imperial Codex</span>
+                <span class="btn__icon" aria-hidden="true">→</span>
+              </a>
+              <a class="btn btn--ghost btn--lg" href="#/doc/playtest/First_Playable_Packet.md">
+                <span class="btn__label">First Playable Packet</span>
+              </a>
+            </div>
+
+            <form class="waitlist" id="waitlistForm" autocomplete="on">
+              <div class="waitlist__left">
+                <div class="waitlist__title">Join the Council</div>
+                <div class="waitlist__sub">Drop your email to build a playtest waitlist (stored locally; exportable).</div>
+              </div>
+              <div class="waitlist__right">
+                <label class="srOnly" for="waitlistEmail">Email</label>
+                <input
+                  id="waitlistEmail"
+                  class="input waitlist__input"
+                  type="email"
+                  inputmode="email"
+                  placeholder="you@domain.com"
+                  required
+                />
+                <button class="btn btn--primary waitlist__btn" type="submit">
+                  <span class="btn__label">Swear the oath</span>
+                  <span class="btn__icon" aria-hidden="true">↯</span>
+                </button>
+              </div>
+              <div class="waitlist__foot">
+                <div class="waitlist__msg" id="waitlistMsg" aria-live="polite"></div>
+                <button class="btn btn--ghost btn--sm" id="exportWaitlistBtn" type="button">
+                  Export CSV
+                </button>
+              </div>
+            </form>
+
+            <div class="hero__stats" role="list" aria-label="Highlights">
+              <div class="stat" role="listitem">
+                <div class="stat__num">AP</div>
+                <div class="stat__label">Rotating action economy</div>
+              </div>
+              <div class="stat" role="listitem">
+                <div class="stat__num">Council</div>
+                <div class="stat__label">Negotiation & laws</div>
+              </div>
+              <div class="stat" role="listitem">
+                <div class="stat__num">Arcana</div>
+                <div class="stat__label">Tiered discoveries</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="hero__art" aria-hidden="true">
+            <img
+              class="hero__banner"
+              src="marketing/assets/aeonis_hero_banner.png"
+              alt=""
+              loading="eager"
+              decoding="async"
+            />
+            <div class="sigil">
+              <div class="sigil__ring"></div>
+              <div class="sigil__core"></div>
+              <div class="sigil__glyph"></div>
+            </div>
+            <div class="decree" aria-hidden="true">
+              <div class="decree__kicker">Council Decree</div>
+              <div class="decree__text" id="decreeText">“Empires fall to blades. Kingdoms fall to ledgers.”</div>
+            </div>
+            <div class="hero__card consider">
+              <div class="hero__cardTitle">Start here</div>
+              <div class="hero__cardBody">
+                Open the Imperial Codex to read rules, lore, and Lord sheets — all from this page.
+              </div>
+              <div class="hero__cardActions">
+                <a class="miniLink" href="#/doc/rules_and_systems/INDEX.md">Rules Index</a>
+                <span class="dot" aria-hidden="true">•</span>
+                <a class="miniLink" href="#/doc/playtest/First_Playable_Packet.md">First Playable</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="hero__fade" aria-hidden="true"></div>
+      </section>
+
+      <section class="loreDivider" aria-label="Lore divider">
+        <div class="container loreDivider__inner">
+          <div class="loreDivider__sigil" aria-hidden="true"></div>
+          <div class="loreDivider__text">
+            <span class="loreDivider__label">From the Speaking Stones</span>
+            <span class="loreDivider__quote">“All have sought the throne. All have perished. The empire remembers.”</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="overview" class="section">
+        <div class="container">
+          <div class="section__head">
+            <h2 class="section__title">A bold strategy sandbox</h2>
+            <p class="section__sub">
+              Aeonis combines the sweep of 4X with sharp tactical constraints: population caps, contested borders, and one action per turn.
+            </p>
+          </div>
+
+          <div class="grid grid--3">
+            <article class="card">
+              <h3 class="card__title">Rotating actions</h3>
+              <p class="card__text">
+                Spend Action Points for movement, building, diplomacy, trade, and arcane progress — while opponents respond between turns.
+              </p>
+              <a class="card__link" href="#/doc/rules_and_systems/Actions.md">Read Actions →</a>
+            </article>
+            <article class="card">
+              <h3 class="card__title">Politics with teeth</h3>
+              <p class="card__text">
+                The High Council reshapes the board: laws, decrees, titles, and timing windows for negotiation and betrayal.
+              </p>
+              <a class="card__link" href="#/doc/rules_and_systems/High_Council.md">Read High Council →</a>
+            </article>
+            <article class="card">
+              <h3 class="card__title">Conflict, not doomstacks</h3>
+              <p class="card__text">
+                Battle line + reserves rewards commitment and timing. Sieges become campaigns, not single-roll blowouts.
+              </p>
+              <a class="card__link" href="#/doc/rules_and_systems/Combat.md">Read Combat →</a>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="lords" class="section section--alt">
+        <div class="container">
+          <div class="section__head">
+            <h2 class="section__title">Choose your Lord</h2>
+            <p class="section__sub">
+              Each Lord plays differently — not just in combat, but in how they bend politics, economy, and tempo.
+            </p>
+          </div>
+
+          <div class="grid grid--4">
+            <article class="lordCard lordCard--gold">
+              <div class="lordCard__art">
+                <img
+                  class="lordCard__img"
+                  src="marketing/assets/lord_cassian_portrait.png"
+                  alt="Cassian, Merchant Prince"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+              <div class="lordCard__top">
+                <div class="lordCard__name">Cassian</div>
+                <div class="lordCard__role">Merchant Prince • Golden Consortium</div>
+              </div>
+              <p class="lordCard__pitch">Trades, Influence leverage, and economic tempo — turning votes into profit.</p>
+              <blockquote class="lordCard__quote">“Empires fall to blades. Kingdoms fall to ledgers.”</blockquote>
+              <a class="btn btn--ghost btn--sm" href="#/doc/lords/Cassian.md">Open Lord Sheet</a>
+            </article>
+
+            <article class="lordCard lordCard--teal">
+              <div class="lordCard__art">
+                <img
+                  class="lordCard__img"
+                  src="marketing/assets/lord_elyndra_portrait.png"
+                  alt="Elyndra, Warden of Groves"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+              <div class="lordCard__top">
+                <div class="lordCard__name">Elyndra</div>
+                <div class="lordCard__role">Warden of Groves • Verdant Covenant</div>
+              </div>
+              <p class="lordCard__pitch">Population growth, fortified forests, and attrition wars that choke invaders dry.</p>
+              <blockquote class="lordCard__quote">“You see trees. I see a thousand hands ready to pull you under.”</blockquote>
+              <a class="btn btn--ghost btn--sm" href="#/doc/lords/Elyndra.md">Open Lord Sheet</a>
+            </article>
+
+            <article class="lordCard lordCard--purple">
+              <div class="lordCard__art">
+                <img
+                  class="lordCard__img"
+                  src="marketing/assets/lord_seraphel_portrait.png"
+                  alt="Seraphel, Lord of the Arcane"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+              <div class="lordCard__top">
+                <div class="lordCard__name">Seraphel</div>
+                <div class="lordCard__role">Lord of the Arcane • Arcanum Concord</div>
+              </div>
+              <p class="lordCard__pitch">Mana advantage, information control, and tempo bursts that end wars in one opening.</p>
+              <blockquote class="lordCard__quote">“The battlefield is only a diagram. I prefer to win with the first stroke of chalk.”</blockquote>
+              <a class="btn btn--ghost btn--sm" href="#/doc/lords/Seraphel.md">Open Lord Sheet</a>
+            </article>
+
+            <article class="lordCard lordCard--rose">
+              <div class="lordCard__art">
+                <img
+                  class="lordCard__img"
+                  src="marketing/assets/lord_vharok_portrait.png"
+                  alt="Vharok, Lord of Steel"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+              <div class="lordCard__top">
+                <div class="lordCard__name">Vharok</div>
+                <div class="lordCard__role">Lord of Steel • Iron Dominion</div>
+              </div>
+              <p class="lordCard__pitch">Durable fronts, fortress geometry, and sieges that grind attackers into scrap.</p>
+              <blockquote class="lordCard__quote">“Strike the wall if you must. You will only learn what it costs to move the unmovable.”</blockquote>
+              <a class="btn btn--ghost btn--sm" href="#/doc/lords/Vharok.md">Open Lord Sheet</a>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="pillars" class="section section--alt">
+        <div class="container">
+          <div class="section__head">
+            <h2 class="section__title">Design pillars</h2>
+            <p class="section__sub">
+              A rulebook draft you can actually navigate — and a world that invites playtesting.
+            </p>
+          </div>
+
+          <div class="pillars">
+            <div class="pillar">
+              <div class="pillar__badge">1</div>
+              <div class="pillar__body">
+                <h3 class="pillar__title">Clear timing spine</h3>
+                <p class="pillar__text">
+                  A canonical round structure with explicit windows, so “when can I do X?” has one answer.
+                </p>
+                <a class="miniLink" href="#/doc/rules_and_systems/Round_Structure.md">Round Structure</a>
+              </div>
+            </div>
+            <div class="pillar">
+              <div class="pillar__badge">2</div>
+              <div class="pillar__body">
+                <h3 class="pillar__title">Meaningful constraints</h3>
+                <p class="pillar__text">
+                  Population as a growth limiter; upkeep pressures only when it matters; borders that make positioning real.
+                </p>
+                <a class="miniLink" href="#/doc/rules_and_systems/Population.md">Population</a>
+                <span class="dot" aria-hidden="true">•</span>
+                <a class="miniLink" href="#/doc/rules_and_systems/Movement.md">Movement</a>
+              </div>
+            </div>
+            <div class="pillar">
+              <div class="pillar__badge">3</div>
+              <div class="pillar__body">
+                <h3 class="pillar__title">A world worth ruling</h3>
+                <p class="pillar__text">
+                  Speaking Stones, rediscovered magic, banished lords — a setting that drives objectives and politics. 
+                </p>
+                <a class="miniLink" href="#/doc/rules_and_systems/Lore.md">Setting Lore</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="browse" class="section section--browser" aria-label="Content browser">
+        <div class="container">
+          <div class="section__head section__head--tight">
+            <h2 class="section__title">The Imperial Codex</h2>
+            <p class="section__sub">
+              Browse and share design docs directly from this repo — no build step.
+            </p>
+          </div>
+
+          <div class="browser">
+            <aside class="browser__sidebar" aria-label="Document navigation">
+              <div class="sidebar__tools">
+                <label class="field" for="searchInput">
+                  <span class="field__label">Search</span>
+                  <input
+                    id="searchInput"
+                    class="input"
+                    type="search"
+                    placeholder="Search documents…"
+                    autocomplete="off"
+                  />
+                </label>
+
+                <label class="field" for="categorySelect">
+                  <span class="field__label">Category</span>
+                  <select id="categorySelect" class="select"></select>
+                </label>
+              </div>
+
+              <div class="sidebar__listHead">
+                <div class="sidebar__count" id="resultsCount">—</div>
+              </div>
+
+              <nav class="docList" id="docList" aria-label="Documents"></nav>
+            </aside>
+
+            <section class="browser__main" aria-label="Document viewer">
+              <div class="viewer">
+                <div class="viewer__top">
+                  <div class="crumbs" id="crumbs" aria-label="Breadcrumbs"></div>
+
+                  <div class="viewer__actions">
+                    <button class="btn btn--ghost btn--sm" id="copyLinkBtn" type="button">
+                      Copy link
+                    </button>
+                    <a class="btn btn--ghost btn--sm" id="openRawBtn" href="#" target="_blank" rel="noreferrer">
+                      Open raw
+                    </a>
+                  </div>
+                </div>
+
+                <div class="viewer__body">
+                  <div class="emptyState" id="emptyState">
+                    <div class="emptyState__badge">Imperial Codex</div>
+                    <div class="emptyState__art" aria-hidden="true"></div>
+                    <h3 class="emptyState__title">Choose a scroll</h3>
+                    <p class="emptyState__text">
+                      Use the sidebar to open a document. The viewer renders Markdown (headings, lists, tables, code blocks).
+                    </p>
+                    <div class="emptyState__actions">
+                      <a class="btn btn--primary" href="#/doc/rules_and_systems/INDEX.md">Open Rules Index</a>
+                      <a class="btn btn--ghost" href="#/doc/README.md">Open Repo README</a>
+                    </div>
+                    <p class="emptyState__hint">
+                      If you’re opening this locally, run a tiny server so files can load:
+                      <code>python3 -m http.server</code>
+                    </p>
+                  </div>
+
+                  <article class="markdown" id="markdown" hidden></article>
+                  <div class="errorBox" id="errorBox" hidden>
+                    <div class="errorBox__art" aria-hidden="true"></div>
+                    <div class="errorBox__title">Couldn’t load this document.</div>
+                    <div class="errorBox__text" id="errorText"></div>
+                    <div class="errorBox__actions">
+                      <a class="btn btn--ghost" id="retryBtn" href="#">Retry</a>
+                      <a class="btn btn--primary" id="fallbackBtn" href="#" target="_blank" rel="noreferrer">Open raw file</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <section id="about" class="section">
+        <div class="container">
+          <div class="section__head">
+            <h2 class="section__title">About this site</h2>
+            <p class="section__sub">
+              This is a lightweight static page designed to live in your repo. It reads Markdown directly from your folders — no build step.
+            </p>
+          </div>
+
+          <div class="grid grid--2">
+            <div class="note">
+              <h3 class="note__title">No build step</h3>
+              <p class="note__text">
+                Everything is client-side. The browser uses a manifest file to list docs, then fetches and renders Markdown safely.
+              </p>
+            </div>
+            <div class="note">
+              <h3 class="note__title">Shareable links</h3>
+              <p class="note__text">
+                When you open a document, the URL updates (hash-based). Copy links to point playtesters at specific chapters.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer__inner">
+        <div class="footer__left">
+          <div class="footer__brand">Aeonis: The Shattered Empire</div>
+          <div class="footer__meta">Design docs — local browser</div>
+        </div>
+        <div class="footer__right">
+          <a class="miniLink" href="#top">Back to top</a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

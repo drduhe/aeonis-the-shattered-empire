@@ -29,6 +29,7 @@ Examples (baseline):
 - **Tower**: occupies 1 Population
 
 Note:
+
 - This is a **hard cap** system; players can always “free capacity” by dismissing/scuttling units and then building/recruiting new ones.
 
 ---

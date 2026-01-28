@@ -1,0 +1,288 @@
+{
+  "appName": "Aeonis Codex",
+  "version": 1,
+  "journeys": [
+    {
+      "id": "new",
+      "label": "New to Aeonis? Read this path",
+      "steps": [
+        { "label": "Round timing", "path": "rules_and_systems/Round_Structure.md" },
+        { "label": "Actions", "path": "rules_and_systems/Actions.md" },
+        { "label": "Movement & borders", "path": "rules_and_systems/Movement.md" },
+        { "label": "Combat", "path": "rules_and_systems/Combat.md" },
+        { "label": "First Playable", "path": "playtest/First_Playable_Packet.md" }
+      ]
+    },
+    {
+      "id": "council",
+      "label": "Politics & negotiation arc",
+      "steps": [
+        { "label": "High Council", "path": "rules_and_systems/High_Council.md" },
+        { "label": "Renown", "path": "rules_and_systems/Renown.md" },
+        { "label": "Victory", "path": "rules_and_systems/Victory.md" }
+      ]
+    }
+  ],
+  "categories": [
+    {
+      "id": "start",
+      "label": "Start Here",
+      "color": "gold",
+      "docs": [
+        {
+          "title": "Repo README",
+          "path": "README.md",
+          "description": "High-level overview, folder map, and the current design spine.",
+          "status": "core",
+          "minutes": 4,
+          "tags": ["overview"]
+        },
+        {
+          "title": "Rules & Systems Index",
+          "path": "rules_and_systems/INDEX.md",
+          "description": "Rulebook draft table of contents and design red flags.",
+          "status": "core",
+          "minutes": 5,
+          "tags": ["rules", "toc"]
+        },
+        {
+          "title": "First Playable Packet",
+          "path": "playtest/First_Playable_Packet.md",
+          "description": "Minimal playtest ruleset: setup, reduced decks, objectives, and Lord sheets.",
+          "status": "playtest",
+          "minutes": 12,
+          "tags": ["playtest", "setup"]
+        },
+        {
+          "title": "Components Checklist",
+          "path": "components/Components.md",
+          "description": "Physical components list for the first playable build.",
+          "status": "playtest",
+          "minutes": 3,
+          "tags": ["components"]
+        }
+      ]
+    },
+    {
+      "id": "rules",
+      "label": "Rules & Systems",
+      "color": "purple",
+      "docs": [
+        {
+          "title": "Round Structure",
+          "path": "rules_and_systems/Round_Structure.md",
+          "description": "Canonical timing spine for a full round and its windows.",
+          "status": "core",
+          "minutes": 7,
+          "tags": ["rules", "timing"]
+        },
+        {
+          "title": "Actions",
+          "path": "rules_and_systems/Actions.md",
+          "description": "Action Point pool, rotating turns, passing, and action costs.",
+          "status": "core",
+          "minutes": 8,
+          "tags": ["rules", "economy"]
+        },
+        {
+          "title": "Strategy",
+          "path": "rules_and_systems/Strategy.md",
+          "description": "Strategy cards: initiative order, primaries and secondaries.",
+          "status": "draft",
+          "minutes": 8,
+          "tags": ["rules", "turn-order"]
+        },
+        {
+          "title": "Movement",
+          "path": "rules_and_systems/Movement.md",
+          "description": "AP-based movement, terrain costs, portals, and council tie-ins.",
+          "status": "core",
+          "minutes": 10,
+          "tags": ["rules", "map"]
+        },
+        {
+          "title": "Tiles",
+          "path": "rules_and_systems/Tiles.md",
+          "description": "Terrain production, special tiles, and borders/ZOC framework.",
+          "status": "draft",
+          "minutes": 14,
+          "tags": ["rules", "map"]
+        },
+        {
+          "title": "Combat",
+          "path": "rules_and_systems/Combat.md",
+          "description": "Battle line + reserves, sieges, and anti-doomstack constraints.",
+          "status": "core",
+          "minutes": 12,
+          "tags": ["rules", "combat"]
+        },
+        {
+          "title": "Arcane",
+          "path": "rules_and_systems/Arcane.md",
+          "description": "Tiered Arcane Discoveries by school, costs, and timing.",
+          "status": "draft",
+          "minutes": 12,
+          "tags": ["rules", "magic"]
+        },
+        {
+          "title": "Population",
+          "path": "rules_and_systems/Population.md",
+          "description": "Population pool/cap, growth, and how it limits expansion.",
+          "status": "core",
+          "minutes": 9,
+          "tags": ["rules", "economy"]
+        },
+        {
+          "title": "Buildings",
+          "path": "rules_and_systems/Buildings.md",
+          "description": "Building list, costs, and interactions with Population and upkeep.",
+          "status": "draft",
+          "minutes": 10,
+          "tags": ["rules", "economy"]
+        },
+        {
+          "title": "Trade & Taxes",
+          "path": "rules_and_systems/Trade_Taxes.md",
+          "description": "Player-initiated trade, upkeep pressure, and consequences.",
+          "status": "draft",
+          "minutes": 10,
+          "tags": ["rules", "economy"]
+        },
+        {
+          "title": "Events",
+          "path": "rules_and_systems/Events.md",
+          "description": "Exploration/global/local/milestone events and examples.",
+          "status": "draft",
+          "minutes": 9,
+          "tags": ["rules", "events"]
+        },
+        {
+          "title": "High Council",
+          "path": "rules_and_systems/High_Council.md",
+          "description": "Motions, lobbying, voting, laws/decrees/titles, and timing.",
+          "status": "core",
+          "minutes": 12,
+          "tags": ["rules", "politics"]
+        },
+        {
+          "title": "Renown",
+          "path": "rules_and_systems/Renown.md",
+          "description": "Renown gains/uses/thresholds and how fame changes the table.",
+          "status": "draft",
+          "minutes": 6,
+          "tags": ["rules", "politics"]
+        },
+        {
+          "title": "Victory",
+          "path": "rules_and_systems/Victory.md",
+          "description": "VP sources: objectives, titles, artifacts, throne, and variants.",
+          "status": "draft",
+          "minutes": 12,
+          "tags": ["rules", "scoring"]
+        },
+        {
+          "title": "Setting Lore (rules)",
+          "path": "rules_and_systems/Lore.md",
+          "description": "World hooks: Speaking Stones, rediscovered magic, throne, and banished lords.",
+          "status": "core",
+          "minutes": 8,
+          "tags": ["lore", "setting"]
+        },
+        {
+          "title": "TBD / Brainstorm",
+          "path": "rules_and_systems/TBD.md",
+          "description": "Backlog ideas and optional systems under consideration.",
+          "status": "notes",
+          "minutes": 6,
+          "tags": ["notes"]
+        }
+      ]
+    },
+    {
+      "id": "lore",
+      "label": "Lore",
+      "color": "teal",
+      "docs": [
+        {
+          "title": "Lorebook",
+          "path": "lore/Lore.md",
+          "description": "History, factions, locations, and myths of Aeonis (lore draft).",
+          "status": "draft",
+          "minutes": 6,
+          "tags": ["lore"]
+        },
+        {
+          "title": "Lore README",
+          "path": "lore/README.md",
+          "description": "What’s in the lore folder and how it’s organized.",
+          "status": "notes",
+          "minutes": 2,
+          "tags": ["lore", "overview"]
+        }
+      ]
+    },
+    {
+      "id": "lords",
+      "label": "Lords",
+      "color": "rose",
+      "docs": [
+        {
+          "title": "Cassian — Merchant Prince",
+          "path": "lords/Cassian.md",
+          "description": "Golden Consortium: trade tempo, Influence leverage, profit from politics.",
+          "status": "playtest",
+          "minutes": 6,
+          "tags": ["lords", "economy", "politics"]
+        },
+        {
+          "title": "Elyndra — Warden of Groves",
+          "path": "lords/Elyndra.md",
+          "description": "Verdant Covenant: population growth, defensive forests, attrition wars.",
+          "status": "playtest",
+          "minutes": 6,
+          "tags": ["lords", "defense", "growth"]
+        },
+        {
+          "title": "Seraphel — Lord of the Arcane",
+          "path": "lords/Seraphel.md",
+          "description": "Arcanum Concord: mana advantage, information control, tempo bursts.",
+          "status": "playtest",
+          "minutes": 7,
+          "tags": ["lords", "magic", "tempo"]
+        },
+        {
+          "title": "Vharok — Lord of Steel",
+          "path": "lords/Vharok.md",
+          "description": "Iron Dominion: durable fronts, fortress play, long sieges.",
+          "status": "playtest",
+          "minutes": 6,
+          "tags": ["lords", "defense", "siege"]
+        }
+      ]
+    },
+    {
+      "id": "marketing",
+      "label": "Marketing",
+      "color": "gold",
+      "docs": [
+        {
+          "title": "Marketing Plan",
+          "path": "marketing/Marketing.md",
+          "description": "Campaign plan toward Kickstarter: phases, beats, and assets.",
+          "status": "internal",
+          "minutes": 10,
+          "tags": ["marketing"]
+        },
+        {
+          "title": "Development Plan",
+          "path": "marketing/Development_Plan.md",
+          "description": "High-level milestones, deliverables, and timelines.",
+          "status": "internal",
+          "minutes": 8,
+          "tags": ["marketing", "planning"]
+        }
+      ]
+    }
+  ]
+}
+

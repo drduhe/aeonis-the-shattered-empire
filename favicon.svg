@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="g" x1="32" y1="24" x2="224" y2="232" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#7c5cff" />
+      <stop offset="1" stop-color="#24d1c4" />
+    </linearGradient>
+    <radialGradient id="glow" cx="92" cy="78" r="160" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.22" />
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  <rect x="24" y="24" width="208" height="208" rx="64" fill="#070a14" />
+  <rect x="30" y="30" width="196" height="196" rx="58" fill="url(#g)" opacity="0.20" />
+  <rect x="30" y="30" width="196" height="196" rx="58" fill="url(#glow)" />
+
+  <!-- Sigil ring -->
+  <circle cx="128" cy="128" r="76" fill="none" stroke="url(#g)" stroke-width="12" opacity="0.9" />
+  <circle cx="128" cy="128" r="56" fill="none" stroke="#ffffff" stroke-opacity="0.15" stroke-width="2" />
+
+  <!-- Core glyph -->
+  <path
+    d="M128 82c18 0 33 15 33 33 0 28-33 59-33 59s-33-31-33-59c0-18 15-33 33-33Z"
+    fill="url(#g)"
+    opacity="0.95"
+  />
+  <circle cx="128" cy="115" r="12" fill="#070a14" opacity="0.85" />
+</svg>

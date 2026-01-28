@@ -34,14 +34,14 @@
 
 Different terrain types impact movement costs and strategies, emphasizing the importance of terrain control and map awareness.
 
-| Terrain Type     | Base Movement Cost | Special Rules                                                   |
-|-------------------|--------------------|-----------------------------------------------------------------|
-| **Plains**        | 1 AP per hex       | No restrictions, optimal for fast traversal.                   |
-| **Forests**       | 1 AP per hex       | Defensive bonus for units ending their movement here.          |
-| **Mountains**     | 2 AP per hex       | Requires special abilities, infrastructure, or Lords to traverse efficiently. |
-| **Deserts**       | 2 AP per hex       | Units lose 1 Population if they spend more than 2 turns here.  |
-| **Lakes**         | Impassable         | Lakes cannot be entered/occupied unless they have a **Bridge** (see `Tiles.md` / `Buildings.md`). |
-| **Cities**        | 1 AP per hex       | Acts as a hub for faster travel (see Teleportation below).      |
+| Terrain Type  | Base Movement Cost | Special Rules                                                                                     |
+| ------------- | ------------------ | ------------------------------------------------------------------------------------------------- |
+| **Plains**    | 1 AP per hex       | No restrictions, optimal for fast traversal.                                                      |
+| **Forests**   | 1 AP per hex       | Defensive bonus for units ending their movement here.                                             |
+| **Mountains** | 2 AP per hex       | Requires special abilities, infrastructure, or Lords to traverse efficiently.                     |
+| **Deserts**   | 2 AP per hex       | Units lose 1 Population if they spend more than 2 turns here.                                     |
+| **Lakes**     | Impassable         | Lakes cannot be entered/occupied unless they have a **Bridge** (see `Tiles.md` / `Buildings.md`). |
+| **Cities**    | 1 AP per hex       | Acts as a hub for faster travel (see Teleportation below).                                        |
 
 - **Special Tile Effects:**
   - **Portals:** Units move between Portals without AP cost but must spend 1 AP to enter/exit.
@@ -53,13 +53,13 @@ Different terrain types impact movement costs and strategies, emphasizing the im
 
 Each unit type interacts with the movement system differently, creating strategic trade-offs.
 
-| Unit Type         | Movement Range (Hexes/Turn) | Special Movement Rules                                    |
-|--------------------|----------------------------|----------------------------------------------------------|
-| **Infantry**       | 1 hex                      | No special movement bonuses, effective for defense.       |
-| **Cavalry**        | 2 hexes                    | Can traverse Plains at 1 AP per 2 hexes for rapid movement.|
-| **Archers**        | 1 hex                      | Gain bonuses when moving into Forests.                   |
-| **Lord (Leader)**  | varies                     | Defined on the Lord Sheet; uses normal terrain costs unless a Lord ability says otherwise. |
-| **Advanced Units** | Varies                     | Examples: Flying units ignore terrain penalties.          |
+| Unit Type          | Movement Range (Hexes/Turn) | Special Movement Rules                                                                     |
+| ------------------ | --------------------------- | ------------------------------------------------------------------------------------------ |
+| **Infantry**       | 1 hex                       | No special movement bonuses, effective for defense.                                        |
+| **Cavalry**        | 2 hexes                     | Can traverse Plains at 1 AP per 2 hexes for rapid movement.                                |
+| **Archers**        | 1 hex                       | Gain bonuses when moving into Forests.                                                     |
+| **Lord (Leader)**  | varies                      | Defined on the Lord Sheet; uses normal terrain costs unless a Lord ability says otherwise. |
+| **Advanced Units** | varies                      | Examples: Flying units ignore terrain penalties.                                           |
 
 ---
 
