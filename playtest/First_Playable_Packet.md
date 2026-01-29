@@ -179,6 +179,24 @@ Setup:
 
 ---
 
+### 4.6 Arcane Discoveries (optional, recommended)
+
+The First Playable already includes Strategy Cards that reference research (e.g., **Arcane Ascendancy**). To keep the packet self-contained, enable this small Arcane module:
+
+- Use `rules_and_systems/Arcane.md`.
+- **Allowed tier**: **Tier I only** (ignore Tier II/III and specialties).
+- **Available discoveries**: the Tier I entries in §7 (10 total).
+
+Rules reminder (Tier I only):
+
+- **Research** is an action you may take on your turn (see `Arcane.md`, §4).
+- **Cost**: 1 AP + the discovery’s listed resource cost.
+- If a card effect says “research a Tier I discovery for free,” you ignore both AP and resource costs (you still choose a Tier I discovery you don’t already own).
+
+Printing note:
+
+- Print the Tier I discoveries as reference cards, or list them on a single player-aid sheet.
+
 ## 5) High Council “agenda deck” (8 cards)
 
 For First Playable, use a simple agenda deck:

@@ -78,7 +78,7 @@ Portals and magical movement are key to the strategic flexibility and dynamic na
 
 - **Teleportation Spells:**
   - High-tier **Arcane Discovery** or artifact-based abilities allow unit teleportation:
-    - Example: **Translocation (Tier 2):** Spend 3 Mana and 1 AP to teleport a unit group to any controlled hex.
+    - Example: **Translocation (Tier II, TRN):** When you take a Move action, you may pay **1 AP** and spend **3 Mana** to teleport a unit group to any controlled hex (see `Arcane.md`).
 
 ---
 
