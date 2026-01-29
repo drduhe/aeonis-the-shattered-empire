@@ -1,0 +1,76 @@
+# Aeonis repo (.md design docs + static site assets)
+# Keep authored content (Markdown, images, SVG, HTML/CSS/JS) tracked.
+# Ignore OS/editor noise and common build artifacts.
+
+#############################
+# OS-generated files
+#############################
+.DS_Store
+.DS_Store?
+._*
+.AppleDouble
+.LSOverride
+Icon\r
+
+.Spotlight-V100
+.Trashes
+._.Trashes
+
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+#############################
+# Temporary / logs
+#############################
+*.log
+*.tmp
+*.temp
+tmp/
+temp/
+.cache/
+
+#############################
+# Editor settings
+#############################
+# VS Code (ignore local state; allow shared workspace config)
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/tasks.json
+
+# JetBrains / IntelliJ (repo already has marketing/.idea with its own .gitignore)
+**/.idea/**/workspace.xml
+**/.idea/**/shelf/
+**/.idea/**/httpRequests/
+**/.idea/**/dataSources/
+**/.idea/**/dataSources.local.xml
+
+#############################
+# Node / web tooling (future-proofing)
+#############################
+node_modules/
+
+# Common build outputs / caches (only if you add a bundler later)
+dist/
+.parcel-cache/
+.vite/
+.next/
+.nuxt/
+.svelte-kit/
+coverage/
+
+# Debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+#############################
+# Secrets (keep examples tracked)
+#############################
+.env
+.env.*
+!.env.example
