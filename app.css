@@ -67,14 +67,7 @@ body::before {
   opacity: 0.06;
   background-image:
     radial-gradient(900px 520px at 18% 10%, rgba(255, 255, 255, 0.22), transparent 62%),
-    radial-gradient(780px 520px at 82% 24%, rgba(255, 255, 255, 0.18), transparent 66%),
-    repeating-linear-gradient(
-      135deg,
-      rgba(255, 255, 255, 0.16) 0px,
-      rgba(255, 255, 255, 0.16) 1px,
-      transparent 1px,
-      transparent 9px
-    );
+    radial-gradient(780px 520px at 82% 24%, rgba(255, 255, 255, 0.18), transparent 66%);
   mix-blend-mode: overlay;
 }
 [data-theme="light"] body::before {

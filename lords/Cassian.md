@@ -8,7 +8,7 @@
 
 ## Lore
 
-> “Empires fall to blades. Kingdoms fall to ledgers.”
+> “Kingdoms fall to blades. Empires fall to ledgers.”
 
 Cassian’s armies are never the largest, but they are always where the contracts point. He buys access, sells protection, and turns every council vote into a margin. When war breaks out, he profits twice: once from the panic, and again from the peace that follows.
 

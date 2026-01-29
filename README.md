@@ -1,6 +1,14 @@
-# Aeonis: The Shattered Empire (board game design docs)
+# Aeonis: The Shattered Empire (Kickstarter-bound board game)
 
 This repo contains the working design documents for a fantasy “big strategy” board game (explicitly inspired by TI4-scale play), under the canonical name **Aeonis: The Shattered Empire**.
+
+## Kickstarter intent (why this exists)
+
+We’re building toward a Kickstarter to:
+
+- **Manufacture the first copies** for distribution (the first print run).
+- **Refine and clarify** the current ruleset (balance, timing clarity, onboarding).
+- **Expand the roster** with many more factions/Lords and more content to support varied tables.
 
 ## What’s here today (high-level)
 

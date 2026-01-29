@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="Aeonis: The Shattered Empire — a TI4-scale fantasy strategy board game. Explore rules, lore, and faction docs in a beautiful content browser."
+      content="Aeonis: The Shattered Empire — a TI4-scale fantasy grand strategy board game. Kickstarter pre-launch: follow development, read the playable packet, and get notified at launch."
     />
     <title>Aeonis: The Shattered Empire</title>
 
@@ -16,7 +16,7 @@
     <meta property="og:title" content="Aeonis: The Shattered Empire" />
     <meta
       property="og:description"
-      content="Aeonis: The Shattered Empire — a TI4-scale fantasy strategy board game. Explore rules, lore, and faction docs in a beautiful content browser."
+      content="Aeonis: The Shattered Empire — a TI4-scale fantasy grand strategy board game. Kickstarter pre-launch: read the playable packet and get notified at launch."
     />
     <meta property="og:image" content="favicon.svg" />
 
@@ -24,7 +24,7 @@
     <meta name="twitter:title" content="Aeonis: The Shattered Empire" />
     <meta
       name="twitter:description"
-      content="Aeonis: The Shattered Empire — a TI4-scale fantasy strategy board game. Explore rules, lore, and faction docs in a beautiful content browser."
+      content="Aeonis: The Shattered Empire — a TI4-scale fantasy grand strategy board game. Kickstarter pre-launch: read the playable packet and get notified at launch."
     />
     <meta name="twitter:image" content="favicon.svg" />
 
@@ -37,7 +37,7 @@
       rel="stylesheet"
     />
 
-    <link rel="stylesheet" href="app.css" />
+    <link rel="stylesheet" href="app.css?v=2026-01-28-1" />
 
     <script defer src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/dompurify@3.0.8/dist/purify.min.js"></script>
@@ -47,7 +47,7 @@
     />
     <script defer src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/highlight.min.js"></script>
 
-    <script defer src="app.js"></script>
+    <script defer src="app.js?v=2026-01-28-1"></script>
   </head>
 
   <body>
@@ -72,6 +72,7 @@
         </a>
 
         <nav class="nav" aria-label="Primary">
+          <a class="nav__link" href="#kickstarter">Kickstarter</a>
           <a class="nav__link" href="#overview">Overview</a>
           <a class="nav__link" href="#lords">Lords</a>
           <a class="nav__link" href="#pillars">Pillars</a>
@@ -105,6 +106,7 @@
 
     <div class="mobileNav" id="mobileNav" hidden>
       <div class="container mobileNav__inner" aria-label="Mobile navigation">
+        <a class="mobileNav__link" data-nav="kickstarter" href="#kickstarter">Kickstarter</a>
         <a class="mobileNav__link" data-nav="overview" href="#overview">Overview</a>
         <a class="mobileNav__link" data-nav="lords" href="#lords">Lords</a>
         <a class="mobileNav__link" data-nav="pillars" href="#pillars">Pillars</a>
@@ -117,33 +119,39 @@
       <section class="hero" aria-label="Hero">
         <div class="container hero__inner">
           <div class="hero__copy">
-            <p class="kicker">TI4-scale fantasy grand strategy</p>
+            <p class="kicker">Kickstarter pre-launch • TI4-scale fantasy grand strategy</p>
             <h1 class="hero__title">
               <span class="hero__titleMain">Claim the Shattered Throne</span>
-              <span class="hero__titleTagline">— through war, wizardry, wealth, or will.</span>
+              <span class="hero__titleTagline">— and help fund the first print run.</span>
             </h1>
             <p class="hero__lede">
-              In a realm ruled by the whispers of the <strong>Speaking Stones</strong>, Lords rebuild empires from ruin.
               <strong>Aeonis: The Shattered Empire</strong> is a “big strategy” board game of rotating turns, ruthless diplomacy,
-              arcane discovery, and border wars across a living map.
+              arcane discovery, and border wars across a living map. We’re building toward a <strong>Kickstarter</strong> to
+              manufacture the first copies — and to fund refinement, balance, and a much larger faction roster.
             </p>
             <p class="hero__meta">
-              Best for tables that love negotiation, timing windows, and “one more turn” deals.
+              If you love negotiation, timing windows, and “one more turn” deals, you’re in the right war room.
             </p>
             <div class="hero__cta">
-              <a class="btn btn--primary btn--lg" href="#browse">
-                <span class="btn__label">Open the Imperial Codex</span>
+              <a class="btn btn--primary btn--lg" href="#waitlist">
+                <span class="btn__label">Get launch alerts</span>
                 <span class="btn__icon" aria-hidden="true">→</span>
               </a>
               <a class="btn btn--ghost btn--lg" href="#/doc/playtest/First_Playable_Packet.md">
-                <span class="btn__label">First Playable Packet</span>
+                <span class="btn__label">Read the Playable Packet</span>
+              </a>
+              <a class="btn btn--ghost btn--lg" href="#browse">
+                <span class="btn__label">Browse Rules & Lore</span>
               </a>
             </div>
 
-            <form class="waitlist" id="waitlistForm" autocomplete="on">
+            <div id="waitlist">
+              <form class="waitlist" id="waitlistForm" autocomplete="on">
               <div class="waitlist__left">
-                <div class="waitlist__title">Join the Council</div>
-                <div class="waitlist__sub">Drop your email to build a playtest waitlist (stored locally; exportable).</div>
+                <div class="waitlist__title">Get Kickstarter launch alerts</div>
+                <div class="waitlist__sub">
+                  One email when we launch + occasional playtest drops and faction reveals. (No spam.)
+                </div>
               </div>
               <div class="waitlist__right">
                 <label class="srOnly" for="waitlistEmail">Email</label>
@@ -156,7 +164,7 @@
                   required
                 />
                 <button class="btn btn--primary waitlist__btn" type="submit">
-                  <span class="btn__label">Swear the oath</span>
+                  <span class="btn__label">Notify me</span>
                   <span class="btn__icon" aria-hidden="true">↯</span>
                 </button>
               </div>
@@ -166,7 +174,8 @@
                   Export CSV
                 </button>
               </div>
-            </form>
+              </form>
+            </div>
 
             <div class="hero__stats" role="list" aria-label="Highlights">
               <div class="stat" role="listitem">
@@ -178,8 +187,8 @@
                 <div class="stat__label">Negotiation & laws</div>
               </div>
               <div class="stat" role="listitem">
-                <div class="stat__num">Arcana</div>
-                <div class="stat__label">Tiered discoveries</div>
+                <div class="stat__num">Factions</div>
+                <div class="stat__label">Starter roster + many more planned</div>
               </div>
             </div>
           </div>
@@ -199,17 +208,19 @@
             </div>
             <div class="decree" aria-hidden="true">
               <div class="decree__kicker">Council Decree</div>
-              <div class="decree__text" id="decreeText">“Empires fall to blades. Kingdoms fall to ledgers.”</div>
+              <div class="decree__text" id="decreeText">“Kingdoms fall to blades. Empires fall to ledgers.”</div>
             </div>
             <div class="hero__card consider">
               <div class="hero__cardTitle">Start here</div>
               <div class="hero__cardBody">
-                Open the Imperial Codex to read rules, lore, and Lord sheets — all from this page.
+                Read the playable packet, then browse the living Codex for rules, lore, and Lord sheets.
               </div>
               <div class="hero__cardActions">
                 <a class="miniLink" href="#/doc/rules_and_systems/INDEX.md">Rules Index</a>
                 <span class="dot" aria-hidden="true">•</span>
                 <a class="miniLink" href="#/doc/playtest/First_Playable_Packet.md">First Playable</a>
+                <span class="dot" aria-hidden="true">•</span>
+                <a class="miniLink" id="kickstarterLink" href="#kickstarter">Kickstarter</a>
               </div>
             </div>
           </div>
@@ -227,12 +238,52 @@
         </div>
       </section>
 
+      <section id="kickstarter" class="section section--alt">
+        <div class="container">
+          <div class="section__head">
+            <h2 class="section__title">Kickstarter: bring Aeonis to the table</h2>
+            <p class="section__sub">
+              We’re preparing a campaign to fund the first manufactured copies — and to accelerate development: refine systems,
+              balance the core loop, and build many more factions.
+            </p>
+          </div>
+
+          <div class="grid grid--3">
+            <article class="card">
+              <h3 class="card__title">The first print run</h3>
+              <p class="card__text">
+                Funding goes to manufacturing, component quality, and logistics — the unglamorous steps that turn prototypes into
+                real boxes you can play.
+              </p>
+              <a class="card__link" href="#/doc/components/Components.md">View components →</a>
+            </article>
+            <article class="card">
+              <h3 class="card__title">Refine what’s here</h3>
+              <p class="card__text">
+                Tighten balance, clarify rules, polish timing windows, and improve onboarding so the game plays as smoothly as it
+                negotiates.
+              </p>
+              <a class="card__link" href="#/doc/rules_and_systems/INDEX.md">Open rules index →</a>
+            </article>
+            <article class="card">
+              <h3 class="card__title">Expand the roster</h3>
+              <p class="card__text">
+                More factions, more asymmetric economies, and more strategic identities — so every table finds a Lord worth swearing
+                to (or betraying).
+              </p>
+              <a class="card__link" href="#lords">Meet the starter Lords →</a>
+            </article>
+          </div>
+        </div>
+      </section>
+
       <section id="overview" class="section">
         <div class="container">
           <div class="section__head">
-            <h2 class="section__title">A bold strategy sandbox</h2>
+            <h2 class="section__title">A bold strategy sandbox (in active development)</h2>
             <p class="section__sub">
-              Aeonis combines the sweep of 4X with sharp tactical constraints: population caps, contested borders, and one action per turn.
+              Aeonis combines the sweep of 4X with sharp tactical constraints: population caps, contested borders, and one action per
+              turn. The Codex below shows what’s playable today — and what we’re refining for Kickstarter.
             </p>
           </div>
 
@@ -252,7 +303,7 @@
               <a class="card__link" href="#/doc/rules_and_systems/High_Council.md">Read High Council →</a>
             </article>
             <article class="card">
-              <h3 class="card__title">Conflict, not doomstacks</h3>
+              <h3 class="card__title">Campaign-scale conflict</h3>
               <p class="card__text">
                 Battle line + reserves rewards commitment and timing. Sieges become campaigns, not single-roll blowouts.
               </p>
@@ -265,9 +316,10 @@
       <section id="lords" class="section section--alt">
         <div class="container">
           <div class="section__head">
-            <h2 class="section__title">Choose your Lord</h2>
+            <h2 class="section__title">Starter factions & Lords</h2>
             <p class="section__sub">
-              Each Lord plays differently — not just in combat, but in how they bend politics, economy, and tempo.
+              These four Lords are the playable starting roster. Kickstarter funding helps us refine them and expand into many more
+              factions with distinct economies, politics, and battlefield identities.
             </p>
           </div>
 
@@ -287,7 +339,7 @@
                 <div class="lordCard__role">Merchant Prince • Golden Consortium</div>
               </div>
               <p class="lordCard__pitch">Trades, Influence leverage, and economic tempo — turning votes into profit.</p>
-              <blockquote class="lordCard__quote">“Empires fall to blades. Kingdoms fall to ledgers.”</blockquote>
+              <blockquote class="lordCard__quote">“Kingdoms fall to blades. Empires fall to ledgers.”</blockquote>
               <a class="btn btn--ghost btn--sm" href="#/doc/lords/Cassian.md">Open Lord Sheet</a>
             </article>
 
@@ -354,9 +406,10 @@
       <section id="pillars" class="section section--alt">
         <div class="container">
           <div class="section__head">
-            <h2 class="section__title">Design pillars</h2>
+            <h2 class="section__title">What Aeonis is trying to do (on purpose)</h2>
             <p class="section__sub">
-              A rulebook draft you can actually navigate — and a world that invites playtesting.
+              The goal is a grand strategy experience that stays readable at the table: clear windows, meaningful constraints, and
+              factions that change how you negotiate and expand.
             </p>
           </div>
 
@@ -386,9 +439,9 @@
             <div class="pillar">
               <div class="pillar__badge">3</div>
               <div class="pillar__body">
-                <h3 class="pillar__title">A world worth ruling</h3>
+                <h3 class="pillar__title">Asymmetry with a setting spine</h3>
                 <p class="pillar__text">
-                  Speaking Stones, rediscovered magic, banished lords — a setting that drives objectives and politics. 
+                  Speaking Stones, rediscovered magic, banished lords — lore that drives objectives, politics, and faction identity.
                 </p>
                 <a class="miniLink" href="#/doc/rules_and_systems/Lore.md">Setting Lore</a>
               </div>
@@ -486,23 +539,25 @@
       <section id="about" class="section">
         <div class="container">
           <div class="section__head">
-            <h2 class="section__title">About this site</h2>
+            <h2 class="section__title">About Aeonis (and this Codex)</h2>
             <p class="section__sub">
-              This is a lightweight static page designed to live in your repo. It reads Markdown directly from your folders — no build step.
+              Aeonis is being built in the open. This site is a living, linkable Codex: rules, lore, and playtest material — all in one place.
             </p>
           </div>
 
           <div class="grid grid--2">
             <div class="note">
-              <h3 class="note__title">No build step</h3>
+              <h3 class="note__title">Kickstarter-focused development</h3>
               <p class="note__text">
-                Everything is client-side. The browser uses a manifest file to list docs, then fetches and renders Markdown safely.
+                The campaign is aimed at funding the first manufactured copies, while giving us the runway to refine systems and add
+                many more factions.
               </p>
             </div>
             <div class="note">
-              <h3 class="note__title">Shareable links</h3>
+              <h3 class="note__title">A shareable, no-build Codex</h3>
               <p class="note__text">
-                When you open a document, the URL updates (hash-based). Copy links to point playtesters at specific chapters.
+                Everything is client-side. When you open a document, the URL updates (hash-based) so you can link playtesters to
+                specific chapters.
               </p>
             </div>
           </div>
@@ -514,7 +569,7 @@
       <div class="container footer__inner">
         <div class="footer__left">
           <div class="footer__brand">Aeonis: The Shattered Empire</div>
-          <div class="footer__meta">Design docs — local browser</div>
+          <div class="footer__meta">Kickstarter pre-launch • living design codex</div>
         </div>
         <div class="footer__right">
           <a class="miniLink" href="#top">Back to top</a>

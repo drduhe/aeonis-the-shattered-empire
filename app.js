@@ -15,6 +15,19 @@ const state = {
   }
 };
 
+function getRuntimeConfig() {
+  // Optional globals you can define in `index.html` (before `app.js`) to make the site production-ready.
+  // - AEONIS_WAITLIST_ENDPOINT: A URL that accepts POST JSON: { email, ts, source } (CORS enabled)
+  // - AEONIS_CONTACT_EMAIL: Fallback mailto target if no endpoint
+  // - AEONIS_KICKSTARTER_URL: Pre-launch page URL (shown as external link)
+  const w = typeof window !== "undefined" ? window : {};
+  return {
+    waitlistEndpoint: typeof w.AEONIS_WAITLIST_ENDPOINT === "string" ? w.AEONIS_WAITLIST_ENDPOINT.trim() : "",
+    contactEmail: typeof w.AEONIS_CONTACT_EMAIL === "string" ? w.AEONIS_CONTACT_EMAIL.trim() : "",
+    kickstarterUrl: typeof w.AEONIS_KICKSTARTER_URL === "string" ? w.AEONIS_KICKSTARTER_URL.trim() : ""
+  };
+}
+
 function $(id) {
   return document.getElementById(id);
 }
@@ -607,7 +620,7 @@ function wireEvents() {
     const hash = window.location.hash || "";
     let active = "";
     if (/^#\/doc\//.test(hash)) active = "browse";
-    else if (/^#(overview|lords|pillars|browse|about)\b/.test(hash)) active = hash.slice(1).split("?")[0];
+    else if (/^#(kickstarter|overview|lords|pillars|browse|about)\b/.test(hash)) active = hash.slice(1).split("?")[0];
 
     const desktopLinks = document.querySelectorAll(".nav__link");
     desktopLinks.forEach((a) => {
@@ -636,6 +649,17 @@ function wireEvents() {
   syncNavActive();
 }
 
+function initCampaignLinks() {
+  const cfg = getRuntimeConfig();
+  const ks = $("kickstarterLink");
+  if (!ks) return;
+  if (!cfg.kickstarterUrl || !/^https?:\/\//i.test(cfg.kickstarterUrl)) return;
+  ks.href = cfg.kickstarterUrl;
+  ks.target = "_blank";
+  ks.rel = "noreferrer";
+  ks.textContent = "Kickstarter (pre-launch)";
+}
+
 async function route() {
   const r = parseHash();
   if (r.route === "doc") {
@@ -659,8 +683,9 @@ function initDecrees() {
     // ignore
   }
   const decrees = [
-    "“Empires fall to blades. Kingdoms fall to ledgers.”",
+    "“Kingdoms fall to blades. Empires fall to ledgers.”",
     "“The High Council convenes. All debts come due.”",
+    "“The empire does not return by wish. It returns by oath.”",
     "“A treaty signed in gold is harder to break than one signed in blood.”",
     "“The grove regrows faster than the war can burn it.”",
     "“Knowledge is not power; it is permission.”",
@@ -680,11 +705,18 @@ function initDecrees() {
 }
 
 function initWaitlist() {
+  const cfg = getRuntimeConfig();
   const form = $("waitlistForm");
   const emailEl = $("waitlistEmail");
   const msg = $("waitlistMsg");
   const exportBtn = $("exportWaitlistBtn");
   if (!form || !emailEl || !msg || !exportBtn) return;
+
+  const hasEndpoint = !!cfg.waitlistEndpoint;
+  const hasContactEmail = !!cfg.contactEmail;
+  const mode = hasEndpoint ? "endpoint" : hasContactEmail ? "mailto" : "local";
+
+  exportBtn.hidden = mode !== "local";
 
   function load() {
     try {
@@ -710,8 +742,10 @@ function initWaitlist() {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
   }
 
-  const existing = load();
-  if (existing.length) setMsg(`${existing.length} oath${existing.length === 1 ? "" : "s"} recorded on this device.`);
+  if (mode === "local") {
+    const existing = load();
+    if (existing.length) setMsg(`${existing.length} signup${existing.length === 1 ? "" : "s"} saved on this device.`);
+  }
 
   form.addEventListener("submit", async (ev) => {
     ev.preventDefault();
@@ -721,23 +755,56 @@ function initWaitlist() {
       return;
     }
 
+    const ts = new Date().toISOString();
+
+    if (mode === "endpoint") {
+      try {
+        const res = await fetch(cfg.waitlistEndpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, ts, source: "aeonis-landing" })
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        setMsg("You’re on the list. We’ll email you when the Kickstarter launches.");
+        emailEl.value = "";
+        return;
+      } catch (e) {
+        setMsg(`Couldn’t submit right now (${e?.message || "error"}). Please try again.`);
+        return;
+      }
+    }
+
+    if (mode === "mailto") {
+      const subject = encodeURIComponent("Aeonis — Kickstarter launch alerts");
+      const body = encodeURIComponent(
+        `Please add me to Aeonis updates.\n\nEmail: ${email}\nTimestamp: ${ts}\n`
+      );
+      const href = `mailto:${cfg.contactEmail}?subject=${subject}&body=${body}`;
+      window.location.href = href;
+      setMsg("Draft email opened — send it to join updates.");
+      emailEl.value = "";
+      return;
+    }
+
+    // local fallback (prototype / offline / no-endpoint mode)
     const list = load();
     if (!list.some((x) => normalizeEmail(x.email) === email)) {
-      list.push({ email, ts: new Date().toISOString() });
+      list.push({ email, ts });
       save(list);
     }
 
     try {
       await navigator.clipboard.writeText(email);
-      setMsg(`Oath recorded. (Copied: ${email})`);
+      setMsg(`Saved on this device. (Copied: ${email})`);
     } catch {
-      setMsg(`Oath recorded: ${email}`);
+      setMsg(`Saved on this device: ${email}`);
     }
 
     emailEl.value = "";
   });
 
   exportBtn.addEventListener("click", () => {
+    if (mode !== "local") return;
     const list = load();
     const rows = [["email", "timestamp"], ...list.map((x) => [x.email, x.ts])];
     const csv = rows
@@ -765,6 +832,7 @@ async function init() {
   setTheme(getTheme());
 
   wireEvents();
+  initCampaignLinks();
   initDecrees();
   initWaitlist();
 
