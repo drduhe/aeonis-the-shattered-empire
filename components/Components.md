@@ -7,39 +7,39 @@ This is the minimal component list needed to run the **First Playable** packet. 
 ## Core boards & pieces
 
 - **Hex tiles**:
-  - 4× **City** tiles (player home cities)
-  - 1× **Imperial Seat** tile (treat as a City; special rule in `playtest/First_Playable_Packet.md`)
-  - 6× **Plains**
-  - 6× **Forests**
-  - 6× **Mountains**
-  - 6× **Deserts**
-  - 1× **Arcane Nexus** (unique starting tile)
-  - 1× **Ironworks Ridge** (unique starting tile)
-  - 1× **Caravan Bazaar** (unique starting tile)
-  - 1× **Sacred Grove** (unique starting tile)
-  - 2× **Ruins**
-  - 2× **Portals**
-  - 2× **Lakes**
+  - 4x **City** tiles (player home cities; scale to player count for 5-8)
+  - 1x **Imperial Seat** tile (treat as a City; special rule in `playtest/First_Playable_Packet.md`)
+  - 6x **Plains** (add more for 5-8 players)
+  - 6x **Forests**
+  - 6x **Mountains**
+  - 6x **Deserts**
+  - 1x **Arcane Nexus** (unique starting tile, Seraphel)
+  - 1x **Ironworks Ridge** (unique starting tile, Vharok)
+  - 1x **Caravan Bazaar** (unique starting tile, Cassian)
+  - 1x **Sacred Grove** (unique starting tile, Elyndra)
+  - 2x **Ruins** (scale up for 5-8 players)
+  - 2x **Portals** (scale up for 5-8 players)
+  - 2x **Lakes** (scale up for 5-8 players)
 
-- **Player units** (per player, for 2–4 players):
-  - 1× Lord / Leader token
-  - 10× Infantry tokens
-  - 4× Cavalry tokens
-  - 4× Archer tokens
+- **Player units** (per player, for 3-8 players):
+  - 1x Lord / Leader token
+  - 10x Infantry tokens
+  - 4x Cavalry tokens
+  - 4x Archer tokens
 
 - **Control markers** (per player):
-  - 20× control tokens (for hex control if you want a visual marker)
+  - 20x control tokens (for hex control if you want a visual marker)
 
 - **Buildings** (shared supply):
-  - 8× Farm
-  - 8× Grove
-  - 8× Mine
-  - 8× Embassy
-  - 6× Tower
-  - 4× Fortress
-  - 4× Guild Hall
-  - 4× Market
-  - 2× Bridge
+  - 8x Farm
+  - 8x Grove
+  - 8x Mine
+  - 8x Embassy
+  - 6x Tower
+  - 4x Fortress
+  - 4x Guild Hall
+  - 4x Market
+  - 2x Bridge
 
 - **Resources** (shared supply):
   - Gold tokens (30+)
@@ -51,11 +51,18 @@ This is the minimal component list needed to run the **First Playable** packet. 
   - Renown tracker per player
   - VP tracker per player
   - Population tracker per player (Pool + Cap)
-  - Lord HP tracker per player (or wound tokens)
+  - Lord HP tracker per player (dial, tokens, or 4-step wound track)
   - Speaker token
 
+- **Combat markers**:
+  - 4x Siege markers (place on hexes under siege; see `Combat.md`)
+  - Title tokens or cards (for Hero of the Realm, Magister of Mana, etc.; see `High_Council.md`)
+
 - **Dice**:
-  - At least 4× d8 and 6× d6 (or a dice-roller)
+  - At least 4x d4 (Archer defense)
+  - At least 6x d6 (Infantry attack/defense, Archer attack)
+  - At least 4x d8 (Cavalry, most Lord attack/defense)
+  - At least 2x d10 (Vharok defense, Seraphel attack)
 
 ---
 
@@ -63,11 +70,12 @@ This is the minimal component list needed to run the **First Playable** packet. 
 
 For First Playable, you can print these as simple text cards:
 
-- **Strategy Cards (6)**: selected list in `playtest/First_Playable_Packet.md`
+- **Strategy Cards (6 for 3-4 players, 8 for 5-8)**: selected list in `playtest/First_Playable_Packet.md`
 - **Objectives**:
-  - 6× Public objectives
-  - 6× Secret objectives
+  - 6x Public objectives (2 VP each)
+  - 6x Secret objectives (2 VP each)
 - **Events**:
-  - 8× Global events
-  - 8× Exploration events (used for Ruins / exploration)
-- **Council Motions (8)**: a short “agenda deck” drawn from `High_Council.md` examples
+  - 10x Global events (includes 2 catch-up events)
+  - 8x Exploration events (used for Ruins / exploration)
+- **Council Motions (8)**: a short "agenda deck" drawn from `High_Council.md` examples
+- **Whisper Cards (24)**: shared tactical deck (see `Whispers.md` and `playtest/First_Playable_Packet.md`)

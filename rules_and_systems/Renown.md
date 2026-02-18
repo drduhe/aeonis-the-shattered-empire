@@ -8,18 +8,18 @@ Renown represents the fame and influence of a Lord across the realm. It reflects
 
 ## Points and Thresholds
 
-- **Renown Points:**  
-  Each player starts with 0 Renown and earns points through notable achievements.
+- **Renown Points:** Each player starts with 0 Renown and earns points through notable achievements.
 
-- **Renown Thresholds:**  
-  Reaching certain Renown levels unlocks bonuses, such as increased influence, access to special cards, or unique abilities.
+- **Renown Thresholds:**
+  - **5 Renown:** +1 AP permanently; +1 Council vote (see `High_Council.md`).
+  - **10 Renown:** 1 free 1-AP action per round; +1 additional Council vote.
 
 ---
 
 ## Earning Renown
 
 1. **Military Feats:**
-   - Defeating enemy Lords: **+2 Renown**. (See `Combat.md`, §2.1.4.)
+   - Defeating (capturing) an enemy Lord: **+2 Renown** (see `Combat.md`, section 2.1.4).
    - Capturing enemy-controlled hexes: **+1 Renown** per hex.
 
 2. **Diplomatic Achievements:**
@@ -27,7 +27,7 @@ Renown represents the fame and influence of a Lord across the realm. It reflects
    - Forming alliances with other Lords: **+1 Renown** (temporary, lost if the alliance breaks).
 
 3. **Economic Success:**
-   - Accumulating a large surplus of resources: **+1 Renown** for every X resources.
+   - Accumulating a large surplus of resources: **+1 Renown** for every 10 total resources held at Cleanup & Checks.
 
 4. **Cultural Influence:**
    - Constructing unique or legendary buildings: **+2 Renown**.
@@ -40,15 +40,15 @@ Renown represents the fame and influence of a Lord across the realm. It reflects
 
 ## Using Renown
 
-1. **Council Influence:**  
-   Lords with higher Renown may gain more votes in the High Council or break ties.
+1. **Council Influence:** Lords with higher Renown gain more votes in the High Council (see thresholds above and `High_Council.md`).
 
-2. **Diplomatic Leverage:**  
-   Renown affects how NPCs and players interact with the Lord.
+2. **Strategy Card Draft:** Renown breaks ties in the VP-based draft order (lowest Renown picks earlier among tied VP; see `Strategy.md`).
 
-3. **Unlock Special Abilities or Titles:**  
-   - **5 Renown:** Gain the title “Hero of the Realm,” granting **+1 Influence per round**.  
-   - **10 Renown:** Access to exclusive strategy cards or abilities.
+3. **Diplomatic Leverage:** Renown affects how players interact during negotiation and alliance-building.
+
+4. **Unlock Special Abilities or Titles:**
+   - **5 Renown:** Eligible for "Hero of the Realm" title (see `High_Council.md`).
+   - **10 Renown:** Access to exclusive strategy cards or abilities (if used).
 
 ---
 
@@ -57,5 +57,5 @@ Renown represents the fame and influence of a Lord across the realm. It reflects
 To balance runaway Renown, players could lose points for:
 
 - Losing battles: **-1 Renown**.
-- Being captured (your Lord captured): **-2 Renown** at the end of the round.
+- Having your Lord captured: **-2 Renown** at the end of the round.
 - Breaking alliances: **-1 Renown**.

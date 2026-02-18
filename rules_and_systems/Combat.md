@@ -14,7 +14,7 @@ Combat is initiated by the **Attack** action (see `Actions.md`) during the **Act
 
 ## 1. Key Concepts
 
-### 1.1 Attacks are declared (units do not automatically “move in to fight”)
+### 1.1 Attacks are declared (units do not automatically "move in to fight")
 
 - When you attack, you **declare an attack against a target hex**.
 - You and the defender **commit** units from adjacent hexes to support the battle.
@@ -41,17 +41,17 @@ Committed units beyond the cap are **Reserves**.
 | Infantry      | d6         | d6          | 1          | baseline                               |
 | Cavalry       | d8         | d6          | 2          | tougher, punchier                      |
 | Archers       | d6         | d4          | 1          | **Pre-Strike** when on the Battle Line |
-| Lord (Leader) | (varies)   | (varies)    | (varies)   | defined on the Lord Sheet; see §2.1    |
+| Lord (Leader) | (varies)   | (varies)    | (varies)   | defined on the Lord Sheet; see 2.1     |
 
 ---
 
 ## 2.1 Lords as Units (canon)
 
-In *Aeonis*, each player’s **Lord** is also a **unit on the board** (a single unique “Leader” token).
+In *Aeonis*, each player's **Lord** is also a **unit on the board** (a single unique "Leader" token).
 
 ### 2.1.1 Lord stats (defined on each Lord Sheet)
 
-Each Lord Sheet must specify the Lord unit’s:
+Each Lord Sheet must specify the Lord unit's:
 
 - **Attack Die**
 - **Defense Die**
@@ -62,8 +62,8 @@ Each Lord Sheet must specify the Lord unit’s:
 
 - **Counts as a unit:** A Lord occupies hexes, moves, commits to battles, and can be placed on the Battle Line like any other unit.
 - **Battle Line Cap:** A Lord **counts toward** the Battle Line Cap when on the line.
-- **Not destroyed:** When a Lord’s HP reaches 0, it is **defeated** (see §2.1.4) instead of being destroyed.
-- **Ability gating (default):** Your Lord’s abilities are available while your Lord is **not captured**. If an ability requires your Lord to be committed to a battle (or part of a moving group), it will say so.
+- **Not destroyed:** When a Lord's HP reaches 0, it is **defeated** (see 2.1.4) instead of being destroyed.
+- **Ability gating (default):** Your Lord's abilities are available while your Lord is **not captured**. If an ability requires your Lord to be committed to a battle (or part of a moving group), it will say so.
 
 ### 2.1.3 Tracking Lord damage
 
@@ -72,15 +72,17 @@ Each Lord Sheet must specify the Lord unit’s:
 
 ### 2.1.4 Defeating and capturing a Lord
 
-When a Lord’s HP reaches 0 during a battle:
+When a Lord's HP reaches 0 during a battle:
 
 - The Lord is **captured** by the opposing side (remove the Lord token from the map and place it with the capturing player as a reminder).
 - The capturing player immediately gains:
   - **+2 Renown** (see `Renown.md`)
-  - **2 VP** (see `Victory.md`)
-- The captured Lord’s owner:
-  - May still take turns and play normally, but **cannot score additional VP** while their Lord is captured.
-- **Release timing (default):** At **Cleanup & Checks** of the current round, all captured Lords are **released** and return to their owner’s **Home City** at full HP.
+  - **+1 VP** (see `Victory.md`)
+- The captured Lord's owner:
+  - May still take turns, score VP, and play normally.
+  - **Cannot use Lord abilities** while their Lord is captured (passive and active abilities on the Lord Sheet are disabled).
+  - Their Lord unit is unavailable (cannot commit to battles, cannot be part of movement groups).
+- **Release timing (default):** At **Cleanup & Checks** of the current round, all captured Lords are **released** and return to their owner's **Home City** at full HP.
 
 Note:
 
@@ -104,7 +106,7 @@ When an attack is declared:
   - Any units already in the target hex, plus
   - Any number of units from adjacent hexes.
 
-Committed units stay in their origin hexes; they are simply “in the fight.”
+Committed units stay in their origin hexes; they are simply "in the fight."
 
 ### 3.3 Form the Battle Lines
 
@@ -116,7 +118,7 @@ All other committed units are **Reserves**.
 
 ## 4. Battle Round (resolution loop)
 
-Each time the attacker spends an **Attack** action against a target hex, resolve **exactly one** battle round using the loop below (with an optional extra round if the attacker “Presses the Attack”).
+Each time the attacker spends an **Attack** action against a target hex, resolve **exactly one** battle round using the loop below (with an optional extra round if the attacker "Presses the Attack").
 
 1. **Reinforce Battle Lines**
 2. **Archer Pre-Strike**
@@ -132,7 +134,7 @@ After this battle round is complete, the battle ends for now. If both sides stil
 After resolving the battle round, the attacker may choose to **Press the Attack**:
 
 - **Cost**: pay **+1 AP** immediately.
-- **Effect**: resolve **one additional** battle round immediately using §4.
+- **Effect**: resolve **one additional** battle round immediately using section 4.
 - **Limit**: at most once per Attack action (max 2 battle rounds per Attack).
 
 ### 4.1 Reinforce Battle Lines
@@ -152,9 +154,9 @@ For each unit on your Battle Line:
 
 1. Choose a target enemy Battle Line unit.
 2. Roll your **Attack Die**.
-3. The defender rolls that target’s **Defense Die**.
+3. The defender rolls that target's **Defense Die**.
 4. If **Attack > Defense**, deal **1 damage** to the target.
-5. If a unit’s HP reaches 0, remove it from the Battle Line (it is destroyed).
+5. If a unit's HP reaches 0, remove it from the Battle Line (it is destroyed).
 
 Ties:
 
@@ -165,7 +167,7 @@ Ties:
 At the end of a battle round, in initiative order (attacker first), each side may choose to retreat:
 
 - **Attacker retreat**: all surviving committed units remain in (or return to) their origin hexes; the attack ends.
-- **Defender retreat** (standard hexes only): move the defender’s Battle Line units to an adjacent hex they control (if none, defender cannot retreat).
+- **Defender retreat** (standard hexes only): move the defender's Battle Line units to an adjacent hex they control (if none, defender cannot retreat).
 
 Restriction:
 
@@ -204,7 +206,7 @@ If the target hex contains a **City**, the defender may declare **Hold the Walls
 ### 6.2 Siege round pacing (across turns/rounds)
 
 - A Siege does **not** fully resolve in one Attack action.
-- Each time the attacker spends an **Attack** action against the sieged hex, resolve **exactly one** battle round (using §4).
+- Each time the attacker spends an **Attack** action against the sieged hex, resolve **exactly one** battle round (using section 4).
 - The Siege marker remains between turns and between rounds until the siege is lifted or the defender is defeated.
 
 ### 6.3 Maintaining or lifting a siege
@@ -222,15 +224,15 @@ During a siege, at the start of each siege round:
 
 ### 6.5 Siege victory
 
-If the defender’s Battle Line and Reserves are eliminated, the attacker captures the hex and occupies it per §5.1.
+If the defender's Battle Line and Reserves are eliminated, the attacker captures the hex and occupies it per section 5.1.
 
 ---
 
-## 7. Optional Variant: “Assault Instead of Siege”
+## 7. Optional Variant: "Assault Instead of Siege"
 
 If you want faster games, allow the attacker to declare **Assault** against a City/Fortress:
 
-- Resolve combat immediately using the normal battle loop (§4) until victory/retreat.
+- Resolve combat immediately using the normal battle loop (section 4) until victory/retreat.
 - Defenders still cannot retreat.
 - Recommended: defenders gain **+1 Defense** on their Battle Line units during an Assault.
 
@@ -244,7 +246,7 @@ These examples are written to demonstrate the intended **pacing**: one battle ro
 
 #### Situation (Standard Hex Battle)
 
-- Target hex is a **standard hex** → **Battle Line Cap = 3** per side.
+- Target hex is a **standard hex** -- **Battle Line Cap = 3** per side.
 - Attacker has units in two adjacent hexes:
   - Hex A: 2 Infantry, 1 Archer
   - Hex B: 1 Cavalry, 1 Infantry
@@ -270,7 +272,7 @@ These examples are written to demonstrate the intended **pacing**: one battle ro
      - Defending Archer targets attacking Infantry.
      - (Rolls happen; apply damage as normal.)
    - **Attacker Strike**, then **Defender Counterstrike**:
-     - Each Battle Line unit rolls attack vs its target’s defense.
+     - Each Battle Line unit rolls attack vs its target's defense.
      - Any unit reduced to 0 HP is destroyed and removed from the line.
    - **Retreat check**: either side may retreat (defender may retreat because this is not a City/Fortress).
    - **Victory check**: if one side has no committed units remaining, the battle is decided.
@@ -288,9 +290,9 @@ These examples are written to demonstrate the intended **pacing**: one battle ro
 
 #### Situation (Siege Example)
 
-- Target hex is a **City** → **Battle Line Cap = 5**.
+- Target hex is a **City** -- **Battle Line Cap = 5**.
 - Attacker declares an attack against the City.
-- Defender declares **Hold the Walls** → place a **Siege marker**.
+- Defender declares **Hold the Walls** -- place a **Siege marker**.
 
 #### Attack action #1 (cost: 2 AP)
 
@@ -301,4 +303,4 @@ These examples are written to demonstrate the intended **pacing**: one battle ro
 
 - Attacker spends another Attack action against the same City.
 - Resolve **exactly one** siege battle round.
-- The siege continues until lifted or the defender is defeated (see §6).
+- The siege continues until lifted or the defender is defeated (see section 6).

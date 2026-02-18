@@ -31,10 +31,11 @@ Seraphel’s court is a lattice of wards, lenses, and quiet bargains. Where othe
 ### Lord Unit (starts in Home City)
 
 - **Seraphel (Lord / Leader)**
-  - Attack: d8
-  - Defense: d8
+  - Attack: d10
+  - Defense: d6
   - Health: 3
   - Movement Range: 2
+  - *Design note: Devastating arcane strikes, fragile body. High-risk, high-reward in combat.*
 
 ### Starting Resources
 

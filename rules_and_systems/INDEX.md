@@ -1,37 +1,60 @@
 # Rules & Systems Index
 
-This folder is the current “rulebook draft” for **Aeonis: The Shattered Empire**.
+This folder is the current "rulebook draft" for **Aeonis: The Shattered Empire**.
 
 ## Chapters (current)
 
-- **`../playtest/First_Playable_Packet.md`**: Minimal 2–4 player playtest packet (map setup, reduced decks, objectives/events, and Lord sheets).
+- **`../playtest/First_Playable_Packet.md`**: 3-8 player playtest packet (map setup, reduced decks, objectives/events, Lord sheets, and scaling guidance).
 - **`../components/Components.md`**: Physical component checklist (First Playable).
 - **`Lore.md`**: Setting foundation (fall of the empire, Speaking Stones, rediscovered magic, banished lords, artifacts, religion, throne).
-- **`Round_Structure.md`**: Canonical timing diagram for a full round (strategy selection → council → rotating actions → production/upkeep → events → cleanup).
+- **`Round_Structure.md`**: Canonical timing diagram for a full round (round start -> events -> strategy selection -> council -> rotating actions -> production/upkeep -> cleanup).
 - **`High_Council.md`**: Political procedure (speaker, proposals, negotiation, voting, laws/decrees/titles) that other systems reference.
-- **`Actions.md`**: Action Point pool + rotating turns; variable action costs; passing and AP banking.
-- **`Strategy.md`**: Strategy cards chosen each round; initiative order; primaries + secondaries (TI4-style).
-- **`Movement.md`**: AP-based movement, terrain costs, portals/teleportation, and council tie-ins.
-- **`Tiles.md`**: Terrain production + buildings; special tiles; extensive control/borders/ZOC framework.
-- **`Combat.md`**: Canon combat (battle line + reserves, one battle round per Attack, sieges as the multi-turn exception).
-- **`Arcane.md`**: Arcane discovery “tech tree” (schools, tiers, AP + resources), including Lord-specific paths.
+- **`Actions.md`**: Action Point pool + rotating turns; variable action costs (Build at 3 AP); canonical Recruit rules (costs, placement, limits); passing and AP banking.
+- **`Strategy.md`**: Strategy cards chosen each round; initiative order; primaries + secondaries (TI4-style); canon draft order (lowest VP picks first).
+- **`Movement.md`**: AP-based movement, terrain costs, portals/teleportation, Cavalry flanking, and council tie-ins.
+- **`Tiles.md`**: Terrain production + buildings; special tiles; control/borders; canon ZOC framework (unit-based, not passive control).
+- **`Combat.md`**: Canon combat (battle line + reserves, one battle round per Attack, sieges as the multi-turn exception); softened Lord capture (+1 VP, ability lockout).
+- **`Arcane.md`**: Arcane discovery "tech tree" (schools, tiers, AP + resources), including Lord-specific paths.
 - **`Population.md`**: Population pool + cap + growth; unit/building population costs; events and synergy notes.
 - **`Trade_Taxes.md`**: Player-initiated trade (AP cost) + upkeep/taxes and consequences of non-payment.
-- **`Events.md`**: Exploration/global/local/milestone events; triggers and examples.
+- **`Events.md`**: Exploration/global/local/milestone events; triggers, examples, and catch-up events (Populist Uprising, Winds of Fortune).
 - **`Renown.md`**: Renown gains/uses/threshold bonuses; optional decay.
-- **`Victory.md`**: VP sources (objectives, council titles, artifacts/buildings, throne, combat captures, events) and optional variants.
+- **`Victory.md`**: VP sources (objectives, council titles, artifacts/buildings, throne, combat captures, events); 10 VP threshold; 8 VP short-game variant.
 - **`Buildings.md`**: Canon building list (including Guild Hall, Bridge), costs, and how buildings interact with Population/upkeep.
-- **`TBD.md`**: Brainstorming checklist of “systems we might add” (much of it is now implemented elsewhere).
+- **`Whispers.md`**: Whisper Cards -- shared tactical card deck representing Speaking Stone intelligence and secret preparations. Draw, hand limit, timing windows, 24-card First Playable list.
+- **`TBD.md`**: Brainstorming checklist of "systems we might add" (much of it is now implemented elsewhere).
 
-## Design “red flags” (to decide soon)
+## Design decisions (resolved)
 
-- **Combat**: Which model is canon? (single-hex resolution vs adjacent commitment + multi-round phases).
-- **Upkeep & constraints**: Population already constrains growth; `Trade_Taxes.md` adds Gold/Mana upkeep too—confirm intended economy pressure.
-- **Lakes / water**: Tile definition and traversal rules aren’t fully specified.
-- **Terminology**: Keep naming consistent (“Influence”; “Throne of Power” vs “Imperial Seat”).
+These items were previously "red flags" and have been addressed:
 
-## Useful “next docs” to add (if you want a complete rulebook)
+- **Build AP cost**: Reduced from 4 to **3 AP** (see `Actions.md`).
+- **City AP bonus cap**: Capped at **+2 AP from Cities** (see `Actions.md`).
+- **Recruit rules**: Canonical Recruit action defined (1 AP, up to 2 units per City, resource + Population costs; see `Actions.md`).
+- **Strategy draft order**: Committed to **lowest VP picks first** (see `Strategy.md`).
+- **Event Phase timing**: Moved **before Strategy Selection** so events set the tone for the round (see `Round_Structure.md`).
+- **VP threshold**: Standard game is **10 VP** (up from 8/12; aligns with TI4 scale). Short game variant at 8 VP (see `Victory.md`).
+- **Secret objectives**: Reduced to **2 VP** (same as public) to prevent hidden blowouts (see `Victory.md`, `First_Playable_Packet.md`).
+- **Lord capture**: Softened to **+1 VP** (down from 2); "cannot score VP" removed; replaced with **ability lockout** while captured (see `Combat.md`).
+- **ZOC rules**: Clarified that ZOC is generated by **military units** (not passive hex control or buildings). Cavalry ignore ZOC penalty on first ZOC hex per Move (flanking). See `Tiles.md`, `Movement.md`.
+- **Catch-up mechanics**: VP-based draft order + 2 catch-up global events (Populist Uprising, Winds of Fortune). See `Strategy.md`, `Events.md`.
+- **Lord combat stats**: Differentiated across all 4 Lords to match faction identity (previously all identical d8/d8/3HP/2Move).
+- **Player count**: First Playable now supports **3-8 players** with scaling guidance (see `First_Playable_Packet.md`).
 
-- `../lords/` folder: individual faction sheets (starting setup, unique ability, unique discovery/building, objective).
+## Remaining design work
+
+- **Terminology**: Keep naming consistent ("Influence"; "Throne of Power" vs "Imperial Seat" -- prefer "Imperial Seat" as canon).
+- **Lakes / water**: Core rules are defined (impassable, Bridge exception). Consider adding more water-related events or abilities.
+- **Artifacts**: Referenced in Lore, Victory, and Events but no dedicated system chapter yet.
+- **Legendary Buildings**: Mentioned in `Buildings.md` but no specific examples defined.
+- **Additional Lords**: Current roster is 4; the game targets up to 8 players. At least 4 more Lord sheets are needed.
+- **Advanced units**: Faction-specific elite/mythic units exist on Lord sheets as "Future Content" but need a system chapter for upkeep and unlock rules.
+
+## Useful "next docs" to add (if you want a complete rulebook)
+
+- `../lords/` folder: additional faction sheets for 5-8 player support.
+- An **Artifacts** system chapter.
+- A **Legendary Buildings** catalog.
+- A **Player Aid** sheet (quick reference for action costs, unit stats, and round flow).
 
 _End of index._

@@ -47,6 +47,21 @@
     />
     <script defer src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/highlight.min.js"></script>
 
+    <script>
+      // Optional runtime config (GitHub Pages-friendly).
+      // If `AEONIS_WAITLIST_ENDPOINT` is set, the waitlist form will POST JSON to it:
+      //   { email, ts, source }
+      // The endpoint must allow CORS from your GitHub Pages origin.
+      //
+      // Example (Cloudflare Worker / any serverless endpoint):
+      // window.AEONIS_WAITLIST_ENDPOINT = "https://<your-worker>.workers.dev/waitlist";
+      //
+      // Fallback if no endpoint is set:
+      // window.AEONIS_CONTACT_EMAIL = "you@example.com";
+      window.AEONIS_WAITLIST_ENDPOINT = "";
+      window.AEONIS_CONTACT_EMAIL = "";
+    </script>
+
     <script defer src="app.js?v=2026-01-28-1"></script>
   </head>
 
@@ -158,8 +173,10 @@
                 <input
                   id="waitlistEmail"
                   class="input waitlist__input"
+                  name="email"
                   type="email"
                   inputmode="email"
+                  autocomplete="email"
                   placeholder="you@domain.com"
                   required
                 />

@@ -38,6 +38,14 @@
           "tags": ["overview"]
         },
         {
+          "title": "Agent Framework",
+          "path": "AGENTS.md",
+          "description": "How to use AI reliably: canon rules, workflows, templates, and checklists.",
+          "status": "core",
+          "minutes": 6,
+          "tags": ["overview", "workflow"]
+        },
+        {
           "title": "Rules & Systems Index",
           "path": "rules_and_systems/INDEX.md",
           "description": "Rulebook draft table of contents and design red flags.",

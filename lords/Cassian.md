@@ -31,10 +31,11 @@ Cassian’s armies are never the largest, but they are always where the contract
 ### Lord Unit (starts in Home City)
 
 - **Cassian (Lord / Leader)**
-  - Attack: d8
+  - Attack: d6
   - Defense: d8
   - Health: 3
   - Movement Range: 2
+  - *Design note: Cassian is a dealmaker, not a duelist. Modest offense, solid self-preservation.*
 
 ### Starting Resources
 

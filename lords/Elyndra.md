@@ -31,10 +31,11 @@ Elyndra does not rule by decree—she rules by **roots**. Where others strip the
 ### Lord Unit (starts in Home City)
 
 - **Elyndra (Lord / Leader)**
-  - Attack: d8
+  - Attack: d6
   - Defense: d8
-  - Health: 3
+  - Health: 4
   - Movement Range: 2
+  - *Design note: Resilient guardian. High HP rewards staying in fights; modest offense reflects attrition-over-burst playstyle.*
 
 ### Starting Resources
 

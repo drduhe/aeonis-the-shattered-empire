@@ -28,9 +28,10 @@ Vharok rules from forge-lit bastions where every road is measured, every gate is
 
 - **Vharok (Lord / Leader)**
   - Attack: d8
-  - Defense: d8
-  - Health: 3
-  - Movement Range: 2
+  - Defense: d10
+  - Health: 4
+  - Movement Range: 1
+  - *Design note: The immovable wall. Extremely durable but slow; rewards committing him to a front line rather than roaming.*
 
 ### Starting Resources
 
