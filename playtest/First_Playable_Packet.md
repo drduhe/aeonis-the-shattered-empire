@@ -91,15 +91,17 @@ The Imperial Seat is a City with this additional rule:
 - **VP**: 0
 - **Population Cap**: 10
 - **Population Pool**: 10 (full at start)
-- **Resources**: 2 Gold, 2 Mana, 1 Influence
+- **Resources**: Use the starting resources listed on your **Lord sheet** (each Lord has different starting Gold/Mana/Influence). If no Lord sheet is used, default to 2 Gold, 2 Mana, 1 Influence.
 - **Whisper Cards**: 2 (draw from the shared deck during setup, before Round 1 begins)
 
 ### 3.4 Starting units (per player)
 
-Place in your Home City:
+Place in your Home City the units listed on your **Lord sheet**. If no Lord sheet is used, place the default:
 
 - 3x Infantry
 - 1x Archer
+
+**Note:** Some Lords start with different unit compositions (e.g., Rakhis starts with 2 Infantry + 1 Cavalry). Always defer to the Lord sheet.
 
 ### 3.5 Starting control
 
@@ -306,9 +308,31 @@ The round order for First Playable follows `Round_Structure.md`:
 
 ## 8) Lords
 
-Use the Lord sheets in `lords/`:
+Use the Lord sheets in `lords/`. The game supports **3-8 players**; each player picks a different Lord.
 
-- `lords/Seraphel.md` (Lord of the Arcane)
-- `lords/Vharok.md` (Lord of Steel)
-- `lords/Cassian.md` (Merchant Prince)
-- `lords/Elyndra.md` (Warden of Groves)
+**Original Lords (4):**
+
+- `lords/Cassian.md` -- Cassian, the Merchant Prince (Human, Golden Consortium): Economy, trade, politics
+- `lords/Seraphel.md` -- Seraphel, Lord of the Arcane (Human, Arcanum Concord): Mana burst, tempo, research
+- `lords/Vharok.md` -- Vharok, Lord of Steel (Human, Iron Dominion): Fortress defense, siege, attrition
+- `lords/Elyndra.md` -- Elyndra, Warden of Groves (Elven, Verdant Covenant): Population growth, forest defense
+
+**New Lords (4):**
+
+- `lords/Rakhis.md` -- Rakhis, the Sandlord (Djinnborn, Windsworn Horde): Fast cavalry, desert mastery, hit-and-run raids
+- `lords/Nyxara.md` -- Nyxara, the Veiled (Umbral, The Silent Court): Whisper manipulation, espionage, surgical strikes
+- `lords/Auriel.md` -- Auriel, Voice of the World Tree (Luminari, The Radiant Accord): Renown, council dominance, defensive auras
+- `lords/Thalrik.md` -- Thal'rik, the Gatekeeper (Voidborn, The Threshold): Portal control, teleportation, map-wide presence
+
+### Lord stat summary
+
+| Lord | Race | Attack | Defense | HP | Move | Identity |
+| --- | --- | --- | --- | --- | --- | --- |
+| Cassian | Human | d6 | d8 | 3 | 2 | Diplomat |
+| Seraphel | Human | d10 | d6 | 3 | 2 | Glass cannon |
+| Vharok | Human | d8 | d10 | 4 | 1 | Slow tank |
+| Elyndra | Elven | d6 | d8 | 4 | 2 | Resilient guardian |
+| Rakhis | Djinnborn | d8 | d6 | 3 | 3 | Fast raider |
+| Nyxara | Umbral | d10 | d4 | 2 | 2 | Assassin |
+| Auriel | Luminari | d6 | d10 | 3 | 2 | Faith tank |
+| Thal'rik | Voidborn | d8 | d8 | 3 | 2 | Portal master |

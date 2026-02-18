@@ -17,6 +17,10 @@ This is the minimal component list needed to run the **First Playable** packet. 
   - 1x **Ironworks Ridge** (unique starting tile, Vharok)
   - 1x **Caravan Bazaar** (unique starting tile, Cassian)
   - 1x **Sacred Grove** (unique starting tile, Elyndra)
+  - 1x **Oasis Wellspring** (unique starting tile, Rakhis)
+  - 1x **Obsidian Spire** (unique starting tile, Nyxara)
+  - 1x **Hallowed Grove** (unique starting tile, Auriel)
+  - 1x **Rift Anchor** (unique starting tile, Thal'rik -- also functions as a Portal)
   - 2x **Ruins** (scale up for 5-8 players)
   - 2x **Portals** (scale up for 5-8 players)
   - 2x **Lakes** (scale up for 5-8 players)
@@ -62,7 +66,7 @@ This is the minimal component list needed to run the **First Playable** packet. 
   - At least 4x d4 (Archer defense)
   - At least 6x d6 (Infantry attack/defense, Archer attack)
   - At least 4x d8 (Cavalry, most Lord attack/defense)
-  - At least 2x d10 (Vharok defense, Seraphel attack)
+  - At least 4x d10 (Vharok/Auriel defense, Seraphel/Nyxara attack)
 
 ---
 

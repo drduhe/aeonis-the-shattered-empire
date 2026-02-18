@@ -1464,6 +1464,18 @@ a {
 .lordCard--rose {
   border-color: rgba(255, 92, 122, 0.35);
 }
+.lordCard--amber {
+  border-color: rgba(230, 160, 50, 0.35);
+}
+.lordCard--indigo {
+  border-color: rgba(90, 60, 180, 0.35);
+}
+.lordCard--ivory {
+  border-color: rgba(240, 220, 140, 0.35);
+}
+.lordCard--cyan {
+  border-color: rgba(50, 190, 240, 0.35);
+}
 
 .lordCard__art {
   border-radius: 18px;

@@ -265,6 +265,38 @@
           "status": "playtest",
           "minutes": 6,
           "tags": ["lords", "defense", "siege"]
+        },
+        {
+          "title": "Rakhis — The Sandlord",
+          "path": "lords/Rakhis.md",
+          "description": "Windsworn Horde: fast cavalry, desert mastery, hit-and-run raids.",
+          "status": "playtest",
+          "minutes": 6,
+          "tags": ["lords", "cavalry", "desert", "aggression"]
+        },
+        {
+          "title": "Nyxara — The Veiled",
+          "path": "lords/Nyxara.md",
+          "description": "The Silent Court: Whisper manipulation, espionage, surgical strikes.",
+          "status": "playtest",
+          "minutes": 6,
+          "tags": ["lords", "whispers", "espionage", "subterfuge"]
+        },
+        {
+          "title": "Auriel — Voice of the World Tree",
+          "path": "lords/Auriel.md",
+          "description": "Radiant Accord: Renown accumulation, council dominance, defensive auras.",
+          "status": "playtest",
+          "minutes": 6,
+          "tags": ["lords", "renown", "council", "defense"]
+        },
+        {
+          "title": "Thal'rik — The Gatekeeper",
+          "path": "lords/Thalrik.md",
+          "description": "The Threshold: portal control, teleportation, map-wide presence.",
+          "status": "playtest",
+          "minutes": 6,
+          "tags": ["lords", "portals", "movement", "teleportation"]
         }
       ]
     },

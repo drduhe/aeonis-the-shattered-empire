@@ -27,6 +27,7 @@ If you change a definition that other docs rely on (AP, Influence, ZOC, “Contr
 You can use these roles as mental models, or paste them into a Cursor prompt when starting a task.
 
 ### 1) System Architect (rules designer)
+
 - **Goal**: make rules changes that are mechanically sound and cross-chapter consistent.
 - **Inputs**: desired design outcome + which chapter(s) are in scope.
 - **Outputs**: a concrete patch to the relevant `rules_and_systems/*.md` plus an integration note for `First_Playable_Packet.md` if needed.
@@ -35,6 +36,7 @@ You can use these roles as mental models, or paste them into a Cursor prompt whe
   - Avoid introducing new resources/keywords unless defined once and referenced everywhere.
 
 ### 2) Balance Analyst (economy + pacing)
+
 - **Goal**: tune numbers and incentives to hit target pace (90–180 minutes for First Playable).
 - **Inputs**: current costs, VP sources, starting state, and playtest observations.
 - **Outputs**:
@@ -43,16 +45,19 @@ You can use these roles as mental models, or paste them into a Cursor prompt whe
   - optional: a suggested playtest scenario (“try 3 rounds with X”).
 
 ### 3) Content Designer (Lords/cards/events/objectives)
+
 - **Goal**: create new content that plugs into existing systems cleanly.
 - **Inputs**: desired faction fantasy + playstyle + constraints (First Playable vs full game).
 - **Outputs**: a new doc in `lords/` or `rules_and_systems/` using the templates in `agents/templates/`.
 - **Guardrails**: every new mechanic must map to an existing system hook (AP, Population, Influence, Renown, Council, etc.), or be explicitly defined.
 
 ### 4) Rulebook Editor (clarity + consistency)
+
 - **Goal**: remove ambiguity, align terminology, add cross-references.
 - **Outputs**: tight wording edits + a list of “defined terms” changes if any.
 
 ### 5) Codex Maintainer (manifest + browsing)
+
 - **Goal**: keep `content-manifest.json` aligned with docs so the Codex app remains navigable.
 - **Outputs**: manifest edits (and any small UI changes only when needed).
 
@@ -61,6 +66,7 @@ You can use these roles as mental models, or paste them into a Cursor prompt whe
 ## Default workflows (repeatable playbook)
 
 ### A) Propose a rules change (safe, low drift)
+
 Use `agents/checklists/Canon_Change_Checklist.md`.
 
 1. Identify the **one canonical definition** you’re changing (term + location).
@@ -70,6 +76,7 @@ Use `agents/checklists/Canon_Change_Checklist.md`.
 5. If it’s a doc you want surfaced in the Codex UI, update `content-manifest.json`.
 
 ### B) Add a new Lord (repeatable)
+
 Use `agents/templates/Lord_Sheet_Template.md` and `agents/checklists/Content_Integration_Checklist.md`.
 
 1. Write the Lord sheet (starting setup, passive/active, unique tile/building/discovery, objective).
@@ -78,6 +85,7 @@ Use `agents/templates/Lord_Sheet_Template.md` and `agents/checklists/Content_Int
 4. If First Playable: add explicit First Playable constraints in `playtest/First_Playable_Packet.md`.
 
 ### C) Add cards (events/objectives/strategy)
+
 Use the relevant template in `agents/templates/`.
 
 - Always specify **timing window** (Round Start / Council / Action turn / Production & Upkeep / Event / Cleanup).
@@ -85,6 +93,7 @@ Use the relevant template in `agents/templates/`.
 - Always specify **resolution order** if it interacts with combat, movement, or council.
 
 ### D) Run playtests and iterate
+
 Use `agents/templates/Playtest_Report_Template.md`.
 
 1. Keep the test packet minimal (First Playable).
@@ -98,4 +107,3 @@ Use `agents/templates/Playtest_Report_Template.md`.
 - `agents/roles/`: reusable role prompts and “how to think” guides.
 - `agents/templates/`: copy/paste templates for new content.
 - `agents/checklists/`: integration and consistency checklists.
-
