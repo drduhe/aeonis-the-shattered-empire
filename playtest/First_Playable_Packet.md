@@ -22,6 +22,7 @@ Use these chapters as written:
 - `Trade_Taxes.md`
 - `Buildings.md`
 - `Whispers.md` (tactical one-shot Whisper Cards drawn into a private hand; 24-card First Playable deck)
+- `Artifacts.md` (full artifact system: 24-card deck, Remnants, event-driven Artifact Sites)
 
 First Playable restrictions are listed below where needed.
 
@@ -205,17 +206,20 @@ Setup:
 - **Open Roads**: Until end of round, movement across Plains costs 1 less AP (min 1).
 - **Populist Uprising** (catch-up): The player(s) with the fewest controlled hexes gain +2 Population Pool (up to cap) and +1 Influence.
 - **Winds of Fortune** (catch-up): The player(s) with the fewest VP gain +2 AP next round and may draw one additional objective card (public or secret, their choice).
+- **Ruins Unearthed**: Place an Artifact Site marker on a neutral/uncontrolled Ruins hex (or any neutral hex). Draw the top Artifact Card face-up on it (see `Artifacts.md`).
+- **Echo of the Old Empire**: Place an Artifact Site marker on the hex closest to the Imperial Seat without one. Draw the top Artifact Card face-up. All players gain 1 Remnant (see `Artifacts.md`).
 
 **Exploration Events (resolve immediately on first entry):**
 
-- **Ancient Ruins**: Gain 2 Gold or 2 Mana (choose one).
+- **Ancient Ruins**: Search the ruins — roll a die: on 4+, gain 2 Remnants (see `Artifacts.md`); on 3 or less, lose 1 unit to a trap. Or leave untouched for +1 Renown.
 - **Trapped Vault**: Lose 1 unit from the entering group OR pay 2 Gold to avoid.
 - **Speaking Stone Echo**: Gain +1 Influence and +1 Renown.
 - **Lost Cartographer**: Reveal any one unrevealed tile (if using fog) and gain +1 AP this round.
 - **Wandering Mercenaries**: Gain 1 Infantry for free (place in the entering hex if legal; otherwise your nearest controlled City).
 - **Cursed Ground**: The hex produces no resources until you spend 2 Influence to cleanse it.
-- **Relic Fragment**: Gain 1 VP immediately.
+- **Scattered Relics**: Gain 2 Remnants (see `Artifacts.md`).
 - **Portal Instability**: If the hex is a Portal, you may immediately Portal travel once at 0 AP (destination must be neutral or yours).
+- **Ancient Vault Discovered**: Place an Artifact Site marker on this hex. Draw the top Artifact Card face-up. You may spend 1 AP to claim it immediately (see `Artifacts.md`).
 
 ---
 
@@ -237,9 +241,9 @@ Printing note:
 
 - Print the Tier I discoveries as reference cards, or list them on a single player-aid sheet.
 
-### 4.7 Whisper Cards (print 24-card deck)
+### 4.7 Whisper Cards (print 26-card deck)
 
-Use the full First Playable deck from `Whispers.md`. Shuffle all 24 cards into a single shared deck.
+Use the full First Playable deck from `Whispers.md`. Shuffle all 26 cards into a single shared deck.
 
 **Setup:** Each player draws 2 Whisper Cards before Round 1.
 
@@ -251,13 +255,34 @@ Use the full First Playable deck from `Whispers.md`. Shuffle all 24 cards into a
 
 **Political (5 cards):** Sabotage, Backroom Deal, Veto, Political Leverage, Leaked Intelligence
 
-**Economic (5 cards):** Hidden Cache, War Profiteer, Emergency Conscription, Prospector's Find, Contraband
+**Economic (6 cards):** Hidden Cache, War Profiteer, Emergency Conscription, Prospector's Find, Contraband, Relic Hunter
 
 **Movement/Arcane (4 cards):** Forced March, Blink, Ley Line Surge, Waystone Activation
 
-**Subterfuge (2 cards):** Saboteur, Mercenary Company
+**Subterfuge (3 cards):** Saboteur, Mercenary Company, Relic Thief
 
 See `Whispers.md` for full card text and timing rules.
+
+### 4.8 Artifacts (full system)
+
+Use `rules_and_systems/Artifacts.md` as written. The Artifact system is fully enabled for First Playable.
+
+**Setup:**
+- Shuffle all 24 Artifact Cards into a face-down deck.
+- Place 30–40 Remnant tokens in a shared supply.
+- Set aside 5–6 Artifact Site markers near the Event deck.
+- No player starts with artifacts or Remnants.
+
+**Artifact Sites:** Created during play by specific Global Events (Ruins Unearthed, Echo of the Old Empire) and Exploration Events (Ancient Vault Discovered). See `Events.md`.
+
+**Remnants:** Earned from exploration, Ruins hex control (1/round at Production & Upkeep), Arcane research, Whisper Cards, and Events. Purge 3 at any time on your turn to draw an artifact (free action, 0 AP).
+
+**VP:** Only 4 specific artifacts award VP (1 VP each, checked at Cleanup & Checks): Crown of Aeonis, Eternal Forge, Shard of the Throne, Imperial Seal.
+
+**Card summary by category:**
+- **Lord Equipment (7):** Blade of the Last Emperor, Crown of Aeonis, Voidwalker's Cloak, Emberstone Gauntlet, Warden's Aegis, Whisperer's Mask, Scepter of Command
+- **Building Relics (6):** Ley Line Conduit, Titan's Cornerstone, Eternal Forge, Verdant Hearthstone, Astral Beacon, Archive of the Fallen
+- **Utility (11):** Shard of the Throne, Cartographer's Glass, Scroll of Dominion, Tome of Forbidden Rites, Mask of Many Faces, Wellspring Chalice, Imperial Seal, Echo of the World Tree, Mercenary Contract, Windcaller's Horn, Shroud of Nightfall
 
 ---
 
@@ -303,6 +328,7 @@ The round order for First Playable follows `Round_Structure.md`:
 7. **Cavalry role**: Do Cavalry feel distinct from Infantry thanks to flanking + movement range?
 8. **Lord asymmetry**: Do the differentiated Lord combat stats create meaningful choices about when to commit your Lord to battle?
 9. **Whispers**: Do Whisper Cards create exciting moments without overwhelming decision space? Is Sabotage too powerful or too rare? Does the draw rate (2/round) feel right?
+10. **Artifacts**: Do Remnants feel attainable without being trivial (target: first artifact drawn by round 3-4)? Do Artifact Site events create interesting territorial conflict? Do VP-bearing artifacts feel like high-value targets? Is the Lord Equipment carry limit (2) restrictive enough?
 
 ---
 

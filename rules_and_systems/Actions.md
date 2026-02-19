@@ -24,6 +24,7 @@ The Action Point (AP) system governs the number of actions a player can take dur
         - **Trade**: 1 AP to initiate a trade (see `Trade_Taxes.md`).
         - **Activate Strategy Card Primary**: Varies based on the card (see `Strategy.md`).
         - **Play an ACTION Whisper**: 0 AP. Play a Whisper Card with ACTION timing from your hand (see `Whispers.md`).
+        - **Claim Artifact**: 1 AP to claim a face-up artifact from an Artifact Site (see `Artifacts.md`).
 
 3. **Rotating Turns**
     - Players take turns in initiative order (determined by Strategy Card numbers in the Strategy Selection Phase), performing one action per turn.
@@ -46,7 +47,7 @@ Each Lord begins the game with a starting AP pool defined on their Lord Sheet (d
 - **Renown Thresholds:** +1 AP when reaching 5 Renown, and a free 1-AP action per round at 10 Renown (see `Renown.md`).
 - **City Control Bonus:** Each controlled City adds +1 AP per round, **up to a maximum of +2 AP from Cities**.
 - **Buildings:** The **Guild Hall** provides +1 AP per round (see `Buildings.md`).
-- **Artifacts:** Acquiring specific artifacts may grant temporary or permanent AP boosts.
+- **Artifacts:** Specific artifacts grant AP boosts (e.g., Scepter of Command grants a free Move order). See `Artifacts.md`.
 
 ---
 
@@ -106,6 +107,7 @@ Recruit is the action used to place new military units on the board.
 - **Trade:** 1 AP to initiate (see `Trade_Taxes.md`).
 - **Activate Strategy Card Primary:** Varies based on the card.
 - **Play an ACTION Whisper:** 0 AP (see `Whispers.md`).
+- **Claim Artifact:** 1 AP at an Artifact Site hex (see `Artifacts.md`).
 
 ---
 

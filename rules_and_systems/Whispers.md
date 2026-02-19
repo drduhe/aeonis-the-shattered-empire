@@ -71,7 +71,7 @@ For reference, here is where Whisper play windows map to the round structure (se
 
 ---
 
-## First Playable Whisper Deck (24 cards)
+## First Playable Whisper Deck (26 cards)
 
 ### Combat Whispers (8)
 
@@ -150,7 +150,7 @@ For reference, here is where Whisper play windows map to the round structure (se
 
 ---
 
-### Economic Whispers (5)
+### Economic Whispers (6)
 
 #### Hidden Cache
 
@@ -176,6 +176,11 @@ For reference, here is where Whisper play windows map to the round structure (se
 
 - **Timing:** ACTION
 - **Effect:** Gain **1 Gold, 1 Mana, and 1 Influence**.
+
+#### Relic Hunter
+
+- **Timing:** ACTION / WHEN you enter an unexplored hex.
+- **Effect:** Gain 1 Remnant immediately, in addition to any Exploration Event rewards (see `Artifacts.md`).
 
 ---
 
@@ -203,7 +208,7 @@ For reference, here is where Whisper play windows map to the round structure (se
 
 ---
 
-### Subterfuge Whispers (2)
+### Subterfuge Whispers (3)
 
 #### Saboteur
 
@@ -214,6 +219,11 @@ For reference, here is where Whisper play windows map to the round structure (se
 
 - **Timing:** ACTION
 - **Effect:** Place **2 Infantry** in any **neutral hex adjacent to territory you control**. You gain control of that hex. (Each Infantry placed requires 1 available Population.)
+
+#### Relic Thief
+
+- **Timing:** WHEN another player claims an artifact from an Artifact Site.
+- **Effect:** Cancel their claim. You claim the artifact instead. You must have a unit in an adjacent hex (see `Artifacts.md`).
 
 ---
 
@@ -233,7 +243,7 @@ The Speaking Stones are one of Aeonis's defining lore elements -- ancient artifa
 
 ### Scaling for Full Game
 
-The First Playable deck is 24 cards. For the full game (and higher player counts), expand to **40-60 cards** by:
+The First Playable deck is 26 cards. For the full game (and higher player counts), expand to **40-60 cards** by:
 
 - Adding duplicates of core cards (2x Sabotage, 2x Shield Wall, 2x Hidden Cache).
 - Introducing Lord-specific Whispers (1-2 per faction that synergize with their abilities).

@@ -111,9 +111,32 @@ These buildings unlock powerful abilities and game-altering effects.
 
 To add flexibility and late-game scaling, players can upgrade certain buildings to enhance their effects.
 
-- **Upgrade Examples:** Improved Farm: Increases Population production to +4. Reinforced Tower: Adds +1 defense bonus to adjacent units. Advanced Forge: Unlocks a new tier of artifacts and unit upgrades.
+- **Upgrade Examples:** Improved Farm: Increases Population production to +4. Reinforced Tower: Adds +1 defense bonus to adjacent units. Advanced Forge: Unlocks advanced unit upgrades. For artifact interaction, see `Artifacts.md` (Building Relics).
 - **Cost of Upgrades:** Upgrades cost additional Gold, Mana, or Influence and require a specific building (e.g., Forge or Academy).
 - **Upgrade Slots:** Cities and some special tiles may gain an additional upgrade slot through research or construction.
+
+---
+
+## Building Relics (Artifact Attachments)
+
+Certain artifacts in the Artifact Deck are **Building Relics** — ancient power sources that attach to a specific building type. See `Artifacts.md` for the full system.
+
+- When you gain a Building Relic, you must assign it to an eligible building you control.
+- A building may hold at most **1 Building Relic**.
+- The relic's effect activates immediately upon attachment.
+- If the attached building's hex changes control, the new controller claims the relic.
+- If the attached building is destroyed and no player occupies the hex, the relic returns to the bottom of the Artifact Deck.
+
+| Relic | Eligible Buildings |
+|---|---|
+| Ley Line Conduit | Academy or Mana-producing building |
+| Titan's Cornerstone | Fortress or Tower |
+| Eternal Forge | Forge |
+| Verdant Hearthstone | Farm or City |
+| Astral Beacon | Any building on a Portal hex |
+| Archive of the Fallen | Academy or Library |
+
+---
 
 ## Special Rules for Buildings
 

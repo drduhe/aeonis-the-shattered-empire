@@ -165,6 +165,14 @@
           "tags": ["rules", "events"]
         },
         {
+          "title": "Artifacts",
+          "path": "rules_and_systems/Artifacts.md",
+          "description": "Artifact deck, Remnant acquisition, three artifact categories, and VP-bearing relics.",
+          "status": "playtest",
+          "minutes": 10,
+          "tags": ["rules", "artifacts", "exploration"]
+        },
+        {
           "title": "High Council",
           "path": "rules_and_systems/High_Council.md",
           "description": "Motions, lobbying, voting, laws/decrees/titles, and timing.",

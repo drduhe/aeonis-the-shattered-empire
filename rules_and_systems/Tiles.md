@@ -216,7 +216,7 @@ Some hexes offer unique benefits when controlled, incentivizing competition over
 
 | Hex Type           | Control Benefit                                                    |
 | :----------------- | :----------------------------------------------------------------- |
-| **Artifact Sites** | Grants control over a powerful artifact when occupied.             |
+| **Artifact Sites** | Temporary markers placed by Events. A face-up Artifact Card is displayed; spend 1 AP to claim it (see `Artifacts.md`). |
 | **Mana Wells**     | Produces +1 extra Mana per round for the controlling player.       |
 | **Trade Hubs**     | Provides 1 extra Gold per round and +1 Gold per trade in region.   |
 | **Ancient Ruins**  | Exploring grants relics, VP, or hidden event-based effects.        |

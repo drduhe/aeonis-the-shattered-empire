@@ -89,6 +89,11 @@ During the **Action Phase**, on your turn, you may take the **Research** action 
    - **Tier III**: 3 AP
 4. **Pay resources** (the discovery’s listed cost).
 5. **Gain the discovery**: its effect becomes active immediately unless it specifies a timing window.
+6. **Gain Remnants**: Gain Remnants based on the discovery's tier:
+   - **Tier I**: 1 Remnant.
+   - **Tier II**: 2 Remnants.
+   - **Tier III**: 3 Remnants.
+   See `Artifacts.md` for Remnant rules.
 
 Notes:
 
@@ -122,6 +127,7 @@ Some discoveries are **Upgrades**. They change how a unit/building works for you
 - **Exploration / Ruins** (`Events.md`, `Tiles.md`): ruins can grant a specialty token or a one-time research discount.
 - **Buildings** (`Buildings.md`): Academy / Forge can add specialties, discounts, or unlock Upgrade-only discoveries.
 - **Strategy Cards** (`Strategy.md`): effects that grant “free research” should reference Tier I/II/III discoveries defined here.
+- **Artifacts** (`Artifacts.md`): Completing any research generates Remnants. Some artifacts grant School Specialties or research bonuses.
 
 ---
 

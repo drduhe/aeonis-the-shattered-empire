@@ -110,6 +110,10 @@ These events specifically help trailing players stay competitive. They are mixed
 
 - Events like famine or rebellion tie directly into the Population System, introducing penalties or opportunities to grow.
 
+### 6. Artifact System
+
+- Events are the primary way Artifact Sites appear on the map. Global and Exploration events that create Artifact Sites drive territorial conflict around valuable relic locations. See `Artifacts.md`.
+
 ---
 
 ## Example Events
@@ -118,7 +122,7 @@ These events specifically help trailing players stay competitive. They are mixed
 
 - **Description:** You stumble upon the remains of a forgotten temple.
 - **Options:**
-    1. Search the ruins. Roll a die: On a 4+, gain 1 Artifact. On 3 or less, lose 1 unit to a trap.
+    1. Search the ruins. Roll a die: On a 4+, gain 2 Remnants (see `Artifacts.md`). On 3 or less, lose 1 unit to a trap.
     2. Leave the ruins untouched. Gain +1 Renown for your caution.
 
 ### Global Event: Harsh Winter
@@ -130,3 +134,23 @@ These events specifically help trailing players stay competitive. They are mixed
 
 - **Description:** The population of a hex revolts against your rule.
 - **Effect:** The hex produces no resources until 2 Influence is spent to quell the unrest.
+
+### Global Event: Ruins Unearthed
+
+- **Description:** An earthquake reveals the entrance to an ancient imperial vault.
+- **Effect:** Place an **Artifact Site marker** on a neutral or uncontrolled Ruins hex (if none available, place on any neutral hex). Draw the top Artifact Card and place it face-up on the marker. Any player with a unit there may spend 1 AP to claim it (see `Artifacts.md`).
+
+### Global Event: Echo of the Old Empire
+
+- **Description:** A Speaking Stone resonates with a frequency not heard in a hundred years, guiding seekers to buried treasure.
+- **Effect:** Place an **Artifact Site marker** on the hex closest to the Imperial Seat that does not already have one (break ties clockwise from Speaker). Draw the top Artifact Card and place it face-up on the marker (see `Artifacts.md`). All players gain 1 Remnant.
+
+### Exploration Event: Ancient Vault Discovered
+
+- **Description:** Behind a collapsed wall, you find a sealed chamber marked with imperial insignia.
+- **Effect:** Place an **Artifact Site marker** on this hex. Draw the top Artifact Card and place it face-up here. You may immediately spend 1 AP to claim it (see `Artifacts.md`). If you do not, it remains for any player to claim.
+
+### Exploration Event: Scattered Relics
+
+- **Description:** The remains of an ancient artifact litter the ground around a shattered monument.
+- **Effect:** Gain 2 Remnants (see `Artifacts.md`).

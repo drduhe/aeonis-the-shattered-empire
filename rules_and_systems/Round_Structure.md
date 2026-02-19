@@ -136,7 +136,9 @@ All players resolve this phase (typically in initiative order, but it may be sim
 3. **Upkeep / maintenance**:
    - Pay any required upkeep costs for units/buildings (see `Trade_Taxes.md` and/or `Population.md` depending on which constraint model is used).
 4. **Resolve "end of round" resource effects**:
-   - Any laws, artifacts, or discoveries that say "each round" resolve here unless they specify a different window.
+   - Any laws, artifacts, or discoveries that say "each round" resolve here unless they specify a different window (see `Artifacts.md` for artifact-specific timing).
+5. **Remnant generation**:
+   - Each Ruins hex you control generates **1 Remnant** (see `Artifacts.md`).
 
 ---
 

@@ -30,6 +30,16 @@
 - **AP Limitation:** Players may initiate trade only once per round, ensuring the trade system doesn’t dominate the action economy.
 - **Distance-Based Rules (Optional):** Trades may require proximity, such as adjacent hexes, connected regions, or shared Portals, adding a geographical element to negotiations.
 
+### **Artifact Trade**
+
+During a Trade action, players may also exchange:
+
+- **Remnants**: Any number may be offered or received.
+- **Utility Artifacts**: May be freely traded between players.
+- **Lord Equipment and Building Relics**: May not be traded. Lord Equipment transfers only via Lord capture (see `Combat.md`); Building Relics transfer only via hex control change.
+
+See `Artifacts.md` for full artifact rules.
+
 ---
 
 ## **2. Taxes and Upkeep**

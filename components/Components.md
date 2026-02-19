@@ -62,6 +62,11 @@ This is the minimal component list needed to run the **First Playable** packet. 
   - 4x Siege markers (place on hexes under siege; see `Combat.md`)
   - Title tokens or cards (for Hero of the Realm, Magister of Mana, etc.; see `High_Council.md`)
 
+- **Artifact system**:
+  - 24x Artifact Cards (unique relic cards; see `rules_and_systems/Artifacts.md`)
+  - 30-40x Remnant tokens (shared supply; small coin or shard-shaped)
+  - 5-6x Artifact Site markers (placed on hexes when Events create sites; removed when claimed)
+
 - **Dice**:
   - At least 4x d4 (Archer defense)
   - At least 6x d6 (Infantry attack/defense, Archer attack)
@@ -83,3 +88,4 @@ For First Playable, you can print these as simple text cards:
   - 8x Exploration events (used for Ruins / exploration)
 - **Council Motions (8)**: a short "agenda deck" drawn from `High_Council.md` examples
 - **Whisper Cards (24)**: shared tactical deck (see `Whispers.md` and `playtest/First_Playable_Packet.md`)
+- **Artifact Cards (24)**: unique relic cards drawn from a shared deck (see `rules_and_systems/Artifacts.md`)

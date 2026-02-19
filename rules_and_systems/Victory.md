@@ -49,11 +49,15 @@ Players earn **Victory Points (VP)** throughout the game by achieving key object
 
 ### 4. Artifacts and Legendary Buildings
 
-- Controlling **Artifacts** or **Legendary Buildings** awards VP based on their significance:
-  - **Artifact Control:** Earn **1 VP per Artifact** you control at the end of the round.
-  - **Legendary Buildings:** Each Legendary Building is worth **2-3 VP**, depending on its construction cost and impact.
+- **Artifact VP:** Only specific named artifacts award VP. Each VP-bearing artifact is worth **1 VP** while you control it (checked at Cleanup & Checks). VP-bearing artifacts:
+  - **Crown of Aeonis** (Lord Equipment) — transfers when your Lord is captured.
+  - **Eternal Forge** (Building Relic) — transfers when the attached hex changes control.
+  - **Shard of the Throne** (Utility) — transfers to the combat winner when you lose a battle where your Lord was present. May also be freely traded.
+  - **Imperial Seal** (Utility) — may be purged to prevent a Law or Decree from being repealed.
+- **Legendary Buildings:** Each Legendary Building is worth **2-3 VP**, depending on its construction cost and impact.
+- See `Artifacts.md` for the full artifact system.
 
-*Why It Works:* Rewards exploration, investment, and strategic control of key tiles.
+*Why It Works:* VP-bearing artifacts are high-value targets that drive conflict and negotiation. Most artifacts provide power, not points, preventing snowball scoring.
 
 ---
 
@@ -116,7 +120,7 @@ Players earn **Victory Points (VP)** throughout the game by achieving key object
 1. **Variable Objective Cards (Public 2 VP, Secret 2 VP):** Core feature that drives diverse gameplay.
 2. **Lord-Specific Objectives:** Ties into theme and lore.
 3. **High Council Titles:** Rewards political play and council engagement.
-4. **Artifacts and Legendary Buildings:** Encourages exploration and long-term control.
+4. **Artifacts and Legendary Buildings:** VP-bearing artifacts drive conflict; others provide power (see `Artifacts.md`).
 5. **Imperial Seat:** Provides a dynamic endgame conflict point.
 6. **Combat and Capture:** Rewards aggression with measured risk (+1 VP, ability lockout).
 7. **Event-Driven Points:** Adds situational, thematic scoring moments.
