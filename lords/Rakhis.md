@@ -99,6 +99,17 @@ The Djinnborn are the descendants of imperial outriders who bound wind spirits i
 
 ---
 
+## Legendary Building: Windsworn Warcamp
+
+- **Prerequisite:** Win 2 battles as the attacker.
+- **Build cost:** 4 AP + 5 Gold, 3 Influence
+- **Population:** 3
+- **Upkeep:** none
+- **VP:** 2 VP (checked at Cleanup & Checks)
+- **Effect:** Units recruited at this City gain +1 Movement for their first move each round. Once per round, one Cavalry unit group may take a free Move action (1 hex) at 0 AP.
+
+---
+
 ## Special Units (Future Content)
 
 These are intended for an expanded unit roster beyond the First Playable components.

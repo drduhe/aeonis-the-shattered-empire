@@ -143,8 +143,8 @@
         {
           "title": "Buildings",
           "path": "rules_and_systems/Buildings.md",
-          "description": "Building list, costs, and interactions with Population and upkeep.",
-          "status": "draft",
+          "description": "Full building roster: production, military, advanced, and 8 Legendary faction capstones.",
+          "status": "playtest",
           "minutes": 10,
           "tags": ["rules", "economy"]
         },

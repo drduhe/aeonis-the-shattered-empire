@@ -93,7 +93,19 @@ Cassian’s armies are never the largest, but they are always where the contract
 
 **Cost:** 3 Influence (Research action)  
 **Effect:** Once per round, when another player initiates a Trade, you may gain **+1 Gold** if you control at least one **Embassy** on the map.  
+
 **Theme:** You tax the roads you “keep safe.”
+
+---
+
+## Legendary Building: Grand Exchange
+
+- **Prerequisite:** Control 2 Markets and have 8+ Gold in reserve.
+- **Build cost:** 4 AP + 6 Gold, 3 Influence
+- **Population:** 3
+- **Upkeep:** none
+- **VP:** 2 VP (checked at Cleanup & Checks)
+- **Effect:** PRODUCTION: Gain +1 Gold for each Trade action completed this round (by any player, including trades with you). Once per round, you may initiate a Trade at 0 AP (in addition to any Market benefit).
 
 ---
 

@@ -100,6 +100,17 @@ The Voidborn are not born -- they coalesce. When the Eternal Empire's portal net
 
 ---
 
+## Legendary Building: Dimensional Nexus
+
+- **Prerequisite:** Control 2 Portal hexes.
+- **Build cost:** 4 AP + 5 Gold, 5 Mana
+- **Population:** 3
+- **Upkeep:** none
+- **VP:** 2 VP (checked at Cleanup & Checks)
+- **Effect:** This City counts as a Portal for all Portal travel rules. Once per round, you may teleport a unit group from this hex to any Portal on the map for 0 AP (you must still control or have a unit at the destination Portal).
+
+---
+
 ## Special Units (Future Content)
 
 These are intended for an expanded unit roster beyond the First Playable components.

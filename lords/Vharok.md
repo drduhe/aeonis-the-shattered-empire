@@ -94,6 +94,17 @@ Vharok rules from forge-lit bastions where every road is measured, every gate is
 
 ---
 
+## Legendary Building: Iron Citadel
+
+- **Prerequisite:** Control at least 1 Fortress.
+- **Build cost:** 4 AP + 8 Gold, 2 Mana
+- **Population:** 3
+- **Upkeep:** 2 Gold per round
+- **VP:** 2 VP (checked at Cleanup & Checks)
+- **Effect:** This City is treated as a Fortress (Siege rules apply to attackers; see `Combat.md`). Units defending this hex gain +3 Defense.
+
+---
+
 ## Special Units (Future Content)
 
 These are intended for an expanded unit roster beyond the First Playable components.

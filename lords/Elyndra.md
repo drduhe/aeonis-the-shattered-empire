@@ -98,6 +98,17 @@ Elyndra does not rule by decree—she rules by **roots**. Where others strip the
 
 ---
 
+## Legendary Building: Heartwood Sanctum
+
+- **Prerequisite:** Reach Population Cap of 15+.
+- **Build cost:** 4 AP + 3 Gold, 4 Mana, 2 Influence
+- **Population:** 3
+- **Upkeep:** none
+- **VP:** 2 VP (checked at Cleanup & Checks)
+- **Effect:** PRODUCTION: +3 Population growth at this hex. Adjacent hexes you control produce +1 of their primary resource. Units in this hex regenerate 1 HP at Round Start.
+
+---
+
 ## Special Units (Future Content)
 
 These are intended for an expanded unit roster beyond the First Playable components.

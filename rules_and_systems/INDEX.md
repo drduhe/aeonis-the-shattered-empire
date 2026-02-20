@@ -43,19 +43,18 @@ These items were previously "red flags" and have been addressed:
 - **Player count**: First Playable now supports **3-8 players** with scaling guidance (see `First_Playable_Packet.md`).
 - **Lord roster (8 Lords)**: Cassian (Human, economy), Seraphel (Human, arcane burst), Vharok (Human, fortress), Elyndra (Elven, growth), Rakhis (Djinnborn, cavalry raids), Nyxara (Umbral, espionage/Whispers), Auriel (Luminari, Renown/council), Thal'rik (Voidborn, portals).
 - **Artifact system**: 24 unique relics in a shared deck; Remnant acquisition (3 Remnants = draw 1 artifact); event-driven Artifact Sites; 3 categories (Lord Equipment, Building Relics, Utility); 4 VP-bearing artifacts; full system in First Playable.
+- **Buildings overhaul**: Forge/Academy/Bank finalized with concrete effects; upgrade system removed (covered by Arcane Discoveries + Building Relics); 8 Legendary Buildings defined as faction capstones (1 per Lord, 2 VP, +2 Renown, multi-gate prerequisites, 4 AP + resources to build); full building roster in First Playable.
 
 ## Remaining design work
 
 - **Terminology**: Keep naming consistent ("Influence"; "Throne of Power" vs "Imperial Seat" -- prefer "Imperial Seat" as canon).
 - **Lakes / water**: Core rules are defined (impassable, Bridge exception). Consider adding more water-related events or abilities.
-- **Legendary Buildings**: Mentioned in `Buildings.md` but no specific examples defined.
 - **Additional Lords**: Roster is now **8 Lords** (sufficient for 8-player games). Long-term goal: a much larger roster of Lords with unique races and playstyles so that every session feels different even at the same player count. Future Lords should explore untapped design space (naval/coastal, necromancy, nomadic alliances, religious schisms, etc.) and introduce new faction mechanics that interact with existing systems in novel ways.
 - **Advanced units**: Faction-specific elite/mythic units exist on Lord sheets as "Future Content" but need a system chapter for upkeep and unlock rules.
 
 ## Useful "next docs" to add (if you want a complete rulebook)
 
 - `../lords/` folder: 8 faction sheets now exist. Expanding far beyond 8 is a long-term design goal -- each new Lord should bring a unique race, faction mechanic, and playstyle. Consider Lord-specific Arcane paths, legendary buildings, and faction events.
-- A **Legendary Buildings** catalog.
 - A **Player Aid** sheet (quick reference for action costs, unit stats, and round flow).
 
 _End of index._

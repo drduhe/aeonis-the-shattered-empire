@@ -54,7 +54,7 @@ Players earn **Victory Points (VP)** throughout the game by achieving key object
   - **Eternal Forge** (Building Relic) — transfers when the attached hex changes control.
   - **Shard of the Throne** (Utility) — transfers to the combat winner when you lose a battle where your Lord was present. May also be freely traded.
   - **Imperial Seal** (Utility) — may be purged to prevent a Law or Decree from being repealed.
-- **Legendary Buildings:** Each Legendary Building is worth **2-3 VP**, depending on its construction cost and impact.
+  - **Legendary Buildings:** Each Lord has one unique Legendary Building (faction capstone). Each is worth **2 VP** (checked at Cleanup & Checks). If the City containing a Legendary Building is captured, the captor gains control and its VP. Constructing a Legendary Building also grants **+2 Renown** immediately. See `Buildings.md`.
 - See `Artifacts.md` for the full artifact system.
 
 *Why It Works:* VP-bearing artifacts are high-value targets that drive conflict and negotiation. Most artifacts provide power, not points, preventing snowball scoring.

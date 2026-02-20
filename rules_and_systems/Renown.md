@@ -30,7 +30,7 @@ Renown represents the fame and influence of a Lord across the realm. It reflects
    - Accumulating a large surplus of resources: **+1 Renown** for every 10 total resources held at Cleanup & Checks.
 
 4. **Cultural Influence:**
-   - Constructing unique or legendary buildings: **+2 Renown**.
+   - Constructing a **Legendary Building** (faction capstone): **+2 Renown** (see `Buildings.md`).
    - Completing secret objectives tied to lore or artifacts: **+2 Renown**.
 
 5. **Event-Driven Opportunities:**

@@ -79,18 +79,18 @@ These buildings unlock powerful abilities and game-altering effects.
 - **Forge / Arcane Forge** (Cities):
   - Build cost: 5 Gold
   - Population capacity: occupies 1 Population
-  - Resource upkeep (suggested): 1 Mana per round (aligns with `Trade_Taxes.md` example)
-  - Effect: unlocks advanced crafting / unit upgrade research hooks (exact upgrade lists TBD).
+  - Resource upkeep: 1 Mana per round (see `Trade_Taxes.md`)
+  - Effect: Once per round, when you Recruit at this City, you may recruit **1 additional unit** beyond the normal 2-unit limit. Units recruited at this City cost **−1 Gold** (minimum 1).
 - **Academy** (Cities):
   - Build cost: 4 Gold, 3 Mana
-  - Population capacity: occupies 2 Population (aligns with `Population.md`)
-  - Resource upkeep (optional): 1 Gold or 1 Mana per round (tune in playtests)
-  - Effect: enables advanced magical research (extra Arcane options / discounts / unique actions—TBD).
+  - Population capacity: occupies 2 Population
+  - Resource upkeep: 1 Mana per round (see `Trade_Taxes.md`)
+  - Effect: You gain a **School Specialty** of your choice (counts as +1 sigil when checking Arcane prerequisites; see `Arcane.md` section 3.3). Once per round, when you take a Research action, reduce its resource cost by **1 Mana** (minimum 0).
 - **Bank** (Cities):
   - Build cost: 5 Gold
   - Population capacity: occupies 1 Population
-  - Resource upkeep: none (default)
-  - Effect: convert resources at a favorable rate once per round (exact rate TBD; placeholder: 2 Mana → 3 Gold or 2 Gold → 3 Mana).
+  - Resource upkeep: none
+  - Effect: Once per round during **Production & Upkeep**, you may convert resources at a 2:3 rate. Choose one: **2 Mana → 3 Gold**, **2 Gold → 3 Mana**, or **2 Gold → 3 Influence**.
 - **Castle** (Cities):
   - Build cost: 6 Gold
   - Population capacity: occupies 2 Population
@@ -101,19 +101,77 @@ These buildings unlock powerful abilities and game-altering effects.
   - Population capacity: occupies 1 Population
   - Resource upkeep: none (default)
   - Effect: once per round, you may **initiate one Trade at 0 AP cost** (does not increase the “one trade initiation per round” limit unless you choose to make it do so; see `Trade_Taxes.md`).
-- **Legendary Building** (Cities or Special Locations):
-  - Build cost: varies (expensive)
-  - Population capacity: varies (typically 2–4 Population)
-  - Resource upkeep: may apply (typically Gold or Mana)
-  - Effect: unique and game-changing; define each Legendary Building as a named card/entry.
 
-## New Mechanics: Building Upgrades
+## Legendary Buildings (Faction Capstones)
 
-To add flexibility and late-game scaling, players can upgrade certain buildings to enhance their effects.
+Each Lord has exactly **1 Legendary Building** unique to them. No other Lord may build it.
 
-- **Upgrade Examples:** Improved Farm: Increases Population production to +4. Reinforced Tower: Adds +1 defense bonus to adjacent units. Advanced Forge: Unlocks advanced unit upgrades. For artifact interaction, see `Artifacts.md` (Building Relics).
-- **Cost of Upgrades:** Upgrades cost additional Gold, Mana, or Influence and require a specific building (e.g., Forge or Academy).
-- **Upgrade Slots:** Cities and some special tiles may gain an additional upgrade slot through research or construction.
+### Rules
+
+- Legendary Buildings may be built in **any City you control**.
+- Building a Legendary costs **4 AP** (not the standard 3 AP) plus the building's listed resource cost.
+- Each Legendary has a **faction prerequisite** that must be met before construction.
+- Legendary Buildings occupy **3 Population**.
+- A Legendary Building is worth **2 VP** (checked at Cleanup & Checks). If the City is captured, the captor gains control of the Legendary and its VP.
+- Constructing a Legendary Building grants **+2 Renown** immediately (see `Renown.md`).
+- A Lord may only build **one copy** of their Legendary Building.
+- Cities have a 2-building limit (3 with research). The Legendary counts as one of those slots.
+
+### Grand Exchange (Cassian)
+
+- **Prerequisite:** Control 2 Markets and have 8+ Gold in reserve.
+- **Cost:** 6 Gold, 3 Influence
+- **Upkeep:** none
+- **Effect:** **PRODUCTION:** Gain +1 Gold for each Trade action completed this round (by any player, including trades with you). Once per round, you may initiate a Trade at **0 AP** (in addition to any Market benefit).
+
+### Arcane Sanctum (Seraphel)
+
+- **Prerequisite:** Complete 3 Arcane Discoveries (any school).
+- **Cost:** 4 Gold, 6 Mana
+- **Upkeep:** none
+- **Effect:** **PRODUCTION:** Gain +2 Mana. Once per round, you may Research a Tier I discovery for **free** (0 AP, 0 resources). Your Lord gains +1 Attack die size while in this hex.
+
+### Iron Citadel (Vharok)
+
+- **Prerequisite:** Control at least 1 Fortress.
+- **Cost:** 8 Gold, 2 Mana
+- **Upkeep:** 2 Gold per round
+- **Effect:** This City is treated as a **Fortress** (Siege rules apply to attackers; see `Combat.md`). Units defending this hex gain **+3 Defense**.
+
+### Heartwood Sanctum (Elyndra)
+
+- **Prerequisite:** Reach Population Cap of 15+.
+- **Cost:** 3 Gold, 4 Mana, 2 Influence
+- **Upkeep:** none
+- **Effect:** **PRODUCTION:** +3 Population growth at this hex. Adjacent hexes you control produce +1 of their primary resource. Units in this hex regenerate 1 HP at Round Start.
+
+### Windsworn Warcamp (Rakhis)
+
+- **Prerequisite:** Win 2 battles as the attacker.
+- **Cost:** 5 Gold, 3 Influence
+- **Upkeep:** none
+- **Effect:** Units recruited at this City gain **+1 Movement** for their first move each round. Once per round, one Cavalry unit group may take a free Move action (1 hex) at **0 AP**.
+
+### Hall of Whispers (Nyxara)
+
+- **Prerequisite:** Play 4 Whisper Cards (cumulative across the game).
+- **Cost:** 4 Gold, 4 Mana, 2 Influence
+- **Upkeep:** none
+- **Effect:** Draw **+1 Whisper Card** at Round Start. **WHEN** another player plays a Whisper Card: You may look at their hand. Once per round, you may play a Whisper Card from your hand as if it had **any** timing window.
+
+### Cathedral of Radiance (Auriel)
+
+- **Prerequisite:** Reach 5 Renown.
+- **Cost:** 4 Gold, 3 Mana, 3 Influence
+- **Upkeep:** none
+- **Effect:** **COUNCIL:** Your Influence counts double when voting on proposals you initiated. **PRODUCTION:** Gain +1 Renown if you are currently the Speaker. Units defending this hex gain +2 Defense.
+
+### Dimensional Nexus (Thal'rik)
+
+- **Prerequisite:** Control 2 Portal hexes.
+- **Cost:** 5 Gold, 5 Mana
+- **Upkeep:** none
+- **Effect:** This City counts as a **Portal** for all Portal travel rules. Once per round, you may teleport a unit group from this hex to any Portal on the map for **0 AP** (you must still control or have a unit at the destination Portal).
 
 ---
 
@@ -134,7 +192,7 @@ Certain artifacts in the Artifact Deck are **Building Relics** — ancient power
 | Eternal Forge | Forge |
 | Verdant Hearthstone | Farm or City |
 | Astral Beacon | Any building on a Portal hex |
-| Archive of the Fallen | Academy or Library |
+| Archive of the Fallen | Academy |
 
 ---
 
@@ -146,14 +204,5 @@ Certain artifacts in the Artifact Deck are **Building Relics** — ancient power
 
 ## Synergy with Lords and Unique Tiles
 
-- **Lord-Specific Buildings:** Each Lord may have access to a unique building that reinforces their identity (one per Lord is a good default).
-
-Recommended Lord-building template:
-
-- **Name / Type**: (Production / Defensive / Advanced)
-- **Where it can be built**: (terrain/city/special)
-- **Build cost**: resources + Build action AP
-- **Population capacity**: how much capacity it occupies
-- **Upkeep** (if any): Gold/Mana/Influence per round
-- **Effect**: concise rules text
-- **Balance hook**: what trade-off keeps it fair (cost, upkeep, prerequisites, limited uses, etc.)
+- **Legendary Buildings as Lord-Specific Buildings:** Each Lord's unique building is their Legendary Building (see above). No additional Lord-specific buildings exist.
+- **Unique Starting Tiles:** Each Lord's unique starting tile may interact with specific buildings (e.g., Vharok's Ironworks Ridge reduces Fortress cost). See individual Lord sheets for details.

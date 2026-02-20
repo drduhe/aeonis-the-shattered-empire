@@ -182,7 +182,7 @@ All other artifacts provide mechanical effects but no VP. See [Victory](Victory.
 
 **13. Archive of the Fallen**
 - **Category:** Building Relic
-- **Eligible Buildings:** Academy or Library
+- **Eligible Buildings:** Academy
 - **Effect:** **PURGE:** Immediately gain 2 Arcane Discoveries of Tier I from any school. Ignore prerequisites for these discoveries.
 - **Type:** One-Time Purge
 

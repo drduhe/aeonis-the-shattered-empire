@@ -132,22 +132,19 @@ Recruitment costs (see `Actions.md`):
 
 (No advanced units in First Playable.)
 
-### 4.2 Buildings (allowed)
+### 4.2 Buildings (allowed — full roster)
 
-Allowed:
+All buildings from `Buildings.md` are available:
 
-- Farm, Mine, Grove, Embassy
-- Tower
-- Fortress
-- Guild Hall
-- Market
-- Bridge
+**Production:** Farm, Mine, Grove, Embassy
 
-**Build action cost: 3 AP** (see `Actions.md`).
+**Military/Defensive:** Tower, Fortress, Bridge
 
-Not used in First Playable:
+**Advanced:** Guild Hall, Forge, Academy, Bank, Market, Castle
 
-- Academy, Forge/Arcane Forge, Bank, Castle, Legendary Buildings (save for later balance passes)
+**Legendary (faction capstones):** Each Lord has 1 unique Legendary Building. See `Buildings.md` for prerequisites, costs, and effects. Legendary Buildings cost **4 AP** to construct, occupy **3 Population**, and are worth **2 VP**.
+
+**Build action cost: 3 AP** for standard buildings, **4 AP** for Legendary Buildings (see `Actions.md`).
 
 ### 4.3 Strategy cards (use 6 for 3-4 players, all 8 for 5-8)
 
@@ -228,7 +225,7 @@ Setup:
 The First Playable already includes Strategy Cards that reference research (e.g., **Arcane Ascendancy**). To keep the packet self-contained, enable this small Arcane module:
 
 - Use `rules_and_systems/Arcane.md`.
-- **Allowed tier**: **Tier I only** (ignore Tier II/III and specialties).
+- **Allowed tier**: **Tier I only** (ignore Tier II/III discoveries). Specialties from buildings (e.g., Academy) are allowed.
 - **Available discoveries**: the Tier I entries in section 7 (10 total).
 
 Rules reminder (Tier I only):
@@ -329,6 +326,7 @@ The round order for First Playable follows `Round_Structure.md`:
 8. **Lord asymmetry**: Do the differentiated Lord combat stats create meaningful choices about when to commit your Lord to battle?
 9. **Whispers**: Do Whisper Cards create exciting moments without overwhelming decision space? Is Sabotage too powerful or too rare? Does the draw rate (2/round) feel right?
 10. **Artifacts**: Do Remnants feel attainable without being trivial (target: first artifact drawn by round 3-4)? Do Artifact Site events create interesting territorial conflict? Do VP-bearing artifacts feel like high-value targets? Is the Lord Equipment carry limit (2) restrictive enough?
+11. **Buildings (full roster)**: Do the finalized Forge/Academy/Bank feel worth their cost? Are Legendary Building prerequisites achievable by round 4-5? Does the 2 VP reward justify the 4 AP + resource investment? Do players target each other's Legendary Buildings?
 
 ---
 

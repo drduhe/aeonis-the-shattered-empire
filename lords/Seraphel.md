@@ -98,6 +98,17 @@ Seraphel’s court is a lattice of wards, lenses, and quiet bargains. Where othe
 
 ---
 
+## Legendary Building: Arcane Sanctum
+
+- **Prerequisite:** Complete 3 Arcane Discoveries (any school).
+- **Build cost:** 4 AP + 4 Gold, 6 Mana
+- **Population:** 3
+- **Upkeep:** none
+- **VP:** 2 VP (checked at Cleanup & Checks)
+- **Effect:** PRODUCTION: Gain +2 Mana. Once per round, you may Research a Tier I discovery for free (0 AP, 0 resources). Your Lord gains +1 Attack die size while in this hex.
+
+---
+
 ## Special Units (Future Content)
 
 These are intended for an expanded unit roster beyond the First Playable components.

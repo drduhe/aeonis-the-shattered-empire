@@ -66,7 +66,7 @@ Note:
   - **Farm:** Costs 1 Population to construct but increases Population Cap by +2.
   - **Tower:** Costs 1 Population to construct and maintain.
   - **Academy:** Costs 2 Population to maintain but grants powerful magical abilities.
-  - **Legendary Buildings:** May require significant Population Points both to build and maintain.
+  - **Legendary Buildings:** Each occupies **3 Population** (reserved capacity while the building exists). See `Buildings.md`.
 - Population costs for buildings are **not paid each round**; they are **reserved capacity** while the building exists.
 
 ---
