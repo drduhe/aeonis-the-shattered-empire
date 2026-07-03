@@ -18,17 +18,20 @@ PERSONA_WEIGHTS: dict[str, dict[str, float]] = {
         "vp": 1.5, "vp_lead": 1.25, "next_vp": 2.0, "catch_up": 2.5,
         "economy": 2.0, "economy_delta": 4.0, "next_economy": 2.6,
         "builder_delta": 8.0, "builder_track": 3.0, "next_builder_track": 2.8,
+        "builder_push": 3.5, "next_builder_push": 3.0,
         "production_bonus": 3.0,
         "gold_track": 2.5, "next_gold_track": 2.2,
-        "builder_need": -4.0,
+        "builder_need": 4.0,
         "objective": 3.2, "next_objective": 3.0,
         "territory": 0.3, "expansion": 0.15, "combat": 0.1, "military": 0.2,
         "military_delta": -0.8, "pass_penalty": 1.6,
     },
     "expander": {
-        "vp": 1.25, "territory": 0.7, "next_territory": 0.55, "expansion": 0.65,
-        "territory_sat": -3.8, "next_territory_sat": -2.8,
-        "seat": 0.85, "seat_pull": 0.85, "rite_ready": 0.9, "seat_streak": 0.7, "next_seat": 0.7,
+        "vp": 1.25, "vp_lead": -2.5, "next_vp_lead": -2.0,
+        "territory": 0.7, "next_territory": 0.55, "expansion": 0.65,
+        "territory_sat": -5.5, "next_territory_sat": -4.0,
+        "seat": 0.55, "seat_pull": 0.55, "rite_ready": 0.55, "seat_streak": 0.45,
+        "next_seat": 0.45,
         "objective": 2.1, "next_objective": 1.9, "combat": 0.45, "pass_penalty": 0.85,
     },
     "diplomat": {
@@ -66,23 +69,40 @@ from ..engine.strategy import STRATEGY_CARDS
 from ..engine.council import motion_vote_utility, persona_motion_adjustment
 
 
-def _score_draft_choice(state: GameState, choice: dict) -> float:
+def _score_draft_choice(state: GameState, choice: dict, persona: str = "") -> float:
     card = STRATEGY_CARDS[choice["card"]]
     bounty = state.strategy_bounty.get(choice["card"], 0)
     tempo = 9 - card.initiative
     economy = 0.0
-    if choice["card"] == "resource_surge":
+    card_id = choice["card"]
+    if card_id == "resource_surge":
         economy = 2.5
-    elif choice["card"] == "economic_boom":
+    elif card_id == "economic_boom":
         economy = 2.0
-    elif choice["card"] == "military_maneuvers":
+    elif card_id == "military_maneuvers":
         economy = 0.5
+    if persona == "economist" and card_id in ("economic_boom", "resource_surge"):
+        economy += 2.5
+    if persona == "expander" and card_id in ("expansion_strategy", "imperial_mandate"):
+        tempo += 2.0
+    if persona == "expander" and card_id == "military_maneuvers":
+        tempo += 0.5
     return bounty * 10.0 + tempo + economy
 
 
-def _score_strategy_choice(state: GameState, pid: int, choice: dict) -> float:
+def _score_strategy_choice(state: GameState, pid: int, choice: dict, persona: str = "") -> float:
     if choice["type"] == "strategy_primary":
         card_id = choice["card"]
+        if persona == "economist":
+            if card_id == "economic_boom":
+                return 4.5
+            if card_id == "resource_surge":
+                return 4.0
+        if persona == "expander":
+            if card_id == "military_maneuvers":
+                return 3.5
+            if card_id == "resource_surge":
+                return 2.5
         if card_id == "resource_surge":
             return 3.0
         if card_id == "economic_boom":
@@ -154,14 +174,15 @@ class PersonaBot:
         pid = observation["viewer"]
         if decision_point.kind == "strategy_draft":
             scored = [
-                (_score_draft_choice(state, c), c) for c in decision_point.choices
+                (_score_draft_choice(state, c, self.persona), c)
+                for c in decision_point.choices
             ]
             best = max(s for s, _ in scored)
             top = [c for s, c in scored if abs(s - best) < 1e-9]
             return self.rng.choice(top)
         if decision_point.kind in ("strategy_primary", "strategy_secondary"):
             scored = [
-                (_score_strategy_choice(state, pid, c), c)
+                (_score_strategy_choice(state, pid, c, self.persona), c)
                 for c in decision_point.choices
             ]
             best = max(s for s, _ in scored)

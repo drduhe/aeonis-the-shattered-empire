@@ -85,6 +85,10 @@ def evaluate_state(state, pid: int) -> dict[str, float]:
     builder_track = min(building_count, 3) / 3.0
     gold_track = min(p.gold, 10) / 10.0
     catch_up = max(0, max_opp_vp - p.vp) / VP_THRESHOLD
+    built = sum(len(t.buildings) for t in controlled)
+    builder_push = 0.0
+    if "builder" in state.shared_public_revealed and "builder" not in p.shared_scored:
+        builder_push = max(0.0, (3 - min(built, 3)) / 3.0)
 
     return {
         "vp": p.vp / VP_THRESHOLD,
@@ -92,6 +96,7 @@ def evaluate_state(state, pid: int) -> dict[str, float]:
         "territory": len(controlled) / map_size,
         "territory_sat": territory_sat,
         "builder_track": builder_track,
+        "builder_push": builder_push,
         "gold_track": gold_track,
         "catch_up": catch_up,
         "seat": 1.0 if has_seat else 0.0,
