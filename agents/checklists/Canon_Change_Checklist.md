@@ -23,6 +23,8 @@ Use this when making any rules change that could ripple.
 - [ ] `rules_and_systems/Combat.md` (combat changes)
 - [ ] `rules_and_systems/High_Council.md` (politics/influence/voting changes)
 - [ ] `rules_and_systems/Victory.md` (VP pacing or scoring changes)
+- [ ] `rulebook/Learn_to_Play.md` + `rulebook/Player_Aid.md` (derived teaching docs — update for any player-facing change)
+- [ ] `lore/Naming_Bible.md` (if a term, name, or keyword is added or renamed)
 
 ## 4) Codex surfacing (optional)
 

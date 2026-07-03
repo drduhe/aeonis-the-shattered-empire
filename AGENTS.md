@@ -8,6 +8,55 @@ This project already has a strong “source-of-truth” set of docs in `new/`. T
 
 ---
 
+## Non-negotiables (read first)
+
+**Canon hierarchy** — the most specific owning doc wins:
+
+1. `rules_and_systems/Round_Structure.md` owns timing (phase names, windows, ordering).
+2. Each system chapter owns its system (`Combat.md` owns combat, `Tiles.md` owns control/ZOC, ...).
+3. `playtest/First_Playable_Packet.md` may override only via an explicit "First Playable rule".
+4. `rules_and_systems/INDEX.md` is the decision log — resolved decisions get registered there.
+
+**Terminology tripwires** (full canon: `lore/Naming_Bible.md`):
+
+- "Imperial Seat" never "Throne of Power" • "Influence" never "IP" • "Speaking Stones" never "Palantír" • "Discovery/Ritual" never "spell" as a rules term • "Renown" not "Fame"/"Prestige".
+- Magi Guild, Iron Vanguard, Sacred Order are retired placeholders — never use them.
+
+**Propagation is mandatory.** A definition changes in exactly one owning doc, then every dependent doc updates in the same pass: affected chapters, `First_Playable_Packet.md`, `rulebook/Learn_to_Play.md` + `rulebook/Player_Aid.md`, and `content-manifest.json` for new/renamed files. Use `agents/checklists/Canon_Change_Checklist.md`.
+
+**Plans are not canon.** Anything in `docs/plans/` marked PROPOSED changes nothing until playtested and recorded under "Design decisions (resolved)" in `INDEX.md`.
+
+**Timing windows are explicit.** Every effect names its window ("During the High Council Phase", "On your turn in the Action Phase", "At Cleanup & Checks"). Never write an effect without one.
+
+**No new currencies or keywords** without a definition section in an owning chapter, a Naming Bible entry, and cross-references.
+
+---
+
+## Repo map
+
+- `rules_and_systems/` — the rule chapters; `INDEX.md` is TOC + decision log + red flags.
+- `lords/` — 12 faction sheets (8 launch + 4 expansion roster).
+- `lore/` — `Lore.md` (worldbook) + `Naming_Bible.md` (terminology canon).
+- `playtest/` — `First_Playable_Packet.md` (current test scope), `Full_Game_Scope.md`, `Balance_Dashboard.md`, `session_log.csv`.
+- `rulebook/` — `Learn_to_Play.md` + `Player_Aid.md` (derived docs; always update after rules changes).
+- `components/` — `Components.md` (prototype kit) + `Production_Manifest.md` (manufacturing BOM).
+- `marketing/` — `Positioning.md` (locked product decisions), pitch, comps, campaign math.
+- `docs/plans/` — dated design plans; PROPOSED ≠ canon.
+- `agents/` — roles, templates, checklists. `mcp/aeonis-tools/` — validation MCP server.
+- `content-manifest.json` + `app.js`/`index.html` — the Codex browsing app.
+
+---
+
+## Validate before you finish
+
+From the repo root (this folder):
+
+- **Manifest parses:** `python3 -c "import json; json.load(open('content-manifest.json'))" && echo OK` — after adding/renaming any doc the Codex app should surface.
+- **Terminology sweep:** `grep -rnE "Palantír|Throne of Power|Magi Guild|Iron Vanguard|Sacred Order" --include='*.md' . ; grep -rnw "IP" --include='*.md' .` — expect hits only in this file, `Naming_Bible.md`'s forbidden-terms table, `INDEX.md`'s decision log, `docs/plans/` history, and the MCP README's example config.
+- **Deeper checks:** the MCP server in `mcp/aeonis-tools/` provides `validate_manifest` (files exist), `broken_links_report`, `impact_report` (term blast radius before a rename), `check_defined_terms`, and `timing_window_lint`. See its README.
+
+---
+
 ## Canon (source of truth)
 
 When working on Aeonis, treat these as canonical:
