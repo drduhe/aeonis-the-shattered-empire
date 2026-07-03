@@ -5,59 +5,53 @@ import json
 
 from ..agents.chaos import ChaosBot
 from ..engine.game import Game
-from ..engine.invariants import InvariantViolation
+from ..engine.observations import observe
 from ..engine.record import build_record, save_record
 
-AGENTS = {"chaos": ChaosBot}
+# Degeneracy monitor: no player gains VP for this many consecutive rounds.
+NO_VP_ROUNDS_FLAG = 8
 
 
-def make_agent(name: str, seed: int):
-    return AGENTS[name](seed)
-
-
-def play_game(config: dict, seed: int, agent_names: list) -> dict:
+def play_game(config: dict, seed: int, agents=None) -> dict:
     game = Game(config, seed)
-    agents = {pid: make_agent(name, seed * 1000 + pid)
-              for pid, name in enumerate(agent_names)}
-    try:
-        while not game.over:
-            dp = game.next_decision()
-            if dp is None:
-                continue
-            from ..engine.observations import observe
-            obs = observe(game.state, dp.pid)
-            choice = agents[dp.pid].choose(obs, dp)
-            game.submit(choice)
-    except InvariantViolation as e:
-        game.over = True
-        game.verdict = "crashed"
-        rec = build_record(game)
-        rec["crash"] = {"type": "InvariantViolation", "message": str(e)}
-        return rec
-    rec = build_record(game)
-    if game.degenerate_flags and rec["verdict"] == "completed":
-        rec["verdict"] = "degenerate"
-    return rec
+    if agents is None:
+        agents = {p.pid: ChaosBot(seed * 1000 + p.pid)
+                  for p in game.state.players}
+    last_vp_round, last_vp_total = 1, 0
+    while not game.over:
+        dp = game.next_decision()
+        if dp is None:
+            continue
+        vp_total = sum(p.vp for p in game.state.players)
+        if vp_total > last_vp_total:
+            last_vp_total, last_vp_round = vp_total, game.state.round
+        elif (game.state.round - last_vp_round >= NO_VP_ROUNDS_FLAG
+              and "no_vp_progress" not in game.degenerate_flags):
+            game.degenerate_flags.append("no_vp_progress")
+        obs = observe(game.state, dp.pid)
+        game.submit(agents[dp.pid].choose(obs, dp))
+    record = build_record(game)
+    if record["verdict"] == "completed" and record["degenerate_flags"]:
+        record["verdict"] = "degenerate"
+    return record
 
 
 def main() -> None:
-    ap = argparse.ArgumentParser(description="Run chaos playtest games")
+    ap = argparse.ArgumentParser(description="Run chaos-bot Aeonis games")
     ap.add_argument("--players", type=int, default=4)
     ap.add_argument("--seed", type=int, default=1)
     ap.add_argument("--games", type=int, default=1)
-    ap.add_argument("--out", type=str, default="records/chaos.jsonl")
+    ap.add_argument("--out", default=None, help="JSONL path to append records")
     args = ap.parse_args()
-
-    tally = {}
+    counts = {}
     for i in range(args.games):
-        seed = args.seed + i
-        rec = play_game({"players": args.players}, seed,
-                        ["chaos"] * args.players)
-        save_record(rec, args.out)
-        tally[rec["verdict"]] = tally.get(rec["verdict"], 0) + 1
-        print(f"seed={seed} verdict={rec['verdict']} rounds={rec['rounds']} "
-              f"vp={rec['final_vp']}")
-    print(json.dumps(tally, sort_keys=True))
+        rec = play_game({"players": args.players}, seed=args.seed + i)
+        counts[rec["verdict"]] = counts.get(rec["verdict"], 0) + 1
+        if args.out:
+            save_record(rec, args.out)
+        print(f"seed={args.seed + i} verdict={rec['verdict']} "
+              f"rounds={rec['rounds']} vp={rec['final_vp']}")
+    print("verdicts:", counts)
 
 
 if __name__ == "__main__":

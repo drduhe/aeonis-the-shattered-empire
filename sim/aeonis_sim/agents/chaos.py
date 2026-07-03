@@ -4,9 +4,8 @@ import random
 
 
 class ChaosBot:
-    """Uniform-random agent. Purpose: rules fuzzing, not balance signal."""
-
-    name = "chaos"
+    """Uniform-random agent for fuzzing the engine. Excluded from balance
+    stats by design (see the design spec, Agents section)."""
 
     def __init__(self, seed: int):
         self.rng = random.Random(seed)
