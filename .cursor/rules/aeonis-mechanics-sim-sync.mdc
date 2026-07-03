@@ -1,0 +1,35 @@
+---
+description: Mechanics doc changes must update sim/ in the same pass
+alwaysApply: true
+---
+
+# Mechanics → Sim sync (mandatory)
+
+When you change **player-facing mechanics** in canon, update `sim/` in the **same session/PR**. Docs-only mechanics work is incomplete.
+
+## Triggers
+
+- `rules_and_systems/*.md` — costs, timing, combat, council, victory, movement, tiles, etc.
+- `lords/*.md` — starting setup, passives, actives, unique tiles/buildings/discoveries
+- `playtest/First_Playable_Packet.md` — what is "on" for current sim scope
+- Mechanical content in `components/Components.md` (cards, buildings, units)
+
+## Skip sim when
+
+- Lore/flavor-only edits (no behavior change)
+- `docs/plans/` entries still marked PROPOSED (until promoted via `INDEX.md`)
+- Rulebook wording that does not change behavior
+
+## Required sim work
+
+1. **Encode** the change in the owning engine module under `sim/aeonis_sim/engine/` (e.g. `types.py`, `combat.py`, `game.py`, `setup.py`, `council.py`, `events.py`, `objectives.py`).
+2. **Test** — add or update coverage in `sim/tests/`; run `cd sim && python -m pytest`.
+3. **Golden replays** — if resolution order or outcomes changed, regenerate: `cd sim && python scripts/generate_golden_replays.py`.
+4. **Regression gates** — if balance metrics or toggles shift, update `sim/configs/regression-*.json` and run `python scripts/regression_check.py`.
+5. **Ambiguity** — if docs leave a gap, log in `playtest/Ambiguity_Ledger.md` before encoding an interpretation.
+
+## Done when
+
+- Pytest passes locally
+- You can name the engine file(s) that mirror the doc change
+- Checklists used: `agents/checklists/Canon_Change_Checklist.md`, `agents/checklists/Content_Integration_Checklist.md`
