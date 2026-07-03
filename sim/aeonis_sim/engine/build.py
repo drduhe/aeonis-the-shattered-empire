@@ -1,0 +1,62 @@
+from __future__ import annotations
+
+from .hexmap import neighbors
+from .types import BUILDING_SPECS, BuildingType, Terrain
+
+BUILD_AP = 3
+
+
+def _slots(tile) -> int:
+    return 2 if tile.terrain == Terrain.CITY else 1
+
+
+def _can_afford(p, spec) -> bool:
+    return (p.gold >= spec.gold and p.mana >= spec.mana
+            and p.influence >= spec.influence and p.pop_pool >= spec.pop)
+
+
+def enumerate_builds(state, pid) -> list:
+    p = state.player(pid)
+    if p.ap < BUILD_AP:
+        return []
+    out = []
+    for btype, spec in BUILDING_SPECS.items():
+        if not _can_afford(p, spec):
+            continue
+        if btype == BuildingType.BRIDGE:
+            for coord, tile in state.tiles.items():
+                if tile.terrain != Terrain.LAKE or tile.has(BuildingType.BRIDGE):
+                    continue
+                if any(state.tiles[n].controller == pid
+                       for n in neighbors(coord) if n in state.tiles
+                       and state.tiles[n].terrain != Terrain.LAKE):
+                    out.append({"type": "build", "hex": list(coord),
+                                "building": btype.value})
+            continue
+        for tile in state.controlled(pid):
+            if len(tile.buildings) >= _slots(tile):
+                continue
+            if btype in tile.buildings:
+                continue
+            if spec.terrain is not None and tile.terrain != spec.terrain:
+                continue
+            if spec.terrain is None and tile.terrain == Terrain.LAKE:
+                continue
+            out.append({"type": "build", "hex": list(tile.coord),
+                        "building": btype.value})
+    return out
+
+
+def apply_build(state, pid, choice) -> None:
+    p = state.player(pid)
+    tile = state.tiles[tuple(choice["hex"])]
+    btype = BuildingType(choice["building"])
+    spec = BUILDING_SPECS[btype]
+    p.ap -= BUILD_AP
+    p.gold -= spec.gold
+    p.mana -= spec.mana
+    p.influence -= spec.influence
+    p.pop_pool -= spec.pop
+    tile.buildings.append(btype)
+    if btype == BuildingType.BRIDGE and tile.controller is None:
+        tile.controller = pid  # AL-6
