@@ -69,6 +69,11 @@ yarn-error.log*
 pnpm-debug.log*
 
 #############################
+# Brainstorm companion sessions
+#############################
+.superpowers/
+
+#############################
 # Secrets (keep examples tracked)
 #############################
 .env
