@@ -20,8 +20,8 @@
 
 ## Open design questions (sim-flagged, owner decision needed)
 
-- **Economist viability / objective tempo** — `docs/reports/2026-07-03-memo-economist-viability.md`. Sim says stop bot tuning; levers are Plan 3 row composition and pacing (8–10 round target). Decision checklist in memo §6.
-- **Attacker win rate** — contested ~67% vs Plan 1's 55–65% human target; sim-only signal (bots over-attack), tracked in baselines.
+- **Economist viability / objective tempo** — Lever B **decided 2026-07-03**: **Merchant Lord** (public, 8+ Gold) landed PROPOSED in the First Playable row; first sim read lifted economist 2.5% → 6.4% mixed 4p (memo §6). Still open: **Lever A pacing** — mean rounds drifted 6.4 → 6.1 (target 8–10); H12 confirmation at M3 gate.
+- **Attacker win rate** — contested 64.3% post-Merchant-Lord, now inside Plan 1's 55–65% band; keep watching, sim-only signal.
 - **Council pass rate** — ~29% after motion-aware voting; acceptable band TBD (40–60% suggested).
 
 ## Sim track
@@ -30,7 +30,7 @@
 - **M1 core loop — DONE** (2026-07-02→03): map/move/attack/build/recruit, combat, production, objectives (Plan 3 MVP), 10 VP end; golden replays, chaos fuzz, CI; Ambiguity Ledger AL-1–20 resolved.
 - **Persona bots + tournaments — DONE:** 5 personas, solo/rotate/random/mixed matchmaking, balance reports, hypothesis evaluators (H1–H9), regression gates.
 - **M2 politics layer — DONE** (2026-07-03): Event phase, Strategy draft + initiative, High Council (propose/vote/lobby), structured negotiation (binding trades, tracked promises), M2 gate green (CI `bracket-m2-ci.json`, smoke 100/100).
-- **M3 card systems — NEXT:** Whispers (26), exploration events, Artifacts/Remnants/Sites, Arcane Tier I, secret-objective completion. Scope: design doc §5 milestone 3.
+- **M3 card systems — ACTIVE:** [2026-07-03-agent-playtest-sim-implementation-plan-m3.md](2026-07-03-agent-playtest-sim-implementation-plan-m3.md) — building roster completion, Remnants/exploration, Artifacts/Sites, Arcane Tier I, secret-objective completion, Whispers (26), strategy primaries completion, H10–H12 gate. Merchant Lord experiment landed with the plan.
 - **M4 Lord asymmetry:** blocked on Plan 5 redesigns.
 
 ## Strategic context
