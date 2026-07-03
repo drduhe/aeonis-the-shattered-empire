@@ -17,6 +17,17 @@ def _influence_range(state, pid):
     return out
 
 
+def _fortress_blocks_claim(state, coord, pid: int) -> bool:
+    """Tiles.md: enemy Fortresses block Adjacency Claims on adjacent neutrals."""
+    for n in neighbors(coord):
+        nt = state.tiles.get(n)
+        if nt is None or nt.controller is None or nt.controller == pid:
+            continue
+        if nt.has(BuildingType.FORTRESS):
+            return True
+    return False
+
+
 def _adjacency_claims(state) -> None:
     ranges = {p.pid: _influence_range(state, p.pid) for p in state.players}
     for coord, t in state.tiles.items():
@@ -27,7 +38,8 @@ def _adjacency_claims(state) -> None:
             continue
         eligible = [pid for pid, rng_ in ranges.items()
                     if coord in rng_
-                    and not any(u.owner != pid for u in t.units)]
+                    and not any(u.owner != pid for u in t.units)
+                    and not _fortress_blocks_claim(state, coord, pid)]  # AL-16
         if len(eligible) != 1:
             t.adj_claim = None  # AL-14: contested claims stay neutral in M1
             continue

@@ -16,7 +16,10 @@ def test_golden_replays_round_trip():
 
 def test_golden_replays_cover_all_player_counts():
     players = set()
+    personas = set()
     for line in FIXTURE.read_text().splitlines():
         rec = json.loads(line)
         players.add(rec["config"]["players"])
+        personas.update(rec["config"].get("personas", []))
     assert players == {3, 4, 5, 6, 7, 8}
+    assert len(personas) >= 3  # balanced + at least two specialist personas

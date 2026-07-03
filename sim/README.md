@@ -11,6 +11,13 @@ Engine-authoritative playtest simulator. See
 
     cd sim && python3.11 -m pytest
 
+Golden replay fixtures: `tests/fixtures/golden_replays.jsonl`. Regenerate after
+engine changes:
+
+    cd sim && python scripts/generate_golden_replays.py
+
+CI runs the same suite on push/PR when `sim/` changes (`.github/workflows/sim.yml`).
+
 ## Run bot games
 
 Chaos (fuzz):

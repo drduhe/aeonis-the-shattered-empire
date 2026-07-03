@@ -11,22 +11,22 @@ canon.
 | ID | Question | Engine interpretation | Owning doc | Status |
 |---|---|---|---|---|
 | AL-1 | Packet §3.3 says starting Pop Cap 10, but `Population.md` grants +3 cap per City — a starting player (1 City) would exceed 10 with any base ≥ 8. What is the base cap? | **Base cap 7** + 3 per controlled City = 10 at start with one home City | `Population.md` | **Resolved** (2026-07-03, Plan 3 MVP) |
-| AL-2 | Movement cost of Ruins hexes is undefined in `Movement.md` §2 | 1 AP (treated as easy terrain) | `Movement.md` | Open |
+| AL-2 | Movement cost of Ruins hexes is undefined in `Movement.md` §2 | 1 AP (treated as easy terrain) | `Movement.md` | **Resolved** (engine: `TERRAIN_COST[RUINS]=1`) |
 | AL-3 | (Sim fidelity, not rules) Deserts placed by shuffle, not "between each pair of home clusters" | Positional flavor only in M1 | `First_Playable_Packet.md` | Sim-only |
 | AL-4 | Packet §3.3 says "Population Pool: 10 (full at start)" but starting units occupy 4 Population — is the pool 10 or 6? | **Pool 6** — starting units consume Population (cap 10, 4 in units) | `First_Playable_Packet.md` §3.3 | **Resolved** (2026-07-03, Plan 3 MVP) |
 | AL-5 | When are objectives claimed/scored? No timing window in packet §4.4 or `Victory.md` | **Cleanup & Checks**; once per card per player; no claim action | `Victory.md` | **Resolved** (2026-07-03, Plan 3 MVP) |
-| AL-6 | Does building a Bridge on a neutral Lake grant control of the Lake hex? | Yes — builder controls the bridged Lake | `Tiles.md` | Open |
+| AL-6 | Does building a Bridge on a neutral Lake grant control of the Lake hex? | Yes — builder controls the bridged Lake | `Tiles.md` | **Resolved** (engine: `build.py`) |
 | AL-7 | (Sim bound) Defender choice to Hold the Walls for Cities | M1 auto-declares Hold the Walls (strictly better: City retreat is banned anyway) | `Combat.md` | Sim-only |
-| AL-8 | What happens when Castle upkeep (2 Gold) cannot be paid? `Trade_Taxes.md`/`Buildings.md` don't say | Castle effects suspended for the round; building persists | `Buildings.md` | Open |
-| AL-9 | Lord release "returns to Home City" — what if the Home City is enemy-held or contains enemy units? | Returns to nearest controlled hex without enemy units; stays captured another round if none | `Combat.md` | Open |
-| AL-10 | "Warlord: win 2 battles (attacker or defender)" — what counts as a defender win? | All attacker committed units eliminated | `Combat.md` | Open |
-| AL-11 | Captured hex buildings "may be destroyed, downgraded, or taken over, depending on the circumstances" — which? | Taken over intact | `Tiles.md` / `Buildings.md` | Open |
-| AL-12 | Do Archers strike again in the main Strike step after their Pre-Strike? | No — Pre-Strike is their strike for the round | `Combat.md` | Open |
+| AL-8 | What happens when Castle upkeep (2 Gold) cannot be paid? `Trade_Taxes.md`/`Buildings.md` don't say | Castle effects suspended for the round; building persists | `Buildings.md` | **Resolved** (engine: `production.py`) |
+| AL-9 | Lord release "returns to Home City" — what if the Home City is enemy-held or contains enemy units? | Returns to nearest controlled hex without enemy units; stays captured another round if none | `Combat.md` | **Resolved** (engine: `cleanup.py`) |
+| AL-10 | "Warlord: win 2 battles (attacker or defender)" — what counts as a defender win? | All attacker committed units eliminated | `Combat.md` | **Resolved** (engine: `combat.py`) |
+| AL-11 | Captured hex buildings "may be destroyed, downgraded, or taken over, depending on the circumstances" — which? | Taken over intact | `Tiles.md` / `Buildings.md` | **Resolved** (engine: `combat.py`) |
+| AL-12 | Do Archers strike again in the main Strike step after their Pre-Strike? | No — Pre-Strike is their strike for the round | `Combat.md` | **Resolved** (engine: `combat.py`) |
 | AL-13 | Cities produce "+2 Population and various combinations of resources" — which resources? | No Gold/Mana/Influence in M1 (cap, growth, and AP bonuses only) | `Tiles.md` | Open |
 | AL-14 | Competing Adjacency Claims resolve by Influence bidding — a decision the M1 bots can't make | Contested claims stay neutral in M1 | `Tiles.md` | Sim-only |
 | AL-15 | Can involuntary acquisition (conquest, adjacency claim, occupation flip) push a player's Population usage over the global cap of 25? `Population.md` is silent | Yes — overflow allowed; the cap only gates voluntary recruit/build via the Population Pool | `Population.md` | Open |
-| AL-16 | `Tiles.md` says Fortresses block enemy Adjacency Claims on adjacent hexes — not implemented in M1 | Adjacency Claims ignore enemy Fortresses in M1 | `Tiles.md` | Sim-only |
-| AL-17 | `Movement.md` grants Forests a defensive bonus — not implemented in M1 combat | No terrain defense bonuses in M1 (building bonuses only) | `Movement.md` / `Combat.md` | Sim-only |
+| AL-16 | `Tiles.md` says Fortresses block enemy Adjacency Claims on adjacent hexes — not implemented in M1 | Enemy Fortresses block adjacent neutral Adjacency Claims | `Tiles.md` | **Resolved** (2026-07-03, M1 fidelity sprint) |
+| AL-17 | `Movement.md` grants Forests a defensive bonus — not implemented in M1 combat | +1 Defense for defenders on Forest terrain | `Movement.md` / `Combat.md` | **Resolved** (2026-07-03, M1 fidelity sprint) |
 | AL-18 | Can the Imperial Seat 3-round-streak bonus (+2 VP) re-trigger after a broken streak? `Victory.md` doesn't say | Once per game per player | `Victory.md` | Open |
-| AL-19 | Do Portal-to-Portal hops pay the ZOC surcharge at the destination, and can a 0-AP portal hop be taken with 0 AP remaining? | No surcharge on portal hops; 0-AP hops legal at 0 AP | `Movement.md` | Open |
-| AL-20 | `Combat.md` §6.4 bounds siege reinforcement at +3 units/round; M1 auto-commit recommits all adjacent units on each new Attack action | Reinforcement bound not enforced in M1 (auto-commit sim bound) | `Combat.md` | Sim-only |
+| AL-19 | Do Portal-to-Portal hops pay the ZOC surcharge at the destination, and can a 0-AP portal hop be taken with 0 AP remaining? | No surcharge on portal hops; 0-AP hops legal at 0 AP | `Movement.md` | **Resolved** (engine: `move.py`) |
+| AL-20 | `Combat.md` §6.4 bounds siege reinforcement at +3 units/round; M1 auto-commit recommits all adjacent units on each new Attack action | Ongoing sieges persist committed uids; ≤3 reinforcements per siege round | `Combat.md` | **Resolved** (2026-07-03, M1 fidelity sprint) |

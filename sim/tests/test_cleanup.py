@@ -2,11 +2,17 @@ import random
 
 from aeonis_sim.engine.cleanup import run_cleanup
 from aeonis_sim.engine.setup import build_initial_state
-from aeonis_sim.engine.types import UnitType, UNIT_STATS
+from aeonis_sim.engine.types import BuildingType, Unit, UnitType, UNIT_STATS
 
 
 def make_state():
     return build_initial_state({"players": 3}, random.Random(5))
+
+
+def put(s, coord, owner, utype):
+    u = Unit(uid=s.new_uid(), owner=owner, type=utype, hp=UNIT_STATS[utype].hp)
+    s.tiles[coord].units.append(u)
+    return u
 
 
 def test_shared_public_row_setup():
@@ -97,6 +103,45 @@ def test_lord_release():
     home_units = s.tiles[p1.home].units
     released = [u for u in home_units if u.type == UnitType.LORD]
     assert len(released) == 1 and released[0].hp == UNIT_STATS[UnitType.LORD].hp
+
+
+def test_lord_release_to_nearest_safe_hex_when_home_held():
+    s = make_state()
+    p1 = s.players[1]
+    coord, lord = s.find_lord(1)
+    s.tiles[coord].units.remove(lord)
+    p1.lord_captured = True
+    s.tiles[p1.home].controller = 0
+    s.tiles[p1.home].units = []
+    put(s, p1.home, 0, UnitType.INFANTRY)
+    for t in s.controlled(1):
+        if t.coord != p1.home:
+            t.units = []
+    run_cleanup(s)
+    assert p1.lord_captured is False
+    lord_coord, _ = s.find_lord(1)
+    assert lord_coord is not None and lord_coord != p1.home
+
+
+def test_enemy_fortress_blocks_adjacency_claim():
+    s = make_state()
+    p = s.players[0]
+    from aeonis_sim.engine.hexmap import neighbors
+    neutral = next(c for c in neighbors(p.home)
+                   if c in s.tiles and s.tiles[c].controller == p.pid)
+    s.tiles[neutral].controller = None
+    for n in neighbors(neutral):
+        nt = s.tiles.get(n)
+        if nt is None:
+            continue
+        if nt.controller != 1:
+            nt.controller = 1
+        nt.buildings.append(BuildingType.FORTRESS)
+        break
+    run_cleanup(s)
+    assert s.tiles[neutral].adj_claim is None
+    run_cleanup(s)
+    assert s.tiles[neutral].controller is None
 
 
 def test_victory_check_sets_final():

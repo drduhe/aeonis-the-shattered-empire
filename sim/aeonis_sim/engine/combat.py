@@ -1,11 +1,13 @@
 """Combat (Combat.md).
 
 Milestone-1 agent-capability bounds (not rules rulings):
-- Both sides auto-commit all eligible units.
+- Both sides auto-commit all eligible units on a fresh attack.
+- Ongoing sieges persist committed units and add ≤3 reinforcements per round (AL-20).
 - Battle Line priority: Cavalry, Archer, Infantry, Lord last.
 - Strike target: enemy line unit with (lowest hp, lowest defense die, lowest uid).
 Ledger: AL-7 auto Hold the Walls; AL-10 defender win definition;
-AL-11 buildings taken over intact; AL-12 archers only strike in Pre-Strike.
+AL-11 buildings taken over intact; AL-12 archers only strike in Pre-Strike;
+AL-17 forest terrain +1 Defense for defenders on Forest hexes.
 """
 from __future__ import annotations
 
@@ -20,6 +22,81 @@ ATTACK_AP = 2
 PRESS_AP = 1
 _LINE_PRIORITY = {UnitType.CAVALRY: 0, UnitType.ARCHER: 1,
                   UnitType.INFANTRY: 2, UnitType.LORD: 3}
+SIEGE_REINFORCE_CAP = 3
+
+
+def _find_unit(state, uid: int):
+    for t in state.tiles.values():
+        for u in t.units:
+            if u.uid == uid:
+                return t.coord, u
+    return None, None
+
+
+def _is_battle_adjacent(coord, target) -> bool:
+    return coord == target or coord in neighbors(target)
+
+
+def _commit_from_uids(state, battle, uids: list, side: str) -> None:
+    committed = battle.att_committed if side == "att" else battle.def_committed
+    for uid in uids:
+        origin, u = _find_unit(state, uid)
+        if origin is None or not _is_battle_adjacent(origin, battle.target):
+            continue
+        if any(cu.uid == uid for _, cu in committed):
+            continue
+        committed.append((origin, u))
+
+
+def _full_commit(state, battle) -> None:
+    target = battle.target
+    defender = battle.defender
+    attacker = battle.attacker
+    t = state.tiles[target]
+    for u in t.units:
+        if u.owner == defender:
+            battle.def_committed.append((target, u))
+    for n in neighbors(target):
+        nt = state.tiles.get(n)
+        if nt is None:
+            continue
+        for u in nt.units:
+            if u.owner == attacker:
+                battle.att_committed.append((n, u))
+            elif u.owner == defender:
+                battle.def_committed.append((n, u))
+
+
+def _reinforce_siege(state, battle) -> None:
+    """Combat.md §6.4: up to 3 reinforcements per side per siege round."""
+    target = battle.target
+    committed_uids = {u.uid for _, u in battle.att_committed + battle.def_committed}
+    added_att = added_def = 0
+    for n in [target, *neighbors(target)]:
+        nt = state.tiles.get(n)
+        if nt is None:
+            continue
+        for u in nt.units:
+            if u.uid in committed_uids:
+                continue
+            if u.owner == battle.attacker and added_att < SIEGE_REINFORCE_CAP:
+                battle.att_committed.append((n, u))
+                committed_uids.add(u.uid)
+                added_att += 1
+            elif u.owner == battle.defender and added_def < SIEGE_REINFORCE_CAP:
+                battle.def_committed.append((n, u))
+                committed_uids.add(u.uid)
+                added_def += 1
+
+
+def _save_siege_committed(tile, battle) -> None:
+    tile.siege_att_uids = [u.uid for _, u in battle.att_committed]
+    tile.siege_def_uids = [u.uid for _, u in battle.def_committed]
+
+
+def _clear_siege_committed(tile) -> None:
+    tile.siege_att_uids = []
+    tile.siege_def_uids = []
 
 
 @dataclass
@@ -70,18 +147,12 @@ def start_battle(state, pid, choice) -> Battle:
     b.siege = t.terrain == Terrain.CITY or t.has(BuildingType.FORTRESS)
     state.player(pid).ap -= choice["cost"]
 
-    for u in t.units:
-        if u.owner == defender:
-            b.def_committed.append((target, u))
-    for n in neighbors(target):
-        nt = state.tiles.get(n)
-        if nt is None:
-            continue
-        for u in nt.units:
-            if u.owner == pid:
-                b.att_committed.append((n, u))
-            elif u.owner == defender:
-                b.def_committed.append((n, u))
+    if b.siege and t.siege and (t.siege_att_uids or t.siege_def_uids):
+        _commit_from_uids(state, b, t.siege_att_uids, "att")
+        _commit_from_uids(state, b, t.siege_def_uids, "def")
+        _reinforce_siege(state, b)
+    else:
+        _full_commit(state, b)
     return b
 
 
@@ -104,6 +175,8 @@ def _defense_bonus(state, battle, side) -> int:
         return 0
     t = state.tiles[battle.target]
     bonus = 0
+    if t.terrain == Terrain.FOREST:
+        bonus += 1  # AL-17: Movement.md forest defensive bonus
     if t.has(BuildingType.TOWER):
         bonus += 1
     if t.has(BuildingType.FORTRESS):
@@ -163,6 +236,8 @@ def _strike(state, battle, strikers, targets_line, rng, striker_side, *, pre_str
 
 
 def resolve_round(state, battle, rng) -> None:
+    if battle.siege and battle.rounds > 0:
+        _reinforce_siege(state, battle)
     battle.rounds += 1
     _form_line(battle.att_committed, battle.cap, battle.att_line)
     _form_line(battle.def_committed, battle.cap, battle.def_line)
@@ -221,6 +296,7 @@ def finish_battle(state, battle) -> None:
     if battle.winner == "attacker":
         t.controller = battle.attacker
         t.siege = False
+        _clear_siege_committed(t)
         captor = state.player(battle.attacker)
         captor.battle_wins += 1
         if state.pillage:
@@ -234,8 +310,13 @@ def finish_battle(state, battle) -> None:
             t.units.append(u)
     elif battle.winner == "defender":
         t.siege = False
+        _clear_siege_committed(t)
         state.player(battle.defender).battle_wins += 1  # AL-10
     else:
         # Undecided: siege marker persists on Cities/Fortresses; otherwise the
         # attack simply ends (attacker units never left their origin hexes).
         t.siege = battle.siege
+        if battle.siege:
+            _save_siege_committed(t, battle)
+        else:
+            _clear_siege_committed(t)

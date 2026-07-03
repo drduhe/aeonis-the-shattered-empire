@@ -177,3 +177,37 @@ def test_pillage_grants_city_gold_on_capture():
     resolve_round(s, b, MaxRng())
     finish_battle(s, b)
     assert s.players[0].gold == 2
+
+
+def test_forest_terrain_grants_defense_bonus():
+    s = blank_state()
+    put(s, (0, 0), 0, UnitType.INFANTRY)
+    put(s, (1, 0), 1, UnitType.INFANTRY)
+    s.tiles[(1, 0)].terrain = Terrain.FOREST
+    s.tiles[(1, 0)].controller = 1
+    s.players[0].ap = 2
+    b = start_battle(s, 0, {"type": "attack", "target": [1, 0], "cost": 2})
+    # Tie on attack 3 vs defense 3+1 forest bonus -> miss; defender tie also misses
+    resolve_round(s, b, ScriptRng([3, 3, 1, 6]))
+    assert b.winner is None
+
+
+def test_ongoing_siege_persists_committed_and_caps_reinforcements():
+    from aeonis_sim.engine.hexmap import neighbors
+    s = blank_state()
+    city = (1, 0)
+    s.tiles[city].terrain = Terrain.CITY
+    s.tiles[city].controller = 1
+    s.tiles[city].siege = True
+    att = put(s, (0, 0), 0, UnitType.INFANTRY)
+    put(s, city, 1, UnitType.INFANTRY)
+    for c in neighbors((0, 0)):
+        if c in s.tiles and c != city:
+            put(s, c, 0, UnitType.INFANTRY)
+    s.tiles[city].siege_att_uids = [att.uid]
+    s.tiles[city].siege_def_uids = [s.tiles[city].units[0].uid]
+    s.players[0].ap = 2
+    b = start_battle(s, 0, {"type": "attack", "target": list(city), "cost": 2})
+    att_committed = {u.uid for _, u in b.att_committed}
+    assert att.uid in att_committed
+    assert len(att_committed) <= 1 + 3  # persisted + reinforce cap

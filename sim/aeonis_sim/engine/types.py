@@ -131,6 +131,9 @@ class Tile:
     # Adjacency Claim tracker (Tiles.md control method 5): (pid, consecutive checks)
     adj_claim: Optional[tuple] = None
     castle_suspended: bool = False  # AL-8: Castle upkeep unpaid -> effects off this round
+    # Ongoing siege: unit uids still committed between Attack actions (Combat.md §6.4).
+    siege_att_uids: list = field(default_factory=list)
+    siege_def_uids: list = field(default_factory=list)
 
     def has(self, b: BuildingType) -> bool:
         return b in self.buildings
@@ -146,6 +149,8 @@ class Tile:
             "siege": self.siege,
             "adj_claim": list(self.adj_claim) if self.adj_claim else None,
             "castle_suspended": self.castle_suspended,
+            "siege_att_uids": list(self.siege_att_uids),
+            "siege_def_uids": list(self.siege_def_uids),
         }
 
     @staticmethod
@@ -160,6 +165,8 @@ class Tile:
             siege=d["siege"],
             adj_claim=tuple(d["adj_claim"]) if d["adj_claim"] else None,
             castle_suspended=d["castle_suspended"],
+            siege_att_uids=list(d.get("siege_att_uids", [])),
+            siege_def_uids=list(d.get("siege_def_uids", [])),
         )
 
 
@@ -338,6 +345,8 @@ class GameState:
                 siege=tile.siege,
                 adj_claim=tile.adj_claim,
                 castle_suspended=tile.castle_suspended,
+                siege_att_uids=list(tile.siege_att_uids),
+                siege_def_uids=list(tile.siege_def_uids),
             )
             for coord, tile in self.tiles.items()
         }

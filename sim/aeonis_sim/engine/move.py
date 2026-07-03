@@ -34,7 +34,7 @@ def _passable(state, pid, coord) -> bool:
 
 
 def _portal_exits(state, pid, coord):
-    """Portal-to-portal edges at 0 AP (destination neutral or yours)."""
+    """Portal-to-portal edges at 0 AP (AL-19: no ZOC surcharge on portal hops)."""
     t = state.tiles.get(coord)
     if t is None or t.terrain != Terrain.PORTAL:
         return []

@@ -101,3 +101,14 @@ def test_portal_travel_zero_ap_and_flag():
     assert m["cost"] == 0
     apply_move(s, 0, m)
     assert s.players[0].used_portal_travel is True
+
+
+def test_portal_hop_legal_at_zero_ap():
+    s = strip_map(make_state())
+    portals = [c for c, t in s.tiles.items() if t.terrain == Terrain.PORTAL]
+    a, b = portals[0], portals[1]
+    put(s, a, 0, UnitType.INFANTRY)
+    s.tiles[a].controller = 0
+    s.players[0].ap = 0
+    moves = [m for m in enumerate_moves(s, 0) if tuple(m["dest"]) == b]
+    assert moves and moves[0]["cost"] == 0
