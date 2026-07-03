@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aeonis — Milestone 1 Gate &amp; Plan B Readiness</title>
+<style>
+  :root {
+    --ink: #1e2430; --muted: #5c6675; --line: #e3e7ee; --bg: #ffffff;
+    --panel: #f6f8fb; --accent: #7a5af5; --gold: #c9962a; --good: #2e9e5b;
+    --warn: #c74e39; --next: #2d6a9f;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.6 Georgia, serif; }
+  .wrap { max-width: 920px; margin: 0 auto; padding: 48px 28px 80px; }
+  header { border-bottom: 3px double var(--ink); padding-bottom: 20px; margin-bottom: 36px; }
+  .kicker { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 12px;
+    letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); font-weight: 700; }
+  h1 { font-size: 32px; line-height: 1.2; margin: 8px 0 6px; }
+  .subtitle { color: var(--muted); font-size: 15px; }
+  h2 { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 15px;
+    letter-spacing: 0.12em; text-transform: uppercase; border-bottom: 1px solid var(--line);
+    padding-bottom: 8px; margin: 44px 0 16px; }
+  h3 { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 13px;
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin: 24px 0 10px; }
+  p { margin: 0 0 14px; }
+  .tldr { background: var(--panel); border-left: 4px solid var(--next);
+    padding: 18px 22px; border-radius: 0 8px 8px 0; }
+  .gate-pass { background: #e8f5ee; border-left: 4px solid var(--good);
+    padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 16px 0; }
+  .gate-pass strong { color: #1a6b3c; }
+  table { border-collapse: collapse; width: 100%; margin: 14px 0 20px;
+    font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 13px; }
+  th { text-align: left; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--muted); border-bottom: 2px solid var(--ink); padding: 8px 8px; }
+  td { border-bottom: 1px solid var(--line); padding: 8px; vertical-align: top; }
+  td.r, th.r { text-align: right; font-variant-numeric: tabular-nums; }
+  .note { background: #fdf6ec; border-left: 4px solid var(--gold); padding: 14px 18px;
+    border-radius: 0 8px 8px 0; font-size: 15px; margin: 18px 0; }
+  .ok-chip, .next-chip, .warn-chip { display: inline-block;
+    font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 11px; font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase; padding: 2px 9px; border-radius: 99px; }
+  .ok-chip { background: #e3f4ea; color: var(--good); }
+  .next-chip { background: #e3eef8; color: var(--next); }
+  .warn-chip { background: #fbe9e4; color: var(--warn); }
+  .prio-high { color: var(--warn); font-weight: 700; }
+  .prio-med { color: var(--gold); font-weight: 600; }
+  .prio-low { color: var(--muted); }
+  ul { margin: 0 0 14px; padding-left: 22px; }
+  li { margin-bottom: 7px; }
+  code { font: 13px Menlo, monospace; background: var(--panel); padding: 1px 6px; border-radius: 5px; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin: 16px 0; }
+  @media (max-width: 700px) { .two-col { grid-template-columns: 1fr; } }
+  footer { margin-top: 56px; padding-top: 16px; border-top: 1px solid var(--line);
+    color: var(--muted); font-size: 13px; font-family: 'Helvetica Neue', Arial, sans-serif; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="kicker">Aeonis · Internal · Plan B Kickoff</div>
+  <h1>Milestone 1 Gate &amp; Plan B Readiness</h1>
+  <div class="subtitle">Engine validation complete · structural hypotheses defined · July 2, 2026</div>
+</header>
+
+<div class="tldr">
+  <p style="margin:0"><strong>Decision:</strong> Milestone 1 passes the engine gate. Proceed to Plan B
+  (persona bots + balance reports). Chaos-bot data validates the <em>engine</em>, not the
+  <em>design</em> — Plan B exists to answer whether Seat dominance and blowout wins are structural
+  or an artifact of random play.</p>
+</div>
+
+<h2>1 · Engine gate <span class="ok-chip">Passed</span></h2>
+
+<div class="gate-pass">
+  <strong>Milestone 1 gate: CLOSED.</strong> 600 fuzz games (3–8 players), 52 automated tests,
+  zero crashes, full replay determinism. Ready for persona-bot development.
+</div>
+
+<table>
+  <tr><th>Check</th><th>Evidence</th><th>Result</th></tr>
+  <tr><td>Unit + integration tests</td><td><code>python3.11 -m pytest</code> in <code>sim/</code></td><td>52 passed</td></tr>
+  <tr><td>Fuzz campaign</td><td>100 games × 6 player counts (seeds 3000–8099)</td><td>600 games, 0 crashes</td></tr>
+  <tr><td>Completion rate</td><td>565 completed (94.2%)</td><td>Acceptable for chaos bots</td></tr>
+  <tr><td>Map scaling</td><td>37 / 61 / 91 hex disks at 3–4 / 5–6 / 7–8 players</td><td>Stable</td></tr>
+  <tr><td>Replay fidelity</td><td>Record → replay state match; golden fixtures committed</td><td>Verified</td></tr>
+  <tr><td>Ambiguity ledger</td><td>20 entries logged with engine rulings</td><td>Triage pending (§4)</td></tr>
+</table>
+
+<h3>Verdict breakdown (600 games)</h3>
+<table>
+  <tr><th>Players</th><th class="r">Games</th><th class="r">Completed</th><th class="r">Degenerate</th><th class="r">Timeout</th></tr>
+  <tr><td>3</td><td class="r">100</td><td class="r">92</td><td class="r">8</td><td class="r">0</td></tr>
+  <tr><td>4</td><td class="r">100</td><td class="r">95</td><td class="r">4</td><td class="r">1</td></tr>
+  <tr><td>5</td><td class="r">100</td><td class="r">96</td><td class="r">3</td><td class="r">1</td></tr>
+  <tr><td>6</td><td class="r">100</td><td class="r">96</td><td class="r">3</td><td class="r">1</td></tr>
+  <tr><td>7</td><td class="r">100</td><td class="r">88</td><td class="r">6</td><td class="r">6</td></tr>
+  <tr><td>8</td><td class="r">100</td><td class="r">98</td><td class="r">1</td><td class="r">1</td></tr>
+  <tr><td><strong>Total</strong></td><td class="r"><strong>600</strong></td><td class="r"><strong>565</strong></td><td class="r"><strong>25</strong></td><td class="r"><strong>10</strong></td></tr>
+</table>
+
+<h2>2 · What chaos proved — and what it didn't</h2>
+
+<div class="two-col">
+  <div>
+    <h3 style="margin-top:0;color:var(--good)">Chaos data IS valid for…</h3>
+    <ul>
+      <li>Engine stability under stress</li>
+      <li>Rules encoding completeness (ledger entries)</li>
+      <li>Map scaling across player counts</li>
+      <li>Structural incentive shape <em>when nobody tries</em></li>
+      <li>Verdict/triage signatures for degenerate play</li>
+    </ul>
+  </div>
+  <div>
+    <h3 style="margin-top:0;color:var(--warn)">Chaos data is NOT valid for…</h3>
+    <ul>
+      <li>Lord win rates or matchup balance</li>
+      <li>Seat-position fairness</li>
+      <li>Catch-up / runaway-leader conclusions</li>
+      <li>Combat reward tuning</li>
+      <li>Any canon change justified by VP percentages</li>
+    </ul>
+  </div>
+</div>
+
+<div class="note">
+<strong>Do not tune balance from chaos reports.</strong> The unified 600-game playtest report
+(<code>2026-07-02-playtest-report-all-player-counts.html</code>) is shareable as an
+<em>engineering milestone</em>, not a design verdict. Plan B persona tournaments are the first
+source of balance statistics per the design spec.
+</div>
+
+<h2>3 · Structural hypotheses for Plan B</h2>
+<p>
+Plan B's first tournaments should be designed to <strong>confirm or kill</strong> these hypotheses.
+Each maps to a metric in the automated balance summary Plan B will build.
+</p>
+
+<table>
+  <tr><th>ID</th><th>Hypothesis</th><th>Chaos baseline</th><th>Plan B test</th><th>Kill criterion</th></tr>
+  <tr>
+    <td><strong>H1</strong></td>
+    <td>Imperial Seat + streak supplies &gt;50% of all VP when the center is contested</td>
+    <td>63% combined (565 completed games)</td>
+    <td>Expander + Warmonger personas at 4p and 8p</td>
+    <td>Seat+streak &lt;40% with strategic contest</td>
+  </tr>
+  <tr>
+    <td><strong>H2</strong></td>
+    <td>Average winning margin stays &gt;5 VP under strategic play</td>
+    <td>~7 VP at every player count</td>
+    <td>Balanced persona tournaments, all counts</td>
+    <td>Margin &lt;4 VP → runaway risk acceptable</td>
+  </tr>
+  <tr>
+    <td><strong>H3</strong></td>
+    <td>Objectives can reach Plan 3's ≥60% winner-VP target</td>
+    <td>35% of all VP; winner mix unknown</td>
+    <td>Economist + Balanced at 4p and 8p</td>
+    <td>Winner objective share ≥60% at either count</td>
+  </tr>
+  <tr>
+    <td><strong>H4</strong></td>
+    <td>7-player timeouts are a pacing/incentive problem, not a map-size bug</td>
+    <td>10% timeout rate (6/100), max VP 3–9</td>
+    <td>Balanced persona at 7p, 200 games</td>
+    <td>Timeout rate &lt;3% with VP-seeking bots</td>
+  </tr>
+  <tr>
+    <td><strong>H5</strong></td>
+    <td>Combat VP remains marginal even when Warmonger pursues battles</td>
+    <td>2.1% lord_capture VP</td>
+    <td>Warmonger-heavy tournaments</td>
+    <td>Lord capture &gt;10% of winner VP → Plan 1 (combat aggression) urgent</td>
+  </tr>
+  <tr>
+    <td><strong>H6</strong></td>
+    <td><code>no_vp_progress</code> degenerate flag is a chaos artifact, not a design flaw</td>
+    <td>25/600 games flagged; 24/25 still reached 10 VP</td>
+    <td>All persona tournaments</td>
+    <td>Degenerate rate &lt;2% with strategic bots</td>
+  </tr>
+</table>
+
+<h2>4 · Verdict triage</h2>
+<p>
+Per the design spec triage loop: group non-completed games by signature, pick representative
+seeds for replay, classify as engine bug or design finding.
+</p>
+
+<table>
+  <tr><th>Signature</th><th class="r">Count</th><th>Rep. seed</th><th>Classification</th><th>Action</th></tr>
+  <tr>
+    <td><code>degenerate</code> + <code>no_vp_progress</code></td>
+    <td class="r">25</td>
+    <td>6p / 6058</td>
+    <td><span class="warn-chip">Design finding</span></td>
+    <td>24/25 still ended at 10 VP — flag fires mid-game when VP stalls, not a hard failure. Monitor under personas (H6).</td>
+  </tr>
+  <tr>
+    <td><code>timeout</code> (no flag)</td>
+    <td class="r">6</td>
+    <td>7p / 7070</td>
+    <td><span class="warn-chip">Pacing finding</span></td>
+    <td>Hit 25-round cap with max VP 3–9. Concentrated at 7p. Test H4.</td>
+  </tr>
+  <tr>
+    <td><code>timeout</code> + <code>no_vp_progress</code></td>
+    <td class="r">4</td>
+    <td>7p / 7016</td>
+    <td><span class="warn-chip">Pacing finding</span></td>
+    <td>Stalled VP then timed out. Worst case: 7p seed 7016 ended at 4 VP after 25 rounds.</td>
+  </tr>
+  <tr>
+    <td><code>crashed</code></td>
+    <td class="r">0</td>
+    <td>—</td>
+    <td>—</td>
+    <td>No engine bugs found in batch.</td>
+  </tr>
+</table>
+<p style="font-size:14px;color:var(--muted)">
+Replay any flagged game:
+<code>cd sim && python3.11 -m aeonis_sim.runner.play --players N --seed S --games 1</code>
+</p>
+
+<h2>5 · Ambiguity Ledger prioritization</h2>
+<p>20 entries in <code>playtest/Ambiguity_Ledger.md</code>. Triage for Plan B impact:</p>
+
+<table>
+  <tr><th>Priority</th><th>IDs</th><th>Why before / during Plan B</th></tr>
+  <tr>
+    <td class="prio-high">Resolve before Plan B</td>
+    <td>AL-5, AL-1, AL-4</td>
+    <td>Objective timing (AL-5) affects Economist scoring. Pop cap math (AL-1/4) affects build/recruit evaluation.</td>
+  </tr>
+  <tr>
+    <td class="prio-med">Resolve during Plan B</td>
+    <td>AL-18, AL-12, AL-10</td>
+    <td>Seat streak re-trigger (AL-18) affects Expander vs Seat racing. Combat timing (AL-12/10) affects Warmonger.</td>
+  </tr>
+  <tr>
+    <td class="prio-med">Plan B + Milestone 2</td>
+    <td>AL-14, AL-16</td>
+    <td>Contested adjacency + Fortress blocking need Diplomat persona and Council (M2).</td>
+  </tr>
+  <tr>
+    <td class="prio-low">Sim-only / defer</td>
+    <td>AL-3, AL-7, AL-15–20</td>
+    <td>Documented engine bounds; no persona impact until relevant systems land.</td>
+  </tr>
+</table>
+
+<h2>6 · Alignment with improvement plans</h2>
+<p>
+The chaos baseline creates tension with proposed design changes already on the roadmap:
+</p>
+<ul>
+  <li><strong>Plan 3 (VP legibility)</strong> targets ≥60% of winner VP from objectives. Chaos shows
+  63% from Seat + streak combined — the <em>opposite</em> distribution. Plan B must determine
+  whether strategic play moves toward Plan 3's target or confirms Seat dominance is structural.</li>
+  <li><strong>Plan 1 (combat aggression)</strong> assumes rational players don't attack. Chaos
+  confirms combat VP is ~2% — but doesn't test whether Warmonger personas can make combat a
+  viable path. H5 gates this.</li>
+  <li><strong>Plan 4 (high player count)</strong> flags 6p/8p validation as a group-play gate.
+  Engine scaling passes; pacing at 7p needs persona validation (H4).</li>
+</ul>
+
+<h2>7 · Plan B kickoff specification</h2>
+<p>First implementation target from the design spec (§6–7):</p>
+
+<h3>Deliverables</h3>
+<ul>
+  <li>Parameterized scoring bot with persona weight vectors (Warmonger, Economist, Expander, Diplomat, Balanced)</li>
+  <li>Tournament runner config (JSON/YAML)</li>
+  <li><code>reports/</code> module: balance summary, verdict breakdown, session-log rows</li>
+  <li>Chaos excluded from balance stats; <code>completed</code> only</li>
+</ul>
+
+<h3>First tournament matrix</h3>
+<table>
+  <tr><th>Bracket</th><th>Players</th><th>Personas</th><th class="r">Games each</th><th class="r">Total</th><th>Primary hypotheses</th></tr>
+  <tr><td>A — core</td><td>4</td><td>All 5 personas</td><td class="r">200</td><td class="r">1,000</td><td>H1, H2, H3, H5</td></tr>
+  <tr><td>B — high count</td><td>8</td><td>Balanced, Expander, Warmonger</td><td class="r">200</td><td class="r">600</td><td>H1, H3, H6</td></tr>
+  <tr><td>C — pacing edge</td><td>7</td><td>Balanced only</td><td class="r">200</td><td class="r">200</td><td>H4</td></tr>
+</table>
+<p><strong>Plan B gate:</strong> 1,800 persona games, zero crashes, balance summary generated,
+verdict breakdown published, H1–H6 each marked confirmed / killed / inconclusive.</p>
+
+<h3>Success metrics (from design spec)</h3>
+<ul>
+  <li>Verdict breakdown leads every batch report</li>
+  <li>Win rate by persona (not seat) with ≥30 completed games per persona per bracket</li>
+  <li>VP-source distribution per persona</li>
+  <li>Round-count distribution and runaway-leader rate (margin ≥7 VP)</li>
+  <li>Determinism: bot games replay identically per seed</li>
+</ul>
+
+<h2>8 · Known fast-follows (non-blocking)</h2>
+<p>From Milestone 1 code review. Safe to fix during Plan B implementation:</p>
+<ul>
+  <li><strong>Replay verdict mismatch:</strong> <code>replay()</code> returns <code>completed</code> for games recorded as <code>degenerate</code> — VP monitor lives in runner, not engine.</li>
+  <li><strong>Recorded rounds off by one:</strong> <code>record["rounds"]</code> increments before game end; balance stats should use played rounds = recorded − 1.</li>
+  <li><strong>No crash-record capture:</strong> runner doesn't save partial records on invariant violation (none observed in 600 games).</li>
+  <li><strong>Unit test gaps:</strong> <code>apply_defender_retreat</code>, press AP flow, guard verdict paths untested directly.</li>
+</ul>
+
+<h2>9 · Artifacts &amp; next step</h2>
+<table>
+  <tr><th>Artifact</th><th>Location</th></tr>
+  <tr><td>Chaos playtest report (shareable)</td><td><code>docs/reports/2026-07-02-playtest-report-all-player-counts.html</code></td></tr>
+  <tr><td>This readiness brief</td><td><code>docs/reports/2026-07-02-milestone1-gate-plan-b-readiness.html</code></td></tr>
+  <tr><td>Golden replay fixtures (CI)</td><td><code>sim/tests/fixtures/golden_replays.jsonl</code></td></tr>
+  <tr><td>Ambiguity ledger</td><td><code>playtest/Ambiguity_Ledger.md</code></td></tr>
+  <tr><td>Design spec</td><td><code>docs/plans/2026-07-02-agent-playtest-simulation-design.md</code></td></tr>
+</table>
+
+<p style="margin-top:24px"><strong>Next step:</strong> Write Plan B implementation plan, then build
+persona bots + <code>reports/</code> module. First meaningful output: Bracket A balance summary
+after 1,000 games at 4 players.</p>
+
+<footer>
+  Based on 600-game chaos fuzz campaign (seeds 3000–8099), 52 passing tests, Milestone 1 engine at
+  commit f250872. Verdict triage from JSONL records. · Aeonis playtest simulator · July 2, 2026
+</footer>
+
+</div>
+</body>
+</html>
