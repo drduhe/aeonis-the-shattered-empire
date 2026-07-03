@@ -22,6 +22,15 @@ def test_economist_prefers_build_when_builder_objective_open():
     assert eco > bal
 
 
+def test_merchant_lord_progress_feeds_objective_feature():
+    s = build_initial_state({"players": 4}, random.Random(4))
+    s.shared_public_revealed = ["merchant_lord"]
+    s.player(0).shared_scored = []
+    s.player(0).gold = 6
+    feats = evaluate_state(s, 0)
+    assert feats["objective"] >= 0.75  # 6/8 gold toward the row card
+
+
 def test_expander_has_vp_lead_brake():
     assert PERSONA_WEIGHTS["expander"]["vp_lead"] < 0
     assert PERSONA_WEIGHTS["expander"]["territory_sat"] < -4.0

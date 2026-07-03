@@ -3,11 +3,15 @@ from __future__ import annotations
 
 from .types import Terrain
 
-# --- Public shared row (Council Power deferred until Milestone 2) ---
+# --- Public shared row ---
+# Council Power stays deferred (full-deck audit). merchant_lord is the
+# PROPOSED economy experiment filling the sixth slot (2026-07-03, economist
+# memo Lever B; Objectives.md §4.4).
 
 PUBLIC_OBJECTIVE_IDS = (
     "frontier_lord",
     "builder",
+    "merchant_lord",
     "portal_mastery",
     "warlord",
     "seat_of_empire",
@@ -20,6 +24,10 @@ def _frontier_lord(state, pid) -> bool:
 
 def _builder(state, pid) -> bool:
     return sum(len(t.buildings) for t in state.controlled(pid)) >= 3
+
+
+def _merchant_lord(state, pid) -> bool:
+    return state.player(pid).gold >= 8
 
 
 def _portal_mastery(state, pid) -> bool:
@@ -38,6 +46,7 @@ def _seat_of_empire(state, pid) -> bool:
 PUBLIC_OBJECTIVES = {
     "frontier_lord": _frontier_lord,
     "builder": _builder,
+    "merchant_lord": _merchant_lord,
     "portal_mastery": _portal_mastery,
     "warlord": _warlord,
     "seat_of_empire": _seat_of_empire,

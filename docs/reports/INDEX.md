@@ -2,18 +2,20 @@
 
 **Updated:** 2026-07-03 · Entry point for `docs/reports/`. Everything here is **sim-only** (persona bots, not humans) unless a report says otherwise.
 
-**Engine state for current baselines:** M1 core loop + Plan 3 MVP (shared objective row, Coronation Rite) + M2 politics (events, strategy draft, initiative, council, structured negotiation) + persona parity fixes. 163 pytest passing.
+**Engine state for current baselines:** M1 core loop + Plan 3 MVP (shared objective row, Coronation Rite) + M2 politics (events, strategy draft, initiative, council, structured negotiation) + persona parity fixes + **Merchant Lord row experiment** (PROPOSED sixth public, 8+ Gold). 165 pytest passing.
 
 ---
 
-## Current baselines (regenerated 2026-07-03, post-M2 Task 6)
+## Current baselines (regenerated 2026-07-03, post-Merchant-Lord)
 
 | Report | Config | Games | What it answers |
 |---|---|---|---|
 | [Mixed 4p baseline](2026-07-03-baseline-mixed-4p.md) | `sim/configs/bracket-m2-smoke.json` | 100 | Persona balance under contention; council/event/strategy metrics; H1–H9 |
 | [Solo 4p ladder](2026-07-03-baseline-solo-4p.md) | `sim/configs/bracket-m2-4p.json` | 200 | Pacing sanity per persona (win rate is 25% by construction); round length, VP mix |
 
-**Headlines (mixed 4p):** 100% completed · mean 6.4 rounds · objectives 85% of all VP · contested attacker win 66.8% (Plan 1 human target 55–65%) · council pass rate 28.7% · win rates: balanced 42.3%, warmonger 38.6%, expander 28.9%, diplomat 12.8%, economist 2.5%.
+**Headlines (mixed 4p):** 100% completed · mean 6.1 rounds · objectives 87.5% of all VP · contested attacker win 64.3% (inside Plan 1's 55–65% band) · council pass rate 28.8% · win rates: balanced 33.8%, expander 33.8%, warmonger 27.9%, diplomat 24.0%, economist 6.4%.
+
+**Merchant Lord effect (same seeds, pre → post):** economist 2.5% → **6.4%** (crosses the ≥5% H8 direction bar), diplomat 12.8% → 24.0%, balanced 42.3% → 33.8%, warmonger 38.6% → 27.9%, expander 28.9% → 33.8%. Cost: mean rounds 6.4 → 6.1 mixed and 7.8 → 6.3 solo — an extra achievable public accelerates the race, moving further from the 8–10 round target (Lever A watch). Verdict at M3 gate via H12 (see plans INDEX).
 
 Regenerate after engine changes:
 
@@ -29,9 +31,9 @@ Regenerate after engine changes:
 | H4 | 7p timeouts are pacing | inconclusive | needs 7p bracket rerun |
 | H5 | Combat VP marginal even for Warmonger | inconclusive | 7.1% winner share |
 | H6 | no_vp_progress is chaos artifact | **killed** | 0% degenerate |
-| H7 | No persona dominates mixed seats | **confirmed** (dominance present) | Expander tamed (28.9%) but **balanced 42.3%** exceeds the 35% band post-negotiation; watch, don't weight-chase |
-| H8 | Economist viable in mixed seats | open | 2.5% — design-tempo signal, see memo below |
-| H9 | Diplomat ≥3% mixed 4p | **killed** (goal met) | 12.8% |
+| H7 | No persona dominates mixed seats | improving | Max persona 33.8% (balanced + expander tied), down from 42.3%; still above the ≤28% kill bar |
+| H8 | Economist viable in mixed seats | **direction met (sim)** | 6.4% post-Merchant-Lord (bar: ≥5%); confirm at M3 gate (H12), human table later |
+| H9 | Diplomat ≥3% mixed 4p | **killed** (goal met) | 24.0% |
 
 ## Design memos & calibration (keep)
 

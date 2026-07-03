@@ -71,11 +71,11 @@ Winner's typical 10 VP after MVP + Plan 1:
 
 **Scoring (Cleanup & Checks):** Each revealed public objective may be scored by **each player once per game** when that player meets the condition. Limit: **1 public objective per player per round.** Mark scored objectives with that player's token on the card.
 
-**First Playable card list** (unchanged content; shared race):
+**First Playable card list** (shared race):
 
-- Frontier Lord · Builder · Portal Mastery · Warlord · Seat of Empire · (Council Power deferred — M2)
+- Frontier Lord · Builder · **Merchant Lord** · Portal Mastery · Warlord · Seat of Empire
 
-> **M2 note:** Omit Council Power from the First Playable row until High Council lands; use a sixth military/economic card or duplicate staging with 5 cards + 1 slot.
+> **Sixth-slot note (updated 2026-07-03):** Council Power stays out until the full-deck audit. The sixth slot is filled by **Merchant Lord** (8+ Gold), a PROPOSED economy experiment from the Economist viability memo (Lever B) — defined in `rules_and_systems/Objectives.md` §4.4.
 
 ### 3.2 Coronation Rite (replaces §3.2 Seat drip)
 

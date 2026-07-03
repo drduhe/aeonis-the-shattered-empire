@@ -175,10 +175,12 @@ Use the full 8-card deck from `Strategy.md` (print as cards):
 
 - **Frontier Lord**: Control 7 hexes.
 - **Builder**: Have 3 buildings in play.
-- **Council Power**: Win 2 High Council votes you proposed. *(Deferred until High Council is in play; use a substitute card or omit in Milestone 1 sim.)*
+- **Merchant Lord**: Have 8 or more Gold. *(PROPOSED 2026-07-03 — economy experiment filling the row's sixth slot; see `../rules_and_systems/Objectives.md` §4.4 and the Economist viability memo.)*
 - **Portal Mastery**: Control a Portal and use Portal travel at least once.
 - **Warlord**: Win 2 battles (attacker or defender).
 - **Seat of Empire**: Control the Imperial Seat at Cleanup & Checks.
+
+> **Council Power** (win 2 High Council votes you proposed) sits out of the First Playable row while the Merchant Lord experiment runs; it returns with the full 24-card deck audit (Plan 3 §5).
 
 **Scoring:** At **Cleanup & Checks**, you may score each revealed public objective **once per game** when you meet its condition. Limit: **1 public objective per player per round.**
 

@@ -113,23 +113,35 @@ Plan 4 (`docs/plans/2026-07-02-plan-high-player-count.md`) addresses council thr
 
 ---
 
-## 6. Proposed owner decisions (checklist)
+## 6. Owner decisions (resolved 2026-07-03)
 
-| # | Decision | Options |
+| # | Decision | Outcome |
 | --- | --- | --- |
-| 1 | Accept sim calibration stop rule? | **Yes** (recommended) / No — continue bot tuning |
-| 2 | Next canon experiment | **Lever B row rebalance** / Lever A pacing only / Both / Defer until human playtest |
-| 3 | Author new economy public for First Playable? | **Yes — one card** / No — document Economist as late-game persona |
-| 4 | Register in `INDEX.md` when locked | After first human session with chosen lever, not from sim alone |
+| 1 | Accept sim calibration stop rule? | **Yes** — locked; no further persona weight passes for H8 |
+| 2 | Next canon experiment | **Lever B row rebalance** (option 1, minimal) |
+| 3 | Author new economy public for First Playable? | **Yes — Merchant Lord** (*Have 8 or more Gold*), PROPOSED in `rules_and_systems/Objectives.md` §4.4, filling the row's sixth slot (Council Power stays deferred, nothing swapped out) |
+| 4 | Register in `INDEX.md` when locked | Unchanged — after first human session, not from sim alone |
+
+### First sim read (2026-07-03, mixed 4p, 100 games, same seeds)
+
+| Metric | Pre | Post Merchant Lord |
+| --- | ---: | ---: |
+| Economist win % | 2.5% | **6.4%** (≥5% bar met) |
+| Diplomat win % | 12.8% | 24.0% |
+| Balanced / Warmonger win % | 42.3% / 38.6% | 33.8% / 27.9% |
+| Expander win % | 28.9% | 33.8% |
+| Mean rounds | 6.4 | 6.1 (solo: 7.8 → 6.3) |
+
+Read: the row's sixth slot was doing real work — adding one economy-tagged card redistributed wins toward economy/politics personas without weight changes, exactly the Lever B prediction. Cost: games got slightly **faster**, moving further from the 8–10 round target — Lever A (pacing) remains open and is now the primary lever. Confirmation gate: **H12** at sim M3 (kill criteria in the M3 plan §5); human table required before promotion to canon.
 
 ---
 
-## 7. Sim follow-up (if owner approves Lever A or B)
+## 7. Sim follow-up (status)
 
-1. Encode chosen row or pacing change in `playtest/First_Playable_Packet.md` + `Objectives.md` (PROPOSED section).
-2. Re-run `bracket-m2-smoke.json` (100 games) and 7–8p mixed brackets.
-3. Report against gates in §4 Lever A; update [persona parity diagnosis](2026-07-03-persona-parity-diagnosis.md).
-4. If Economist remains &lt;5% **after** mean rounds ≥8, escalate to full Plan 3 card audit — not sim weights.
+1. ~~Encode chosen row change in `playtest/First_Playable_Packet.md` + `Objectives.md` (PROPOSED section).~~ **Done 2026-07-03** (Merchant Lord).
+2. ~~Re-run `bracket-m2-smoke.json` (100 games).~~ **Done** — see §6 read. 7–8p mixed brackets still pending (rerun with Merchant Lord row before trusting high-count H8 numbers).
+3. Remaining: H12 confirmation at M3 gate (`../plans/2026-07-03-agent-playtest-sim-implementation-plan-m3.md` §5); Lever A pacing remains open — mean rounds moved the wrong way (6.4 → 6.1).
+4. Unchanged: if Economist regresses &lt;5% at M3 gate **or** Merchant Lord proves free VP (scored by ≥60% of players per game), pull the card and escalate to the full Plan 3 card audit — not sim weights.
 
 ---
 

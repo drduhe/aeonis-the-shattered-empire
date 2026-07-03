@@ -140,6 +140,8 @@ def _objective_progress(state, pid: int, name: str, *, secret: bool = False) -> 
     if name == "builder":
         b = sum(len(t.buildings) for t in state.controlled(pid))
         return min(b, 3) / 3.0
+    if name == "merchant_lord":
+        return min(state.player(pid).gold, 8) / 8.0
     if name == "portal_mastery":
         portal = any(t.terrain == Terrain.PORTAL for t in state.controlled(pid))
         travel = state.player(pid).used_portal_travel

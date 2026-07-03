@@ -4,7 +4,7 @@ This chapter is the **owning rules reference** for the objective system: how obj
 
 - **VP context**: objectives are one VP source among several — see `Victory.md`.
 - **Timing spine**: scoring happens at **Cleanup & Checks** unless a card says otherwise — see `Round_Structure.md`, phase 7.
-- **First Playable**: the playtest packet prints a reduced 6 public + 6 secret set (see `../playtest/First_Playable_Packet.md`, section 4.4). All 12 of those cards appear in the full decks below, unchanged in effect.
+- **First Playable**: the playtest packet prints a reduced 6 public + 6 secret set (see `../playtest/First_Playable_Packet.md`, section 4.4). Those cards appear in the full decks below, unchanged in effect — except **Merchant Lord**, a PROPOSED experiment card defined in section 4.4 of this chapter that is not yet part of the printed 24-card public deck.
 
 ---
 
@@ -382,6 +382,17 @@ Every card below is worth **2 VP** and uses the **default scoring window (Cleanu
 - **Category:** Growth
 - **Condition:** Have a Population Cap of 15 or more.
 - **Clarifications:** Read directly from your Population Cap track (see `Population.md`).
+
+### 4.4 Proposed playtest cards (not yet in the printed decks)
+
+Cards in this section are **PROPOSED** balance experiments: they are legal only where a playtest packet explicitly includes them, and they do not count toward the deck totals in section 2 until promoted via the decision log in `INDEX.md`.
+
+#### Merchant Lord
+
+- **Category:** Economy
+- **Condition:** Have 8 or more Gold.
+- **Clarifications:** Read directly from your Gold stock at the moment of verification. This is separate from, and may be scored in addition to, the secret objective **Golden Hoard** (10 Gold, Immediate window) — banking toward one naturally progresses the other.
+- **Status:** PROPOSED (2026-07-03) — First Playable public-row experiment addressing Economist viability (see `../docs/reports/2026-07-03-memo-economist-viability.md`, Lever B). Included in the First Playable shared row per `../playtest/First_Playable_Packet.md` §4.4; intended as a **Stage I public** if promoted.
 
 ---
 

@@ -18,7 +18,7 @@ def put(s, coord, owner, utype):
 def test_shared_public_row_setup():
     s = make_state()
     assert len(s.shared_public_revealed) == 2
-    assert len(s.shared_public_deck) == 3  # 5 public cards in M1
+    assert len(s.shared_public_deck) == 4  # 6 public cards (merchant_lord experiment)
 
 
 def test_coronation_rite_requires_lord_on_seat():
@@ -68,9 +68,24 @@ def test_one_public_objective_per_round():
     assert p.vp == 4
 
 
+def test_merchant_lord_scores_at_8_gold():
+    s = make_state()
+    p = s.players[0]
+    s.shared_public_revealed = ["merchant_lord"]
+    p.gold = 7
+    run_cleanup(s)
+    assert p.vp == 0 and "merchant_lord" not in p.shared_scored
+    p.gold = 8
+    run_cleanup(s)
+    assert p.vp == 2 and "merchant_lord" in p.shared_scored
+    run_cleanup(s)
+    assert p.vp == 2  # scores once
+
+
 def test_secret_objective_scored_once():
     s = make_state()
     p = s.players[0]
+    s.shared_public_revealed = []  # isolate from merchant_lord public (also gold-based)
     p.secret_objective = "golden_hoard"
     p.gold = 10
     run_cleanup(s)
