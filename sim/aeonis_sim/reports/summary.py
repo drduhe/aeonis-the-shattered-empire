@@ -14,6 +14,8 @@ VP_SOURCES = (
     "seat_streak_bonus",   # legacy records
     "objective",
     "lord_capture",
+    "artifact",
+    "imperial_mandate",
 )
 
 
@@ -168,6 +170,98 @@ def council_metrics(records: list[dict]) -> dict:
         "influence_spent": influence,
         "avg_influence_per_round": influence / rounds,
     }
+
+
+def whisper_metrics(records: list[dict]) -> dict:
+    done = _completed(records)
+    if not done:
+        return {}
+    played = sum(r.get("whisper_stats", {}).get("played", 0) for r in done)
+    drawn = sum(r.get("whisper_stats", {}).get("drawn", 0) for r in done)
+    discarded = sum(r.get("whisper_stats", {}).get("discarded", 0) for r in done)
+    sabotage = sum(r.get("whisper_stats", {}).get("sabotage", 0) for r in done)
+    rounds = sum(played_rounds(r) for r in done) or 1
+    players = done[0]["config"]["players"]
+    return {
+        "drawn": drawn,
+        "played": played,
+        "discarded": discarded,
+        "sabotage": sabotage,
+        "plays_per_round": played / rounds,
+        "sabotage_rate": sabotage / played if played else 0.0,
+        "discard_rate": discarded / drawn if drawn else 0.0,
+        "draws_per_player_round": drawn / (rounds * players),
+    }
+
+
+def artifact_metrics(records: list[dict]) -> dict:
+    done = _completed(records)
+    if not done:
+        return {}
+    rounds = [r.get("first_artifact_round") for r in done if r.get("first_artifact_round")]
+    vp_totals = vp_source_totals(done)
+    all_vp = sum(vp_totals.values()) or 1
+    return {
+        "games_with_artifact": len(rounds),
+        "median_first_artifact_round": median(rounds) if rounds else None,
+        "artifact_vp_share": vp_totals.get("artifact", 0) / all_vp,
+    }
+
+
+def research_metrics(records: list[dict]) -> dict:
+    done = _completed(records)
+    if not done:
+        return {}
+    total = 0
+    for r in done:
+        for p in r.get("final_state", {}).get("players", []):
+            total += len(p.get("discoveries", []))
+    rounds = sum(played_rounds(r) for r in done) or 1
+    players = done[0]["config"]["players"]
+    return {
+        "discoveries_total": total,
+        "discoveries_per_game": total / len(done),
+        "discoveries_per_player_round": total / (rounds * players),
+    }
+
+
+def format_m3_card_section(records: list[dict]) -> list[str]:
+    wm = whisper_metrics(records)
+    am = artifact_metrics(records)
+    rm = research_metrics(records)
+    if not wm and not am and not rm:
+        return []
+    lines = ["", "## M3 card systems", ""]
+    if wm:
+        lines.extend([
+            "### Whispers",
+            "",
+            f"- Drawn: {wm['drawn']} · Played: {wm['played']} · "
+            f"Discarded: {wm['discarded']} · Sabotage: {wm['sabotage']}",
+            f"- Plays per round: {wm['plays_per_round']:.2f}",
+            f"- Sabotage rate: {100 * wm['sabotage_rate']:.1f}% of plays",
+            f"- Forced discard rate: {100 * wm['discard_rate']:.1f}% of draws",
+        ])
+    if am:
+        med = am["median_first_artifact_round"]
+        med_s = f"{med:.0f}" if med is not None else "n/a"
+        lines.extend([
+            "",
+            "### Artifacts",
+            "",
+            f"- Games with first artifact: {am['games_with_artifact']}/{len(_completed(records))}",
+            f"- Median first-artifact round: {med_s}",
+            f"- Artifact VP share: {100 * am['artifact_vp_share']:.1f}%",
+        ])
+    if rm:
+        lines.extend([
+            "",
+            "### Arcane research",
+            "",
+            f"- Discoveries per game: {rm['discoveries_per_game']:.2f}",
+            f"- Discoveries per player-round: {rm['discoveries_per_player_round']:.3f}",
+        ])
+    return lines
 
 
 def is_mixed_tournament(records: list[dict]) -> bool:
@@ -453,7 +547,7 @@ def balance_summary(records: list[dict], title: str = "Balance Summary") -> str:
         "| Source | VP | % of total | % of winner VP (avg) |",
         "| --- | ---: | ---: | ---: |",
     ])
-    for src in ("coronation_rite", "coronation_milestone", "objective", "lord_capture"):
+    for src in ("coronation_rite", "coronation_milestone", "objective", "lord_capture", "artifact"):
         v = totals.get(src, 0)
         lines.append(
             f"| {src} | {v} | {100 * v / all_vp:.1f}% | {100 * winner_mix.get(src, 0):.1f}% |"
@@ -507,6 +601,7 @@ def balance_summary(records: list[dict], title: str = "Balance Summary") -> str:
             f"- Avg influence spent / round: {cr['avg_influence_per_round']:.2f}",
         ])
     lines.extend(format_strategy_section(records))
+    lines.extend(format_m3_card_section(records))
     return "\n".join(lines) + "\n"
 
 

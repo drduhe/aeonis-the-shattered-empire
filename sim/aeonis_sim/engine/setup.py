@@ -11,6 +11,7 @@ from .objectives import (
 )
 from .artifacts import init_artifact_deck
 from .exploration import init_exploration_deck
+from .whispers import draw_whispers, init_whisper_deck
 from .council import init_agenda_deck
 from .events import init_event_deck
 from .types import BASE_AP, GameState, PlayerState, Unit, UNIT_STATS, UnitType
@@ -39,6 +40,7 @@ def build_initial_state(config: dict, rng: random.Random) -> GameState:
     state.agenda_deck = init_agenda_deck(rng)
     state.exploration_deck = init_exploration_deck(rng)
     state.artifact_deck = init_artifact_deck(rng)
+    state.whisper_deck = init_whisper_deck(rng)
 
     secret_deck = list(SECRET_OBJECTIVE_IDS)
     rng.shuffle(secret_deck)
@@ -72,6 +74,9 @@ def build_initial_state(config: dict, rng: random.Random) -> GameState:
 
     for p in state.players:
         p.pop_pool = state.pop_cap(p.pid) - state.pop_used(p.pid)
+
+    for p in state.players:
+        draw_whispers(state, p.pid, 2, rng)
 
     for t in tiles.values():
         if t.controller is not None:

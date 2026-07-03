@@ -116,9 +116,13 @@ def tally_votes(
     state: GameState,
     motion_id: str,
     ballots: list[dict],
+    *,
+    extra_yes: int = 0,
+    extra_no: int = 0,
 ) -> bool:
     """Majority of votes cast passes; Speaker breaks ties."""
-    yes = no = 0
+    yes = extra_yes
+    no = extra_no
     for b in ballots:
         if not b.get("support"):
             no += council_votes(state, b["pid"])
@@ -189,6 +193,23 @@ def apply_motion(state: GameState, motion_id: str, proposer: int) -> None:
         p.influence += 1
         _claim_influence_hex(state, proposer)
     # demilitarized_zone / open_borders_treaty: no-op in M2 sim
+
+
+def run_emergency_council(state: GameState, proposer: int, rng: random.Random) -> bool:
+    """Diplomatic Decree: propose revealed agenda and resolve vote immediately."""
+    if not state.agenda_revealed:
+        reveal_agenda(state, rng)
+    motion = state.agenda_revealed
+    if not motion:
+        return False
+    ballots = []
+    for pid in range(len(state.players)):
+        support = pid == proposer or rng.random() < 0.35
+        ballots.append({"pid": pid, "support": support, "lobby": 0})
+    if tally_votes(state, motion, ballots):
+        apply_motion(state, motion, proposer)
+        return True
+    return False
 
 
 def motion_vote_utility(

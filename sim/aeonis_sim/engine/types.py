@@ -241,10 +241,15 @@ class PlayerState:
     pending_building_relic: Optional[str] = None
     discoveries: list = field(default_factory=list)   # Tier I+ discovery ids owned
     arcane_round: dict = field(default_factory=dict)  # per-round discovery flags
+    whisper_hand: list = field(default_factory=list)
+    whisper_flags: dict = field(default_factory=dict)
+    pending_whisper_draws: int = 0
 
     def add_vp(self, n: int, source: str) -> None:
         self.vp += n
         self.vp_sources[source] = self.vp_sources.get(source, 0) + n
+        if n > 0:
+            self.pending_whisper_draws += 1
 
     def to_dict(self) -> dict:
         return {
@@ -277,6 +282,9 @@ class PlayerState:
             "pending_building_relic": self.pending_building_relic,
             "discoveries": list(self.discoveries),
             "arcane_round": dict(self.arcane_round),
+            "whisper_hand": list(self.whisper_hand),
+            "whisper_flags": dict(self.whisper_flags),
+            "pending_whisper_draws": self.pending_whisper_draws,
         }
 
     @staticmethod
@@ -333,6 +341,9 @@ class PlayerState:
         p.pending_building_relic = d.get("pending_building_relic")
         p.discoveries = list(d.get("discoveries", []))
         p.arcane_round = dict(d.get("arcane_round", {}))
+        p.whisper_hand = list(d.get("whisper_hand", []))
+        p.whisper_flags = dict(d.get("whisper_flags", {}))
+        p.pending_whisper_draws = int(d.get("pending_whisper_draws", 0))
         return p
 
 
@@ -370,6 +381,8 @@ class GameState:
     secret_objective_deck: list = field(default_factory=list)
     secret_objective_discard: list = field(default_factory=list)
     pending_winds_draws: list = field(default_factory=list)
+    whisper_deck: list = field(default_factory=list)
+    whisper_discard: list = field(default_factory=list)
 
     def player(self, pid: int) -> PlayerState:
         return self.players[pid]
@@ -441,6 +454,8 @@ class GameState:
             "secret_objective_deck": list(self.secret_objective_deck),
             "secret_objective_discard": list(self.secret_objective_discard),
             "pending_winds_draws": list(self.pending_winds_draws),
+            "whisper_deck": list(self.whisper_deck),
+            "whisper_discard": list(self.whisper_discard),
         }
 
     @staticmethod
@@ -475,6 +490,8 @@ class GameState:
             secret_objective_deck=list(d.get("secret_objective_deck", [])),
             secret_objective_discard=list(d.get("secret_objective_discard", [])),
             pending_winds_draws=list(d.get("pending_winds_draws", [])),
+            whisper_deck=list(d.get("whisper_deck", [])),
+            whisper_discard=list(d.get("whisper_discard", [])),
         )
 
     def copy(self) -> "GameState":
@@ -540,6 +557,9 @@ class GameState:
                 pending_building_relic=p.pending_building_relic,
                 discoveries=list(p.discoveries),
                 arcane_round=dict(p.arcane_round),
+                whisper_hand=list(p.whisper_hand),
+                whisper_flags=dict(p.whisper_flags),
+                pending_whisper_draws=p.pending_whisper_draws,
             )
             for p in self.players
         ]
@@ -573,4 +593,6 @@ class GameState:
             secret_objective_deck=list(self.secret_objective_deck),
             secret_objective_discard=list(self.secret_objective_discard),
             pending_winds_draws=list(self.pending_winds_draws),
+            whisper_deck=list(self.whisper_deck),
+            whisper_discard=list(self.whisper_discard),
         )

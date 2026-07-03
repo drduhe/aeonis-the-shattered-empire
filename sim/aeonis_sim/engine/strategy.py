@@ -12,9 +12,10 @@ from typing import TYPE_CHECKING
 
 from . import combat
 from .move import apply_move, enumerate_moves
+from .hexmap import neighbors
 
 if TYPE_CHECKING:
-    from .types import GameState
+    from .types import GameState, Terrain
 
 STRATEGY_CARD_IDS: tuple[str, ...] = (
     "arcane_ascendancy",
@@ -69,17 +70,17 @@ STRATEGY_CARDS: dict[str, StrategyCard] = {
 }
 
 
-# Task 3 balance-critical primaries (full deck still draftable).
-PRIMARY_IMPLEMENTED: frozenset[str] = frozenset({
-    "resource_surge",
-    "military_maneuvers",
-    "economic_boom",
-    "arcane_ascendancy",
-})
+# All eight primaries encoded (M3 Task 7).
+PRIMARY_IMPLEMENTED: frozenset[str] = frozenset(STRATEGY_CARD_IDS)
 
 SECONDARY_EFFECTS: dict[str, dict] = {
     "resource_surge": {"ap": 1, "gold": 1, "mana": 1},
     "economic_boom": {"ap": 1, "gold": 2},
+    "diplomatic_decree": {"ap": 1, "influence": 2},
+    "expansion_strategy": {"claim_hex": True},
+    "tactical_reinforcements": {"ap": 1, "extra_recruit": True},
+    "imperial_mandate": {"draw_whisper": True},
+    "arcane_ascendancy": {"arcane_secondary": True},
 }
 
 
@@ -166,7 +167,17 @@ def _can_use_primary(state: GameState, pid: int, card_id: str) -> bool:
         return False
     if card_id not in PRIMARY_IMPLEMENTED:
         return False
-    return player.ap >= STRATEGY_CARDS[card_id].primary_ap
+    card = STRATEGY_CARDS[card_id]
+    if player.ap < card.primary_ap:
+        return False
+    if card_id == "diplomatic_decree" and player.influence < 2:
+        return False
+    if card_id == "expansion_strategy":
+        return bool(_eligible_claim_hexes(state, pid))
+    if card_id == "tactical_reinforcements":
+        from .recruit import enumerate_recruits
+        return bool(enumerate_recruits(state, pid, ignore_city_limit=True))
+    return True
 
 
 def enumerate_strategy_primaries(state: GameState, pid: int) -> list[dict]:
@@ -197,6 +208,67 @@ def apply_economic_boom_primary(state: GameState, pid: int) -> None:
 
 def apply_arcane_ascendancy_primary(state: GameState, pid: int) -> None:
     state.player(pid).mana += 2
+
+
+def _eligible_claim_hexes(state: GameState, pid: int) -> list[tuple]:
+    from .types import Terrain
+    out = []
+    for t in state.controlled(pid):
+        for nb in neighbors(t.coord):
+            nt = state.tiles.get(nb)
+            if nt is None or nt.controller is not None:
+                continue
+            if any(u.owner != pid for u in nt.units):
+                continue
+            out.append(nb)
+    return sorted(set(out))
+
+
+def claim_neutral_hex(state: GameState, pid: int, coord: tuple) -> None:
+    tile = state.tiles[coord]
+    if tile.controller is not None:
+        raise ValueError("hex not neutral")
+    tile.controller = pid
+    tile.explored = True
+
+
+def apply_expansion_strategy_primary(state: GameState, pid: int, coord: tuple) -> None:
+    claim_neutral_hex(state, pid, coord)
+    p = state.player(pid)
+    cap = state.pop_cap(pid)
+    p.pop_pool = min(cap, p.pop_pool + 1)
+
+
+def apply_diplomatic_decree_primary(state: GameState, pid: int) -> None:
+    p = state.player(pid)
+    p.influence -= 2
+    state.speaker = pid
+
+
+def apply_imperial_mandate_primary(state: GameState, pid: int, rng) -> None:
+    from .objectives import deal_secret_draw
+    p = state.player(pid)
+    if any(t.imperial_seat for t in state.controlled(pid)):
+        p.add_vp(1, "imperial_mandate")
+    else:
+        deal_secret_draw(state, pid, rng)
+    p.influence += 1
+
+
+def enumerate_expansion_primary_choices(state: GameState, pid: int) -> list[dict]:
+    return [
+        {"type": "expansion_claim", "hex": list(c)}
+        for c in _eligible_claim_hexes(state, pid)
+    ]
+
+
+def enumerate_tactical_primary_recruits(state: GameState, pid: int) -> list[dict]:
+    from .recruit import enumerate_recruits
+    out = []
+    for choice in enumerate_recruits(state, pid, ignore_city_limit=True):
+        if len(choice.get("units", [])) <= 2:
+            out.append({**choice, "type": "tactical_recruit", "free": True})
+    return out
 
 
 def pay_primary_ap(state: GameState, pid: int, card_id: str) -> None:
@@ -262,16 +334,37 @@ def enumerate_secondary_choices(
 
 
 def apply_strategy_secondary(
-    state: GameState, pid: int, card_id: str, *, use: bool,
-) -> None:
+    state: GameState,
+    pid: int,
+    card_id: str,
+    *,
+    use: bool,
+    rng=None,
+) -> dict | None:
+    """Apply secondary; return optional follow-up payload for game loop."""
     player = state.player(pid)
     if card_id in player.secondary_used:
         raise ValueError(f"secondary already used: {card_id}")
     if not use:
         player.secondary_used.append(card_id)
-        return
+        return None
     spec = SECONDARY_EFFECTS[card_id]
+    card = STRATEGY_CARDS[card_id]
     player.ap -= spec.get("ap", 0)
+    if card.secondary_influence:
+        player.influence -= card.secondary_influence
     player.gold += spec.get("gold", 0)
     player.mana += spec.get("mana", 0)
+    player.influence += spec.get("influence", 0)
     player.secondary_used.append(card_id)
+    if spec.get("claim_hex"):
+        hexes = _eligible_claim_hexes(state, pid)
+        if hexes:
+            claim_neutral_hex(state, pid, hexes[0])
+    if spec.get("draw_whisper") and rng is not None:
+        from .whispers import draw_whispers
+        draw_whispers(state, pid, 1, rng)
+    if spec.get("arcane_secondary"):
+        player.mana = max(0, player.mana - 1)
+        return {"kind": "arcane_secondary_research", "pid": pid, "card": card_id}
+    return None

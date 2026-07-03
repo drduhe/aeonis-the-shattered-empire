@@ -4,6 +4,7 @@ from .hexmap import distance, neighbors
 from .arcane import apply_boundary_stones
 from .artifacts import score_artifact_vp
 from .objectives import PUBLIC_OBJECTIVES, score_cleanup_secrets
+from .whispers import expire_whisper_flags, hand_over_limit
 from .types import BuildingType, Terrain, Unit, UNIT_STATS, UnitType, VP_THRESHOLD
 
 
@@ -116,6 +117,7 @@ def _score_objectives(state, pid: int) -> None:
 def run_cleanup(state) -> None:
     for p in state.players:
         apply_boundary_stones(state, p.pid)
+    expire_whisper_flags(state)
     _adjacency_claims(state)
     _release_lords(state)
 

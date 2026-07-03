@@ -4,12 +4,14 @@ from __future__ import annotations
 from .summary import (
     _completed,
     _winner,
+    artifact_metrics,
     played_rounds,
     persona_parity_metrics,
     runaway_rate,
     seat_vp_from_totals,
     verdict_breakdown,
     vp_source_totals,
+    whisper_metrics,
     win_rate_by_persona,
     winner_vp_source_mix,
     is_mixed_tournament,
@@ -51,6 +53,18 @@ HYPOTHESES = {
     "H9": {
         "name": "Diplomat win rate ≥3% in mixed 4p M2 bracket",
         "kill": "Diplomat win rate ≥3% in mixed 4p",
+    },
+    "H10": {
+        "name": "Whisper draw rate keeps hands manageable (≤7 without flooding)",
+        "kill": "Forced discard rate <25% of whisper draws",
+    },
+    "H11": {
+        "name": "First artifact by round 3–4 (packet goal 10)",
+        "kill": "Median first-artifact round 3–4 in completed games",
+    },
+    "H12": {
+        "name": "Merchant Lord lifts economist mixed 4p win rate ≥5%",
+        "kill": "Economist win rate ≥5% in mixed 4p at M3 fidelity",
     },
 }
 
@@ -172,6 +186,47 @@ def _status_h9(records: list[dict]) -> str:
     return "inconclusive"
 
 
+def _status_h12(records: list[dict]) -> str:
+    if not is_mixed_tournament(records):
+        return "inconclusive"
+    players = records[0]["config"].get("players", 0) if records else 0
+    if players != 4:
+        return "inconclusive"
+    pm = persona_parity_metrics(records)
+    if not pm:
+        return "inconclusive"
+    eco = pm.get("by_persona", {}).get("economist", {}).get("win_rate", 0.0)
+    if eco >= 0.05:
+        return "killed"
+    if eco < 0.02:
+        return "confirmed"
+    return "inconclusive"
+
+
+def _status_h10(records: list[dict]) -> str:
+    wm = whisper_metrics(records)
+    if not wm or wm.get("drawn", 0) == 0:
+        return "inconclusive"
+    rate = wm.get("discard_rate", 0.0)
+    if rate < 0.25:
+        return "killed"
+    if rate > 0.40:
+        return "confirmed"
+    return "inconclusive"
+
+
+def _status_h11(records: list[dict]) -> str:
+    am = artifact_metrics(records)
+    med = am.get("median_first_artifact_round")
+    if med is None:
+        return "inconclusive"
+    if 3 <= med <= 4:
+        return "killed"
+    if med < 2 or med > 5:
+        return "confirmed"
+    return "inconclusive"
+
+
 _EVALUATORS = {
     "H1": _status_h1,
     "H2": _status_h2,
@@ -182,6 +237,9 @@ _EVALUATORS = {
     "H7": _status_h7,
     "H8": _status_h8,
     "H9": _status_h9,
+    "H10": _status_h10,
+    "H11": _status_h11,
+    "H12": _status_h12,
 }
 
 
@@ -234,6 +292,23 @@ def evaluate_hypotheses(records: list[dict]) -> dict[str, dict]:
             detail["mixed_4p"] = is_mixed_tournament(records) and (
                 records[0]["config"].get("players") == 4 if records else False
             )
+        elif hid == "H10":
+            wm = whisper_metrics(records)
+            detail["whisper_discard_rate"] = round(wm.get("discard_rate", 0.0), 3)
+            detail["plays_per_round"] = round(wm.get("plays_per_round", 0.0), 2)
+        elif hid == "H11":
+            am = artifact_metrics(records)
+            med = am.get("median_first_artifact_round")
+            detail["median_first_artifact_round"] = med
+            detail["artifact_vp_share"] = round(am.get("artifact_vp_share", 0.0), 3)
+        elif hid == "H12":
+            pm = persona_parity_metrics(records)
+            detail["economist_win_rate_4p"] = round(
+                pm.get("by_persona", {}).get("economist", {}).get("win_rate", 0.0), 3
+            )
+            detail["mixed_4p"] = is_mixed_tournament(records) and (
+                records[0]["config"].get("players") == 4 if records else False
+            )
         out[hid] = {
             "name": meta["name"],
             "kill_criterion": meta["kill"],
@@ -244,7 +319,7 @@ def evaluate_hypotheses(records: list[dict]) -> dict[str, dict]:
 
 
 def hypotheses_markdown(results: dict[str, dict]) -> str:
-    lines = ["## Hypothesis evaluation (H1–H9)", ""]
+    lines = ["## Hypothesis evaluation (H1–H12)", ""]
     lines.append("| ID | Hypothesis | Status | Detail |")
     lines.append("| --- | --- | --- | --- |")
     for hid, r in results.items():

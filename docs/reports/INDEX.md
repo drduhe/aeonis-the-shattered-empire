@@ -2,24 +2,24 @@
 
 **Updated:** 2026-07-03 · Entry point for `docs/reports/`. Everything here is **sim-only** (persona bots, not humans) unless a report says otherwise.
 
-**Engine state for current baselines:** M1 core loop + Plan 3 MVP (shared objective row, Coronation Rite) + M2 politics (events, strategy draft, initiative, council, structured negotiation) + persona parity fixes + **Merchant Lord row experiment** (PROPOSED sixth public, 8+ Gold). 165 pytest passing.
+**Engine state for current baselines:** M1 core loop + Plan 3 MVP + M2 politics + **M3 card systems** (Remnants/exploration, Artifacts/Sites, Arcane Tier I, secrets, Whispers, strategy primaries). 229 pytest passing.
 
 ---
 
-## Current baselines (regenerated 2026-07-03, post-Merchant-Lord)
+## Current baselines (regenerated 2026-07-03, post-M3 gate)
 
 | Report | Config | Games | What it answers |
 |---|---|---|---|
-| [Mixed 4p baseline](2026-07-03-baseline-mixed-4p.md) | `sim/configs/bracket-m2-smoke.json` | 100 | Persona balance under contention; council/event/strategy metrics; H1–H9 |
-| [Mixed 7p baseline](2026-07-03-baseline-mixed-7p.md) | `sim/configs/bracket-c-mixed.json` | 200 | High-count pacing + persona mix (Merchant Lord row) |
-| [Mixed 8p baseline](2026-07-03-baseline-mixed-8p.md) | `sim/configs/bracket-b-mixed.json` | 600 | High-count persona parity (Merchant Lord row) |
-| [Solo 4p ladder](2026-07-03-baseline-solo-4p.md) | `sim/configs/bracket-m2-4p.json` | 200 | Pacing sanity per persona (win rate is 25% by construction); round length, VP mix |
+| [Mixed 4p M3 baseline](2026-07-03-baseline-mixed-4p-m3.md) | `sim/configs/bracket-m2-smoke.json` | 100 | Full M3 fidelity: whispers/artifacts/research metrics; H1–H12 |
+| [Solo 4p M3 ladder](2026-07-03-baseline-solo-4p-m3.md) | `sim/configs/bracket-m2-4p.json` | 200 | Pacing sanity per persona at M3 fidelity |
+| [Mixed 4p pre-M3 baseline](2026-07-03-baseline-mixed-4p.md) | `sim/configs/bracket-m2-smoke.json` | 100 | Pre-M3 comparison (Merchant Lord only) |
+| [Mixed 7p baseline](2026-07-03-baseline-mixed-7p.md) | `sim/configs/bracket-c-mixed.json` | 200 | High-count pacing (pre-M3 card systems) |
+| [Mixed 8p baseline](2026-07-03-baseline-mixed-8p.md) | `sim/configs/bracket-b-mixed.json` | 600 | High-count persona parity (pre-M3) |
+| [Solo 4p pre-M3 ladder](2026-07-03-baseline-solo-4p.md) | `sim/configs/bracket-m2-4p.json` | 200 | Pre-M3 solo ladder |
 
-**Headlines (mixed 4p):** 100% completed · mean 6.1 rounds · economist **6.4%** · balanced/expander tied 33.8%.
+**Headlines (mixed 4p M3):** 100% completed · mean **5.8** rounds · economist **5.3%** (H12 killed) · expander 40.5% · H10 killed (1.3% forced whisper discards).
 
-**Headlines (mixed 7p):** 100% completed · mean **5.3** rounds · economist **2.7%** · balanced 28.3% · expander 7.6% · warmonger 20.7% · H4 killed (0% timeout).
-
-**Headlines (mixed 8p):** 100% completed · mean **5.4** rounds · economist **1.8%** · balanced 28.8% · expander 9.0% · warmonger 14.1%.
+**Headlines (solo 4p M3):** 200/200 completed · see report for per-persona round length.
 
 Regenerate after engine changes:
 
@@ -37,7 +37,10 @@ Regenerate after engine changes:
 | H6 | no_vp_progress is chaos artifact | **killed** | 0% degenerate |
 | H7 | No persona dominates mixed seats | improving | Max persona 33.8% at 4p; balanced leads at 7–8p (~29%) |
 | H8 | Economist viable in mixed seats | **4p met, 7–8p not** | 4p 6.4% · 7p 2.7% · 8p 1.8% (bar ≥5%) |
-| H9 | Diplomat ≥3% mixed 4p | **killed** (goal met) | 24.0% |
+| H9 | Diplomat ≥3% mixed 4p | **killed** (goal met) | 21.6% (M3 baseline) |
+| H10 | Whisper hands manageable | **killed** | 1.3% forced discard rate (M3) |
+| H11 | First artifact round 3–4 | **killed** | Median round 3 (M3) |
+| H12 | Economist ≥5% mixed 4p at M3 | **killed** (goal met) | 5.3% (M3 baseline) |
 
 ## Design memos & calibration (keep)
 
@@ -53,6 +56,7 @@ CI (`.github/workflows/sim.yml`) re-runs these every push — green means gates 
 
 - Plan 1/2: `sim/configs/regression-plan{1,2}-*.json` (4 bracket matrix)
 - M2 gate: `sim/configs/bracket-m2-ci.json` (20 mixed 4p, zero crash/timeout/degenerate)
+- M3 gate: `sim/configs/bracket-m3-ci.json` (20 mixed 4p, zero crash/timeout/degenerate)
 
 Local check: `cd sim && python scripts/regression_check.py --config <config> --report <optional.md>`
 

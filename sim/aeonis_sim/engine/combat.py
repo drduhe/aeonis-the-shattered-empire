@@ -14,8 +14,16 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Optional
 
-from .hexmap import neighbors
+from .hexmap import neighbors, distance
 from .objectives import record_battle_win_at
+from .whispers import (
+    BattleWhisperMods,
+    auto_apply_combat_whispers,
+    combat_attack_die,
+    combat_defense_mod,
+    combat_iron_resolve,
+    combat_pre_strike_bonus,
+)
 from .production import apply_tile_production
 from .artifacts import attack_die, defense_die, maybe_transfer_shard, transfer_lord_equipment
 from .arcane import (
@@ -124,6 +132,7 @@ class Battle:
     init_att_dice: int = 0
     init_def_dice: int = 0
     uncontested: bool = False
+    whisper_mods: BattleWhisperMods = field(default_factory=BattleWhisperMods)
 
 
 def _defender_of(state, target) -> Optional[int]:
@@ -290,6 +299,7 @@ def _hits(striker_side: str, atk: int, dfn: int, edge_mode: str, *, pre_strike: 
 
 
 def _strike(state, battle, strikers, targets_line, rng, striker_side, *, pre_strike: bool) -> None:
+    mods = battle.whisper_mods
     def_side = "def" if striker_side == "att" else "att"
     for striker in sorted(strikers, key=lambda u: u.uid):
         if striker.hp <= 0:
@@ -297,27 +307,41 @@ def _strike(state, battle, strikers, targets_line, rng, striker_side, *, pre_str
         target = _pick_target(targets_line)
         if target is None:
             return
-        atk = rng.randint(1, attack_die(state, striker.owner, striker))
+        atk_die = combat_attack_die(mods, striker)
+        if atk_die == UNIT_STATS[striker.type].attack_die:
+            atk_die = attack_die(state, striker.owner, striker)
+        atk = rng.randint(1, atk_die)
         if striker_side == "att" and striker.owner == battle.attacker:
             atk += battle_runes_attack_bonus(state, striker.owner, battle)
-        dfn = rng.randint(1, defense_die(state, target.owner, target, battle.target))
+        dfn_die = defense_die(state, target.owner, target, battle.target)
+        dfn = rng.randint(1, dfn_die + combat_defense_mod(mods, target.uid))
         if striker_side == "att" and target.owner == battle.defender:
             dfn += warding_charm_defense_bonus(state, battle.defender, battle)
         if striker_side == "att":
             atk = max(1, atk - battle_augury_attack_penalty(state, battle.defender, battle))
         dfn += _defense_bonus(state, battle, def_side)
         if _hits(striker_side, atk, dfn, state.aggressors_edge_mode, pre_strike=pre_strike):
-            target.hp -= 1
+            dmg = 1
+            if pre_strike and striker.type == UnitType.ARCHER:
+                dmg += combat_pre_strike_bonus(mods)
+            target.hp -= dmg
             if target.hp <= 0:
-                _kill(state, battle, target)
+                if combat_iron_resolve(mods, target):
+                    target.hp = 1
+                else:
+                    _kill(state, battle, target)
 
 
 def resolve_round(state, battle, rng) -> None:
+    mods = battle.whisper_mods
+    auto_apply_combat_whispers(state, battle, "reinforce", mods)
     if battle.siege and battle.rounds > 0:
         _reinforce_siege(state, battle)
     battle.rounds += 1
-    _form_line(battle.att_committed, battle.cap, battle.att_line)
-    _form_line(battle.def_committed, battle.cap, battle.def_line)
+    att_cap = battle.cap + mods.att_cap_bonus
+    def_cap = battle.cap + mods.def_cap_bonus
+    _form_line(battle.att_committed, att_cap, battle.att_line)
+    _form_line(battle.def_committed, def_cap, battle.def_line)
 
     def archers(line):
         return [u for u in line if u.type == UnitType.ARCHER]
@@ -325,11 +349,13 @@ def resolve_round(state, battle, rng) -> None:
     def others(line):
         return [u for u in line if u.type != UnitType.ARCHER]  # AL-12
 
-    # 4.2 Archer Pre-Strike: attacker archers first, then defender archers
+    auto_apply_combat_whispers(state, battle, "pre_strike", mods)
     _strike(state, battle, archers(battle.att_line), battle.def_line, rng, "att", pre_strike=True)
     _strike(state, battle, archers(battle.def_line), battle.att_line, rng, "def", pre_strike=True)
-    # 4.3 Attacker Strike, then Defender Counterstrike
+    auto_apply_combat_whispers(state, battle, "pre_roll", mods)
+    auto_apply_combat_whispers(state, battle, "strike", mods)
     _strike(state, battle, others(battle.att_line), battle.def_line, rng, "att", pre_strike=False)
+    auto_apply_combat_whispers(state, battle, "counterstrike", mods)
     _strike(state, battle, others(battle.def_line), battle.att_line, rng, "def", pre_strike=False)
 
     if not battle.def_committed:
@@ -344,14 +370,16 @@ def enumerate_defender_retreats(state, battle) -> list:
         return []  # Combat.md 4.4: no retreat from Cities/Fortresses
     if battle.winner is not None:
         return []
+    max_dist = 2 if battle.whisper_mods.tactical_withdrawal else 1
     out = []
-    for n in neighbors(battle.target):
-        nt = state.tiles.get(n)
-        if nt is None or nt.controller != battle.defender:
+    for coord, tile in state.tiles.items():
+        if tile.controller != battle.defender:
             continue
-        if any(u.owner != battle.defender for u in nt.units):
+        if any(u.owner != battle.defender for u in tile.units):
             continue
-        out.append({"type": "retreat", "dest": list(n)})
+        if distance(coord, battle.target) > max_dist or distance(coord, battle.target) < 1:
+            continue
+        out.append({"type": "retreat", "dest": list(coord)})
     return out
 
 

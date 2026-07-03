@@ -1,0 +1,18 @@
+{
+  "name": "m3-gate-ci-4p-mixed",
+  "players": 4,
+  "games": 20,
+  "seed_base": 73000,
+  "personas": ["warmonger", "economist", "expander", "diplomat", "balanced"],
+  "matchmaking": "mixed",
+  "regression": {
+    "plan": "m3",
+    "step": "gate_ci",
+    "gates": [
+      {"metric": "crash_rate", "label": "Crash rate", "max": 0.0},
+      {"metric": "timeout_rate", "label": "Timeout rate", "max": 0.0},
+      {"metric": "degenerate_rate", "label": "Degenerate rate", "max": 0.0},
+      {"metric": "completed_rate", "label": "Completed rate", "min": 1.0}
+    ]
+  }
+}

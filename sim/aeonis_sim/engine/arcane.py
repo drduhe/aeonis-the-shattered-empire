@@ -144,9 +144,12 @@ def apply_research(
     spec = DISCOVERIES[discovery_id]
     mana, gold, inf = research_resource_cost(state, pid, spec, free=free)
     if not free and not ap_waived:
-        if p.ap < TIER_I_AP:
-            raise ValueError("insufficient AP")
-        p.ap -= TIER_I_AP
+        if p.whisper_flags.pop("free_research_ap", False):
+            pass
+        else:
+            if p.ap < TIER_I_AP:
+                raise ValueError("insufficient AP")
+            p.ap -= TIER_I_AP
     if p.mana < mana or p.gold < gold or p.influence < inf:
         raise ValueError("cannot afford research")
     if not free and has_academy_discount(state, pid):

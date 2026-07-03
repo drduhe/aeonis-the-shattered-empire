@@ -10,6 +10,7 @@ _PHASE_SKIP = frozenset({
     "artifact",
     "research",
     "objective_draw",
+    "whisper_discard",
 })
 
 

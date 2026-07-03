@@ -17,6 +17,7 @@ from .council import (
     enumerate_proposal_choices,
     enumerate_vote_choices,
     reveal_agenda,
+    run_emergency_council,
     tally_votes,
 )
 from .events import draw_event, resolve_event
@@ -61,6 +62,18 @@ from .objectives import (
     try_immediate_secrets,
     winds_draw_choices,
 )
+from .whispers import (
+    apply_action_whisper,
+    auto_apply_combat_whispers,
+    auto_apply_council_whispers,
+    auto_apply_sabotage,
+    auto_apply_when_whispers,
+    discard_whisper,
+    draw_whispers,
+    enumerate_action_whispers,
+    enumerate_whisper_discard,
+    hand_over_limit,
+)
 from .observations import DecisionPoint
 from .production import run_production
 from .recruit import apply_recruit, enumerate_recruits
@@ -68,20 +81,27 @@ from .setup import build_initial_state
 from .strategy import (
     apply_draft_pick,
     apply_arcane_ascendancy_primary,
+    apply_diplomatic_decree_primary,
     apply_economic_boom_primary,
+    apply_expansion_strategy_primary,
+    apply_imperial_mandate_primary,
     apply_resource_surge_primary,
     apply_strategy_secondary,
     begin_strategy_selection,
     build_draft_queue,
+    claim_neutral_hex,
     enumerate_draft_choices,
+    enumerate_expansion_primary_choices,
     enumerate_military_maneuver_attacks,
     enumerate_military_maneuver_moves,
     enumerate_secondary_choices,
     enumerate_strategy_primaries,
+    enumerate_tactical_primary_recruits,
     finish_undrafted_bounty,
     initiative_order,
     pay_primary_ap,
     secondary_eligible_players,
+    SECONDARY_EFFECTS,
 )
 from .types import (BASE_AP, BuildingType, DEFAULT_ROUND_CAP, Terrain,
                     UNIT_STATS, UnitType)
@@ -149,6 +169,10 @@ class Game:
             "forge_recruits": 0,
             "market_trades": 0,
         }
+        self.whisper_stats = {"drawn": 0, "played": 0, "discarded": 0, "sabotage": 0}
+        self._council_extra_votes = {"for": 0, "against": 0}
+        self._council_veto = False
+        self.first_artifact_round: int | None = None
         self._negotiation_session: Optional[NegotiationSession] = None
         self._council_negotiation_queue: list[int] = []
         self._trade_used: dict[int, bool] = {}
@@ -159,6 +183,7 @@ class Game:
         self._objective_cap_queue: list[dict] = []
         self._objective_draw_queue: list[int] = []
         self._objective_followup: Optional[dict] = None
+        self._whisper_discard_queue: list[int] = []
         self._round_start()
 
     # ---- phases ----
@@ -216,6 +241,12 @@ class Game:
             p.pending_ap = 0
             p.ap = BASE_AP + p.banked + self._ap_bonus(p.pid) + pending
             p.banked = 0
+            draw_whispers(s, p.pid, 2, self.rng)
+            self.whisper_stats["drawn"] += 2
+            while p.pending_whisper_draws > 0:
+                draw_whispers(s, p.pid, 1, self.rng)
+                self.whisper_stats["drawn"] += 1
+                p.pending_whisper_draws -= 1
         self._apply_rally()
         self.ap_spread_log.append(
             max(p.ap for p in s.players) - min(p.ap for p in s.players)
@@ -256,11 +287,18 @@ class Game:
 
     def _begin_council_phase(self) -> None:
         reveal_agenda(self.state, self.rng)
+        auto_apply_council_whispers(
+            self.state,
+            "agenda_reveal",
+            motion_id=self.state.agenda_revealed or "",
+        )
         self._council_proposal_queue = initiative_order(self.state)
         self._council_motions = []
         self._council_vote_motion_idx = 0
         self._council_vote_queue = []
         self._council_ballots = []
+        self._council_extra_votes = {"for": 0, "against": 0}
+        self._council_veto = False
 
     def _start_council_voting(self) -> None:
         if not self._council_motions:
@@ -395,7 +433,20 @@ class Game:
             context={"free": free},
         )
 
+    def _track_whisper_play(self, pid: int, card: str) -> None:
+        self.whisper_stats["played"] += 1
+        if auto_apply_sabotage(self.state, pid, card):
+            self.whisper_stats["sabotage"] += 1
+
     def _after_gain_artifact(self, pid: int, pending: str | None) -> None:
+        if self.first_artifact_round is None:
+            self.first_artifact_round = self.state.round
+        auto_apply_when_whispers(
+            self.state,
+            "artifact_claim",
+            claimer=pid,
+            skip=pid,
+        )
         if pending == "discard_lord":
             self._artifact_followup = {"kind": "discard_lord", "pid": pid}
         elif pending == "attach_building":
@@ -543,6 +594,82 @@ class Game:
                 choices=choices,
                 context={"card": fu["card"], "owner": fu["owner"]},
             )
+        if kind == "expansion_primary":
+            pid = fu["pid"]
+            card = fu["card"]
+            choices = enumerate_expansion_primary_choices(self.state, pid)
+            if not choices:
+                self._followup = None
+                self._start_secondary_window(pid, card)
+                return self._followup_decision()
+            return DecisionPoint(
+                kind="strategy_primary",
+                phase="action",
+                pid=pid,
+                choices=choices + [{"type": "expansion_skip", "card": card}],
+                context={"step": "expansion_claim", "card": card},
+            )
+        if kind == "tactical_primary":
+            pid = fu["pid"]
+            card = fu["card"]
+            recs = enumerate_tactical_primary_recruits(self.state, pid)
+            if not recs:
+                self._followup = None
+                self._start_secondary_window(pid, card)
+                return self._followup_decision()
+            return DecisionPoint(
+                kind="strategy_primary",
+                phase="action",
+                pid=pid,
+                choices=recs + [{"type": "tactical_skip", "card": card}],
+                context={"step": "tactical_recruit", "card": card},
+            )
+        if kind == "expansion_secondary":
+            pid = fu["pid"]
+            card = fu["card"]
+            choices = enumerate_expansion_primary_choices(self.state, pid)
+            if not choices:
+                self._followup = None
+                return None
+            return DecisionPoint(
+                kind="strategy_primary",
+                phase="action",
+                pid=pid,
+                choices=choices,
+                context={"step": "expansion_secondary_claim", "card": card},
+            )
+        if kind == "tactical_secondary_recruit":
+            pid = fu["pid"]
+            card = fu["card"]
+            from .recruit import enumerate_recruits
+            recs = [
+                {**c, "type": "recruit"}
+                for c in enumerate_recruits(self.state, pid)
+            ]
+            if not recs:
+                self._followup = None
+                return None
+            return DecisionPoint(
+                kind="action",
+                phase="action",
+                pid=pid,
+                choices=recs,
+                context={"secondary_recruit": card},
+            )
+        if kind == "arcane_secondary_research":
+            pid = fu["pid"]
+            card = fu["card"]
+            choices = enumerate_research(self.state, pid, ap_waived=True)
+            if not choices:
+                self._followup = None
+                return None
+            return DecisionPoint(
+                kind="research",
+                phase="action",
+                pid=pid,
+                choices=choices,
+                context={"ap_waived": True, "card": card},
+            )
         return None
 
     def _after_resource_or_boom_primary(self, pid: int, card_id: str) -> None:
@@ -574,6 +701,9 @@ class Game:
             try_immediate_secrets(self.state, p.pid)
         run_cleanup(self.state)
         check_invariants(self.state)
+        self._whisper_discard_queue = [
+            p.pid for p in self.state.players if hand_over_limit(self.state, p.pid)
+        ]
         if self.state.final_round:
             self._end("completed")
             return
@@ -609,6 +739,7 @@ class Game:
         out.extend(enumerate_attach_choices(s, pid))
         out.extend(enumerate_discard_lord(s, pid))
         out.extend(enumerate_research(s, pid))
+        out.extend(enumerate_action_whispers(s, pid))
         return out
 
     def _has_active_market(self, pid: int) -> bool:
@@ -675,6 +806,18 @@ class Game:
         if session is None:
             self._close_negotiation_session(window)
 
+    def _whisper_discard_decision(self) -> Optional[DecisionPoint]:
+        if not self._whisper_discard_queue:
+            return None
+        pid = self._whisper_discard_queue[0]
+        return DecisionPoint(
+            kind="whisper_discard",
+            phase="cleanup",
+            pid=pid,
+            choices=enumerate_whisper_discard(self.state, pid),
+            context={"over_limit": len(self.state.player(pid).whisper_hand) - 7},
+        )
+
     def _ensure_objective_cap_followup(self) -> None:
         if self._objective_followup is None and self._objective_cap_queue:
             self._objective_followup = self._objective_cap_queue.pop(0)
@@ -735,6 +878,10 @@ class Game:
         obj_dp = self._objective_draw_decision()
         if obj_dp is not None:
             self._pending = obj_dp
+            return self._pending
+        wh_dp = self._whisper_discard_decision()
+        if wh_dp is not None:
+            self._pending = wh_dp
             return self._pending
         if self._research_followup is not None:
             res_dp = self._research_decision()
@@ -839,7 +986,12 @@ class Game:
         self.choices_log.append(choice)
         self._pending = None
         s = self.state
-        if dp.kind == "objective_draw":
+        if dp.kind == "whisper_discard":
+            discard_whisper(s, dp.pid, choice["card"])
+            self.whisper_stats["discarded"] += 1
+            if not hand_over_limit(s, dp.pid):
+                self._whisper_discard_queue.pop(0)
+        elif dp.kind == "objective_draw":
             step = dp.context.get("step")
             if step == "keep":
                 fu = self._objective_followup
@@ -878,6 +1030,11 @@ class Game:
         elif dp.kind == "council_propose":
             self._council_proposal_queue.pop(0)
             if choice["type"] == "council_propose":
+                auto_apply_council_whispers(
+                    s,
+                    "proposal",
+                    motion_id=choice["motion"],
+                )
                 self._council_motions.append({
                     "motion": choice["motion"],
                     "proposer": dp.pid,
@@ -910,10 +1067,32 @@ class Game:
             self._council_vote_queue.pop(0)
             if not self._council_vote_queue:
                 motion = self._council_motions[self._council_vote_motion_idx]
-                passed = tally_votes(s, motion["motion"], self._council_ballots)
+                auto_apply_council_whispers(
+                    s,
+                    "pre_tally",
+                    motion_id=motion["motion"],
+                    extra_votes=self._council_extra_votes,
+                )
+                passed = tally_votes(
+                    s,
+                    motion["motion"],
+                    self._council_ballots,
+                    extra_yes=self._council_extra_votes.get("for", 0),
+                    extra_no=self._council_extra_votes.get("against", 0),
+                )
                 if passed:
-                    apply_motion(s, motion["motion"], motion["proposer"])
-                    self.council_stats["motions_passed"] += 1
+                    veto = [False]
+                    auto_apply_council_whispers(
+                        s,
+                        "post_pass",
+                        motion_id=motion["motion"],
+                        veto_flag=veto,
+                    )
+                    if not veto[0]:
+                        apply_motion(s, motion["motion"], motion["proposer"])
+                        self.council_stats["motions_passed"] += 1
+                    else:
+                        self.council_stats["motions_failed"] += 1
                 else:
                     self.council_stats["motions_failed"] += 1
                     if (
@@ -923,6 +1102,7 @@ class Game:
                         s.player(s.speaker).renown = max(
                             0, s.player(s.speaker).renown - 1,
                         )
+                self._council_extra_votes = {"for": 0, "against": 0}
                 self._advance_council_vote_motion()
         elif dp.kind == "negotiation":
             self._submit_negotiation(dp, choice)
@@ -951,9 +1131,42 @@ class Game:
                         self._start_secondary_window(dp.pid, card)
                 elif card == "military_maneuvers":
                     self._after_military_primary_paid(dp.pid, card)
+                elif card == "diplomatic_decree":
+                    apply_diplomatic_decree_primary(s, dp.pid)
+                    run_emergency_council(s, dp.pid, self.rng)
+                    self._start_secondary_window(dp.pid, card)
+                elif card == "expansion_strategy":
+                    hexes = enumerate_expansion_primary_choices(s, dp.pid)
+                    if hexes:
+                        self._followup = {
+                            "kind": "expansion_primary",
+                            "pid": dp.pid,
+                            "card": card,
+                        }
+                    else:
+                        self._start_secondary_window(dp.pid, card)
+                elif card == "tactical_reinforcements":
+                    recs = enumerate_tactical_primary_recruits(s, dp.pid)
+                    if recs:
+                        self._followup = {
+                            "kind": "tactical_primary",
+                            "pid": dp.pid,
+                            "card": card,
+                        }
+                    else:
+                        self._start_secondary_window(dp.pid, card)
+                elif card == "imperial_mandate":
+                    apply_imperial_mandate_primary(s, dp.pid, self.rng)
+                    self._start_secondary_window(dp.pid, card)
                 else:
                     self._finish_action_turn(dp.pid)
             elif t == "move":
+                auto_apply_when_whispers(
+                    s,
+                    "before_move",
+                    uid=choice.get("uid"),
+                    skip=dp.pid,
+                )
                 apply_move(s, dp.pid, choice)
                 if not self._after_unit_entry(dp.pid, tuple(choice["dest"])):
                     self._finish_action_turn(dp.pid)
@@ -961,6 +1174,10 @@ class Game:
                 if len(choice["units"]) > 2:
                     self.building_stats["forge_recruits"] += 1
                 apply_recruit(s, dp.pid, choice)
+                city = choice.get("city")
+                auto_apply_when_whispers(
+                    s, "recruit_done", city=city, recruiter=dp.pid,
+                )
                 self._finish_action_turn(dp.pid)
             elif t == "build":
                 apply_build(s, dp.pid, choice)
@@ -990,6 +1207,12 @@ class Game:
                 )
                 self.negotiation_stats["offers_proposed"] += 1
             elif t == "attack":
+                auto_apply_when_whispers(
+                    s,
+                    "enemy_attack",
+                    attacker=dp.pid,
+                    target=tuple(choice["target"]),
+                )
                 self._battle = combat.start_battle(s, dp.pid, choice)
                 combat.resolve_round(s, self._battle, self.rng)
                 self._battle_stage = "defender_retreat"
@@ -1017,6 +1240,10 @@ class Game:
                 if len(s.player(dp.pid).lord_equipment) <= 2:
                     self._artifact_followup = None
                 self._finish_action_turn(dp.pid)
+            elif t == "whisper_play":
+                apply_action_whisper(s, dp.pid, choice)
+                self._track_whisper_play(dp.pid, choice["card"])
+                self._finish_action_turn(dp.pid)
             elif t == "research":
                 apply_research(
                     s, dp.pid, choice["discovery"],
@@ -1027,16 +1254,34 @@ class Game:
             apply_research(
                 s, dp.pid, choice["discovery"],
                 free=dp.context.get("free", False),
-                ap_waived=dp.context.get("free", False),
+                ap_waived=dp.context.get("ap_waived", False),
             )
-            self._research_followup = None
-            if (
-                dp.context.get("free")
-                and "arcane_ascendancy" in s.player(dp.pid).primary_used
-            ):
-                self._start_secondary_window(dp.pid, "arcane_ascendancy")
-            else:
+            sec_card = dp.context.get("card")
+            if sec_card == "arcane_ascendancy":
+                self._research_followup = None
+                self._followup = None
                 self._finish_action_turn(dp.pid)
+            elif self._research_followup is not None:
+                self._research_followup = None
+                if (
+                    dp.context.get("free")
+                    and "arcane_ascendancy" in s.player(dp.pid).primary_used
+                ):
+                    self._start_secondary_window(dp.pid, "arcane_ascendancy")
+                else:
+                    self._finish_action_turn(dp.pid)
+            elif sec_card:
+                self._followup = None
+                self._finish_action_turn(dp.pid)
+            else:
+                self._research_followup = None
+                if (
+                    dp.context.get("free")
+                    and "arcane_ascendancy" in s.player(dp.pid).primary_used
+                ):
+                    self._start_secondary_window(dp.pid, "arcane_ascendancy")
+                else:
+                    self._finish_action_turn(dp.pid)
         elif dp.kind == "artifact":
             step = dp.context.get("step")
             if step == "discard_lord":
@@ -1093,16 +1338,35 @@ class Game:
                         self._start_secondary_window(pid, card)
                 else:
                     self._start_secondary_window(pid, card)
-        elif dp.kind == "strategy_secondary":
-            apply_strategy_secondary(
-                s, dp.pid, choice["card"], use=choice["use"],
-            )
-            if self._followup and self._followup.get("queue"):
-                self._followup["queue"].pop(0)
-            if self._followup and not self._followup.get("queue"):
-                owner = self._followup["owner"]
+            elif t == "expansion_claim":
+                apply_expansion_strategy_primary(s, pid, tuple(choice["hex"]))
                 self._followup = None
-                self._finish_action_turn(owner)
+                self._start_secondary_window(pid, card)
+            elif t == "expansion_skip":
+                self._followup = None
+                self._start_secondary_window(pid, card)
+            elif t == "tactical_recruit":
+                apply_recruit(
+                    s, pid, choice, free=True, ignore_city_limit=True,
+                )
+                self._followup = None
+                self._start_secondary_window(pid, card)
+            elif t == "tactical_skip":
+                self._followup = None
+                self._start_secondary_window(pid, card)
+        elif dp.kind == "strategy_secondary":
+            followup = apply_strategy_secondary(
+                s, dp.pid, choice["card"], use=choice["use"], rng=self.rng,
+            )
+            if followup:
+                self._followup = followup
+            elif self._followup and self._followup.get("kind") == "strategy_secondary":
+                if self._followup["queue"]:
+                    self._followup["queue"].pop(0)
+                if not self._followup["queue"]:
+                    owner = self._followup["owner"]
+                    self._followup = None
+                    self._finish_action_turn(owner)
         elif dp.kind == "defender_retreat":
             if choice["type"] == "retreat":
                 combat.apply_defender_retreat(s, self._battle, choice)

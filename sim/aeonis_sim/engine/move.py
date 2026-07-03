@@ -40,11 +40,12 @@ def _portal_exits(state, pid, coord):
     t = state.tiles.get(coord)
     if t is None or t.terrain != Terrain.PORTAL:
         return []
+    hostile_ok = state.player(pid).whisper_flags.get("hostile_portal_ok")
     out = []
     for c2, t2 in state.tiles.items():
         if c2 == coord or t2.terrain != Terrain.PORTAL:
             continue
-        if t2.controller in (None, pid):
+        if t2.controller in (None, pid) or hostile_ok:
             out.append(c2)
     return out
 
@@ -116,6 +117,8 @@ def enumerate_moves(state, pid, *, waive_terrain: bool = False) -> list:
                     m += lord_move_bonus(state, pid)
                 moves.append(m)
             max_range = min(moves)
+            if p.whisper_flags.get("forced_march"):
+                max_range += 1
             has_cav = any(u.type == UnitType.CAVALRY for u in group)
             for dest, (cost, _steps, portaled) in _paths_from(
                     state, pid, tile.coord, max_range, p.ap, has_cav,
@@ -139,6 +142,19 @@ def apply_move(state, pid, choice) -> None:
     src = state.tiles[tuple(choice["from"])]
     dst = state.tiles[tuple(choice["dest"])]
     moving = [u for u in src.units if u.uid in set(choice["uids"])]
+    blink_uid = p.whisper_flags.pop("blink_uid", None)
+    if blink_uid is not None:
+        blink_u = next((u for u in moving if u.uid == blink_uid), None)
+        if blink_u is not None:
+            moving.remove(blink_u)
+            city = next(
+                (t for t in state.controlled(pid) if t.terrain == Terrain.CITY),
+                None,
+            )
+            if city is not None:
+                city.units.append(blink_u)
+    p.whisper_flags.pop("forced_march", None)
+    p.whisper_flags.pop("hostile_portal_ok", None)
     src.units = [u for u in src.units if u.uid not in set(choice["uids"])]
     dst.units.extend(moving)
     cost = choice["cost"]

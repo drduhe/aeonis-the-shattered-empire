@@ -34,7 +34,7 @@ canon.
 | AL-22 | High Council custom motions / negotiation | Bots propose revealed agenda only; binding deals deferred to Task 6 | `High_Council.md` / `Diplomacy.md` | **Open** (M2 simplification) |
 | AL-23 | Council tie-break when yes/no votes equal | **Motion fails** (no Speaker auto-pass in sim) | `High_Council.md` | **Resolved** (2026-07-03, M2 sim) |
 | AL-24 | Sim round cap with no player at VP threshold | Game **completes** at `DEFAULT_ROUND_CAP` (25) with `round_cap_finish`; tiebreak by current VP | `sim/README.md` pacing | **Resolved** (2026-07-03, sim-only) |
-| AL-25 | Strategy primaries referencing Arcane Tier II+ | Arcane Ascendancy **primary** real (Task 4); secondary + other cards deferred to Task 7 | `Strategy.md` | **Open** (M3 Task 4 partial) |
+| AL-25 | Strategy primaries referencing Arcane Tier II+ | All eight primaries + secondaries encoded (M3 Task 7); Arcane secondary = +1 Mana cost research without AP | `Strategy.md` | **Resolved** (2026-07-03, M3 Task 7 sim) |
 | AL-26 | Bank conversion timing / player choice | Auto-heuristic at end of Production & Upkeep: surplus mana→gold, else gold→mana when mana=0; one use per player per round | `Buildings.md` | **Resolved** (2026-07-03, M3 Task 1 sim) |
 | AL-27 | Market free trade vs one-trade-per-round limit | Market makes trade **initiation** 0 AP; still one initiation per player per round | `Buildings.md` / `Trade_Taxes.md` | **Resolved** (2026-07-03, M3 Task 1 sim) |
 | AL-28 | Lost Cartographer with no fog in sim | +1 AP this round only; no tile reveal | `Events.md` | **Resolved** (2026-07-03, M3 Task 2 sim) |
@@ -49,3 +49,4 @@ canon.
 | AL-37 | Scrying Pool agenda peek | No-op in full-info sim | `Arcane.md` | **Resolved** (2026-07-03, M3 Task 4 sim) |
 | AL-38 | Quiet Knife — Influence bid / takeover in sim | Annexation + Border Arbitration hex claims count; contested Influence bid and Influence takeover deferred (AL-14 adjacency stays neutral) | `Objectives.md` / `Tiles.md` | **Open** (M3 Task 5 partial) |
 | AL-39 | FP 6-card secret pool vs 4p round-3 draws | Shared deck reshuffles discard when empty; with 6-card FP pool some players may not receive a round-3 secret if deck exhausts before their draw | `Objectives.md` §3.2 | **Resolved** (2026-07-03, M3 Task 5 sim) |
+| AL-40 | Whisper reactive windows / sabotage / response ordering | Combat, council, and WHEN whispers auto-play via first-eligible-card heuristic per window; sabotage auto-plays from first opponent holding Sabotage (stats only, no undo); full player-choice DPs deferred | `Whispers.md` | **Resolved** (2026-07-03, M3 Task 6 sim) |

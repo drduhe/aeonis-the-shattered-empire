@@ -85,6 +85,8 @@ def run_production(state) -> dict:
         for t in state.controlled(p.pid):
             if t.cursed:
                 continue
+            double = p.whisper_flags.pop("double_tile", None)
+            mult = 2 if double and tuple(t.coord) == tuple(double) else 1
             produced = None
             for b in t.buildings:
                 if b in _UPGRADED:
@@ -96,9 +98,9 @@ def run_production(state) -> dict:
                 extra = production_ley_line_mana(t)
                 if res == "gold":
                     amt += production_adjacent_gold(state, p.pid, t)
-                setattr(p, res, getattr(p, res) + amt + (extra if res == "mana" else 0))
+                setattr(p, res, getattr(p, res) + (amt + (extra if res == "mana" else 0)) * mult)
                 if extra and res != "mana":
-                    p.mana += extra
+                    p.mana += extra * mult
         # 2. Population growth
         growth = 1  # Population.md base growth
         for t in state.controlled(p.pid):

@@ -297,6 +297,8 @@ class PersonaBot:
                 if c["type"] == "obj_discard":
                     return c
             return decision_point.choices[0]
+        if decision_point.kind == "whisper_discard":
+            return decision_point.choices[0]
         scored: list[tuple[float, dict]] = []
         for choice in decision_point.choices:
             feats = score_action(state, pid, choice, decision_point)

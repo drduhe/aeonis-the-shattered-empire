@@ -107,6 +107,15 @@ def evaluate_state(state, pid: int) -> dict[str, float]:
         "military": min(military, 3.0) / 3.0,
         "renown": min(p.renown, 5) / 5.0,
         "ap": p.ap / 5.0,
+        "remnants": min(p.remnants, 6) / 6.0,
+        "whisper_hand": len(p.whisper_hand) / 7.0,
+        "artifacts": min(
+            len(p.lord_equipment)
+            + (1 if p.pending_building_relic else 0)
+            + sum(1 for t in controlled if t.building_relic),
+            4,
+        ) / 4.0,
+        "research": min(len(p.discoveries), 3) / 3.0,
     }
 
 
@@ -310,6 +319,13 @@ def score_action(state, pid: int, choice: dict, dp) -> dict[str, float]:
         elif card == "military_maneuvers":
             feats["military_delta"] = 1.0
             feats["combat"] = feats.get("combat", 0) + 0.5
+    elif t == "whisper_play":
+        feats["whisper_hand"] = max(0.0, feats.get("whisper_hand", 0) - 0.15)
+    elif t == "artifact_purge_draw":
+        feats["remnants"] = max(0.0, feats.get("remnants", 0) - 0.5)
+        feats["artifacts"] = feats.get("artifacts", 0) + 0.25
+    elif t == "research":
+        feats["research"] = feats.get("research", 0) + 0.35
     elif t == "strategy_secondary" and choice.get("use"):
         feats["economy_delta"] = 0.5
     feats.update(_combat_features(state, pid, choice))

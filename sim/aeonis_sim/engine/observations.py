@@ -12,9 +12,9 @@ _DEFAULT_PHASE = {
     "negotiation": "council",
     "exploration": "action",
     "objective_draw": "round_start",
+    "whisper_discard": "cleanup",
     "artifact": "action",
     "research": "action",
-    "objective_draw": "round_start",
     "press": "combat",
     "defender_retreat": "combat",
 }

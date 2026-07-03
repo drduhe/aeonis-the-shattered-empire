@@ -77,38 +77,38 @@ Ordered by dependency; each task lands with unit tests, and regenerates goldens 
 
 The engineering core of M3 — reactive windows on top of the sequential decision-point model (pattern precedent: M2 negotiation sessions).
 
-- [ ] Deck/discard/reshuffle; setup draw 2; Round Start draw 2; **draw 1 on any VP score** (`Whispers.md` §2); hand limit 7 with discard decision at Cleanup.
-- [ ] **ACTION whispers** (0 AP, consume turn): enumerate alongside actions.
-- [ ] **COUNCIL whispers** (5): windows at proposal (Political Leverage, Leaked Intelligence on agenda reveal), pre-tally (Backroom Deal), post-pass (Veto).
-- [ ] **COMBAT whispers** (8): windows at Pre-Strike / Strike / Counterstrike / Retreat / Reinforce steps; one whisper per window per player per occurrence.
-- [ ] **WHEN triggers**: event-keyed offers to eligible hands (Rallying Cry, War Profiteer, Emergency Conscription, Iron Resolve, Fortify Position…), initiative-ordered.
-- [ ] **Sabotage**: response window after any whisper play; cancels, both discard, cannot be sabotaged.
-- [ ] Movement/Arcane + Subterfuge cards (Forced March, Blink, Ley Line Surge, Waystone Activation, Saboteur, Mercenary Company, Relic Thief) — encode with AL entries where interpretation is needed.
-- [ ] Bot heuristics: value model per category (combat swing, vote swing, economy delta); skip-by-default with targeted triggers, so games don't drown in offer windows. Cap enumeration per window.
-- [ ] Observations: register new dp kinds → phases (`observations.py`); record whisper stats (played by category, sabotage rate).
-- [ ] Tests: draw economy, hand limit, each timing window, sabotage counter-play, ACTION-consumes-turn, per-card effects (26).
+- [x] Deck/discard/reshuffle; setup draw 2; Round Start draw 2; **draw 1 on any VP score** (`Whispers.md` §2); hand limit 7 with discard decision at Cleanup.
+- [x] **ACTION whispers** (0 AP, consume turn): enumerate alongside actions.
+- [x] **COUNCIL whispers** (5): windows at proposal (Political Leverage, Leaked Intelligence on agenda reveal), pre-tally (Backroom Deal), post-pass (Veto).
+- [x] **COMBAT whispers** (8): windows at Pre-Strike / Strike / Counterstrike / Retreat / Reinforce steps; one whisper per window per player per occurrence.
+- [x] **WHEN triggers**: event-keyed offers to eligible hands (Rallying Cry, War Profiteer, Emergency Conscription, Iron Resolve, Fortify Position…), initiative-ordered.
+- [x] **Sabotage**: response window after any whisper play; cancels, both discard, cannot be sabotaged.
+- [x] Movement/Arcane + Subterfuge cards (Forced March, Blink, Ley Line Surge, Waystone Activation, Saboteur, Mercenary Company, Relic Thief) — encode with AL entries where interpretation is needed.
+- [x] Bot heuristics: value model per category (combat swing, vote swing, economy delta); skip-by-default with targeted triggers, so games don't drown in offer windows. Cap enumeration per window.
+- [x] Observations: register new dp kinds → phases (`observations.py`); record whisper stats (played by category, sabotage rate).
+- [x] Tests: draw economy, hand limit, each timing window, sabotage counter-play, ACTION-consumes-turn, per-card effects (26).
 
 ### Task 7 — Strategy primaries/secondaries completion (close AL-25)
 
-- [ ] **Diplomatic Decree** primary (2 Influence + Speaker token + immediate emergency motion via council machinery) and secondary (+2 Influence).
-- [ ] **Expansion Strategy** primary (claim adjacent empty neutral + 1 pop) and secondary (2 Influence claim).
-- [ ] **Tactical Reinforcements** primary (free recruit ≤2 ignoring city limit) and secondary (paid extra Recruit).
-- [ ] **Imperial Mandate** primary (Seat → 1 VP else draw secret; +1 Influence) and secondary (2 Influence → draw 1 Whisper — Task 6 hook).
-- [ ] Arcane Ascendancy secondary (research at cost +1 Mana, no AP).
-- [ ] Update `PRIMARY_IMPLEMENTED` / `SECONDARY_EFFECTS`; remove stubs; persona draft scoring reviewed (no weight inflation — see Task 8 guardrail).
-- [ ] Tests per card, including VP-source tagging for Imperial Mandate.
+- [x] **Diplomatic Decree** primary (2 Influence + Speaker token + immediate emergency motion via council machinery) and secondary (+2 Influence).
+- [x] **Expansion Strategy** primary (claim adjacent empty neutral + 1 pop) and secondary (2 Influence claim).
+- [x] **Tactical Reinforcements** primary (free recruit ≤2 ignoring city limit) and secondary (paid extra Recruit).
+- [x] **Imperial Mandate** primary (Seat → 1 VP else draw secret; +1 Influence) and secondary (2 Influence → draw 1 Whisper — Task 6 hook).
+- [x] Arcane Ascendancy secondary (research at cost +1 Mana, no AP).
+- [x] Update `PRIMARY_IMPLEMENTED` / `SECONDARY_EFFECTS`; remove stubs; persona draft scoring reviewed (no weight inflation — see Task 8 guardrail).
+- [x] Tests per card, including VP-source tagging for Imperial Mandate.
 
 ### Task 8 — Agents & reports
 
-- [ ] Features: remnant/artifact value (progress toward purge-3, VP relics), research value, whisper hand pressure, new-building economy deltas. **Guardrail: calibration stop rule holds** — new features get modest cross-persona weights; no persona weight inflation to chase H8. Economist gets only fantasy-aligned hooks (Bank/Market/gold banking already covered by `gold_track`).
-- [ ] Report sections: whispers (plays by category, sabotage rate), artifacts (first-artifact round, VP-relic share), research (discoveries/game), remnant economy; VP-source table gains `artifact` row.
-- [ ] New hypotheses wired into evaluators: **H10** whisper draw rate keeps hands ≤7 without flooding (packet goal 9), **H11** first artifact by round 3–4 (packet goal 10), **H12** Merchant Lord lifts economist mixed win rate ≥5% without balanced/warmonger exceeding 40% (memo follow-up).
+- [x] Features: remnant/artifact value (progress toward purge-3, VP relics), research value, whisper hand pressure, new-building economy deltas. **Guardrail: calibration stop rule holds** — new features get modest cross-persona weights; no persona weight inflation to chase H8. Economist gets only fantasy-aligned hooks (Bank/Market/gold banking already covered by `gold_track`).
+- [x] Report sections: whispers (plays by category, sabotage rate), artifacts (first-artifact round, VP-relic share), research (discoveries/game), remnant economy; VP-source table gains `artifact` row.
+- [x] New hypotheses wired into evaluators: **H10** whisper draw rate keeps hands ≤7 without flooding (packet goal 9), **H11** first artifact by round 3–4 (packet goal 10), **H12** Merchant Lord lifts economist mixed win rate ≥5% without balanced/warmonger exceeding 40% (memo follow-up).
 
 ### Task 9 — M3 gate run
 
-- [ ] Regenerate goldens; chaos smoke; 100-game mixed + 200-game solo brackets green per §2 table.
-- [ ] Add `sim/configs/bracket-m3-ci.json` (20 mixed 4p, zero-fail + completed=1.0) to CI matrix.
-- [ ] Regenerate `docs/reports/` baselines; update both INDEX files; triage ledger; record gate in `docs/plans/INDEX.md` sim track.
+- [x] Regenerate goldens; chaos smoke; 100-game mixed + 200-game solo brackets green per §2 table.
+- [x] Add `sim/configs/bracket-m3-ci.json` (20 mixed 4p, zero-fail + completed=1.0) to CI matrix.
+- [x] Regenerate `docs/reports/` baselines; update both INDEX files; triage ledger; record gate in `docs/plans/INDEX.md` sim track.
 
 ## 4. Sequencing & risks
 
