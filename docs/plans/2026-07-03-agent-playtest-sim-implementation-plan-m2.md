@@ -133,11 +133,11 @@ tests/
 
 **Files:** `sim/aeonis_sim/engine/negotiation.py`
 
-- [ ] `Offer` type: gives/gets resources, vote commitment on named motion.
-- [ ] Flow: propose → accept | reject | one counter → closed (per design spec §6).
-- [ ] Binding transfers execute in engine; track non-binding promises for metrics.
-- [ ] Persona bots evaluate offers via dot-product on persona weights.
-- [ ] Tests: resource trade executes; illegal offer rejected.
+- [x] `Offer` type: gives/gets resources, vote commitment on named motion.
+- [x] Flow: propose → accept | reject | one counter → closed (per design spec §6).
+- [x] Binding transfers execute in engine; track non-binding promises for metrics.
+- [x] Persona bots evaluate offers via dot-product on persona weights.
+- [x] Tests: resource trade executes; illegal offer rejected.
 
 **Window:** Council negotiation + Trade action only (per `Diplomacy.md` binding deals).
 

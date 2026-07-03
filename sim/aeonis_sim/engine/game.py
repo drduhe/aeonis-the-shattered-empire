@@ -21,6 +21,16 @@ from .council import (
 )
 from .events import draw_event, resolve_event
 from .invariants import check_invariants
+from .negotiation import (
+    NegotiationSession,
+    apply_session_choice,
+    check_vote_promises,
+    enumerate_council_negotiation,
+    enumerate_trade_negotiation,
+    enumerate_trade_starts,
+    start_session,
+    validate_offer,
+)
 from .move import apply_move, enumerate_moves
 from .observations import DecisionPoint
 from .production import run_production
@@ -94,6 +104,20 @@ class Game:
             "votes_no": 0,
             "influence_spent": 0,
         }
+        self.negotiation_stats = {
+            "offers_proposed": 0,
+            "offers_accepted": 0,
+            "offers_rejected": 0,
+            "counters": 0,
+            "promises_made": 0,
+            "promises_kept": 0,
+            "promises_broken": 0,
+        }
+        self.promises_log: list[dict] = []
+        self._negotiation_session: Optional[NegotiationSession] = None
+        self._council_negotiation_queue: list[int] = []
+        self._trade_used: dict[int, bool] = {}
+        self._trade_initiator: Optional[int] = None
         self._round_start()
 
     # ---- phases ----
@@ -161,6 +185,9 @@ class Game:
         self._council_vote_motion_idx = 0
         self._council_vote_queue = []
         self._council_ballots = []
+        self._council_negotiation_queue = []
+        self._negotiation_session = None
+        self._trade_used = {p.pid: False for p in s.players}
         self._run_event_phase()
         if s.round >= 2 and s.shared_public_deck:
             s.shared_public_revealed.append(s.shared_public_deck.pop())
@@ -190,7 +217,63 @@ class Game:
             return
         self._council_vote_motion_idx = 0
         self._council_ballots = []
-        self._council_vote_queue = initiative_order(self.state)
+        self._council_vote_queue = []
+        self._council_negotiation_queue = initiative_order(self.state)
+
+    def _council_motion_id(self) -> str:
+        if not self._council_motions:
+            return ""
+        return self._council_motions[self._council_vote_motion_idx]["motion"]
+
+    def _negotiation_decision(self) -> Optional[DecisionPoint]:
+        session = self._negotiation_session
+        if session is not None:
+            if session.phase == "respond":
+                pid = session.target
+            elif session.phase == "counter_review":
+                pid = session.proposer
+            else:
+                pid = session.proposer
+            if session.window == "council":
+                choices = enumerate_council_negotiation(
+                    self.state,
+                    pid,
+                    motion=session.motion or "",
+                    session=session,
+                )
+            else:
+                choices = enumerate_trade_negotiation(
+                    self.state, pid, session=session,
+                )
+            return DecisionPoint(
+                kind="negotiation",
+                phase="council" if session.window == "council" else "action",
+                pid=pid,
+                choices=choices,
+                context={
+                    "window": session.window,
+                    "motion": session.motion,
+                    "proposer": session.proposer,
+                    "target": session.target,
+                    "gives": dict(session.gives),
+                    "gets": dict(session.gets),
+                    "phase": session.phase,
+                    "countered": session.countered,
+                },
+            )
+        if self._council_negotiation_queue:
+            pid = self._council_negotiation_queue[0]
+            motion = self._council_motion_id()
+            return DecisionPoint(
+                kind="negotiation",
+                phase="council",
+                pid=pid,
+                choices=enumerate_council_negotiation(
+                    self.state, pid, motion=motion, session=None,
+                ),
+                context={"window": "council", "motion": motion},
+            )
+        return None
 
     def _advance_council_vote_motion(self) -> None:
         self._council_vote_motion_idx += 1
@@ -198,7 +281,8 @@ class Game:
         if self._council_vote_motion_idx >= len(self._council_motions):
             self._begin_action_phase()
             return
-        self._council_vote_queue = initiative_order(self.state)
+        self._council_vote_queue = []
+        self._council_negotiation_queue = initiative_order(self.state)
 
     def _council_decision(self) -> Optional[DecisionPoint]:
         if self._council_proposal_queue:
@@ -213,8 +297,12 @@ class Game:
         if (
             self._council_motions
             and self._council_vote_motion_idx < len(self._council_motions)
-            and self._council_vote_queue
         ):
+            neg = self._negotiation_decision()
+            if neg is not None:
+                return neg
+            if not self._council_vote_queue:
+                self._council_vote_queue = initiative_order(self.state)
             motion = self._council_motions[self._council_vote_motion_idx]
             pid = self._council_vote_queue[0]
             return DecisionPoint(
@@ -358,7 +446,69 @@ class Game:
         out.extend(enumerate_recruits(s, pid))
         out.extend(enumerate_builds(s, pid))
         out.extend(combat.enumerate_attacks(s, pid))
+        if not self._trade_used.get(pid, False) and s.player(pid).ap >= 1:
+            out.extend(self._enumerate_trade_starts(pid))
         return out
+
+    def _enumerate_trade_starts(self, pid: int) -> list[dict]:
+        return enumerate_trade_starts(self.state, pid)
+
+    def _close_negotiation_session(self, window: str) -> None:
+        if window == "trade" and self._trade_initiator is not None:
+            self._finish_action_turn(self._trade_initiator)
+            self._trade_initiator = None
+
+    def _submit_negotiation(self, dp: DecisionPoint, choice: dict) -> None:
+        s = self.state
+        t = choice["type"]
+        if self._negotiation_session is None:
+            if t == "negotiation_skip":
+                if (
+                    self._council_negotiation_queue
+                    and self._council_negotiation_queue[0] == dp.pid
+                ):
+                    self._council_negotiation_queue.pop(0)
+                return
+            if t == "negotiation_propose":
+                target = int(choice["target"])
+                err = validate_offer(
+                    s, dp.pid, target,
+                    choice.get("gives", {}), choice.get("gets", {}),
+                )
+                if err:
+                    raise ValueError(err)
+                motion = dp.context.get("motion")
+                self._negotiation_session = start_session(
+                    window="council",
+                    proposer=dp.pid,
+                    target=target,
+                    gives=choice.get("gives", {}),
+                    gets=choice.get("gets", {}),
+                    promises=choice.get("promises"),
+                    motion=motion,
+                )
+                self.negotiation_stats["offers_proposed"] += 1
+                if (
+                    self._council_negotiation_queue
+                    and self._council_negotiation_queue[0] == dp.pid
+                ):
+                    self._council_negotiation_queue.pop(0)
+            return
+        window = self._negotiation_session.window
+        before_promises = len(self.promises_log)
+        session, outcome = apply_session_choice(
+            s,
+            self._negotiation_session,
+            choice,
+            promises_log=self.promises_log,
+            stats=self.negotiation_stats,
+        )
+        self._negotiation_session = session
+        added = len(self.promises_log) - before_promises
+        if added:
+            self.negotiation_stats["promises_made"] += added
+        if session is None:
+            self._close_negotiation_session(window)
 
     def _strategy_draft_decision(self) -> Optional[DecisionPoint]:
         if not self._draft_queue:
@@ -392,6 +542,11 @@ class Game:
         if council_dp is not None:
             self._pending = council_dp
             return self._pending
+        if self._negotiation_session and self._negotiation_session.window == "trade":
+            trade_neg = self._negotiation_decision()
+            if trade_neg is not None:
+                self._pending = trade_neg
+                return self._pending
         pid = self._active_pid()
         if pid is None:
             self._advance_phases()
@@ -467,6 +622,14 @@ class Game:
                 self._start_council_voting()
         elif dp.kind == "council_vote":
             lobby = int(choice.get("lobby", 0))
+            motion = self._council_motions[self._council_vote_motion_idx]["motion"]
+            check_vote_promises(
+                self.promises_log,
+                dp.pid,
+                motion,
+                bool(choice.get("support")),
+                self.negotiation_stats,
+            )
             if lobby:
                 s.player(dp.pid).influence -= lobby
                 self.council_stats["influence_spent"] += lobby
@@ -489,6 +652,8 @@ class Game:
                 else:
                     self.council_stats["motions_failed"] += 1
                 self._advance_council_vote_motion()
+        elif dp.kind == "negotiation":
+            self._submit_negotiation(dp, choice)
         elif dp.kind == "action":
             self._actions_taken[dp.pid] += 1
             t = choice["type"]
@@ -519,6 +684,27 @@ class Game:
             elif t == "build":
                 apply_build(s, dp.pid, choice)
                 self._finish_action_turn(dp.pid)
+            elif t == "trade":
+                target = int(choice["target"])
+                err = validate_offer(
+                    s, dp.pid, target,
+                    choice.get("gives", {}), choice.get("gets", {}),
+                )
+                if err:
+                    raise ValueError(err)
+                s.player(dp.pid).ap -= 1
+                self._trade_used[dp.pid] = True
+                self._trade_initiator = dp.pid
+                self._negotiation_session = start_session(
+                    window="trade",
+                    proposer=dp.pid,
+                    target=target,
+                    gives=choice.get("gives", {}),
+                    gets=choice.get("gets", {}),
+                    promises=choice.get("promises"),
+                    motion=None,
+                )
+                self.negotiation_stats["offers_proposed"] += 1
             elif t == "attack":
                 self._battle = combat.start_battle(s, dp.pid, choice)
                 combat.resolve_round(s, self._battle, self.rng)

@@ -5,6 +5,7 @@ _PHASE_SKIP = frozenset({
     "strategy_draft",
     "council_propose",
     "council_vote",
+    "negotiation",
 })
 
 

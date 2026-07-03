@@ -65,8 +65,9 @@ PERSONA_FEATURE_BOOSTS: dict[str, dict[str, float]] = {
 }
 
 
-from ..engine.strategy import STRATEGY_CARDS
 from ..engine.council import motion_vote_utility, persona_motion_adjustment
+from ..engine.negotiation import offer_value_for_recipient, validate_offer
+from ..engine.strategy import STRATEGY_CARDS
 
 
 def _score_draft_choice(state: GameState, choice: dict, persona: str = "") -> float:
@@ -159,6 +160,64 @@ def _score_council_propose(
     return score
 
 
+def _score_negotiation_choice(
+    state: GameState,
+    pid: int,
+    choice: dict,
+    context: dict,
+    persona: str,
+) -> float:
+    t = choice["type"]
+    weights = PERSONA_WEIGHTS[persona]
+    if t == "negotiation_skip":
+        return 0.55 if persona != "diplomat" else 0.25
+    if t == "negotiation_reject":
+        return 0.65
+    if t == "negotiation_accept":
+        proposer = int(context.get("proposer", pid))
+        gives = context.get("gives", {})
+        gets = context.get("gets", {})
+        if context.get("phase") == "counter_review":
+            cp = int(context.get("target", proposer))
+            val = offer_value_for_recipient(state, pid, cp, gives, gets, weights)
+        else:
+            val = offer_value_for_recipient(state, pid, proposer, gives, gets, weights)
+        return val + (0.2 if persona == "diplomat" else 0.0)
+    if t == "negotiation_propose":
+        target = int(choice["target"])
+        err = validate_offer(
+            state, pid, target,
+            choice.get("gives", {}), choice.get("gets", {}),
+        )
+        if err:
+            return -10.0
+        val = -offer_value_for_recipient(
+            state, target, pid,
+            choice.get("gives", {}), choice.get("gets", {}),
+            weights,
+        )
+        if persona == "diplomat":
+            val += 0.35
+        if choice.get("promises"):
+            val += 0.25 if persona == "diplomat" else 0.05
+        return val
+    if t == "negotiation_counter":
+        proposer = int(context.get("proposer", pid))
+        err = validate_offer(
+            state, pid, proposer,
+            choice.get("gives", {}), choice.get("gets", {}),
+        )
+        if err:
+            return -10.0
+        val = offer_value_for_recipient(
+            state, pid, proposer,
+            choice.get("gives", {}), choice.get("gets", {}),
+            weights,
+        )
+        return val
+    return 0.0
+
+
 class PersonaBot:
     """Scores legal actions with persona-weighted features; deterministic tie-break."""
 
@@ -205,6 +264,19 @@ class PersonaBot:
             scored = [
                 (
                     _score_council_vote(
+                        state, pid, c, decision_point.context, self.persona,
+                    ),
+                    c,
+                )
+                for c in decision_point.choices
+            ]
+            best = max(s for s, _ in scored)
+            top = [c for s, c in scored if abs(s - best) < 1e-9]
+            return self.rng.choice(top)
+        if decision_point.kind == "negotiation":
+            scored = [
+                (
+                    _score_negotiation_choice(
                         state, pid, c, decision_point.context, self.persona,
                     ),
                     c,

@@ -1,7 +1,6 @@
 """High Council phase (High_Council.md / First_Playable_Packet.md §5).
 
-M2 simplification: bots propose/vote on revealed agenda cards only; custom
-motions and negotiation deferred to Task 6.
+M2: bots propose/vote on revealed agenda cards; structured negotiation in Task 6.
 """
 from __future__ import annotations
 
