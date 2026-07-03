@@ -43,6 +43,10 @@ HYPOTHESES = {
         "name": "No persona dominates mixed-seat win rate",
         "kill": "Expander ≤30% and max persona ≤28% in mixed brackets",
     },
+    "H8": {
+        "name": "Economist viable in mixed seats (builder/gold path)",
+        "kill": "Economist win rate ≥5% in mixed 7–8p brackets",
+    },
 }
 
 
@@ -131,6 +135,21 @@ def _status_h7(records: list[dict]) -> str:
     return "inconclusive"
 
 
+def _status_h8(records: list[dict]) -> str:
+    pm = persona_parity_metrics(records)
+    if not pm:
+        return "inconclusive"
+    players = records[0]["config"].get("players", 0) if records else 0
+    if players < 7:
+        return "inconclusive"
+    eco = pm.get("by_persona", {}).get("economist", {}).get("win_rate", 0.0)
+    if eco >= 0.05:
+        return "killed"
+    if eco < 0.02:
+        return "confirmed"
+    return "inconclusive"
+
+
 _EVALUATORS = {
     "H1": _status_h1,
     "H2": _status_h2,
@@ -139,6 +158,7 @@ _EVALUATORS = {
     "H5": _status_h5,
     "H6": _status_h6,
     "H7": _status_h7,
+    "H8": _status_h8,
 }
 
 
@@ -178,6 +198,11 @@ def evaluate_hypotheses(records: list[dict]) -> dict[str, dict]:
             pm = persona_parity_metrics(records)
             detail["expander_win_rate"] = round(pm.get("expander_win_rate", 0), 3)
             detail["max_persona_win_rate"] = round(pm.get("max_win_rate", 0), 3)
+        elif hid == "H8":
+            pm = persona_parity_metrics(records)
+            detail["economist_win_rate"] = round(
+                pm.get("by_persona", {}).get("economist", {}).get("win_rate", 0.0), 3
+            )
         out[hid] = {
             "name": meta["name"],
             "kill_criterion": meta["kill"],
@@ -188,7 +213,7 @@ def evaluate_hypotheses(records: list[dict]) -> dict[str, dict]:
 
 
 def hypotheses_markdown(results: dict[str, dict]) -> str:
-    lines = ["## Hypothesis evaluation (H1–H7)", ""]
+    lines = ["## Hypothesis evaluation (H1–H8)", ""]
     lines.append("| ID | Hypothesis | Status | Detail |")
     lines.append("| --- | --- | --- | --- |")
     for hid, r in results.items():

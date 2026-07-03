@@ -61,6 +61,18 @@ def test_mixed_matchmaking_varies_seats():
     assert a != b
 
 
+def test_mixed_matchmaking_covers_full_roster_at_8p():
+    config = {
+        "players": 8,
+        "seed_base": 100,
+        "personas": ["balanced", "warmonger", "economist", "diplomat", "expander"],
+        "matchmaking": "mixed",
+    }
+    seats = _assign_personas(config, 0)
+    assert len(seats) == 8
+    assert set(config["personas"]).issubset(set(seats))
+
+
 def test_combat_config_forwarded_in_tournament():
     config = {
         "name": "combat-forward",

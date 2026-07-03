@@ -343,7 +343,7 @@ VP share. Persona bots shift incentives but Seat+streak remains the largest buck
 {persona_section}
 {combat_block}
 
-<h2>{hyp_heading} · Hypothesis evaluation (H1–H7)</h2>
+<h2>{hyp_heading} · Hypothesis evaluation (H1–H8)</h2>
 <table>
   <tr><th>ID</th><th>Hypothesis</th><th>Status</th><th>Metrics</th></tr>
   {hyp_rows}

@@ -39,13 +39,15 @@ def _assign_personas(config: dict, game_index: int) -> list[str]:
         return [rng.choice(roster) for _ in range(players)]
 
     if mode == "mixed":
-        # One distinct persona per seat when roster allows; deterministic shuffle.
+        # Shuffle seats; each roster persona appears at least once when possible.
         rng = random.Random(config.get("seed_base", 1) + game_index)
-        pool = list(roster)
-        rng.shuffle(pool)
-        while len(pool) < players:
-            pool.extend(roster)
-        return pool[:players]
+        base = list(roster)
+        rng.shuffle(base)
+        seats = base[: min(players, len(base))]
+        while len(seats) < players:
+            seats.append(rng.choice(roster))
+        rng.shuffle(seats)
+        return seats
 
     if isinstance(roster, list) and len(roster) == players:
         return roster

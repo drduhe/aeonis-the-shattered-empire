@@ -63,12 +63,19 @@ def evaluate_state(state, pid: int) -> dict[str, float]:
 
     n_ctrl = len(controlled)
     territory_sat = max(0.0, min((n_ctrl - 3) / 5.0, 1.0))
+    building_count = sum(len(t.buildings) for t in controlled)
+    builder_track = min(building_count, 3) / 3.0
+    gold_track = min(p.gold, 10) / 10.0
+    catch_up = max(0, max_opp_vp - p.vp) / VP_THRESHOLD
 
     return {
         "vp": p.vp / VP_THRESHOLD,
         "vp_lead": (p.vp - max_opp_vp) / VP_THRESHOLD,
         "territory": len(controlled) / map_size,
         "territory_sat": territory_sat,
+        "builder_track": builder_track,
+        "gold_track": gold_track,
+        "catch_up": catch_up,
         "seat": 1.0 if has_seat else 0.0,
         "seat_streak": min(p.rite_count, 3) / 3.0,
         "rite_ready": lord_on_seat,
@@ -156,6 +163,15 @@ def _attack_value(state, pid: int, target: tuple) -> float:
     return min(2.0, odds * 0.4 + lord_bonus + siege_penalty)
 
 
+def _builder_need(state, pid: int) -> float:
+    p = state.player(pid)
+    if "builder" in state.shared_public_revealed and "builder" not in p.shared_scored:
+        built = sum(len(t.buildings) for t in state.controlled(pid))
+        if built < 3:
+            return (3 - built) / 3.0
+    return 0.0
+
+
 def _move_features(state, pid: int, choice: dict) -> dict[str, float]:
     dest = tuple(choice["dest"])
     seat = _seat_coord(state)
@@ -172,21 +188,40 @@ def _move_features(state, pid: int, choice: dict) -> dict[str, float]:
         before = min(distance(o, seat) for o in origins)
         after = distance(dest, seat)
         seat_pull = max(0.0, (before - after) * 0.25)
-    return {"expansion": expansion, "seat_pull": seat_pull,
-            "rite_ready": 1.0 if (seat is not None and dest == seat) else 0.0}
+    builder_need = _builder_need(state, pid)
+    return {
+        "expansion": expansion,
+        "seat_pull": seat_pull,
+        "rite_ready": 1.0 if (seat is not None and dest == seat) else 0.0,
+        "builder_need": builder_need,
+    }
 
 
-def _build_features(choice: dict) -> dict[str, float]:
+def _build_features(state, pid: int, choice: dict) -> dict[str, float]:
     b = BuildingType(choice["building"])
     spec = BUILDING_SPECS[b]
     econ = spec.gold * 0.2 + spec.mana * 0.15 + spec.influence * 0.1
     mil = 0.3 if b in (BuildingType.FORTRESS, BuildingType.TOWER, BuildingType.CASTLE) else 0.0
-    return {"economy_delta": min(econ, 1.5), "military_delta": mil}
+    before = sum(len(t.buildings) for t in state.controlled(pid))
+    after = before + 1
+    builder_delta = max(0.0, min(after, 3) / 3.0 - min(before, 3) / 3.0)
+    production_bonus = 0.4 if b in (
+        BuildingType.MINE, BuildingType.GROVE, BuildingType.FARM, BuildingType.EMBASSY,
+    ) else 0.0
+    return {
+        "economy_delta": min(econ, 1.5),
+        "military_delta": mil,
+        "builder_delta": builder_delta,
+        "production_bonus": production_bonus,
+    }
 
 
-def _recruit_features(choice: dict) -> dict[str, float]:
+def _recruit_features(state, pid: int, choice: dict) -> dict[str, float]:
     power = sum(UNIT_STATS[UnitType(n)].attack_die for n in choice["units"])
-    return {"military_delta": min(power * 0.1, 1.0)}
+    return {
+        "military_delta": min(power * 0.1, 1.0),
+        "builder_need": _builder_need(state, pid),
+    }
 
 
 def simulate_action(state, pid: int, choice: dict, dp_kind: str):
@@ -221,9 +256,9 @@ def score_action(state, pid: int, choice: dict, dp) -> dict[str, float]:
     elif t == "move":
         feats.update(_move_features(state, pid, choice))
     elif t == "build":
-        feats.update(_build_features(choice))
+        feats.update(_build_features(state, pid, choice))
     elif t == "recruit":
-        feats.update(_recruit_features(choice))
+        feats.update(_recruit_features(state, pid, choice))
     feats.update(_combat_features(state, pid, choice))
 
     nxt = simulate_action(state, pid, choice, dp.kind)
