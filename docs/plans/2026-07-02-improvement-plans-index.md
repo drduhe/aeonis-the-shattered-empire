@@ -11,6 +11,7 @@
 | 1 | [Combat aggression](2026-07-02-plan-combat-aggression.md) | Aggressor's Edge (attacker wins ties) + Pillage + Engaged state | Solo, today |
 | 2 | [AP economy](2026-07-02-plan-ap-economy.md) | +2 AP bonus cap from all sources + Rally catch-up valve | Solo, after Plan 1 ladder |
 | 3 | [VP legibility](2026-07-02-plan-vp-legibility.md) | Shared public objectives, permanent VP, Coronation Rite, cut purchased VP | Solo + group |
+| 3b | [VP legibility MVP](2026-07-03-plan-vp-legibility-mvp.md) | First Playable slice: shared 6-card row + Rite + AL-5; sim regression gate | After AL lock; parallel Plan 1 |
 | 4 | [High player count](2026-07-02-plan-high-player-count.md) | Council Docket (2 items/round), Whisper draw scaling, new `Map_Construction.md` | Needs 6p/8p tables |
 | 5 | [Core Lords parity](2026-07-02-plan-core-lords-parity.md) | Signature bar + 6 redesign briefs (Seraphel, Cassian, Elyndra, Vharok, Auriel, Rakhis) | Head-to-head pairs |
 | 6 | [Bookkeeping](2026-07-02-plan-bookkeeping.md) | Renown → milestone track, kill building upkeep, rewrite `Trade_Taxes.md`, player-board ledger | Hygiene parts free |
