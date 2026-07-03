@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aeonis — Simulated Playtest Report, 6 &amp; 8 Players</title>
+<style>
+  :root {
+    --ink: #1e2430; --muted: #5c6675; --line: #e3e7ee; --bg: #ffffff;
+    --panel: #f6f8fb; --accent: #7a5af5; --gold: #c9962a; --good: #2e9e5b;
+    --warn: #c74e39; --six: #5b8def; --eight: #e07a5a;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font: 16px/1.6 Georgia, 'Times New Roman', serif;
+  }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 48px 28px 80px; }
+  header { border-bottom: 3px double var(--ink); padding-bottom: 20px; margin-bottom: 36px; }
+  .kicker {
+    font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 12px;
+    letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); font-weight: 700;
+  }
+  h1 { font-size: 34px; line-height: 1.2; margin: 8px 0 6px; }
+  .subtitle { color: var(--muted); font-size: 15px; }
+  h2 {
+    font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 15px;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink);
+    border-bottom: 1px solid var(--line); padding-bottom: 8px; margin: 44px 0 16px;
+  }
+  h3 {
+    font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 13px;
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted);
+    margin: 28px 0 10px;
+  }
+  p { margin: 0 0 14px; }
+  .tldr {
+    background: var(--panel); border-left: 4px solid var(--accent);
+    padding: 18px 22px; border-radius: 0 8px 8px 0; margin: 0 0 8px;
+  }
+  .statgrid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px; margin: 20px 0;
+  }
+  .stat {
+    background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .stat .num {
+    font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 26px;
+    font-weight: 700; line-height: 1.1;
+  }
+  .stat .lbl { font-size: 12.5px; color: var(--muted); margin-top: 4px;
+    font-family: 'Helvetica Neue', Arial, sans-serif; }
+  table {
+    border-collapse: collapse; width: 100%; margin: 14px 0 20px;
+    font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 14px;
+  }
+  th {
+    text-align: left; font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--muted); border-bottom: 2px solid var(--ink); padding: 8px 10px;
+  }
+  td { border-bottom: 1px solid var(--line); padding: 9px 10px; vertical-align: top; }
+  td.r, th.r { text-align: right; font-variant-numeric: tabular-nums; }
+  .bar-row { display: grid; grid-template-columns: 190px 1fr 64px; align-items: center;
+    gap: 12px; margin: 7px 0; font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 14px; }
+  .bar-track { background: var(--panel); border-radius: 6px; height: 22px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 6px; }
+  .bar-val { text-align: right; font-variant-numeric: tabular-nums; color: var(--muted); }
+  .note {
+    background: #fdf6ec; border-left: 4px solid var(--gold); padding: 14px 18px;
+    border-radius: 0 8px 8px 0; font-size: 15px; margin: 18px 0;
+  }
+  .info {
+    background: #eef4fd; border-left: 4px solid var(--six); padding: 14px 18px;
+    border-radius: 0 8px 8px 0; font-size: 15px; margin: 18px 0;
+  }
+  .warn-chip, .ok-chip, .new-chip {
+    display: inline-block; font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 2px 9px; border-radius: 99px; vertical-align: 1px;
+  }
+  .warn-chip { background: #fbe9e4; color: var(--warn); }
+  .ok-chip { background: #e3f4ea; color: var(--good); }
+  .new-chip { background: #e8eefb; color: var(--six); }
+  ul { margin: 0 0 14px; padding-left: 22px; }
+  li { margin-bottom: 7px; }
+  code {
+    font: 13px/1.5 'SF Mono', Menlo, Consolas, monospace; background: var(--panel);
+    padding: 1px 6px; border-radius: 5px;
+  }
+  .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin: 20px 0; }
+  @media (max-width: 640px) { .compare { grid-template-columns: 1fr; } }
+  footer {
+    margin-top: 56px; padding-top: 16px; border-top: 1px solid var(--line);
+    color: var(--muted); font-size: 13px; font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+  @media print { .wrap { padding-top: 12px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="kicker">Aeonis · Design &amp; Development</div>
+  <h1>Simulated Playtest Report — 6 &amp; 8&nbsp;Players</h1>
+  <div class="subtitle">Scaled-map fuzz campaign · chaos-bot stress test · July 2, 2026</div>
+</header>
+
+<div class="tldr">
+  <p style="margin:0"><strong>TL;DR —</strong> The simulator now supports the full First Playable
+  player range (3–8). In <strong>300 new games</strong> at 6 and 8 players, the engine completed
+  <strong>97%+ with zero crashes</strong>. At higher counts the map grows (61 and 91 hexes) and
+  games run longer, but the same structural pattern holds: the <strong>Imperial Seat still drives
+  most VP</strong>, though objectives gain share as player count rises. Average winning margin
+  remains ~7 VP — still a landslide in a 10-point race.</p>
+</div>
+
+<div class="info">
+<strong>Scope note:</strong> Milestone 1 originally shipped with 3–4 player maps only. For this
+report the map generator was extended per <code>First_Playable_Packet.md</code> §3.1 (scaled
+neutral ring, larger disk). Lords, Strategy cards, Council, and Whispers are still absent — this
+is the same core engine with a bigger board.
+</div>
+
+<h2>1 · Campaign overview <span class="ok-chip">Clean</span></h2>
+<p>
+300 games played by uniform-random <em>chaos bots</em> — 150 at six players, 150 at eight.
+Each configuration uses a scaled hex map with home clusters evenly spaced on the outer ring.
+</p>
+<table>
+  <tr>
+    <th>Config</th><th class="r">Map size</th><th class="r">Games</th>
+    <th class="r">Completed</th><th class="r">Degenerate*</th><th class="r">Timeout</th>
+    <th class="r">Crashes</th><th class="r">Avg length</th><th class="r">Avg actions</th>
+  </tr>
+  <tr>
+    <td><strong>6 players</strong></td><td class="r">61 hexes</td><td class="r">150</td>
+    <td class="r">147 (98%)</td><td class="r">2</td><td class="r">1</td>
+    <td class="r"><strong>0</strong></td><td class="r">12.7 rounds</td><td class="r">341</td>
+  </tr>
+  <tr>
+    <td><strong>8 players</strong></td><td class="r">91 hexes</td><td class="r">150</td>
+    <td class="r">145 (97%)</td><td class="r">2</td><td class="r">3</td>
+    <td class="r"><strong>0</strong></td><td class="r">14.3 rounds</td><td class="r">509</td>
+  </tr>
+</table>
+<p style="font-size:14px;color:var(--muted)">
+*Degenerate = finished but flagged (e.g. no VP progress for 8+ consecutive rounds). Timeout = hit
+the 25-round safety cap. Neither is a crash.
+</p>
+
+<div class="statgrid">
+  <div class="stat"><div class="num">6–25</div><div class="lbl">round range (both configs)</div></div>
+  <div class="stat"><div class="num">~7 VP</div><div class="lbl">avg winning margin</div></div>
+  <div class="stat"><div class="num">~52%</div><div class="lbl">losers finish at 0 VP</div></div>
+  <div class="stat"><div class="num">0</div><div class="lbl">invariant violations / crashes</div></div>
+</div>
+
+<h2>2 · Where victory points come from <span class="warn-chip">Caveats apply</span></h2>
+<div class="note">
+<strong>Read this first:</strong> random-move bots, not skilled players. These numbers describe
+what the <em>structure</em> rewards when nobody is steering — hypotheses, not design conclusions.
+</div>
+
+<div class="compare">
+  <div>
+    <h3 style="color:var(--six)">6 players · 147 completed games</h3>
+    <div class="bar-row"><div>Imperial Seat</div><div class="bar-track"><div class="bar-fill" style="width:48%;background:var(--six)"></div></div><div class="bar-val">47.5%</div></div>
+    <div class="bar-row"><div>Objectives</div><div class="bar-track"><div class="bar-fill" style="width:35%;background:#8eb5f5"></div></div><div class="bar-val">35.0%</div></div>
+    <div class="bar-row"><div>Seat streak bonus</div><div class="bar-track"><div class="bar-fill" style="width:15%;background:#b8cff9"></div></div><div class="bar-val">14.9%</div></div>
+    <div class="bar-row"><div>Lord capture</div><div class="bar-track"><div class="bar-fill" style="width:3%;background:#d4e2fc"></div></div><div class="bar-val">2.6%</div></div>
+    <p style="font-size:14px;margin-top:12px"><strong>Seat + streak ≈ 62%</strong> of all VP scored</p>
+  </div>
+  <div>
+    <h3 style="color:var(--eight)">8 players · 145 completed games</h3>
+    <div class="bar-row"><div>Objectives</div><div class="bar-track"><div class="bar-fill" style="width:44%;background:var(--eight)"></div></div><div class="bar-val">44.4%</div></div>
+    <div class="bar-row"><div>Imperial Seat</div><div class="bar-track"><div class="bar-fill" style="width:40%;background:#f0a090"></div></div><div class="bar-val">39.9%</div></div>
+    <div class="bar-row"><div>Seat streak bonus</div><div class="bar-track"><div class="bar-fill" style="width:13%;background:#f5c4b8"></div></div><div class="bar-val">12.7%</div></div>
+    <div class="bar-row"><div>Lord capture</div><div class="bar-track"><div class="bar-fill" style="width:3%;background:#fae0da"></div></div><div class="bar-val">2.9%</div></div>
+    <p style="font-size:14px;margin-top:12px"><strong>Seat + streak ≈ 53%</strong> of all VP scored</p>
+  </div>
+</div>
+
+<h2>3 · Observations</h2>
+<ul>
+  <li><strong>Scaling works mechanically.</strong> Larger maps, more players, longer games — and
+  the engine stayed stable through ~150,000 combined actions with no crashes or state corruption.</li>
+  <li><strong>Objectives gain share at 8 players.</strong> With more players pursuing the same
+  five public objective types (some duplicated when the deck reshuffles), objectives overtook raw
+  Seat income at 8p (44% vs 40%). Seat + streak still dominates combined, but the gap narrows
+  vs 3–4 player runs (~73% Seat share in the earlier report).</li>
+  <li><strong>Runaway wins persist.</strong> Average margin ~7.2 VP (6p) and ~7.0 VP (8p); mode
+  margin 8 in both. More than half of non-winners finish at exactly 0 VP. One player rides the
+  center to 10 while seven others watch.</li>
+  <li><strong>Games get longer, not shorter.</strong> 8-player games averaged 14.3 rounds vs
+  ~12 for 3–4 player configs — expected with more actors and a larger map, but still well
+  within the 25-round cap (only 4 timeouts across 300 games).</li>
+  <li><strong>Seat position still looks fair.</strong> Win counts per seat are noisy at ~18–35
+  wins each over 150 games; no clear first-player advantage, though 8p seat 3 and 7 look
+  slightly elevated — worth watching with strategic bots.</li>
+  <li><strong>Combat remains thin.</strong> Lord captures ~2.6–2.9% of VP — slightly higher than
+  at 3–4p (~1%), likely because more players means more battles, but still negligible vs Seat
+  income.</li>
+</ul>
+
+<h2>4 · Comparison to 3–4 player baseline</h2>
+<table>
+  <tr><th>Metric</th><th class="r">3–4p (prior report)</th><th class="r">6p</th><th class="r">8p</th></tr>
+  <tr><td>Map size</td><td class="r">37 hexes</td><td class="r">61 hexes</td><td class="r">91 hexes</td></tr>
+  <tr><td>Avg game length</td><td class="r">~12 rounds</td><td class="r">12.7 rounds</td><td class="r">14.3 rounds</td></tr>
+  <tr><td>Seat + streak VP share</td><td class="r">~73%</td><td class="r">~62%</td><td class="r">~53%</td></tr>
+  <tr><td>Objective VP share</td><td class="r">~26%</td><td class="r">35%</td><td class="r">44%</td></tr>
+  <tr><td>Avg winning margin</td><td class="r">~7 VP</td><td class="r">7.2 VP</td><td class="r">7.0 VP</td></tr>
+  <tr><td>Crash rate</td><td class="r">0%</td><td class="r">0%</td><td class="r">0%</td></tr>
+</table>
+<p>
+The headline balance concern — Seat dominance producing blowout wins — <em>softens slightly</em>
+as player count rises, but does not disappear. Objectives absorb some of the slack, yet nobody
+is contesting the center effectively under random play.
+</p>
+
+<h2>5 · What's next</h2>
+<ul>
+  <li><strong>Persona bots at 6–8p</strong> — the first test of whether skilled opponents can
+  break Seat camping or whether the structure itself needs tuning.</li>
+  <li><strong>Canon decisions</strong> on Seat VP rate, objective deck scaling at high player
+  counts, and catch-up mechanics (Winds of Fortune is in the Packet but not yet in the engine).</li>
+  <li><strong>Commit map scaling</strong> — the 5–8 player generator used here is tested but not
+  yet merged; should land with the next sim milestone.</li>
+</ul>
+
+<footer>
+  Method: 300 seeded chaos-bot games — 6 players (seeds 4000–4149, map radius 4) and 8 players
+  (seeds 5000–5149, map radius 5) — against the Milestone-1 engine with extended map generation.
+  Aggregates from JSONL records. All games reproducible from seed. · Aeonis playtest simulator ·
+  July 2, 2026
+</footer>
+
+</div>
+</body>
+</html>

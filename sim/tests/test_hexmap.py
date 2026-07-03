@@ -38,3 +38,27 @@ def test_generate_map_is_seed_deterministic():
     t2, h2 = generate_map(3, random.Random(7))
     assert h1 == h2
     assert {c: t.terrain for c, t in t1.items()} == {c: t.terrain for c, t in t2.items()}
+
+
+def test_generate_map_6p_and_8p_structure():
+    for n, radius, ruins, portals, lakes in (
+        (6, 4, 3, 2, 2),
+        (8, 5, 4, 3, 3),
+    ):
+        rng = random.Random(99)
+        tiles, homes = generate_map(n, rng)
+        assert len(homes) == n
+        assert len(tiles) == len(disk(radius))
+        seat = tiles[(0, 0)]
+        assert seat.imperial_seat
+        terrains = [t.terrain for t in tiles.values()]
+        assert terrains.count(Terrain.RUINS) == ruins
+        assert terrains.count(Terrain.PORTAL) == portals
+        assert terrains.count(Terrain.LAKE) == lakes
+        assert terrains.count(Terrain.DESERT) == n
+        portal_coords = [c for c, t in tiles.items() if t.terrain == Terrain.PORTAL]
+        for i, a in enumerate(portal_coords):
+            for b in portal_coords[i + 1:]:
+                assert distance(a, b) > 1
+        for home in homes:
+            assert tiles[home].terrain == Terrain.CITY

@@ -12,10 +12,12 @@ def build_initial_state(config: dict, rng: random.Random) -> GameState:
     tiles, homes = generate_map(n, rng)
     state = GameState(players=[], tiles=tiles)
 
-    deck = sorted(OBJECTIVES.keys())
-    rng.shuffle(deck)
+    deck: list = []
 
     for pid in range(n):
+        if not deck:
+            deck = list(OBJECTIVES.keys())
+            rng.shuffle(deck)
         p = PlayerState(pid=pid, home=homes[pid], ap=BASE_AP,
                         gold=2, mana=2, influence=1)
         p.objective = deck.pop()
