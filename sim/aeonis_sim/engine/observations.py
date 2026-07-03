@@ -10,6 +10,7 @@ _DEFAULT_PHASE = {
     "council_propose": "council",
     "council_vote": "council",
     "negotiation": "council",
+    "exploration": "action",
     "press": "combat",
     "defender_retreat": "combat",
 }

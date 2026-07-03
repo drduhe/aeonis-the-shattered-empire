@@ -7,6 +7,7 @@ from .objectives import (
     PUBLIC_OBJECTIVE_IDS,
     SECRET_OBJECTIVE_IDS,
 )
+from .exploration import init_exploration_deck
 from .council import init_agenda_deck
 from .events import init_event_deck
 from .types import BASE_AP, GameState, PlayerState, Unit, UNIT_STATS, UnitType
@@ -33,6 +34,7 @@ def build_initial_state(config: dict, rng: random.Random) -> GameState:
     state.speaker = int(rng.randrange(n))
     state.event_deck = init_event_deck(rng)
     state.agenda_deck = init_agenda_deck(rng)
+    state.exploration_deck = init_exploration_deck(rng)
 
     public_deck = list(PUBLIC_OBJECTIVE_IDS)
     rng.shuffle(public_deck)
@@ -65,5 +67,9 @@ def build_initial_state(config: dict, rng: random.Random) -> GameState:
 
     for p in state.players:
         p.pop_pool = state.pop_cap(p.pid) - state.pop_used(p.pid)
+
+    for t in tiles.values():
+        if t.controller is not None:
+            t.explored = True
 
     return state

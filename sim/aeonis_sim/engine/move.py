@@ -71,6 +71,12 @@ def _paths_from(state, pid, start, max_range, max_cost, has_cavalry,
             if not _passable(state, pid, nxt):
                 continue
             step = 0 if waive_terrain else TERRAIN_COST[state.tiles[nxt].terrain]
+            if (
+                not waive_terrain
+                and state.open_roads
+                and state.tiles[nxt].terrain == Terrain.PLAINS
+            ):
+                step = max(1, step - 1)
             f2 = flanked
             if nxt in zoc:
                 if not flanked:
@@ -106,6 +112,8 @@ def enumerate_moves(state, pid, *, waive_terrain: bool = False) -> list:
             for dest, (cost, _steps, portaled) in _paths_from(
                     state, pid, tile.coord, max_range, p.ap, has_cav,
                     waive_terrain=waive_terrain).items():
+                if portaled and p.portal_instability_free:
+                    cost = 0
                 out.append({
                     "type": "move",
                     "from": list(tile.coord),
@@ -124,7 +132,11 @@ def apply_move(state, pid, choice) -> None:
     moving = [u for u in src.units if u.uid in set(choice["uids"])]
     src.units = [u for u in src.units if u.uid not in set(choice["uids"])]
     dst.units.extend(moving)
-    p.ap -= choice["cost"]
+    cost = choice["cost"]
+    if choice.get("portal") and p.portal_instability_free:
+        cost = 0
+        p.portal_instability_free = False
+    p.ap -= cost
     if choice["portal"]:
         p.used_portal_travel = True
     # Tiles.md control method 3: neutral hex claimed immediately.

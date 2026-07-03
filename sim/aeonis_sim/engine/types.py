@@ -148,6 +148,8 @@ class Tile:
     # Ongoing siege: unit uids still committed between Attack actions (Combat.md §6.4).
     siege_att_uids: list = field(default_factory=list)
     siege_def_uids: list = field(default_factory=list)
+    explored: bool = False
+    cursed: bool = False
 
     def has(self, b: BuildingType) -> bool:
         return b in self.buildings
@@ -174,6 +176,8 @@ class Tile:
             "suspended": list(self.suspended),
             "siege_att_uids": list(self.siege_att_uids),
             "siege_def_uids": list(self.siege_def_uids),
+            "explored": self.explored,
+            "cursed": self.cursed,
         }
 
     @staticmethod
@@ -191,6 +195,8 @@ class Tile:
             suspended=list(d.get("suspended", [])),
             siege_att_uids=list(d.get("siege_att_uids", [])),
             siege_def_uids=list(d.get("siege_def_uids", [])),
+            explored=bool(d.get("explored", True)),
+            cursed=bool(d.get("cursed", False)),
         )
 
 
@@ -222,6 +228,8 @@ class PlayerState:
     primary_used: list = field(default_factory=list)       # card ids
     secondary_used: list = field(default_factory=list)     # card ids
     pending_ap: int = 0                                    # Event-granted AP next round
+    remnants: int = 0
+    portal_instability_free: bool = False  # one 0-AP portal move (AL-29)
 
     def add_vp(self, n: int, source: str) -> None:
         self.vp += n
@@ -248,6 +256,8 @@ class PlayerState:
             "primary_used": list(self.primary_used),
             "secondary_used": list(self.secondary_used),
             "pending_ap": self.pending_ap,
+            "remnants": self.remnants,
+            "portal_instability_free": self.portal_instability_free,
         }
 
     @staticmethod
@@ -277,6 +287,8 @@ class PlayerState:
         p.primary_used = list(d.get("primary_used", []))
         p.secondary_used = list(d.get("secondary_used", []))
         p.pending_ap = int(d.get("pending_ap", 0))
+        p.remnants = int(d.get("remnants", 0))
+        p.portal_instability_free = bool(d.get("portal_instability_free", False))
         return p
 
 
@@ -305,6 +317,12 @@ class GameState:
     agenda_deck: list = field(default_factory=list)
     agenda_revealed: Optional[str] = None
     active_laws: list = field(default_factory=list)
+    open_roads: bool = False
+    council_crisis: bool = False
+    exploration_deck: list = field(default_factory=list)
+    exploration_discard: list = field(default_factory=list)
+    artifact_sites: dict = field(default_factory=dict)  # "q,r" -> {card_id, owner}
+
     def player(self, pid: int) -> PlayerState:
         return self.players[pid]
 
@@ -366,6 +384,11 @@ class GameState:
             "agenda_deck": list(self.agenda_deck),
             "agenda_revealed": self.agenda_revealed,
             "active_laws": list(self.active_laws),
+            "open_roads": self.open_roads,
+            "council_crisis": self.council_crisis,
+            "exploration_deck": list(self.exploration_deck),
+            "exploration_discard": list(self.exploration_discard),
+            "artifact_sites": dict(self.artifact_sites),
         }
 
     @staticmethod
@@ -391,6 +414,11 @@ class GameState:
             agenda_deck=list(d.get("agenda_deck", [])),
             agenda_revealed=d.get("agenda_revealed"),
             active_laws=list(d.get("active_laws", [])),
+            open_roads=bool(d.get("open_roads", False)),
+            council_crisis=bool(d.get("council_crisis", False)),
+            exploration_deck=list(d.get("exploration_deck", [])),
+            exploration_discard=list(d.get("exploration_discard", [])),
+            artifact_sites=dict(d.get("artifact_sites", {})),
         )
 
     def copy(self) -> "GameState":
@@ -412,6 +440,8 @@ class GameState:
                 suspended=list(tile.suspended),
                 siege_att_uids=list(tile.siege_att_uids),
                 siege_def_uids=list(tile.siege_def_uids),
+                explored=tile.explored,
+                cursed=tile.cursed,
             )
             for coord, tile in self.tiles.items()
         }
@@ -443,6 +473,8 @@ class GameState:
                 primary_used=list(p.primary_used),
                 secondary_used=list(p.secondary_used),
                 pending_ap=p.pending_ap,
+                remnants=p.remnants,
+                portal_instability_free=p.portal_instability_free,
             )
             for p in self.players
         ]
@@ -467,4 +499,9 @@ class GameState:
             agenda_deck=list(self.agenda_deck),
             agenda_revealed=self.agenda_revealed,
             active_laws=list(self.active_laws),
+            open_roads=self.open_roads,
+            council_crisis=self.council_crisis,
+            exploration_deck=list(self.exploration_deck),
+            exploration_discard=list(self.exploration_discard),
+            artifact_sites=dict(self.artifact_sites),
         )

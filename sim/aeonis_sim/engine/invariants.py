@@ -23,7 +23,7 @@ def check_invariants(state) -> None:
         if n > 1:
             raise InvariantViolation(f"player {pid} has {n} lords")
     for p in state.players:
-        for attr in ("gold", "mana", "influence", "ap", "pop_pool", "vp", "renown"):
+        for attr in ("gold", "mana", "influence", "ap", "pop_pool", "vp", "renown", "remnants"):
             if getattr(p, attr) < 0:
                 raise InvariantViolation(f"player {p.pid} negative {attr}")
         if p.lord_captured and state.find_lord(p.pid) is not None:

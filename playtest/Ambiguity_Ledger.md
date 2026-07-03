@@ -37,3 +37,7 @@ canon.
 | AL-25 | Strategy primaries referencing Arcane Tier II+ | Stub to resource/movement effects until M3 Task 7 | `Strategy.md` | **Open** (M2 simplification) |
 | AL-26 | Bank conversion timing / player choice | Auto-heuristic at end of Production & Upkeep: surplus mana→gold, else gold→mana when mana=0; one use per player per round | `Buildings.md` | **Resolved** (2026-07-03, M3 Task 1 sim) |
 | AL-27 | Market free trade vs one-trade-per-round limit | Market makes trade **initiation** 0 AP; still one initiation per player per round | `Buildings.md` / `Trade_Taxes.md` | **Resolved** (2026-07-03, M3 Task 1 sim) |
+| AL-28 | Lost Cartographer with no fog in sim | +1 AP this round only; no tile reveal | `Events.md` | **Resolved** (2026-07-03, M3 Task 2 sim) |
+| AL-29 | Portal Instability timing | Sets flag for next portal move at 0 AP (not immediate extra decision) | `Events.md` | **Resolved** (2026-07-03, M3 Task 2 sim) |
+| AL-30 | Echo of the Old Empire site tie-break | Closest hex to Seat; ties broken by axial sort from Speaker home | `Events.md` | **Resolved** (2026-07-03, M3 Task 2 sim) |
+| AL-31 | Unexplored hex definition in sim | Home-cluster controlled tiles explored at setup; first unit entry elsewhere triggers exploration draw; board stays fully visible (no fog) | `Events.md` / `First_Playable_Packet.md` §4.5 | **Resolved** (2026-07-03, M3 Task 2 sim) |

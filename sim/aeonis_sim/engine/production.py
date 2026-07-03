@@ -76,6 +76,8 @@ def run_production(state) -> dict:
     for p in state.players:
         # 1. Resource production (AL-13: Cities print growth only, not trade resources)
         for t in state.controlled(p.pid):
+            if t.cursed:
+                continue
             produced = None
             for b in t.buildings:
                 if b in _UPGRADED:
@@ -99,4 +101,8 @@ def run_production(state) -> dict:
         conv = _bank_conversion(state, p)
         if conv:
             stats["bank_conversions"][p.pid] = conv
+        # 5. Remnants from controlled Ruins (Artifacts.md / Learn_to_Play)
+        for t in state.controlled(p.pid):
+            if t.terrain == Terrain.RUINS:
+                p.remnants += 1
     return stats

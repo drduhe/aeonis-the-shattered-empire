@@ -20,6 +20,13 @@ from .council import (
     tally_votes,
 )
 from .events import draw_event, resolve_event
+from .exploration import (
+    apply_cleanse,
+    apply_exploration_choice,
+    begin_exploration,
+    enumerate_cleanse,
+    exploration_choices,
+)
 from .invariants import check_invariants
 from .negotiation import (
     NegotiationSession,
@@ -123,6 +130,7 @@ class Game:
         self._council_negotiation_queue: list[int] = []
         self._trade_used: dict[int, bool] = {}
         self._trade_initiator: Optional[int] = None
+        self._exploration_pending: Optional[dict] = None
         self._round_start()
 
     # ---- phases ----
@@ -162,6 +170,9 @@ class Game:
             self._end("stalled")
             return
         self._round_hashes.append(h)
+        s.open_roads = False
+        s.council_crisis = False
+        self._exploration_pending = None
         # Tiles.md control method 1: sole-occupier hexes flip at Round Start
         for t in s.tiles.values():
             owners = {u.owner for u in t.units}
@@ -331,6 +342,54 @@ class Game:
         self._council_motions = []
         self._council_vote_queue = []
 
+    def _after_unit_entry(self, pid: int, coord: tuple) -> bool:
+        """First entry to unexplored hex draws exploration event. Returns True if choice needed."""
+        card, needs = begin_exploration(self.state, pid, coord, self.rng)
+        if card is None:
+            return False
+        if needs:
+            after = "combat" if self._battle is not None else "action"
+            self._exploration_pending = {
+                "pid": pid,
+                "coord": coord,
+                "card": card,
+                "after": after,
+            }
+            return True
+        return False
+
+    def _exploration_decision(self) -> DecisionPoint:
+        ep = self._exploration_pending
+        assert ep is not None
+        return DecisionPoint(
+            kind="exploration",
+            phase="action" if ep["after"] == "action" else "combat",
+            pid=ep["pid"],
+            choices=exploration_choices(ep["card"], self.state, ep["pid"], ep["coord"]),
+            context={"coord": list(ep["coord"]), "card": ep["card"]},
+        )
+
+    def _finish_exploration(self) -> None:
+        ep = self._exploration_pending
+        if ep is None:
+            return
+        defer = ep.get("defer")
+        after = ep["after"]
+        pid = ep["pid"]
+        self._exploration_pending = None
+        if after == "combat":
+            self._battle_stage = "done"
+            return
+        if defer and defer[0] == "mm":
+            _, dpid, card = defer
+            attacks = enumerate_military_maneuver_attacks(self.state, dpid)
+            if attacks:
+                self._followup = {"kind": "mm_attack", "pid": dpid, "card": card}
+            else:
+                self._start_secondary_window(dpid, card)
+        else:
+            self._finish_action_turn(pid)
+
     def _rotate_initiative(self, pid: int) -> None:
         if self._initiative_queue and self._initiative_queue[0] == pid:
             self._initiative_queue.append(self._initiative_queue.pop(0))
@@ -460,6 +519,7 @@ class Game:
             free = self._has_active_market(pid)
             if free or s.player(pid).ap >= 1:
                 out.extend(self._enumerate_trade_starts(pid))
+        out.extend(enumerate_cleanse(s, pid))
         return out
 
     def _has_active_market(self, pid: int) -> bool:
@@ -541,6 +601,9 @@ class Game:
         if self.over:
             return None
         if self._pending is not None:
+            return self._pending
+        if self._exploration_pending is not None:
+            self._pending = self._exploration_decision()
             return self._pending
         if self._battle is not None:
             self._pending = self._battle_decision()
@@ -667,6 +730,13 @@ class Game:
                     self.council_stats["motions_passed"] += 1
                 else:
                     self.council_stats["motions_failed"] += 1
+                    if (
+                        s.council_crisis
+                        and motion["proposer"] == s.speaker
+                    ):
+                        s.player(s.speaker).renown = max(
+                            0, s.player(s.speaker).renown - 1,
+                        )
                 self._advance_council_vote_motion()
         elif dp.kind == "negotiation":
             self._submit_negotiation(dp, choice)
@@ -693,7 +763,8 @@ class Game:
                     self._finish_action_turn(dp.pid)
             elif t == "move":
                 apply_move(s, dp.pid, choice)
-                self._finish_action_turn(dp.pid)
+                if not self._after_unit_entry(dp.pid, tuple(choice["dest"])):
+                    self._finish_action_turn(dp.pid)
             elif t == "recruit":
                 if len(choice["units"]) > 2:
                     self.building_stats["forge_recruits"] += 1
@@ -731,17 +802,33 @@ class Game:
                 combat.resolve_round(s, self._battle, self.rng)
                 self._battle_stage = "defender_retreat"
                 self._finish_action_turn(dp.pid)
+            elif t == "cleanse":
+                apply_cleanse(s, dp.pid, tuple(choice["hex"]))
+                self._finish_action_turn(dp.pid)
+        elif dp.kind == "exploration":
+            ep = self._exploration_pending
+            assert ep is not None
+            apply_exploration_choice(
+                s, dp.pid, ep["coord"], ep["card"],
+                choice["choice"], self.rng,
+            )
+            self._finish_exploration()
         elif dp.kind == "strategy_primary":
             t = choice["type"]
             pid = dp.pid
             card = dp.context.get("card", choice.get("card"))
             if t == "move":
                 apply_move(s, pid, choice)
-                attacks = enumerate_military_maneuver_attacks(s, pid)
-                if attacks:
-                    self._followup = {"kind": "mm_attack", "pid": pid, "card": card}
+                dest = tuple(choice["dest"])
+                if self._after_unit_entry(pid, dest):
+                    assert self._exploration_pending is not None
+                    self._exploration_pending["defer"] = ("mm", pid, card)
                 else:
-                    self._start_secondary_window(pid, card)
+                    attacks = enumerate_military_maneuver_attacks(s, pid)
+                    if attacks:
+                        self._followup = {"kind": "mm_attack", "pid": pid, "card": card}
+                    else:
+                        self._start_secondary_window(pid, card)
             elif t == "attack":
                 self._battle = combat.start_battle(s, dp.pid, choice)
                 combat.resolve_round(s, self._battle, self.rng)
@@ -774,7 +861,8 @@ class Game:
         elif dp.kind == "defender_retreat":
             if choice["type"] == "retreat":
                 combat.apply_defender_retreat(s, self._battle, choice)
-                self._battle_stage = "done"
+                if not self._after_unit_entry(dp.pid, tuple(choice["dest"])):
+                    self._battle_stage = "done"
             else:
                 self._battle_stage = "press"
         elif dp.kind == "press":

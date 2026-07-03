@@ -29,11 +29,11 @@ def test_event_deck_cycles():
         tiles={},
         event_deck=[],
     )
-    first_pass = [draw_event(state, rng) for _ in range(8)]
-    assert len(set(first_pass)) == 8
+    first_pass = [draw_event(state, rng) for _ in range(12)]
+    assert len(set(first_pass)) == 12
     second = draw_event(state, rng)
     assert second in EVENT_CARD_IDS
-    assert len(state.event_deck) == 7
+    assert len(state.event_deck) == 11
 
 
 def test_mana_surge_grants_mana():

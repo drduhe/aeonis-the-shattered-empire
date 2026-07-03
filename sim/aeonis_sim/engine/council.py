@@ -71,6 +71,11 @@ def council_votes(state: GameState, pid: int) -> int:
 def enumerate_proposal_choices(state: GameState, pid: int) -> list[dict]:
     if not state.agenda_revealed:
         return [{"type": "council_pass"}]
+    if state.council_crisis and pid == state.speaker:
+        return [{
+            "type": "council_propose",
+            "motion": state.agenda_revealed,
+        }]
     return [
         {"type": "council_pass"},
         {

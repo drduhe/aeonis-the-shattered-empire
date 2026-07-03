@@ -42,12 +42,12 @@ Ordered by dependency; each task lands with unit tests, and regenerates goldens 
 
 ### Task 2 — Remnants, exploration layer, missing FP globals
 
-- [ ] `PlayerState.remnants` + invariant (non-negative); Ruins hex control grants **1 Remnant/round** at Production & Upkeep (`Learn_to_Play` §Production step 5, `Artifacts.md` Remnant Sources).
-- [ ] **Explored flags**: hexes outside home clusters start unexplored; first unit entry (move, portal, retreat) triggers the entering player's exploration event, then marks explored. No fog — information stays open; only the trigger is tracked. **Log the interpretation as a new AL entry before encoding.**
-- [ ] **Exploration deck (9 FP cards, `Events.md`)**: Ancient Ruins (choice: search roll d6 vs leave for Renown), Trapped Vault (choice: lose unit vs 2 Gold), Speaking Stone Echo, Lost Cartographer (no-fog stub: +1 AP only — AL entry), Wandering Mercenaries, Cursed Ground (hex produces nothing until 2 Influence cleanse — cleanse as free-action decision point), Scattered Relics, Portal Instability, Ancient Vault Discovered (site + optional 1 AP claim).
-- [ ] **Missing FP globals**: `council_crisis` (Speaker must propose; −1 Renown on fail — wire into council phase), `open_roads` (Plains entry −1 AP min 1 this round), `ruins_unearthed` + `echo_of_the_old_empire` (create Artifact Sites; Echo also +1 Remnant to all).
-- [ ] Event deck grows 8 → 12; update event-frequency expectations in tests.
-- [ ] Tests: first-entry trigger uniqueness, each exploration card, each new global, remnant production.
+- [x] `PlayerState.remnants` + invariant (non-negative); Ruins hex control grants **1 Remnant/round** at Production & Upkeep (`Learn_to_Play` §Production step 5, `Artifacts.md` Remnant Sources).
+- [x] **Explored flags**: hexes outside home clusters start unexplored; first unit entry (move, portal, retreat) triggers the entering player's exploration event, then marks explored. No fog — information stays open; only the trigger is tracked. **Log the interpretation as a new AL entry before encoding.**
+- [x] **Exploration deck (9 FP cards, `Events.md`)**: Ancient Ruins (choice: search roll d6 vs leave for Renown), Trapped Vault (choice: lose unit vs 2 Gold), Speaking Stone Echo, Lost Cartographer (no-fog stub: +1 AP only — AL entry), Wandering Mercenaries, Cursed Ground (hex produces nothing until 2 Influence cleanse — cleanse as free-action decision point), Scattered Relics, Portal Instability, Ancient Vault Discovered (site + optional 1 AP claim).
+- [x] **Missing FP globals**: `council_crisis` (Speaker must propose; −1 Renown on fail — wire into council phase), `open_roads` (Plains entry −1 AP min 1 this round), `ruins_unearthed` + `echo_of_the_old_empire` (create Artifact Sites; Echo also +1 Remnant to all).
+- [x] Event deck grows 8 → 12; update event-frequency expectations in tests.
+- [x] Tests: first-entry trigger uniqueness, each exploration card, each new global, remnant production.
 
 ### Task 3 — Artifacts, Sites, VP relics
 

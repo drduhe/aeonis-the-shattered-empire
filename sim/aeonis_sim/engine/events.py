@@ -1,13 +1,13 @@
 """Global Event phase (Events.md / First_Playable_Packet.md §4.5).
 
-M2 sim subset: eight global events with typed handlers. Artifact-site events
-deferred. Events resolve automatically before Strategy Selection each round.
+M2 sim subset extended in M3 Task 2: twelve First Playable global events.
 """
 from __future__ import annotations
 
 import random
 from typing import TYPE_CHECKING, Callable
 
+from .artifacts import pick_neutral_ruins_hex, pick_seat_adjacent_site_hex, place_site
 from .types import BuildingType, Terrain
 
 if TYPE_CHECKING:
@@ -17,11 +17,15 @@ EVENT_CARD_IDS: tuple[str, ...] = (
     "harsh_winter",
     "festival",
     "migration_wave",
+    "council_crisis",
     "mana_surge",
     "border_skirmishes",
     "supply_disruption",
+    "open_roads",
     "populist_uprising",
     "winds_of_fortune",
+    "ruins_unearthed",
+    "echo_of_the_old_empire",
 )
 
 
@@ -124,15 +128,41 @@ def _resolve_winds_of_fortune(state: GameState) -> None:
         state.player(pid).pending_ap += 2
 
 
+def _resolve_council_crisis(state: GameState) -> None:
+    state.council_crisis = True
+
+
+def _resolve_open_roads(state: GameState) -> None:
+    state.open_roads = True
+
+
+def _resolve_ruins_unearthed(state: GameState) -> None:
+    coord = pick_neutral_ruins_hex(state)
+    if coord is not None:
+        place_site(state, coord)
+
+
+def _resolve_echo_of_the_old_empire(state: GameState) -> None:
+    coord = pick_seat_adjacent_site_hex(state, state.player(state.speaker).home)
+    if coord is not None:
+        place_site(state, coord)
+    for p in state.players:
+        p.remnants += 1
+
+
 _EVENT_HANDLERS: dict[str, Callable[[GameState], None]] = {
     "harsh_winter": _resolve_harsh_winter,
     "festival": _resolve_festival,
     "migration_wave": _resolve_migration_wave,
+    "council_crisis": _resolve_council_crisis,
     "mana_surge": _resolve_mana_surge,
     "border_skirmishes": _resolve_border_skirmishes,
     "supply_disruption": _resolve_supply_disruption,
+    "open_roads": _resolve_open_roads,
     "populist_uprising": _resolve_populist_uprising,
     "winds_of_fortune": _resolve_winds_of_fortune,
+    "ruins_unearthed": _resolve_ruins_unearthed,
+    "echo_of_the_old_empire": _resolve_echo_of_the_old_empire,
 }
 
 
