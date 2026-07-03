@@ -14,6 +14,14 @@ def build_initial_state(config: dict, rng: random.Random) -> GameState:
     n = config["players"]
     tiles, homes = generate_map(n, rng)
     state = GameState(players=[], tiles=tiles)
+    combat = config.get("combat", {})
+    if combat.get("aggressors_edge_mode"):
+        state.aggressors_edge_mode = str(combat["aggressors_edge_mode"])
+    elif combat.get("aggressors_edge"):
+        state.aggressors_edge_mode = "full"
+    else:
+        state.aggressors_edge_mode = "off"
+    state.pillage = bool(combat.get("pillage", False))
 
     public_deck = list(PUBLIC_OBJECTIVE_IDS)
     rng.shuffle(public_deck)

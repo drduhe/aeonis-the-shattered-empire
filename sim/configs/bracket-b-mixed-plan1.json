@@ -1,0 +1,12 @@
+{
+  "name": "bracket-b-high-8p-mixed-plan1",
+  "players": 8,
+  "games": 600,
+  "seed_base": 21000,
+  "personas": ["balanced", "expander", "warmonger", "economist", "diplomat"],
+  "matchmaking": "mixed",
+  "combat": {
+    "aggressors_edge": true,
+    "pillage": true
+  }
+}

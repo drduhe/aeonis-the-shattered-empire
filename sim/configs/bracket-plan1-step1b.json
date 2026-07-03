@@ -1,0 +1,12 @@
+{
+  "name": "plan1-step1b-edge-prestrike-4p",
+  "players": 4,
+  "games": 100,
+  "seed_base": 40150,
+  "personas": ["warmonger"],
+  "matchmaking": "solo",
+  "combat": {
+    "aggressors_edge_mode": "pre_strike",
+    "pillage": false
+  }
+}

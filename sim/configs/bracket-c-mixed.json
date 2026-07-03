@@ -1,0 +1,8 @@
+{
+  "name": "bracket-c-pacing-7p-mixed-mvp",
+  "players": 7,
+  "games": 200,
+  "seed_base": 31000,
+  "personas": ["balanced", "expander", "warmonger", "economist", "diplomat"],
+  "matchmaking": "mixed"
+}

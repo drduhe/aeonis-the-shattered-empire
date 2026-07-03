@@ -51,10 +51,25 @@ def main() -> None:
         default=None,
         help="Comma-separated persona per seat (overrides --persona)",
     )
+    ap.add_argument(
+        "--aggressors-edge",
+        action="store_true",
+        help="Plan 1: attacker Attack rolls win ties",
+    )
+    ap.add_argument(
+        "--pillage",
+        action="store_true",
+        help="Plan 1: one-time printed production on hex capture",
+    )
     args = ap.parse_args()
     counts = {}
     for i in range(args.games):
         config: dict = {"players": args.players}
+        if args.aggressors_edge or args.pillage:
+            config["combat"] = {
+                "aggressors_edge": args.aggressors_edge,
+                "pillage": args.pillage,
+            }
         if args.personas:
             config["personas"] = list(parse_persona_list(args.personas, args.players).values())
         elif args.persona:

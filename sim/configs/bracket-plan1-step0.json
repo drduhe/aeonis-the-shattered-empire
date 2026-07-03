@@ -1,0 +1,12 @@
+{
+  "name": "plan1-step0-baseline-4p",
+  "players": 4,
+  "games": 100,
+  "seed_base": 40000,
+  "personas": ["warmonger"],
+  "matchmaking": "solo",
+  "combat": {
+    "aggressors_edge": false,
+    "pillage": false
+  }
+}

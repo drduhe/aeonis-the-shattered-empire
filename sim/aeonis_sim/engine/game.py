@@ -45,6 +45,7 @@ class Game:
         self._battle_stage: Optional[str] = None  # "defender_retreat" | "press"
         self._round_hashes: list = []
         self._pending: Optional[DecisionPoint] = None
+        self.combat_stats = {"battles": 0, "attacker_wins": 0, "defender_wins": 0}
         self._round_start()
 
     # ---- phases ----
@@ -145,6 +146,12 @@ class Game:
         b = self._battle
         if b.winner is not None or self._battle_stage == "done":
             combat.finish_battle(self.state, b)
+            if b.winner == "attacker":
+                self.combat_stats["attacker_wins"] += 1
+            elif b.winner == "defender":
+                self.combat_stats["defender_wins"] += 1
+            if b.winner is not None:
+                self.combat_stats["battles"] += 1
             check_invariants(self.state)
             self._battle = None
             self._battle_stage = None

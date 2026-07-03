@@ -56,8 +56,7 @@ These items were previously "red flags" and have been addressed:
 - **Whisper deck size**: 26 cards in First Playable (see `Whispers.md`).
 - **Terminology locked**: "Imperial Seat" (never "Throne of Power"), "Influence" (never "IP"), "Speaking Stones" (never "Palantír"), "Discovery/Ritual" (never "spell").
 - **`TBD.md` retired**: Its open items were folded into "Remaining design work" below.
-
-## Remaining design work
+- **Plan 3 MVP — VP legibility (2026-07-03, sim-validated):** First Playable slice locked for sim and doc propagation: **shared public objective row** (6 cards; 2 revealed at setup, +1 per round from round 2); **Coronation Rite** replaces Imperial Seat +1/round drip (Lord on Seat hex → +1 VP/round; 3rd consecutive rite → +2 VP once); **objective scoring at Cleanup & Checks** (AL-5); **VP permanence** for objectives and Rite; **population cap/pool** clarity (AL-1, AL-4). Lord capture stays **+1 VP**. Sim regression gates passed: Bracket A 4p (winner objective ~68%), mixed B/C 7–8p post persona-parity (winner objective ~71%, H7 persona parity). *Sim-only until human playtest.* See `../playtest/First_Playable_Packet.md`, `Victory.md`, `../docs/plans/2026-07-03-plan-vp-legibility-mvp.md`.
 
 - **Six improvement plans (2026-07-02, PROPOSED — not canon):** combat aggression tuning, AP economy flattening, VP legibility, 6–8 player scaling (incl. a future `Map_Construction.md` chapter), core-Lords parity pass, and bookkeeping reduction. See `../docs/plans/2026-07-02-improvement-plans-index.md`. None of their changes apply until playtested and recorded under "Design decisions (resolved)" above.
 - **Lakes / water**: Core rules are defined (impassable, Bridge exception). Consider adding more water-related events or abilities.

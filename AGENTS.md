@@ -30,6 +30,8 @@ This project already has a strong “source-of-truth” set of docs in `new/`. T
 
 **No new currencies or keywords** without a definition section in an owning chapter, a Naming Bible entry, and cross-references.
 
+**No human playtesters for a while (2026-07-03).** Balance and PROPOSED-plan promotion are **sim-led**: persona tournaments, hypothesis reports, and explicit regression gates — not "wait for table time." Sim conclusions stay labeled sim-only until the owner schedules humans. See `.cursor/rules/aeonis-playtest-constraints.mdc`.
+
 ---
 
 ## Repo map

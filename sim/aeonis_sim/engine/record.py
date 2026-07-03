@@ -15,6 +15,7 @@ def build_record(game) -> dict:
         "rounds": s.round,
         "final_vp": {p.pid: p.vp for p in s.players},
         "vp_sources": {p.pid: p.vp_sources for p in s.players},
+        "combat_stats": dict(game.combat_stats),
         "final_state": s.to_dict(),
     }
 

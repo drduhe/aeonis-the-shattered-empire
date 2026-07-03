@@ -61,10 +61,14 @@ def evaluate_state(state, pid: int) -> dict[str, float]:
         sec = _objective_progress(state, pid, p.secret_objective, secret=True)
         obj = max(obj, sec)
 
+    n_ctrl = len(controlled)
+    territory_sat = max(0.0, min((n_ctrl - 3) / 5.0, 1.0))
+
     return {
         "vp": p.vp / VP_THRESHOLD,
         "vp_lead": (p.vp - max_opp_vp) / VP_THRESHOLD,
         "territory": len(controlled) / map_size,
+        "territory_sat": territory_sat,
         "seat": 1.0 if has_seat else 0.0,
         "seat_streak": min(p.rite_count, 3) / 3.0,
         "rite_ready": lord_on_seat,
@@ -158,9 +162,9 @@ def _move_features(state, pid: int, choice: dict) -> dict[str, float]:
     expansion = 0.0
     tile = state.tiles.get(dest)
     if tile and tile.controller not in (pid, None):
-        expansion = 0.6
+        expansion = 0.45
     elif tile and tile.controller is None:
-        expansion = 0.4
+        expansion = 0.3
     seat_pull = 0.0
     if seat is not None:
         # Compare min distance from moved units' origins vs dest to seat.

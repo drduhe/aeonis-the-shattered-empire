@@ -123,3 +123,57 @@ def test_defender_retreat_options_on_standard_hex():
     resolve_round(s, b, ScriptRng([1, 6, 1, 6]))
     dests = {tuple(r["dest"]) for r in enumerate_defender_retreats(s, b)}
     assert (2, 0) in dests
+
+
+def test_aggressors_edge_attacker_wins_ties():
+    s = blank_state()
+    put(s, (0, 0), 0, UnitType.INFANTRY)
+    put(s, (1, 0), 1, UnitType.INFANTRY)
+    s.tiles[(1, 0)].controller = 1
+    s.aggressors_edge_mode = "full"
+    s.players[0].ap = 2
+    b = start_battle(s, 0, {"type": "attack", "target": [1, 0], "cost": 2})
+    # Tie rolls: atk 3 vs def 3 -> hit with Edge; defender counter misses 1 vs 6
+    resolve_round(s, b, ScriptRng([3, 3, 1, 6]))
+    assert b.winner == "attacker"
+
+
+def test_aggressors_edge_pre_strike_only_on_archer_prestrike():
+    s = blank_state()
+    put(s, (0, 0), 0, UnitType.ARCHER)
+    put(s, (1, 0), 1, UnitType.INFANTRY)
+    s.tiles[(1, 0)].controller = 1
+    s.aggressors_edge_mode = "pre_strike"
+    s.players[0].ap = 2
+    b = start_battle(s, 0, {"type": "attack", "target": [1, 0], "cost": 2})
+    # Archer pre-strike tie 3 vs 3 hits; infantry main phase tie 1 vs 1 misses; def misses
+    resolve_round(s, b, ScriptRng([3, 3, 1, 1, 1, 6]))
+    assert b.winner == "attacker"
+
+
+def test_aggressors_edge_pre_strike_skips_infantry_main_ties():
+    s = blank_state()
+    put(s, (0, 0), 0, UnitType.INFANTRY)
+    put(s, (1, 0), 1, UnitType.INFANTRY)
+    s.tiles[(1, 0)].controller = 1
+    s.aggressors_edge_mode = "pre_strike"
+    s.players[0].ap = 2
+    b = start_battle(s, 0, {"type": "attack", "target": [1, 0], "cost": 2})
+    resolve_round(s, b, ScriptRng([3, 3, 1, 6]))
+    assert b.winner is None
+
+
+def test_pillage_grants_city_gold_on_capture():
+    s = blank_state()
+    for _ in range(3):
+        put(s, (0, 0), 0, UnitType.CAVALRY)
+    put(s, (1, 0), 1, UnitType.INFANTRY)
+    s.tiles[(1, 0)].terrain = Terrain.CITY
+    s.tiles[(1, 0)].controller = 1
+    s.pillage = True
+    s.players[0].ap = 2
+    s.players[0].gold = 0
+    b = start_battle(s, 0, {"type": "attack", "target": [1, 0], "cost": 2})
+    resolve_round(s, b, MaxRng())
+    finish_battle(s, b)
+    assert s.players[0].gold == 2

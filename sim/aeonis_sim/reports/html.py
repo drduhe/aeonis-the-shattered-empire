@@ -7,6 +7,7 @@ from .hypotheses import HYPOTHESES, evaluate_hypotheses
 from .summary import (
     _completed,
     _winner,
+    combat_metrics,
     played_rounds,
     runaway_rate,
     seat_vp_from_totals,
@@ -28,6 +29,28 @@ def _game_persona(record: dict) -> str:
     if isinstance(personas, list) and personas and len(set(personas)) == 1:
         return personas[0]
     return "mixed"
+
+
+def _is_mixed_tournament(records: list[dict]) -> bool:
+    for r in records:
+        personas = r.get("config", {}).get("personas", [])
+        if isinstance(personas, list) and len(set(personas)) > 1:
+            return True
+    return False
+
+
+def _combat_variant_label(records: list[dict]) -> str:
+    if not records:
+        return ""
+    combat = records[0].get("config", {}).get("combat", {})
+    if not combat:
+        return ""
+    mode = combat.get("aggressors_edge_mode")
+    if not mode and combat.get("aggressors_edge"):
+        mode = "full"
+    edge = f"Edge ({mode})" if mode and mode != "off" else "no Edge"
+    pillage = "Pillage" if combat.get("pillage") else "no Pillage"
+    return f" · Plan 1: {edge}, {pillage}"
 
 
 def _persona_game_stats(records: list[dict]) -> dict[str, dict]:
@@ -109,6 +132,9 @@ def generate_html(
     blowout = 100 * runaway_rate(completed)
     winner_mix = winner_vp_source_mix(records)
     persona_games = _persona_game_stats(records)
+    mixed = _is_mixed_tournament(records)
+    persona_wins = win_rate_by_persona(records) if mixed else {}
+    cm = combat_metrics(records)
     hypotheses = evaluate_hypotheses(records)
 
     h1_status = hypotheses["H1"]["status"]
@@ -129,6 +155,55 @@ def generate_html(
             f"<td class=\"r\">{s['avg_rounds']:.1f}</td>"
             f"<td class=\"r\">{s['seat_streak_pct']:.0f}%</td></tr>\n"
         )
+
+    mixed_rows = ""
+    for name, s in sorted(persona_wins.items()):
+        mixed_rows += (
+            f"<tr><td>{name}</td><td class=\"r\">{s['games']}</td>"
+            f"<td class=\"r\">{s['wins']}</td>"
+            f"<td class=\"r\">{100 * s['win_rate']:.1f}%</td></tr>\n"
+        )
+
+    combat_note = _combat_variant_label(records)
+    if combat_note and subtitle:
+        subtitle = subtitle + combat_note
+    elif combat_note and not subtitle:
+        subtitle = combat_note.lstrip(" · ")
+
+    if mixed:
+        persona_section = f"""
+<h2>4 · Win rate by persona (mixed seats)</h2>
+<p>Each game shuffles distinct personas across seats. Win rate is meaningful here.</p>
+<table>
+  <tr><th>Persona</th><th class="r">Seat-games</th><th class="r">Wins</th><th class="r">Win %</th></tr>
+  {mixed_rows}
+</table>
+"""
+    else:
+        persona_section = f"""
+<h2>4 · Per-persona breakdown (solo-seat tournaments)</h2>
+<p>Each game assigns the same persona to all seats. Win rate is
+not meaningful here — every winner is that persona. Completion rate and VP shape are the comparators.</p>
+<table>
+  <tr><th>Persona</th><th class="r">Games</th><th class="r">Completed</th>
+      <th class="r">Completion</th><th class="r">Avg rounds</th><th class="r">Seat+streak VP</th></tr>
+  {persona_rows}
+</table>
+"""
+    if cm:
+        combat_block = f"""
+<h2>5 · Combat metrics (Plan 1)</h2>
+<table>
+  <tr><th>Metric</th><th class="r">Value</th><th>Plan 1 target</th></tr>
+  <tr><td>Battles resolved</td><td class="r">{cm['battles']:,}</td><td>—</td></tr>
+  <tr><td>Attacker win rate</td><td class="r">{100 * cm['attacker_win_rate']:.1f}%</td><td>55–65% (kill &gt;70%)</td></tr>
+  <tr><td>Battles per player-round</td><td class="r">{cm['battles_per_player_round']:.3f}</td><td>≥0.75 from r3+</td></tr>
+</table>
+"""
+        hyp_heading = "6"
+    else:
+        combat_block = ""
+        hyp_heading = "5"
 
     hyp_rows = ""
     for hid, h in hypotheses.items():
@@ -265,16 +340,10 @@ def generate_html(
 VP share. Persona bots shift incentives but Seat+streak remains the largest bucket unless H1 is killed.
 </div>
 
-<h2>4 · Per-persona breakdown (solo-seat tournaments)</h2>
-<p>Each game assigns the same persona to all four seats (200 games each). Win rate is
-not meaningful here — every winner is that persona. Completion rate and VP shape are the comparators.</p>
-<table>
-  <tr><th>Persona</th><th class="r">Games</th><th class="r">Completed</th>
-      <th class="r">Completion</th><th class="r">Avg rounds</th><th class="r">Seat+streak VP</th></tr>
-  {persona_rows}
-</table>
+{persona_section}
+{combat_block}
 
-<h2>5 · Hypothesis evaluation (H1–H6)</h2>
+<h2>{hyp_heading} · Hypothesis evaluation (H1–H7)</h2>
 <table>
   <tr><th>ID</th><th>Hypothesis</th><th>Status</th><th>Metrics</th></tr>
   {hyp_rows}

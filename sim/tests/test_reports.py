@@ -4,6 +4,7 @@ from __future__ import annotations
 from aeonis_sim.reports.hypotheses import evaluate_hypotheses, hypotheses_markdown
 from aeonis_sim.reports.summary import (
     balance_summary,
+    persona_parity_metrics,
     played_rounds,
     verdict_breakdown,
     win_rate_by_persona,
@@ -56,6 +57,21 @@ def test_balance_summary_sections():
 def test_hypotheses_evaluation():
     results = evaluate_hypotheses([_record(), _record()])
     assert "H1" in results
+    assert "H7" in results
     assert results["H1"]["status"] in ("confirmed", "killed", "inconclusive")
     md = hypotheses_markdown(results)
     assert "H1" in md
+    assert "H7" in md
+
+
+def test_persona_parity_metrics_mixed():
+    rec = {
+        "verdict": "completed",
+        "rounds": 8,
+        "config": {"players": 4, "personas": ["expander", "balanced", "warmonger", "diplomat"]},
+        "final_vp": {"0": 10, "1": 4, "2": 3, "3": 2},
+        "vp_sources": {"0": {"objective": 10}, "1": {}, "2": {}, "3": {}},
+    }
+    pm = persona_parity_metrics([rec])
+    assert pm["expander_win_rate"] == 1.0
+    assert pm["max_win_rate"] == 1.0

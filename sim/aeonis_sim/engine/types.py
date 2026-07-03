@@ -246,6 +246,10 @@ class GameState:
     next_uid: int = 1
     shared_public_revealed: list = field(default_factory=list)  # objective ids
     shared_public_deck: list = field(default_factory=list)
+    # Plan 1 combat ladder (PROPOSED; toggled via config["combat"]).
+    # aggressors_edge_mode: "off" | "full" | "pre_strike"
+    aggressors_edge_mode: str = "off"
+    pillage: bool = False
 
     # --- helpers used across the engine ---
     def player(self, pid: int) -> PlayerState:
@@ -372,4 +376,6 @@ class GameState:
             next_uid=self.next_uid,
             shared_public_revealed=list(self.shared_public_revealed),
             shared_public_deck=list(self.shared_public_deck),
+            aggressors_edge_mode=self.aggressors_edge_mode,
+            pillage=self.pillage,
         )

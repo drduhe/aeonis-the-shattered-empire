@@ -9,6 +9,28 @@ _UPGRADED = {BuildingType.MINE: ("gold", 3), BuildingType.GROVE: ("mana", 3),
              BuildingType.EMBASSY: ("influence", 3)}
 
 
+def tile_printed_production(tile) -> dict[str, int]:
+    """One-time printed production (Plan 1 Pillage). Cities: 2 Gold."""
+    if tile.terrain == Terrain.CITY:
+        return {"gold": 2}
+    out: dict[str, int] = {}
+    for b in tile.buildings:
+        if b in _UPGRADED:
+            res, amt = _UPGRADED[b]
+            out[res] = out.get(res, 0) + amt
+    if not out:
+        plain = _PLAIN.get(tile.terrain)
+        if plain:
+            res, amt = plain
+            out[res] = amt
+    return out
+
+
+def apply_tile_production(player, tile) -> None:
+    for res, amt in tile_printed_production(tile).items():
+        setattr(player, res, getattr(player, res) + amt)
+
+
 def run_production(state) -> None:
     # Round_Structure.md §6: production, then growth, then upkeep.
     for p in state.players:

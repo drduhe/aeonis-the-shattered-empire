@@ -5,10 +5,12 @@ from .summary import (
     _completed,
     _winner,
     played_rounds,
+    persona_parity_metrics,
     runaway_rate,
     seat_vp_from_totals,
     verdict_breakdown,
     vp_source_totals,
+    win_rate_by_persona,
     winner_vp_source_mix,
 )
 
@@ -36,6 +38,10 @@ HYPOTHESES = {
     "H6": {
         "name": "no_vp_progress is chaos artifact",
         "kill": "Degenerate rate <2% with strategic bots",
+    },
+    "H7": {
+        "name": "No persona dominates mixed-seat win rate",
+        "kill": "Expander ≤30% and max persona ≤28% in mixed brackets",
     },
 }
 
@@ -112,6 +118,19 @@ def _status_h6(records: list[dict]) -> str:
     return "inconclusive"
 
 
+def _status_h7(records: list[dict]) -> str:
+    pm = persona_parity_metrics(records)
+    if not pm:
+        return "inconclusive"
+    exp = pm.get("expander_win_rate", 1.0)
+    mx = pm.get("max_win_rate", 1.0)
+    if exp <= 0.30 and mx <= 0.28:
+        return "killed"
+    if exp > 0.35 or mx > 0.35:
+        return "confirmed"
+    return "inconclusive"
+
+
 _EVALUATORS = {
     "H1": _status_h1,
     "H2": _status_h2,
@@ -119,6 +138,7 @@ _EVALUATORS = {
     "H4": lambda r: _status_h4(r, 7),
     "H5": _status_h5,
     "H6": _status_h6,
+    "H7": _status_h7,
 }
 
 
@@ -154,6 +174,10 @@ def evaluate_hypotheses(records: list[dict]) -> dict[str, dict]:
             detail["degenerate_rate"] = round(
                 verdict_breakdown(records).get("degenerate", 0) / max(len(records), 1), 3
             )
+        elif hid == "H7":
+            pm = persona_parity_metrics(records)
+            detail["expander_win_rate"] = round(pm.get("expander_win_rate", 0), 3)
+            detail["max_persona_win_rate"] = round(pm.get("max_win_rate", 0), 3)
         out[hid] = {
             "name": meta["name"],
             "kill_criterion": meta["kill"],
@@ -164,7 +188,7 @@ def evaluate_hypotheses(records: list[dict]) -> dict[str, dict]:
 
 
 def hypotheses_markdown(results: dict[str, dict]) -> str:
-    lines = ["## Hypothesis evaluation (H1–H6)", ""]
+    lines = ["## Hypothesis evaluation (H1–H7)", ""]
     lines.append("| ID | Hypothesis | Status | Detail |")
     lines.append("| --- | --- | --- | --- |")
     for hid, r in results.items():

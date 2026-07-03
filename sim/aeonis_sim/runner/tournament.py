@@ -38,6 +38,15 @@ def _assign_personas(config: dict, game_index: int) -> list[str]:
             rng.choice(roster)
         return [rng.choice(roster) for _ in range(players)]
 
+    if mode == "mixed":
+        # One distinct persona per seat when roster allows; deterministic shuffle.
+        rng = random.Random(config.get("seed_base", 1) + game_index)
+        pool = list(roster)
+        rng.shuffle(pool)
+        while len(pool) < players:
+            pool.extend(roster)
+        return pool[:players]
+
     if isinstance(roster, list) and len(roster) == players:
         return roster
 
@@ -48,6 +57,8 @@ def _play_tournament_game(config: dict, game_index: int) -> dict:
     """Run one tournament game (picklable worker entry point)."""
     seed_base = config.get("seed_base", 1)
     game_config = {"players": config["players"]}
+    if "combat" in config:
+        game_config["combat"] = dict(config["combat"])
     game_config["personas"] = _assign_personas(config, game_index)
     seed = seed_base + game_index
     agents = agents_from_config(game_config, seed)

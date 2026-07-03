@@ -111,6 +111,42 @@ def winner_vp_source_mix(records: list[dict]) -> dict[str, float]:
     return {src: mean(vals) if vals else 0.0 for src, vals in shares.items()}
 
 
+def persona_parity_metrics(records: list[dict]) -> dict:
+    """Win-rate spread for mixed-seat tournaments (H7)."""
+    rates = win_rate_by_persona(records)
+    if not rates:
+        return {}
+    win_rates = [s["win_rate"] for s in rates.values() if s["games"] > 0]
+    if not win_rates:
+        return {}
+    return {
+        "expander_win_rate": rates.get("expander", {}).get("win_rate", 0.0),
+        "max_win_rate": max(win_rates),
+        "min_win_rate": min(win_rates),
+        "by_persona": rates,
+    }
+
+
+def combat_metrics(records: list[dict]) -> dict:
+    """Aggregate Plan 1 combat stats from completed games."""
+    done = _completed(records)
+    if not done:
+        return {}
+    battles = sum(r.get("combat_stats", {}).get("battles", 0) for r in done)
+    att_wins = sum(r.get("combat_stats", {}).get("attacker_wins", 0) for r in done)
+    def_wins = sum(r.get("combat_stats", {}).get("defender_wins", 0) for r in done)
+    rounds = sum(played_rounds(r) for r in done)
+    players = done[0]["config"]["players"]
+    player_rounds = rounds * players
+    return {
+        "battles": battles,
+        "attacker_wins": att_wins,
+        "defender_wins": def_wins,
+        "attacker_win_rate": att_wins / battles if battles else 0.0,
+        "battles_per_player_round": battles / player_rounds if player_rounds else 0.0,
+    }
+
+
 def runaway_rate(records: list[dict], margin: int = 7) -> float:
     done = _completed(records)
     if not done:
@@ -192,6 +228,16 @@ def balance_summary(records: list[dict], title: str = "Balance Summary") -> str:
     lines.append(
         f"\n**Seat + streak combined:** {100 * seat_streak / all_vp:.1f}% of all VP"
     )
+    cm = combat_metrics(records)
+    if cm:
+        lines.extend([
+            "",
+            "## Combat metrics (completed)",
+            "",
+            f"- Battles resolved: {cm['battles']}",
+            f"- Attacker win rate: {100 * cm['attacker_win_rate']:.1f}%",
+            f"- Battles per player-round: {cm['battles_per_player_round']:.3f}",
+        ])
     return "\n".join(lines) + "\n"
 
 

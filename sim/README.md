@@ -27,7 +27,10 @@ Tournament (balance campaign):
       --config configs/bracket-a.json --out /tmp/bracket-a.jsonl --report /tmp/bracket-a.md
 
 Flags: `--players`, `--seed`, `--games`, `--out`, `--persona`, `--personas`.
-Tournament: `--config`, `--report`, `--session-log`, `--workers` (default: CPU count).
+Tournament: `--config`, `--report`, `--html`, `--session-log`, `--workers` (default: CPU count).
+
+Combat variant flags (Plan 1 ladder) live in tournament config under `"combat"`:
+`aggressors_edge_mode` (`off` | `full` | `pre_strike`), legacy `aggressors_edge`, `pillage`.
 
 Rules questions found while encoding the docs live in
 `playtest/Ambiguity_Ledger.md`.

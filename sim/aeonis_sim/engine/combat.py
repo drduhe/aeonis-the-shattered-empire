@@ -13,6 +13,7 @@ from dataclasses import dataclass, field
 from typing import Optional
 
 from .hexmap import neighbors
+from .production import apply_tile_production
 from .types import BuildingType, Terrain, UNIT_STATS, UnitType
 
 ATTACK_AP = 2
@@ -131,7 +132,21 @@ def _kill(state, battle, unit) -> None:
         captor.renown += 2
 
 
-def _strike(state, battle, strikers, targets_line, rng, def_side) -> None:
+def _hits(striker_side: str, atk: int, dfn: int, edge_mode: str, *, pre_strike: bool) -> bool:
+    """Plan 1 Aggressor's Edge: attacking-side Attack rolls win ties."""
+    edge = False
+    if striker_side == "att":
+        if edge_mode == "full":
+            edge = True
+        elif edge_mode == "pre_strike" and pre_strike:
+            edge = True
+    if edge:
+        return atk >= dfn
+    return atk > dfn
+
+
+def _strike(state, battle, strikers, targets_line, rng, striker_side, *, pre_strike: bool) -> None:
+    def_side = "def" if striker_side == "att" else "att"
     for striker in sorted(strikers, key=lambda u: u.uid):
         if striker.hp <= 0:
             continue
@@ -141,7 +156,7 @@ def _strike(state, battle, strikers, targets_line, rng, def_side) -> None:
         atk = rng.randint(1, UNIT_STATS[striker.type].attack_die)
         dfn = rng.randint(1, UNIT_STATS[target.type].defense_die)
         dfn += _defense_bonus(state, battle, def_side)
-        if atk > dfn:
+        if _hits(striker_side, atk, dfn, state.aggressors_edge_mode, pre_strike=pre_strike):
             target.hp -= 1
             if target.hp <= 0:
                 _kill(state, battle, target)
@@ -159,11 +174,11 @@ def resolve_round(state, battle, rng) -> None:
         return [u for u in line if u.type != UnitType.ARCHER]  # AL-12
 
     # 4.2 Archer Pre-Strike: attacker archers first, then defender archers
-    _strike(state, battle, archers(battle.att_line), battle.def_line, rng, "def")
-    _strike(state, battle, archers(battle.def_line), battle.att_line, rng, "att")
+    _strike(state, battle, archers(battle.att_line), battle.def_line, rng, "att", pre_strike=True)
+    _strike(state, battle, archers(battle.def_line), battle.att_line, rng, "def", pre_strike=True)
     # 4.3 Attacker Strike, then Defender Counterstrike
-    _strike(state, battle, others(battle.att_line), battle.def_line, rng, "def")
-    _strike(state, battle, others(battle.def_line), battle.att_line, rng, "att")
+    _strike(state, battle, others(battle.att_line), battle.def_line, rng, "att", pre_strike=False)
+    _strike(state, battle, others(battle.def_line), battle.att_line, rng, "def", pre_strike=False)
 
     if not battle.def_committed:
         battle.winner = "attacker"
@@ -206,7 +221,10 @@ def finish_battle(state, battle) -> None:
     if battle.winner == "attacker":
         t.controller = battle.attacker
         t.siege = False
-        state.player(battle.attacker).battle_wins += 1
+        captor = state.player(battle.attacker)
+        captor.battle_wins += 1
+        if state.pillage:
+            apply_tile_production(captor, t)
         # Occupation: move up to cap surviving committed units in (auto-pick
         # by line priority). Buildings are taken over intact (AL-11).
         movers = sorted(battle.att_committed,
