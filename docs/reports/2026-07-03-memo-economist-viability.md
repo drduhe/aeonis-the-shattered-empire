@@ -139,9 +139,9 @@ Read: the row's sixth slot was doing real work — adding one economy-tagged car
 ## 7. Sim follow-up (status)
 
 1. ~~Encode chosen row change in `playtest/First_Playable_Packet.md` + `Objectives.md` (PROPOSED section).~~ **Done 2026-07-03** (Merchant Lord).
-2. ~~Re-run `bracket-m2-smoke.json` (100 games).~~ **Done** — see §6 read. 7–8p mixed brackets still pending (rerun with Merchant Lord row before trusting high-count H8 numbers).
-3. Remaining: H12 confirmation at M3 gate (`../plans/2026-07-03-agent-playtest-sim-implementation-plan-m3.md` §5); Lever A pacing remains open — mean rounds moved the wrong way (6.4 → 6.1).
-4. Unchanged: if Economist regresses &lt;5% at M3 gate **or** Merchant Lord proves free VP (scored by ≥60% of players per game), pull the card and escalate to the full Plan 3 card audit — not sim weights.
+2. ~~Re-run `bracket-m2-smoke.json` (100 games).~~ **Done** — see §6 read.
+3. ~~Re-run 7–8p mixed brackets (`bracket-c-mixed.json`, `bracket-b-mixed.json`).~~ **Done 2026-07-03** — economist **2.7% at 7p**, **1.8% at 8p** (still below 5% bar); mean rounds **5.3 / 5.4** (faster than 4p's 6.1). Reports: `docs/reports/2026-07-03-baseline-mixed-{7,8}p.md`. Merchant Lord lifts 4p only — high-count Economist viability needs Lever A (pacing) and/or Plan 4, not more row tweaks alone.
+4. Remaining: H12 confirmation at M3 gate; Lever A pacing (games getting faster, not slower).
 
 ---
 
