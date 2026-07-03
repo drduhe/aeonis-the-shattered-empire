@@ -2,126 +2,124 @@
 
 ## Overview
 
-The Strategy Card System introduces a layer of dynamic decision-making and player interaction. Each round, players select one card from a shared pool, granting them powerful abilities to shape their strategy and dictate the initiative order for the turn. These cards create opportunities for both cooperation and competition, as their effects ripple through the gameplay.
+The Strategy Card system drives initiative order and gives each round its strategic identity. Each round, players draft cards from a shared pool of **8 Strategy Cards**. Each card grants a **primary ability** (used by the card's owner on their turn) and a **secondary ability** (an opt-in follow that other players may pay for when the primary resolves). Lower card numbers act earlier in the Action Phase but carry more modest abilities; higher numbers act later but hit harder.
+
+This chapter is the owning doc for the Strategy Card system. Timing rules live in `Round_Structure.md` (Strategy Selection is step 3).
 
 ---
 
-## Key Aspects of the Strategy Card System
+## 1. The Draft
 
-### 1. Choice and Action
-
-- At the start of each round, players select one Strategy Card from a communal pool.
-- Each Strategy Card provides a **primary ability** that the player can activate during their turn in the action phase.
-- Players must balance the strength of a card's ability with its **initiative order** value, influencing the sequence of play.
-
-### 2. Draft Order (canon)
+### 1.1 Draft order (canon)
 
 Players choose Strategy Cards in **ascending VP order** (lowest VP picks first). This gives trailing players first access to the strongest cards, serving as a built-in catch-up mechanism.
 
 - **Ties:** broken by lowest Renown, then clockwise from the Speaker.
-- This order is fixed for the full game and applies to all player counts (2-8).
+- This order is fixed for the full game and applies to all player counts (3-8).
 
-### 3. Initiative Order
+### 1.2 Cards per player (by player count)
 
-- Every Strategy Card has a **numerical value** (e.g., 1 to 8).
-- Lower numbers signify higher initiative, meaning the player with the lowest number acts first during the action phase.
-- Players must weigh the benefit of acting earlier against the strength of a card's ability.
+All **8 cards** are revealed every round, at every player count.
 
-### 4. Secondary Abilities
+- **3-4 players:** each player drafts **2 cards**. Complete one full pass in draft order (1 card each), then a second pass in the same order.
+- **5-8 players:** each player drafts **1 card**.
 
-- Each Strategy Card includes a **secondary ability** that other players can trigger when they take specific actions during the round.
-- This mechanic creates opportunities for interaction, cooperation, or disruption between players, adding depth to the system.
+### 1.3 Unchosen cards (bounty)
 
-### 5. Strategic Depth
+At the end of Strategy Selection, place **1 Gold** from the supply on each card that was not drafted. Gold accumulates across rounds. When a player drafts a card carrying Gold, they take all Gold on it immediately.
 
-- The choice of Strategy Card influences both the player's immediate actions and their interactions with other players.
-- Players must anticipate their opponents' choices, weigh their own priorities, and adapt their strategy based on the turn order and available cards.
+### 1.4 Initiative order
 
----
-
-## Example Strategy Cards
-
-### 1. Arcane Ascendancy (Card #1)
-
-- **Primary Ability:** Gain 2 Mana and immediately research a Tier 1 spell for free.
-- **Secondary Ability:** Whenever another player casts a spell this round, they must pay you 1 additional Mana or lose 1 Action Point (AP).
-- **Initiative:** 1 (Highest Priority).
-
-### 2. Resource Surge (Card #2)
-
-- **Primary Ability:** Gain 2 Gold, 2 Mana, and 1 Influence.
-- **Secondary Ability:** Whenever another player constructs a building this round, they gain 1 fewer resource of their choice from production.
-- **Initiative:** 2.
-
-### 3. Military Maneuvers (Card #3)
-
-- **Primary Ability:** Resolve one **Move** action for one group at **0 AP cost** (paying any non-AP costs as normal) and gain +1 combat strength during battles this round.
-- **Secondary Ability:** Whenever another player moves units this round, you may reposition 1 unit to an adjacent hex for free.
-- **Initiative:** 3.
-
-### 4. Diplomatic Decree (Card #4)
-
-- **Primary Ability:** Gain 3 Influence and immediately propose a motion in the High Council.
-- **Secondary Ability:** Whenever another player gains Influence this round, you gain 1 Influence.
-- **Initiative:** 4.
-
-### 5. Expansion Strategy (Card #5)
-
-- **Primary Ability:** Gain control of one neutral hex adjacent to your territory without requiring units to occupy it.
-- **Secondary Ability:** Whenever another player conquers a hex this round, gain +1 Population.
-- **Initiative:** 5.
-
-### 6. Tactical Reinforcements (Card #6)
-
-- **Primary Ability:** Recruit 2 units for free and deploy them in any controlled City (bypasses the normal Recruit action limits for this deployment).
-- **Secondary Ability:** Whenever another player recruits units this round, you gain +1 Action Point (AP).
-- **Initiative:** 6.
-
-### 7. Economic Boom (Card #7)
-
-- **Primary Ability:** Gain 5 Gold or exchange 5 Gold for 3 Victory Points.
-- **Secondary Ability:** Whenever another player earns Gold through an event or ability, you gain 1 Gold.
-- **Initiative:** 7.
-
-### 8. Arcane Convergence (Card #8)
-
-- **Primary Ability:** Gain 3 Mana and refresh your Action Point Pool by +1 AP.
-- **Secondary Ability:** Whenever another player researches a discovery this round, you gain 1 Mana.
-- **Initiative:** 8 (Lowest Priority).
+- Every Strategy Card has a **number** (1-8). Lower numbers act first in the Action Phase.
+- If you hold 2 cards, your initiative is your **lowest** card number.
 
 ---
 
-## System Integration
+## 2. Primaries and Secondaries
 
-### 1. Replayability
+### 2.1 Primary ability
 
-- Strategy Cards are chosen from a **variable pool** each game, allowing for customization and variety.
-- For games with fewer players than cards, remove cards randomly or by table agreement before the draft.
+- Activating a Strategy Card primary is an **action** taken on your turn during the Action Phase (see `Actions.md`). Pay the AP cost listed on the card.
+- Each card's primary may be used **once per round**.
+- You are never required to use your primary.
 
-### 2. Synergy with Other Systems
+### 2.2 Secondary ability (opt-in follow)
 
-- Strategy Cards interact with key mechanics, such as:
-  - **Renown System:** Certain cards may grant Renown bonuses or penalties.
-  - **Action Points:** Some cards directly increase or reduce AP.
-  - **Population System:** Cards like "Expansion Strategy" integrate with Population growth.
-
-### 3. Player Interaction
-
-- Secondary abilities ensure players remain engaged even when it's not their turn.
-- Encourages cooperation, competition, and adaptation based on others' choices.
+- Immediately after a primary fully resolves, **each other player**, in initiative order, may use that card's secondary by paying its listed cost.
+- Secondaries do **not** consume the follower's turn and do not use an action.
+- Each player may use a given card's secondary **at most once per round**.
+- The card's owner may never use their own card's secondary.
 
 ---
 
-## Optional Variations
+## 3. The Eight Strategy Cards (canon deck)
 
-### 1. Advanced Strategy Decks
+### 1. Arcane Ascendancy
 
-- Introduce faction-specific Strategy Cards tailored to each Lord's playstyle.
-- Example: The **Lord of Steel** might have a card that grants free combat strength but delays their turn order.
+- **Primary (1 AP):** Gain 2 Mana, then research one **Tier I** discovery for free (ignore its AP and resource costs).
+- **Secondary:** You may immediately research one discovery you qualify for by paying its resource cost **+1 Mana** (no AP; does not consume your turn).
+- **Initiative:** 1
 
-### 2. Event-Driven Cards
+### 2. Resource Surge
 
-- Certain Global Events may add temporary Strategy Cards to the pool with unique effects for one round.
-  - Example: "Meteoric Rise": Gain +1 VP but lose 1 Population.
+- **Primary (0 AP):** Gain 2 Gold, 2 Mana, and 1 Influence.
+- **Secondary:** Spend 1 AP to gain 1 Gold and 1 Mana.
+- **Initiative:** 2
+
+### 3. Military Maneuvers
+
+- **Primary (1 AP):** Resolve one **Move** action for one group at **0 AP path cost** (ZOC surcharges still apply). You may then immediately declare one **Attack** this turn for **1 AP** instead of 2.
+- **Secondary:** Spend 1 AP to move one of your unit groups **1 hex** (pay terrain and ZOC costs normally).
+- **Initiative:** 3
+
+### 4. Diplomatic Decree
+
+- **Primary (1 AP):** Gain 2 Influence and take the **Speaker token**. Then convene an **emergency council session**: propose one motion and resolve it immediately using the normal voting rules (`High_Council.md`). Lobbying is allowed; no other proposals are heard.
+- **Secondary:** Spend 1 AP to gain 2 Influence.
+- **Initiative:** 4
+
+### 5. Expansion Strategy
+
+- **Primary (1 AP):** Claim one **neutral** hex adjacent to territory you control that contains no other player's units. Gain +1 Population Pool (up to cap).
+- **Secondary:** Spend 2 Influence to claim one **neutral** hex adjacent to territory you control that contains no other player's units.
+- **Initiative:** 5
+
+### 6. Tactical Reinforcements
+
+- **Primary (1 AP):** Recruit up to 2 units for **free** (no Gold/Mana cost; Population costs still apply) in one City you control. This ignores the once-per-City-per-round Recruit limit.
+- **Secondary:** Spend 1 AP to take a **Recruit** action (paying normal costs) at one City you control, even if that City has already recruited this round.
+- **Initiative:** 6
+
+### 7. Economic Boom
+
+- **Primary (0 AP):** Gain 5 Gold.
+- **Secondary:** Spend 1 AP to gain 2 Gold.
+- **Initiative:** 7
+
+### 8. Imperial Mandate
+
+- **Primary (1 AP):** If you control the **Imperial Seat**, gain **1 VP**. Otherwise, draw **1 secret objective**. In either case, gain 1 Influence.
+- **Secondary:** Spend 2 Influence to draw 1 Whisper Card.
+- **Initiative:** 8
 
 ---
+
+## 4. System Integration
+
+- **Catch-up:** The VP-ascending draft means trailing players choose first — grabbing Imperial Mandate or Arcane Ascendancy before leaders can.
+- **Politics:** Diplomatic Decree is the only way to move the Speaker token and force a mid-round vote; it makes initiative 4 a political weapon.
+- **Economy:** Resource Surge and Economic Boom bracket the economy; the bounty rule (§1.3) makes habitually-skipped cards worth revisiting.
+- **Whispers:** Imperial Mandate's secondary is a reliable Whisper source; see `Whispers.md`.
+- **Objectives:** Imperial Mandate respects the secret objective hand cap (see `Objectives.md`).
+
+---
+
+## 5. Optional Variations
+
+### 5.1 Faction Strategy Cards
+
+Introduce faction-specific Strategy Cards tailored to each Lord's playstyle, drafted into the pool as replacements by table agreement. Design contract: same anatomy (number, primary with AP cost, opt-in secondary).
+
+### 5.2 Event-Driven Cards
+
+Certain Global Events may add a temporary ninth Strategy Card to the pool for one round with a unique effect. Remove it at Cleanup.

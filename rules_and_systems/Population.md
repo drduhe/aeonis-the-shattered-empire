@@ -44,7 +44,7 @@ Note:
   - **Special Buildings:**
     - Example: **Castle:** Increases Population Cap by +3.
   - **Research and Abilities:**
-    - Example: Certain spells or technologies may temporarily or permanently increase the Population Cap.
+    - Example: Certain Arcane Discoveries may temporarily or permanently increase the Population Cap.
 - A **Global Cap** (e.g., maximum 25 Population Points per Lord) ensures balance.
 
 ---

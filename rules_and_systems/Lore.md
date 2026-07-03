@@ -12,7 +12,7 @@ From the ashes of the empire rose a new age: one of fractured kingdoms, vying fa
 
 ## The Speaking Stones: Voices of the Lost Empire
 
-Central to this fractured world are the Palantír, or Speaking Stones—fragments of ancient, enchanted obsidian carved by the empire’s master artisans. These artifacts were once used by the Emperor’s council to govern the vast empire, enabling instantaneous communication and foresight. When the empire fell, the Speaking Stones were lost, scattered across Aeonis. In the present, each lord possesses one of these stones, their whispers guiding them with cryptic visions of the past and glimpses of the future.
+Central to this fractured world are the Speaking Stones—fragments of ancient, enchanted obsidian carved by the empire’s master artisans. These artifacts were once used by the Emperor’s council to govern the vast empire, enabling instantaneous communication and foresight. When the empire fell, the Speaking Stones were lost, scattered across Aeonis. In the present, each lord possesses one of these stones, their whispers guiding them with cryptic visions of the past and glimpses of the future.
 
 These stones are both a gift and a curse. They allow lords to commune with other realms, forge alliances, or uncover hidden secrets. But the stones also serve as conduits for dark forces, their whispers revealing secrets that may drive a lord to greatness—or madness.
 

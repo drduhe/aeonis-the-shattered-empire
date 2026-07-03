@@ -61,7 +61,7 @@ Players earn **Victory Points (VP)** throughout the game by achieving key object
 
 ---
 
-### 5. Throne of Power / Imperial Seat (Endgame Objective)
+### 5. Imperial Seat (Endgame Objective)
 
 - Controlling the **Imperial Seat** provides **+1 VP per round** (checked at Cleanup & Checks).
 - If a player maintains control for **3 consecutive rounds**, they gain an additional **+2 VP bonus**.
@@ -111,7 +111,7 @@ Players earn **Victory Points (VP)** throughout the game by achieving key object
 
 - At the game's conclusion, certain hidden scoring opportunities are revealed:
   - **Example:** Gain **2 VP** if you controlled the most hexes during the final round.
-  - **Example:** Gain **2 VP** if you cast the most spells in the game.
+  - **Example:** Gain **2 VP** if you own the most Arcane Discoveries at game end.
 
 ---
 

@@ -159,7 +159,7 @@ Win a battle as the **defender** in a **Forest/Grove** hex, then end the round s
 
 - **Terrain reliance:** You are strongest in Forest/Grove hexes; open ground is riskier.
 - **Build constraints:** Sacred Grove’s restrictions can bottleneck early Mana scaling.
-- **Mana pressure:** Your combat control spends Mana you also want for research/spells.
+- **Mana pressure:** Your combat control spends Mana you also want for Research and Rituals.
 
 ---
 

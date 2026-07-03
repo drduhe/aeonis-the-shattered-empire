@@ -17,10 +17,9 @@ The Action Point (AP) system governs the number of actions a player can take dur
     - **Canonical Action Costs:**
         - **Move**: Pay AP equal to the movement cost of the chosen path for one group (typically 1 AP per hex, modified by terrain and effects). See `Movement.md`.
         - **Attack**: 2 AP per battle initiated. The attacker may pay +1 AP to Press the Attack (see `Combat.md`).
-        - **Build**: 3 AP per building constructed.
+        - **Build**: 3 AP per building constructed. **Exception:** Legendary Buildings cost **4 AP** (see `Buildings.md`).
         - **Recruit**: 1 AP. Place up to 2 units in one controlled City (see §Recruit below).
-        - **Research**: 1 AP + the discovery's listed resource cost (see `Arcane.md`).
-        - **Cast Spells**: 1-4 AP, depending on the spell's power.
+        - **Research**: AP equal to the discovery's tier (**Tier I: 1 AP, Tier II: 2 AP, Tier III: 3 AP**) + its listed resource cost (see `Arcane.md`).
         - **Trade**: 1 AP to initiate a trade (see `Trade_Taxes.md`).
         - **Activate Strategy Card Primary**: Varies based on the card (see `Strategy.md`).
         - **Play an ACTION Whisper**: 0 AP. Play a Whisper Card with ACTION timing from your hand (see `Whispers.md`).
@@ -100,10 +99,9 @@ Recruit is the action used to place new military units on the board.
 
 - **Move Units:** Pay AP equal to the movement cost of the chosen path for one group (see `Movement.md`).
 - **Attack:** 2 AP per battle initiated; +1 AP optional to Press the Attack (see `Combat.md`).
-- **Build:** 3 AP per building constructed.
+- **Build:** 3 AP per building constructed (Legendary Buildings: 4 AP; see `Buildings.md`).
 - **Recruit:** 1 AP, place up to 2 units in one controlled City (see §Recruit above).
-- **Research:** 1 AP + listed resource cost (see `Arcane.md`).
-- **Cast Spells:** 1-4 AP, based on spell power.
+- **Research:** AP equal to the discovery's tier (Tier I: 1, Tier II: 2, Tier III: 3) + listed resource cost (see `Arcane.md`).
 - **Trade:** 1 AP to initiate (see `Trade_Taxes.md`).
 - **Activate Strategy Card Primary:** Varies based on the card.
 - **Play an ACTION Whisper:** 0 AP (see `Whispers.md`).

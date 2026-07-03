@@ -20,11 +20,11 @@ Renown represents the fame and influence of a Lord across the realm. It reflects
 
 1. **Military Feats:**
    - Defeating (capturing) an enemy Lord: **+2 Renown** (see `Combat.md`, section 2.1.4).
-   - Capturing enemy-controlled hexes: **+1 Renown** per hex.
+   - Capturing an enemy-controlled hex (by conquest or occupation): **+1 Renown**, at most **once per round** (the first such capture each round).
 
 2. **Diplomatic Achievements:**
    - Successfully passing a motion in the High Council: **+1 Renown**.
-   - Forming alliances with other Lords: **+1 Renown** (temporary, lost if the alliance breaks).
+   - Holding an **Accord** with another Lord: **+1 Renown** while it stands (temporary; lost when the Accord ends — see `Diplomacy.md`).
 
 3. **Economic Success:**
    - Accumulating a large surplus of resources: **+1 Renown** for every 10 total resources held at Cleanup & Checks.
@@ -58,4 +58,5 @@ To balance runaway Renown, players could lose points for:
 
 - Losing battles: **-1 Renown**.
 - Having your Lord captured: **-2 Renown** at the end of the round.
-- Breaking alliances: **-1 Renown**.
+
+Note: breaking an **Accord** by attacking your partner always costs **-1 Renown** (in addition to losing the Accord's +1). That penalty is canon, not optional — see `Diplomacy.md`.

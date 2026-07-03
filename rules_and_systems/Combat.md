@@ -95,7 +95,7 @@ Note:
 You may declare an attack against a hex if:
 
 - It is **enemy-controlled**, **contested**, or otherwise attackable by scenario rules, and
-- You have at least one unit in a hex **adjacent** to the target hex (unless a spell/portal rule allows otherwise).
+- You have at least one unit in a hex **adjacent** to the target hex (unless a Ritual/artifact/portal rule allows otherwise).
 
 ### 3.2 Commit units
 
@@ -171,7 +171,7 @@ At the end of a battle round, in initiative order (attacker first), each side ma
 
 Restriction:
 
-- **Defenders cannot retreat from Cities/Fortresses** unless a card, spell, or motion explicitly allows it.
+- **Defenders cannot retreat from Cities/Fortresses** unless a card, Ritual, or motion explicitly allows it.
 
 ---
 

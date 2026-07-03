@@ -11,8 +11,8 @@ Phase 1: Concept Development
 	•	Replace galactic conquest with territorial dominion, arcane mastery, or divine ascension.
 	•	Explore magical, religious, or mythical equivalents for TI4’s mechanics (e.g., technology trees become magical tomes or blessings).
 2. Establish Gameplay Goals
-	•	Target playtime: 6–10 hours (mirroring TI4).
-	•	Player count: 2–8 (to ensure scalability).
+	•	Target playtime: 4–10 hours (locked; aligns with the real-world TI4 experience — see `Positioning.md`).
+	•	Player count: 3–8 (locked; see `Positioning.md`).
 	•	Core mechanics:
 	•	Area control and expansion.
 	•	Diplomacy and alliance mechanics.
@@ -46,9 +46,9 @@ Phase 2: Initial Design
 	•	Introduce a system for collective decision-making on global events (e.g., a magical council).
 	•	Combat System:
 	•	Include unit types (e.g., infantry, beasts, siege engines, mages).
-	•	Use dice-based resolution with modifiers from spells or unit abilities.
+	•	Use dice-based resolution with modifiers from Rituals, Whispers, or unit abilities.
 	•	Technology Trees:
-	•	Replace with fantasy equivalents like spell research, artifact crafting, or divine blessings.
+	•	Replace with fantasy equivalents like Arcane Discovery research, artifact crafting, or divine blessings.
 
 
 
@@ -72,7 +72,7 @@ Phase 3: Prototyping
 Phase 4: Refinement
 1. Component Design
 	•	Custom lord sheets and cards.
-	•	Unique miniatures or standees for units and leaders.
+	•	Acrylic standees for all units and Lords (base game); custom Lord miniatures reserved as a Kickstarter stretch goal (see `Positioning.md`).
 	•	Modular, double-sided hex tiles for the map.
 	•	Work with artists to develop the game’s aesthetic (e.g., fantasy landscapes, character illustrations).
 2. Rulebook
@@ -87,7 +87,7 @@ Phase 4: Refinement
 Phase 5: Production and Marketing
 1. Manufacturing
 	•	Partner with a manufacturer for high-quality production.
-	•	Ensure cost analysis includes miniatures, custom dice, and premium materials.
+	•	Base cost analysis on acrylic standees, custom dice, and premium materials; price Lord miniatures separately as stretch-goal cost (see `Positioning.md`).
 2. Crowdfunding Campaign
 	•	Launch a Kickstarter or similar campaign.
 	•	Showcase the game with high-quality visuals and gameplay videos.

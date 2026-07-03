@@ -16,7 +16,7 @@ The tile system in *Aeonis* forms the foundation of exploration, conquest, and r
 
 - **Default Resource Production:** +1 Mana.
 - **Building Option:** Grove (enhances production to +3 Mana).
-- **Strategic Role:** Key for magical strategies and spellcasting.
+- **Strategic Role:** Key for magical strategies and Arcane research.
 
 ### MOUNTAINS
 
@@ -128,7 +128,7 @@ To keep unique tiles flavorful but fair:
 
 1. **Resource Production:** All basic terrain tiles inherently produce one resource by default. Placing the appropriate building on the tile enhances its production but does not replace the base resource.
 
-2. **Control:** A player must control a tile (via units, buildings, or adjacent cities) to extract its resources.
+2. **Control:** A player must **control** a tile to extract its resources during Production & Upkeep (see Tile Control below for how control is gained).
 
 3. **Exploration:** Tiles are revealed when entered and immediately begin producing their base resources unless occupied by enemies or left neutral.
 
@@ -138,35 +138,37 @@ To keep unique tiles flavorful but fair:
 
 ---
 
-## Tile Control
+## Tile Control (canon)
 
-In *Aeonis*, controlling hexes is vital for resource generation, movement, and strategic dominance.
+In *Aeonis*, controlling hexes is vital for resource generation, movement, and strategic dominance. **Control** and **ZOC** are different things: control determines who produces from a hex; ZOC (generated only by units) determines movement penalties.
 
-### Ways to Control a Tile
+### Ways to gain control of a hex
 
-- **Unit Presence:** A hex is controlled if a player has units stationed there at the start of their turn.
-- **Building Control:** If a player constructs a building on a hex, it remains under their control unless conquered.
-- **City Influence:** Cities exert control over adjacent hexes unless another player contests them.
-- **Special Abilities or Spells:** Some Lords, abilities, or artifacts grant control over hexes in unique ways.
+1. **Unit Presence:** At **Round Start**, each hex containing only your units becomes controlled by you.
+2. **Conquest:** Winning a battle for a hex gives you control of it **immediately** (see `Combat.md`).
+3. **Occupation:** Moving into a **neutral** hex claims it **immediately** if no other player's units are there. Moving into an **enemy-controlled** hex with no enemy units present flips it to you at the next **Round Start** (per rule 1) — walking into undefended territory takes it, but not instantly.
+4. **Building Presence:** A hex containing your building remains under your control unless conquered, even with no units present.
+5. **Adjacency Claim (passive expansion):** At **Cleanup & Checks**, each **neutral** hex that has been adjacent to a City or Tower you control for **two consecutive Cleanup checks**, and contains no other player's units, becomes controlled by you. (Track with a marker after the first check.)
+6. **Influence & Council:** Annexation motions, arbitration, and Influence takeovers (see `High_Council.md`).
+7. **Special Abilities:** Some Lords, discoveries (e.g., **Boundary Stones**, `Arcane.md`), or artifacts grant control in unique ways; they say so explicitly.
+
+### Losing control
+
+- You lose control of a hex the moment another player gains it by any method above.
+- Controlled hexes with **no units and no buildings** stay yours until someone takes them — but they are undefended: enemies may enter them without ZOC surcharge and flip them (method 3).
 
 ---
 
 ## Borders & Zones of Control
 
-### Border Mechanics
+### Influence vs control (borders)
 
-- **City Influence Borders:**
-  - A City exerts control over **all adjacent hexes**, even if they do not contain units or buildings.
-  - Cities can exert influence over **neutral hexes**, allowing passive expansion.
-  - High Council motions may expand or restrict borders (see `High_Council.md`).
+Cities and Towers project **influence**, which is *not* control by itself:
 
-- **Unit-Based Borders:**
-  - Units stationed in a hex claim it at the **start of a round** if no enemy units are present.
-  - Units in controlled hexes extend influence to **adjacent neutral hexes** but do not claim them immediately.
-
-- **Fortifications & Towers:**
-  - **Towers** extend influence **two hexes outward**, making them strong strategic points.
-  - **Fortresses** prevent adjacent hexes from being claimed without military conquest.
+- **Influence** gives you the **Adjacency Claim** (method 5 above) and **priority in contested neutral claims** (see Contested Neutral Hexes below).
+- **Towers** project influence to hexes within **2 hexes**; Cities to **adjacent** hexes.
+- **Fortresses** prevent adjacent hexes from being claimed by the Adjacency Claim or by Influence expenditure — enemies must use units (occupation or conquest).
+- High Council motions may expand or restrict borders (see `High_Council.md`).
 
 ### Zone of Control (ZOC) Rules (canon)
 
@@ -189,9 +191,9 @@ Neutral hexes represent **unclaimed land** that players must **actively secure**
 
 ### Methods to Claim Neutral Hexes
 
-1. **Moving a Unit into a Neutral Hex** (normal movement cost): The hex is **claimed immediately** if uncontested. If another player contests the claim within the same round, a diplomatic or military resolution occurs.
+1. **Moving a Unit into a Neutral Hex** (normal movement cost): The hex is **claimed immediately** if no other player's units are present (Tile Control method 3).
 
-2. **Extending Influence from a Controlled City or Tower**: Some hexes may **passively become controlled** if they are adjacent to a City or Tower for two consecutive rounds.
+2. **Adjacency Claim from a City or Tower**: Neutral hexes within influence range become controlled after **two consecutive Cleanup checks** (Tile Control method 5).
 
 3. **Diplomatic Influence**: Players can spend **Influence** to claim neutral hexes without sending units. Example: **Imperial Annexation (Decree)** can claim a neutral hex adjacent to your territory by paying Influence (see `High_Council.md`).
 
@@ -201,10 +203,10 @@ Neutral hexes represent **unclaimed land** that players must **actively secure**
 
 If two or more players attempt to claim the same hex:
 
-1. **If a unit is present, control goes to the player with the unit.**
-2. **If no units are present**, control is decided by:
-    - Influence expenditure (highest bid of Influence wins).
-    - A High Council ruling (if a motion is proposed).
+1. **If exactly one player has units present, control goes to that player.**
+2. **If no units are present** (e.g., competing Adjacency Claims resolving on the same Cleanup), control is decided by:
+    - Influence expenditure (open bid; highest total Influence spent wins; spent Influence is discarded).
+    - If no one bids (or bids tie), the hex **stays neutral**; a High Council motion (e.g., **Border Arbitration**) may settle it.
 
 ---
 
@@ -245,7 +247,7 @@ Losing control of hexes can occur through:
 
 - Players can attempt to sabotage a controlled hex by:
   - Spending Influence to incite rebellion (forcing the owner to spend resources or lose control).
-  - Using Espionage or Spells to temporarily disrupt control.
+  - Using Whisper Cards (e.g., **Saboteur**, see `Whispers.md`) or Rituals to temporarily disrupt control.
   - Destroying buildings or improvements, rendering the hex useless.
 
 ---
@@ -266,7 +268,7 @@ The **High Council** plays a role in determining border disputes and hex control
 
 ## Summary of Hex Control & Influence
 
-1. **Control is established through units, buildings, or City influence.**
+1. **Control is established through unit presence, conquest, buildings, the 2-round Adjacency Claim, Influence, or explicit abilities.**
 2. **ZOC is generated by military units (not buildings or passive control) and costs +1 AP to enter.**
 3. **Cavalry ignore the ZOC penalty on their first ZOC hex per Move action (flanking).**
 4. **Neutral hexes can be claimed through movement, Influence, or High Council motions.**

@@ -227,6 +227,109 @@ For reference, here is where Whisper play windows map to the round structure (se
 
 ---
 
+## Full-Game Whisper Deck (44 cards)
+
+The full game uses an expanded 44-card deck: the **26 First Playable cards** listed above, plus **6 duplicates** and **12 new cards** defined below. All core rules are unchanged: draw rates, the hand limit of 7, the four timing windows, the 1-Whisper-per-timing-window limit, and Sabotage all work exactly as defined in the Core Rules.
+
+### Duplicates (6 cards)
+
+The full deck adds a **second copy** of each of these First Playable cards (text unchanged; see their entries above):
+
+- Sabotage
+- Shield Wall
+- Hidden Cache
+- Forced March
+- Backroom Deal
+- War Profiteer
+
+These six were chosen because they are the deck's safety valves: a second Sabotage keeps big plays honest at higher player counts, and the other five are broadly playable effects that keep dead hands rare without doubling any of the "mean" Subterfuge cards.
+
+### New Combat Whispers (3)
+
+#### Sappers' Breach
+
+- **Timing:** COMBAT (during Reinforce Battle Lines step)
+- **Requirement:** You are the attacker in a **Siege** (a Siege marker is on the target hex; see `Combat.md`, section 6).
+- **Effect:** The defender's Battle Line Cap is reduced by **1** for this battle round (5 → 4). If the defender has more Battle Line units than the reduced cap, they must immediately return units of their choice to Reserves until they are at the cap.
+
+#### Bodyguard Oath
+
+- **Timing:** COMBAT (before dice are rolled for Strike or Counterstrike)
+- **Requirement:** Your **Lord** is on your Battle Line along with at least one other of your units.
+- **Effect:** The first time your Lord would take damage this battle round, that damage is dealt to another of your Battle Line units instead (your choice).
+
+#### Relentless Pursuit
+
+- **Timing:** COMBAT (during Retreat Check)
+- **Requirement:** The enemy side in your battle declares a retreat.
+- **Effect:** Choose one retreating enemy unit. It takes **1 damage** before the retreat resolves. If this reduces it to 0 HP, it is destroyed and does not retreat. (A Lord reduced to 0 HP this way is captured as normal; see `Combat.md`, section 2.1.4.)
+
+### New Council Whispers (3)
+
+#### Stolen Agenda
+
+- **Timing:** COUNCIL (immediately after the Speaker reveals the agenda card; see `High_Council.md` §3.2a)
+- **Effect:** Choose one:
+  - You must immediately propose the revealed card for free, before any other player may propose it; **or**
+  - Discard the revealed card and reveal the next card of the agenda deck. The new card becomes this round's free-proposal option.
+
+#### Whisper Campaign
+
+- **Timing:** COUNCIL (during Voting on an **Election** motion, before votes are tallied)
+- **Requirement:** An Election is being resolved (see `High_Council.md` §6a.1).
+- **Effect:** Add **+2 votes** to any one candidate. These votes may support a different candidate than the one your own Council Votes support.
+
+#### Quiet Threats
+
+- **Timing:** COUNCIL (when a motion is called to a vote, before any player declares Lobbying for it)
+- **Effect:** Choose another player. That player must not spend Influence on Lobbying for the current motion (see `High_Council.md` §2.3). Their Council Votes (base + Renown) are unaffected.
+
+### New WHEN Whispers (3)
+
+#### Ink and Dagger
+
+- **Timing:** WHEN an **Accord** is formed or broken (any players' Accord, including your own; see `Diplomacy.md`, section 2).
+- **Effect:** Gain **1 Influence**. If the Accord was broken by betrayal, also gain **1 Gold**.
+
+#### Tomb Runners
+
+- **Timing:** WHEN an **Artifact Site** is created (an Artifact Site marker is placed; see `Artifacts.md`).
+- **Effect:** You may immediately move one of your units from a hex adjacent to the marked hex onto the marked hex, provided that hex contains no enemy units and is not controlled by another player. This costs 0 AP and is not a Move action. If you cannot (or choose not to) move a unit this way, instead gain **1 Remnant**.
+
+#### Ransom Brokers
+
+- **Timing:** WHEN a Lord is **captured** (any Lord, including your own; see `Combat.md`, section 2.1.4).
+- **Effect:** Gain **2 Gold**.
+
+### New Action Whispers (3)
+
+#### Vanguard Requisition
+
+- **Timing:** ACTION
+- **Requirement:** You have unlocked at least one faction unit rank (Elite, Advanced, or Mythic; see `Advanced_Units.md`, section 2).
+- **Effect:** The next Recruit action you take this round that recruits a faction unit costs **2 less Gold** (minimum 0). All other Recruit rules are unchanged.
+
+#### Ritual Focus
+
+- **Timing:** ACTION
+- **Requirement:** You own at least one **Ritual** discovery (see `Arcane.md`).
+- **Effect:** Gain **1 Mana**. The next Ritual you activate this round costs **1 less Mana or 1 less Influence** (your choice; minimum 0).
+
+#### Rally the Levies
+
+- **Timing:** ACTION
+- **Effect:** Gain **2 Population Points** immediately, up to your Population Cap (surplus is lost; see `Population.md`).
+
+### Deck Construction
+
+- **Full game:** shuffle all **44 cards** into the shared deck at setup.
+- **First Playable:** use only the **26 cards** listed in the First Playable deck above.
+- **7-8 players:** consider using the full 44-card deck even in First Playable. With 2 draws per player per round, a 26-card deck cycles very quickly at high player counts; the larger deck keeps draws varied and keeps the discard pile from telegraphing hands. If you do this, remove any card whose Requirement references a system that is off in First Playable (e.g., Vanguard Requisition requires faction units; Whisper Campaign requires an Election agenda card).
+
+Balance note: 44 sits deliberately at the low end of the 40-60 target from the Scaling design notes below. Every card added past 26 dilutes the chance of drawing Sabotage; the duplicate list (rather than more new cards) is what protects the deck's answer density.
+
+---
+
 ## Design Notes
 
 ### Why "Whispers"?

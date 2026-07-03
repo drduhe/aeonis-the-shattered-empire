@@ -68,6 +68,14 @@
           "status": "playtest",
           "minutes": 3,
           "tags": ["components"]
+        },
+        {
+          "title": "Production Manifest",
+          "path": "components/Production_Manifest.md",
+          "description": "Full-game manufacturing bill of materials: tiles, standees, cards, tokens, dice, print.",
+          "status": "internal",
+          "minutes": 6,
+          "tags": ["components", "manufacturing", "kickstarter"]
         }
       ]
     },
@@ -173,6 +181,14 @@
           "tags": ["rules", "artifacts", "exploration"]
         },
         {
+          "title": "Objectives",
+          "path": "rules_and_systems/Objectives.md",
+          "description": "Stage I/II public objective decks, secret objectives, draw rules, and scoring timing.",
+          "status": "draft",
+          "minutes": 10,
+          "tags": ["rules", "scoring", "objectives"]
+        },
+        {
           "title": "High Council",
           "path": "rules_and_systems/High_Council.md",
           "description": "Motions, lobbying, voting, laws/decrees/titles, and timing.",
@@ -205,12 +221,59 @@
           "tags": ["lore", "setting"]
         },
         {
-          "title": "TBD / Brainstorm",
-          "path": "rules_and_systems/TBD.md",
-          "description": "Backlog ideas and optional systems under consideration.",
-          "status": "notes",
-          "minutes": 6,
-          "tags": ["notes"]
+          "title": "Diplomacy",
+          "path": "rules_and_systems/Diplomacy.md",
+          "description": "Deals, binding transactions, alliances, ceasefires, and how promises work at the table.",
+          "status": "draft",
+          "minutes": 7,
+          "tags": ["rules", "diplomacy", "negotiation"]
+        },
+        {
+          "title": "Advanced Units",
+          "path": "rules_and_systems/Advanced_Units.md",
+          "description": "Faction elite and mythic units: unlock gates, recruiting, upkeep, and limits.",
+          "status": "draft",
+          "minutes": 8,
+          "tags": ["rules", "units", "combat"]
+        }
+      ]
+    },
+    {
+      "id": "playtest-tools",
+      "label": "Playtest & Rulebook",
+      "color": "purple",
+      "docs": [
+        {
+          "title": "Full Game Scope",
+          "path": "playtest/Full_Game_Scope.md",
+          "description": "Second playable: Arcane tiers II-III, advanced units, Accords, full decks, and pacing goals.",
+          "status": "playtest",
+          "minutes": 5,
+          "tags": ["playtest", "scope"]
+        },
+        {
+          "title": "Balance Dashboard",
+          "path": "playtest/Balance_Dashboard.md",
+          "description": "Session metrics, Lord win-rate tracking, VP source distribution, and tuning levers.",
+          "status": "playtest",
+          "minutes": 8,
+          "tags": ["playtest", "balance"]
+        },
+        {
+          "title": "Learn to Play (draft)",
+          "path": "rulebook/Learn_to_Play.md",
+          "description": "Teaching rulebook draft for First Playable: setup, round walkthrough, combat, council, scoring.",
+          "status": "draft",
+          "minutes": 25,
+          "tags": ["rulebook", "teaching"]
+        },
+        {
+          "title": "Player Aid",
+          "path": "rulebook/Player_Aid.md",
+          "description": "Quick reference: round sequence, action costs, unit stats, combat steps, vote math.",
+          "status": "draft",
+          "minutes": 5,
+          "tags": ["rulebook", "reference"]
         }
       ]
     },
@@ -226,6 +289,14 @@
           "status": "draft",
           "minutes": 6,
           "tags": ["lore"]
+        },
+        {
+          "title": "Naming Bible",
+          "path": "lore/Naming_Bible.md",
+          "description": "Canonical terms, faction and race names, regions, naming conventions, pronunciation.",
+          "status": "core",
+          "minutes": 6,
+          "tags": ["lore", "terminology", "reference"]
         },
         {
           "title": "Lore README",
@@ -305,6 +376,38 @@
           "status": "playtest",
           "minutes": 6,
           "tags": ["lords", "portals", "movement", "teleportation"]
+        },
+        {
+          "title": "Serathis — The Tidecaller",
+          "path": "lords/Serathis.md",
+          "description": "The Drowned Court (expansion roster): lakes as fortresses, water movement, bridge control.",
+          "status": "draft",
+          "minutes": 6,
+          "tags": ["lords", "water", "lakes", "expansion"]
+        },
+        {
+          "title": "Morvane — The Deathless",
+          "path": "lords/Morvane.md",
+          "description": "The Pale Legion (expansion roster): necromancy, raising the fallen, population sacrifice.",
+          "status": "draft",
+          "minutes": 6,
+          "tags": ["lords", "necromancy", "attrition", "expansion"]
+        },
+        {
+          "title": "Tsuvara — Mother of Wagons",
+          "path": "lords/Tsuvara.md",
+          "description": "The Endless Caravan (expansion roster): a mobile home city, migration, adaptability.",
+          "status": "draft",
+          "minutes": 6,
+          "tags": ["lords", "nomad", "mobility", "expansion"]
+        },
+        {
+          "title": "Ozren — The Unveiled Flame",
+          "path": "lords/Ozren.md",
+          "description": "The Ashen Creed (expansion roster): conversion, Influence warfare, religious schism.",
+          "status": "draft",
+          "minutes": 6,
+          "tags": ["lords", "religion", "influence", "expansion"]
         }
       ]
     },
@@ -313,6 +416,14 @@
       "label": "Marketing",
       "color": "gold",
       "docs": [
+        {
+          "title": "Positioning & Product Decisions",
+          "path": "marketing/Positioning.md",
+          "description": "Locked decisions: positioning vs TI4, 4-10 hour sessions, 3-8 players, standees with miniature stretch goals.",
+          "status": "core",
+          "minutes": 4,
+          "tags": ["marketing", "positioning", "decisions"]
+        },
         {
           "title": "Marketing Plan",
           "path": "marketing/Marketing.md",
@@ -328,6 +439,30 @@
           "status": "internal",
           "minutes": 8,
           "tags": ["marketing", "planning"]
+        },
+        {
+          "title": "Pitch Copy",
+          "path": "marketing/Pitch.md",
+          "description": "One-liner, elevator pitch, campaign hooks, fact box, and press boilerplate.",
+          "status": "draft",
+          "minutes": 5,
+          "tags": ["marketing", "pitch", "copy"]
+        },
+        {
+          "title": "Comps Analysis",
+          "path": "marketing/Comps_Analysis.md",
+          "description": "Comparable titles (TI4, Eclipse, HLAS, Arcs/Oath): pricing bands and campaign lessons.",
+          "status": "internal",
+          "minutes": 7,
+          "tags": ["marketing", "pricing", "kickstarter"]
+        },
+        {
+          "title": "Campaign Math",
+          "path": "marketing/Campaign_Math.md",
+          "description": "Funding goal template, pledge tiers, stretch ladder, timeline, and go/no-go gates.",
+          "status": "internal",
+          "minutes": 7,
+          "tags": ["marketing", "kickstarter", "budget"]
         }
       ]
     }

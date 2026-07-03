@@ -21,7 +21,7 @@ Use these chapters as written:
 - `Population.md`
 - `Trade_Taxes.md`
 - `Buildings.md`
-- `Whispers.md` (tactical one-shot Whisper Cards drawn into a private hand; 24-card First Playable deck)
+- `Whispers.md` (tactical one-shot Whisper Cards drawn into a private hand; 26-card First Playable deck)
 - `Artifacts.md` (full artifact system: 24-card deck, Remnants, event-driven Artifact Sites)
 
 First Playable restrictions are listed below where needed.
@@ -146,21 +146,22 @@ All buildings from `Buildings.md` are available:
 
 **Build action cost: 3 AP** for standard buildings, **4 AP** for Legendary Buildings (see `Actions.md`).
 
-### 4.3 Strategy cards (use 6 for 3-4 players, all 8 for 5-8)
+### 4.3 Strategy cards (all 8, every player count)
 
-**For 3-4 players**, use these six from `Strategy.md` (print as cards):
+Use the full 8-card deck from `Strategy.md` (print as cards):
 
 1. **Arcane Ascendancy**
 2. **Resource Surge**
 3. **Military Maneuvers**
 4. **Diplomatic Decree**
+5. **Expansion Strategy**
 6. **Tactical Reinforcements**
 7. **Economic Boom**
+8. **Imperial Mandate**
 
-**For 5-8 players**, add:
+**Cards per player:** At **3-4 players**, each player drafts **2 cards** (two passes in draft order); initiative is your lowest card number. At **5-8 players**, each player drafts **1 card**.
 
-5. **Expansion Strategy**
-8. **Arcane Convergence**
+**Bounty:** Place 1 Gold on each undrafted card at the end of Strategy Selection; a player who later drafts that card takes the accumulated Gold (see `Strategy.md` §1.3).
 
 **Draft order (canon):** Lowest VP picks first. Ties broken by lowest Renown, then clockwise from Speaker.
 

@@ -19,7 +19,7 @@ We’re building toward a Kickstarter to:
 - **Progression**: A tiered “tech tree” style **Arcane Discoveries** system (schools, tiers, AP + resource cost) plus Lord-specific paths. See `rules_and_systems/Arcane.md`.
 - **Growth constraint**: **Population** as a cap/soft limit that interacts with units and buildings, plus growth each round. See `rules_and_systems/Population.md`.
 - **Politics layer**: The **High Council** defines motions, laws, and titles that can reshape borders and player power. See `rules_and_systems/High_Council.md`.
-- **Victory**: VP from public/secret objectives, lord objectives, council titles, artifacts/buildings, “Throne of Power”, events, etc. See `rules_and_systems/Victory.md`.
+- **Victory**: VP from public/secret objectives, lord objectives, council titles, artifacts/buildings, the **Imperial Seat**, events, etc. See `rules_and_systems/Victory.md`.
 - **Trade + upkeep**: Player-initiated trades (AP cost) plus unit/building upkeep and penalties. See `rules_and_systems/Trade_Taxes.md`.
 - **Events**: Exploration/global/local/milestone events with examples. See `rules_and_systems/Events.md`.
 - **Renown**: Fame/reputation unlocking bonuses and interacting with politics. See `rules_and_systems/Renown.md`.
@@ -35,19 +35,12 @@ We’re building toward a Kickstarter to:
 - `art/`: Visual references / inspiration images.
 - `lore/`: Lorebook drafts and setting material (currently `lore/Lore.md`).
 
-## Known gaps / inconsistencies to resolve next (highest impact)
+## Current status and next steps
 
-- **Combat tuning**: Combat is now canonical (battle line + reserves, anti-doomstack, sieges). Next work is tuning numbers (defense bonuses, costs, siege reinforcement limits) and adding more unit types.
-- **High Council integration pass**: Now that `rules_and_systems/High_Council.md` exists, update other chapters to reference its definitions (votes, motions, enactment timing) and align terminology (Influence vs IP).
-- **Building system incomplete**: `rules_and_systems/Buildings.md` ends mid-sentence (Lord-specific buildings not defined).
-- **Lakes / water tiles unfinished**: `rules_and_systems/Tiles.md` flags lakes as “needs work”, but movement/combat reference special traversal/portals.
-- **Cost model consistency**:
-  - **Population vs resource upkeep**: Canon is now “Population is the primary cap; resource upkeep is for advanced units and advanced/legendary buildings.” Ensure future unit/building additions follow this.
-- **Victory system “lock-in”**: `Victory.md` offers many scoring routes and optional variants; deciding which are core vs optional will help testing and balancing.
-- **Terminology**: The docs sometimes use “Influence Points (IP)” vs “Influence”.
+Round structure, combat, buildings (including Legendary capstones), artifacts, Whispers, and the First Playable packet are canonical. Remaining design work is tracked in:
 
-## Suggested near-term workflow (for playability)
+- `rules_and_systems/INDEX.md` (Remaining design work section)
+- `docs/plans/2026-07-02-aeonis-design-roadmap.md` (full phased roadmap)
+- `marketing/Positioning.md` (locked product decisions: 4–10 hour sessions, 3–8 players, standees + miniature stretch goals)
 
-1. Lock a single **round structure** (council timing, strategy pick timing, production timing, event timing).
-2. Lock a single **combat resolution** (and how reinforcement / unit caps interact with movement and ZOC).
-3. Create a minimal “**first playable**” ruleset: 2–4 lords, 1–2 unit types, a small strategy deck, and a small event/objective set.
+The single highest-priority activity is **playtesting**: the First Playable packet (`playtest/First_Playable_Packet.md`) is ready to be tabled, and every session should be logged with `agents/templates/Playtest_Report_Template.md`.

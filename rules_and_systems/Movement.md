@@ -11,7 +11,7 @@
 ### Combat interaction (important)
 
 - **Attacks are declared** into a target hex; units do not automatically "move into a hex to fight."
-- To initiate combat, you must have units **adjacent** to the target hex (unless a spell/portal effect says otherwise) and spend an **Attack** action (see `Combat.md`).
+- To initiate combat, you must have units **adjacent** to the target hex (unless a Ritual/artifact/portal effect says otherwise) and spend an **Attack** action (see `Combat.md`).
 - If the attacker wins, they may **occupy** the target hex with up to the hex's unit cap (see `Combat.md`).
 
 ---
@@ -42,7 +42,7 @@ Each unit type interacts with the movement system differently, creating strategi
 | Unit Type          | Movement Range (hexes/Move) | Special Movement Rules                                                          |
 | ------------------ | --------------------------- | ------------------------------------------------------------------------------- |
 | **Infantry**       | 1 hex                       | No special movement bonuses, effective for defense.                             |
-| **Cavalry**        | 2 hexes                     | Can traverse Plains at 1 AP per 2 hexes. **Ignores ZOC penalty on first ZOC hex per Move action (flanking).** |
+| **Cavalry**        | 2 hexes                     | **Ignores ZOC penalty on first ZOC hex per Move action (flanking).** Pays normal terrain costs per hex. |
 | **Archers**        | 1 hex                       | No special movement bonuses.                                                    |
 | **Lord (Leader)**  | varies                      | Defined on the Lord Sheet; uses normal terrain costs unless a Lord ability says otherwise. |
 | **Advanced Units** | varies                      | Examples: Flying units ignore terrain penalties.                                |
@@ -71,8 +71,8 @@ Portals and magical movement are key to strategic flexibility.
       - If the destination Portal is controlled by another player, you may only travel there if a treaty/motion allows it (e.g., **Open Borders Treaty** in `High_Council.md`).
   - **Strategic Role:** Portals create critical chokepoints and encourage territorial conflict.
 
-- **Teleportation Spells:**
-  - High-tier Arcane Discovery or artifact-based abilities allow unit teleportation:
+- **Teleportation (Rituals & Artifacts):**
+  - High-tier Arcane Discoveries or artifact-based abilities allow unit teleportation:
     - Example: **Translocation (Tier II, TRN):** When you take a Move action, you may pay **1 AP** and spend **3 Mana** to teleport a unit group to any controlled hex (see `Arcane.md`).
 
 ---

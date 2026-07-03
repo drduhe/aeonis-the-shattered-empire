@@ -155,7 +155,7 @@ At **Cleanup & Checks**, control **2 or more** hexes that each contain **one of 
 ### Weaknesses
 
 - **Tempo risk:** Heavy building and siege play can fall behind on wide expansion.
-- **Mana-light:** Your active control tool competes with other Mana uses (research/spells).
+- **Mana-light:** Your active control tool competes with other Mana uses (Research and Rituals).
 - **Predictable front:** Opponents can coordinate around your choke points if you overcommit.
 
 ---

@@ -10,7 +10,7 @@ This folder is the current "rulebook draft" for **Aeonis: The Shattered Empire**
 - **`Round_Structure.md`**: Canonical timing diagram for a full round (round start -> events -> strategy selection -> council -> rotating actions -> production/upkeep -> cleanup).
 - **`High_Council.md`**: Political procedure (speaker, proposals, negotiation, voting, laws/decrees/titles) that other systems reference.
 - **`Actions.md`**: Action Point pool + rotating turns; variable action costs (Build at 3 AP); canonical Recruit rules (costs, placement, limits); passing and AP banking.
-- **`Strategy.md`**: Strategy cards chosen each round; initiative order; primaries + secondaries (TI4-style); canon draft order (lowest VP picks first).
+- **`Strategy.md`**: The canon 8-card Strategy deck; initiative order; primaries + opt-in secondaries; draft order (lowest VP picks first); 2-card draft at 3-4 players; bounty gold on undrafted cards.
 - **`Movement.md`**: AP-based movement, terrain costs, portals/teleportation, Cavalry flanking, and council tie-ins.
 - **`Tiles.md`**: Terrain production + buildings; special tiles; control/borders; canon ZOC framework (unit-based, not passive control).
 - **`Combat.md`**: Canon combat (battle line + reserves, one battle round per Attack, sieges as the multi-turn exception); softened Lord capture (+1 VP, ability lockout).
@@ -21,9 +21,11 @@ This folder is the current "rulebook draft" for **Aeonis: The Shattered Empire**
 - **`Renown.md`**: Renown gains/uses/threshold bonuses; optional decay.
 - **`Victory.md`**: VP sources (objectives, council titles, artifacts/buildings, throne, combat captures, events); 10 VP threshold; 8 VP short-game variant.
 - **`Buildings.md`**: Canon building list (including Guild Hall, Bridge), costs, and how buildings interact with Population/upkeep.
-- **`Whispers.md`**: Whisper Cards -- shared tactical card deck representing Speaking Stone intelligence and secret preparations. Draw, hand limit, timing windows, 24-card First Playable list.
+- **`Whispers.md`**: Whisper Cards -- shared tactical card deck representing Speaking Stone intelligence and secret preparations. Draw, hand limit, timing windows, 26-card First Playable list.
 - **`Artifacts.md`**: Artifact deck (24 unique relics), Remnants, event-driven Artifact Sites, three categories (Lord Equipment, Building Relics, Utility), and VP-bearing artifacts.
-- **`TBD.md`**: Brainstorming checklist of "systems we might add" (much of it is now implemented elsewhere).
+- **`Objectives.md`**: Owning chapter for the objective system: Stage I/II public decks (24), secret deck (20), draw rules and secret-objective hand cap.
+- **`Diplomacy.md`**: Which deals the rules enforce (immediate exchanges binding; promises not), the Accord system (formal alliances), and the NPC-factions decision (out of core).
+- **`Advanced_Units.md`**: Faction Elite/Advanced/Mythic units: unlock gates (Forge / Tier II / Legendary), recruit costs, on-map limits, upkeep, and the design contract. Full game only.
 
 ## Design decisions (resolved)
 
@@ -44,17 +46,33 @@ These items were previously "red flags" and have been addressed:
 - **Lord roster (8 Lords)**: Cassian (Human, economy), Seraphel (Human, arcane burst), Vharok (Human, fortress), Elyndra (Elven, growth), Rakhis (Djinnborn, cavalry raids), Nyxara (Umbral, espionage/Whispers), Auriel (Luminari, Renown/council), Thal'rik (Voidborn, portals).
 - **Artifact system**: 24 unique relics in a shared deck; Remnant acquisition (3 Remnants = draw 1 artifact); event-driven Artifact Sites; 3 categories (Lord Equipment, Building Relics, Utility); 4 VP-bearing artifacts; full system in First Playable.
 - **Buildings overhaul**: Forge/Academy/Bank finalized with concrete effects; upgrade system removed (covered by Arcane Discoveries + Building Relics); 8 Legendary Buildings defined as faction capstones (1 per Lord, 2 VP, +2 Renown, multi-gate prerequisites, 4 AP + resources to build); full building roster in First Playable.
+- **Research AP is tiered**: Tier I = 1 AP, Tier II = 2 AP, Tier III = 3 AP (see `Arcane.md`; `Actions.md` matches).
+- **"Cast Spells" removed**: There is no separate spellcasting action. Magic is expressed through Arcane Discoveries (passives, Rituals, Upgrades). Terminology sweep: "spell" is not a rules term.
+- **Speaker rotation**: Clockwise at Cleanup & Checks (canon in `Round_Structure.md`; `High_Council.md` matches).
+- **Control model unified**: Control is gained by unit presence at Round Start, conquest, occupation of neutral hexes, buildings, a 2-Cleanup-check Adjacency Claim near Cities/Towers, Influence/council, or explicit abilities. Cities/Towers project *influence* (claim priority), not instant control. See `Tiles.md`.
+- **Cavalry movement**: Cavalry pay normal terrain costs (the "1 AP per 2 hexes on Plains" rate was cut); their identity is 2-hex range + ZOC flanking.
+- **Renown from hex capture**: +1 Renown, at most once per round (see `Renown.md`).
+- **Agenda deck**: Canonical rules live in `High_Council.md` §3.2a; the First Playable card list stays in the playtest packet.
+- **Whisper deck size**: 26 cards in First Playable (see `Whispers.md`).
+- **Terminology locked**: "Imperial Seat" (never "Throne of Power"), "Influence" (never "IP"), "Speaking Stones" (never "Palantír"), "Discovery/Ritual" (never "spell").
+- **`TBD.md` retired**: Its open items were folded into "Remaining design work" below.
 
 ## Remaining design work
 
-- **Terminology**: Keep naming consistent ("Influence"; "Throne of Power" vs "Imperial Seat" -- prefer "Imperial Seat" as canon).
 - **Lakes / water**: Core rules are defined (impassable, Bridge exception). Consider adding more water-related events or abilities.
 - **Additional Lords**: Roster is now **8 Lords** (sufficient for 8-player games). Long-term goal: a much larger roster of Lords with unique races and playstyles so that every session feels different even at the same player count. Future Lords should explore untapped design space (naval/coastal, necromancy, nomadic alliances, religious schisms, etc.) and introduce new faction mechanics that interact with existing systems in novel ways.
-- **Advanced units**: Faction-specific elite/mythic units exist on Lord sheets as "Future Content" but need a system chapter for upkeep and unlock rules.
+- **Dynamic market** (from retired `TBD.md`): fluctuating resource values driven by events/supply. Unscheduled.
+- **Tutorial scenario** (from retired `TBD.md`): a simplified learning mode; belongs with the rulebook work (`../rulebook/`).
+- **Faction Strategy Cards**: optional variant contract exists in `Strategy.md` §5.1; no cards designed yet.
+- **Expansion Lord balance**: Lords 9-12 (Serathis, Morvane, Tsuvara, Ozren) are drafted as expansion roster and need dedicated playtest passes before joining the rotation.
 
-## Useful "next docs" to add (if you want a complete rulebook)
+## Related docs outside this folder
 
-- `../lords/` folder: 8 faction sheets now exist. Expanding far beyond 8 is a long-term design goal -- each new Lord should bring a unique race, faction mechanic, and playstyle. Consider Lord-specific Arcane paths, legendary buildings, and faction events.
-- A **Player Aid** sheet (quick reference for action costs, unit stats, and round flow).
+- `../lords/`: 12 faction sheets (8 launch + 4 expansion roster). Each new Lord brings a unique race, faction mechanic, and playstyle.
+- `../rulebook/Learn_to_Play.md` + `../rulebook/Player_Aid.md`: teaching book and quick reference.
+- `../playtest/First_Playable_Packet.md` + `../playtest/Full_Game_Scope.md`: the two test scopes.
+- `../playtest/Balance_Dashboard.md`: metrics, Lord win rates, and tuning levers.
+- `../components/Components.md` (prototype) + `../components/Production_Manifest.md` (manufacturing BOM).
+- `../marketing/Positioning.md`: locked product decisions (4-10 hours, 3-8 players, standees + minis stretch).
 
 _End of index._
