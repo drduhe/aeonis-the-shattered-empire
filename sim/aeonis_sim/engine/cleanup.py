@@ -41,7 +41,7 @@ def _adjacency_claims(state) -> None:
                     and not any(u.owner != pid for u in t.units)
                     and not _fortress_blocks_claim(state, coord, pid)]  # AL-16
         if len(eligible) != 1:
-            t.adj_claim = None  # AL-14: contested claims stay neutral in M1
+            t.adj_claim = None  # AL-14: contested claims stay neutral (First Playable sim)
             continue
         pid = eligible[0]
         if t.adj_claim and t.adj_claim[0] == pid:

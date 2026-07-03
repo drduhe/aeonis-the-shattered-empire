@@ -34,7 +34,7 @@ def apply_tile_production(player, tile) -> None:
 def run_production(state) -> None:
     # Round_Structure.md §6: production, then growth, then upkeep.
     for p in state.players:
-        # 1. Resource production (AL-13: Cities produce no resources in M1)
+        # 1. Resource production (AL-13: Cities print growth only, not trade resources)
         for t in state.controlled(p.pid):
             produced = None
             for b in t.buildings:

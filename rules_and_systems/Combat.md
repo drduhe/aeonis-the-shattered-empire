@@ -203,6 +203,8 @@ If the target hex contains a **City**, the defender may declare **Hold the Walls
 - If declared, the battle becomes a **Siege**.
 - Place a **Siege marker** on the target hex.
 
+**First Playable / automated play:** Cities cannot be retreated from (see §4.4). When using the First Playable packet or the balance simulator, treat **Hold the Walls** as declared for any City attack — the battle is always a Siege.
+
 ### 6.2 Siege round pacing (across turns/rounds)
 
 - A Siege does **not** fully resolve in one Attack action.

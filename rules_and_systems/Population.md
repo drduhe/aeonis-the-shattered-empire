@@ -49,6 +49,8 @@ Note:
     - Example: Certain Arcane Discoveries may temporarily or permanently increase the Population Cap.
 - A **Global Cap** (e.g., maximum 25 Population Points per Lord) ensures balance.
 
+**Involuntary overflow (canon):** Conquest, occupation flips, Adjacency Claims, and captured buildings may leave you with more Population **in use** than your current Pool — or even above the Global Cap. The Pool only gates **voluntary** Recruit and Build actions. Growth each round still cannot push your Pool above `Population Cap − Population in use`.
+
 ---
 
 ### 3. **Population Growth**

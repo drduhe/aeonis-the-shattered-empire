@@ -144,6 +144,28 @@ def test_enemy_fortress_blocks_adjacency_claim():
     assert s.tiles[neutral].controller is None
 
 
+def test_coronation_milestone_once_per_game_after_broken_streak():
+    s = make_state()
+    seat = next(t for t in s.tiles.values() if t.imperial_seat)
+    seat.controller = 0
+    lord_coord, lord = s.find_lord(0)
+    seat.units.append(lord)
+    s.tiles[lord_coord].units.remove(lord)
+    run_cleanup(s)
+    run_cleanup(s)
+    seat.controller = None
+    run_cleanup(s)
+    seat.controller = 0
+    run_cleanup(s)
+    assert s.players[0].vp_sources.get("coronation_milestone", 0) == 2
+    assert s.players[0].rite_bonus_scored is True
+    vp_before = s.players[0].vp
+    for _ in range(3):
+        run_cleanup(s)
+    assert s.players[0].vp_sources.get("coronation_milestone", 0) == 2
+    assert s.players[0].vp > vp_before
+
+
 def test_victory_check_sets_final():
     s = make_state()
     s.players[2].add_vp(10, "test")

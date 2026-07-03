@@ -54,7 +54,8 @@ To keep maps from hard-stalling behind water, Lakes can be opened up via bridges
 
 ### CITIES
 
-- **Base Production:** +2 Population and various combinations of resources.
+- **Base Production:** +2 Population growth per controlled City during Production & Upkeep (see `Population.md` §3). Cities do **not** print Gold, Mana, or Influence by themselves — only buildings on the City hex (or terrain production on other hexes) generate trade resources.
+- **AP bonus:** +1 AP per controlled City, max +2 from Cities (see `Actions.md`).
 - **Building Capacity:** Supports up to 2 buildings (expandable to 3).
 
 ### RUINS
@@ -207,6 +208,8 @@ If two or more players attempt to claim the same hex:
 2. **If no units are present** (e.g., competing Adjacency Claims resolving on the same Cleanup), control is decided by:
     - Influence expenditure (open bid; highest total Influence spent wins; spent Influence is discarded).
     - If no one bids (or bids tie), the hex **stays neutral**; a High Council motion (e.g., **Border Arbitration**) may settle it.
+
+**First Playable sim rule:** When the automated simulator resolves Cleanup and two or more players both qualify for the same neutral Adjacency Claim with no units present, the hex **stays neutral** (no Influence bidding). Full-table play uses the Influence bid above.
 
 ---
 

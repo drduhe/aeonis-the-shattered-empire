@@ -33,6 +33,26 @@ def test_generate_map_4p_structure():
     assert len(tiles) == 37
 
 
+def test_deserts_between_adjacent_home_pairs():
+    rng = random.Random(42)
+    tiles, homes = generate_map(4, rng)
+    from aeonis_sim.engine.hexmap import _hex_angle
+    ordered = sorted(homes, key=_hex_angle)
+    deserts = [c for c, t in tiles.items() if t.terrain == Terrain.DESERT]
+    assert len(deserts) == 4
+    for d in deserts:
+        assert all(distance(d, h) > 1 for h in homes)
+    assigned = set()
+    for i in range(4):
+        h1, h2 = ordered[i], ordered[(i + 1) % 4]
+        slot = min(
+            (c for c in deserts if c not in assigned),
+            key=lambda c: (distance(c, h1) + distance(c, h2), c),
+        )
+        assigned.add(slot)
+    assert len(assigned) == 4
+
+
 def test_generate_map_is_seed_deterministic():
     t1, h1 = generate_map(3, random.Random(7))
     t2, h2 = generate_map(3, random.Random(7))

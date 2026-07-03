@@ -51,6 +51,29 @@ def _home_anchors(num_players: int, radius: int) -> list:
     return [ring[int(i * len(ring) / num_players)] for i in range(num_players)]
 
 
+def _hex_angle(c) -> float:
+    """Clockwise sort key for home cities around the Imperial Seat."""
+    return math.atan2(c[1] + c[0] / 2.0, c[0] * math.sqrt(3) / 2.0 + 1e-9)
+
+
+def _place_deserts_between_homes(homes: list, remaining: list) -> list:
+    """First_Playable_Packet.md §3.1: one Desert between each adjacent home pair."""
+    ordered = sorted(homes, key=_hex_angle)
+    n = len(ordered)
+    slots = []
+    for i in range(n):
+        h1 = ordered[i]
+        h2 = ordered[(i + 1) % n]
+        cands = [c for c in remaining
+                 if distance(c, h1) <= 3 and distance(c, h2) <= 3]
+        if not cands:
+            cands = list(remaining)
+        slot = min(cands, key=lambda c: (distance(c, h1) + distance(c, h2), c))
+        slots.append(slot)
+        remaining.remove(slot)
+    return slots
+
+
 def _neutral_counts(num_players: int) -> dict:
     if num_players <= 4:
         return {"ruins": 2, "portals": 2, "lakes": 2, "deserts": num_players}
@@ -119,8 +142,8 @@ def generate_map(num_players: int, rng: random.Random):
             constraint=lambda c, ps=existing: all(distance(c, p) > 1 for p in ps),
         )
     place(Terrain.LAKE, counts["lakes"])
-    # AL-3: deserts by shuffle, not "between each pair of home clusters".
-    place(Terrain.DESERT, counts["deserts"])
+    for c in _place_deserts_between_homes(homes, remaining):
+        tiles[c] = Tile(c, Terrain.DESERT)
 
     filler = [Terrain.PLAINS, Terrain.FOREST, Terrain.MOUNTAIN]
     for i, c in enumerate(remaining):

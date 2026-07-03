@@ -83,7 +83,9 @@ Build a map scaled to player count:
 
 The Imperial Seat is a City with this additional rule:
 
-- **Coronation Rite:** At **Cleanup & Checks**, if you control the Imperial Seat **and** your Lord unit is in the Seat hex, score **1 VP** (max once per round). Track total Rites scored. On your **third** Rite (not necessarily consecutive), score an additional **+2 VP** (once per game). VP from Rites are permanent.
+- **Coronation Rite:** At **Cleanup & Checks**, if you control the Imperial Seat **and** your Lord unit is in the Seat hex, score **1 VP** (max once per round). Track total Rites scored. On your **third** Rite (not necessarily consecutive), score an additional **+2 VP** (once per player per game). VP from Rites are permanent.
+
+**Simulator map note:** Deserts are placed one per gap between adjacent home clusters (packet §3.1). Ruins, Portals, and Lakes are placed in remaining neutral hexes (shuffle for variety).
 
 ### 3.3 Starting resources & tracks (per player)
 

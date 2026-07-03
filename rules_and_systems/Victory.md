@@ -70,7 +70,7 @@ Players earn **Victory Points (VP)** throughout the game by achieving key object
 
 ### 5. Imperial Seat (Endgame Objective)
 
-**Coronation Rite (First Playable):** At Cleanup & Checks, if you control the Imperial Seat **and** your Lord unit is in the Seat hex, score **1 VP** (max once per round). On your **third** total Rite (not necessarily consecutive), score an additional **+2 VP** (once per game).
+**Coronation Rite (First Playable):** At Cleanup & Checks, if you control the Imperial Seat **and** your Lord unit is in the Seat hex, score **1 VP** (max once per round). On your **third** total Rite (not necessarily consecutive), score an additional **+2 VP** (**once per player per game**). Missing rounds between Rites does not reset your Rite count or allow a second +2 VP award.
 
 *Why It Works:* Creates a visible, attackable scoring moment at the thematic centerpiece instead of silent drip VP.
 
