@@ -48,8 +48,8 @@ def test_castle_upkeep_suspension():
     p = s.players[0]
     home = s.tiles[p.home]
     home.buildings.append(BuildingType.CASTLE)
-    # gold 0: even if the mountain's +1 lands before the City in iteration
-    # order, 1 < 2 so upkeep is unpayable either way
+    # gold 0: production runs first (mountain +1), but 1 < 2 so upkeep
+    # is still unpayable
     p.gold = 0
     run_production(s)
     assert home.castle_suspended is True   # AL-8

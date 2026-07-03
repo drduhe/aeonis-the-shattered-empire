@@ -19,7 +19,8 @@ from .observations import DecisionPoint
 from .production import run_production
 from .recruit import apply_recruit, enumerate_recruits
 from .setup import build_initial_state
-from .types import BASE_AP, BuildingType, DEFAULT_ROUND_CAP, Terrain
+from .types import (BASE_AP, BuildingType, DEFAULT_ROUND_CAP, Terrain,
+                    UNIT_STATS, UnitType)
 
 MAX_ACTIONS_PER_PLAYER_ROUND = 100
 
@@ -64,6 +65,11 @@ class Game:
             owners = {u.owner for u in t.units}
             if len(owners) == 1:
                 t.controller = owners.pop()
+        # Combat.md §2.1.3: Lords heal to full HP at Round Start
+        for t in s.tiles.values():
+            for u in t.units:
+                if u.type == UnitType.LORD:
+                    u.hp = UNIT_STATS[UnitType.LORD].hp
         for p in s.players:
             cities = sum(1 for t in s.controlled(p.pid)
                          if t.terrain == Terrain.CITY)

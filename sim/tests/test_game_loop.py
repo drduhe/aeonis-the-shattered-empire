@@ -47,6 +47,19 @@ def test_round_start_flips_occupied_hexes():
     assert target.controller == 0  # Tiles.md control method 1
 
 
+def test_lord_heals_at_round_start():
+    g = Game({"players": 3}, seed=11)
+    state = g.state
+    coord, lord = state.find_lord(0)
+    lord.hp = 1
+    for _ in range(3):
+        g.next_decision()
+        g.submit({"type": "pass"})
+    g.next_decision()  # round 2 began
+    _, lord2 = state.find_lord(0)
+    assert lord2.hp == 3
+
+
 def test_submit_rejects_unenumerated_choice():
     g = Game({"players": 3}, seed=11)
     g.next_decision()

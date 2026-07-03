@@ -24,3 +24,9 @@ canon.
 | AL-12 | Do Archers strike again in the main Strike step after their Pre-Strike? | No — Pre-Strike is their strike for the round | `Combat.md` | Open |
 | AL-13 | Cities produce "+2 Population and various combinations of resources" — which resources? | No Gold/Mana/Influence in M1 (cap, growth, and AP bonuses only) | `Tiles.md` | Open |
 | AL-14 | Competing Adjacency Claims resolve by Influence bidding — a decision the M1 bots can't make | Contested claims stay neutral in M1 | `Tiles.md` | Sim-only |
+| AL-15 | Can involuntary acquisition (conquest, adjacency claim, occupation flip) push a player's Population usage over the global cap of 25? `Population.md` is silent | Yes — overflow allowed; the cap only gates voluntary recruit/build via the Population Pool | `Population.md` | Open |
+| AL-16 | `Tiles.md` says Fortresses block enemy Adjacency Claims on adjacent hexes — not implemented in M1 | Adjacency Claims ignore enemy Fortresses in M1 | `Tiles.md` | Sim-only |
+| AL-17 | `Movement.md` grants Forests a defensive bonus — not implemented in M1 combat | No terrain defense bonuses in M1 (building bonuses only) | `Movement.md` / `Combat.md` | Sim-only |
+| AL-18 | Can the Imperial Seat 3-round-streak bonus (+2 VP) re-trigger after a broken streak? `Victory.md` doesn't say | Once per game per player | `Victory.md` | Open |
+| AL-19 | Do Portal-to-Portal hops pay the ZOC surcharge at the destination, and can a 0-AP portal hop be taken with 0 AP remaining? | No surcharge on portal hops; 0-AP hops legal at 0 AP | `Movement.md` | Open |
+| AL-20 | `Combat.md` §6.4 bounds siege reinforcement at +3 units/round; M1 auto-commit recommits all adjacent units on each new Attack action | Reinforcement bound not enforced in M1 (auto-commit sim bound) | `Combat.md` | Sim-only |

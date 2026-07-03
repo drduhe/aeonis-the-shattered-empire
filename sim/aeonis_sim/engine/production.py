@@ -10,10 +10,10 @@ _UPGRADED = {BuildingType.MINE: ("gold", 3), BuildingType.GROVE: ("mana", 3),
 
 
 def run_production(state) -> None:
+    # Round_Structure.md §6: production, then growth, then upkeep.
     for p in state.players:
-        growth = 1  # Population.md base growth
+        # 1. Resource production (AL-13: Cities produce no resources in M1)
         for t in state.controlled(p.pid):
-            # Resource production (AL-13: Cities produce no resources in M1)
             produced = None
             for b in t.buildings:
                 if b in _UPGRADED:
@@ -22,17 +22,20 @@ def run_production(state) -> None:
                 produced = _PLAIN.get(t.terrain)
             if produced:
                 setattr(p, produced[0], getattr(p, produced[0]) + produced[1])
-            # Population growth contributions
+        # 2. Population growth
+        growth = 1  # Population.md base growth
+        for t in state.controlled(p.pid):
             if t.terrain == Terrain.PLAINS:
                 growth += 2 if t.has(BuildingType.FARM) else 1
             elif t.terrain == Terrain.CITY:
                 growth += 2
-            # Castle upkeep (AL-8: suspend when unpaid)
+        room = state.pop_cap(p.pid) - state.pop_used(p.pid) - p.pop_pool
+        p.pop_pool += max(0, min(growth, room))
+        # 3. Castle upkeep (AL-8: suspend when unpaid)
+        for t in state.controlled(p.pid):
             if t.has(BuildingType.CASTLE):
                 if p.gold >= 2:
                     p.gold -= 2
                     t.castle_suspended = False
                 else:
                     t.castle_suspended = True
-        room = state.pop_cap(p.pid) - state.pop_used(p.pid) - p.pop_pool
-        p.pop_pool += max(0, min(growth, room))

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from .types import GLOBAL_POP_CAP, UnitType
+from .types import UnitType
 
 
 class InvariantViolation(AssertionError):
@@ -28,7 +28,8 @@ def check_invariants(state) -> None:
                 raise InvariantViolation(f"player {p.pid} negative {attr}")
         if p.lord_captured and state.find_lord(p.pid) is not None:
             raise InvariantViolation(f"player {p.pid} captured lord on board")
-        if state.pop_used(p.pid) > GLOBAL_POP_CAP:
-            raise InvariantViolation(f"player {p.pid} over global pop cap")
+        # Note: pop_used may legally exceed GLOBAL_POP_CAP via involuntary
+        # acquisition (conquest, adjacency claims, occupation flips) — AL-15.
+        # The cap only gates voluntary recruit/build through the pop_pool.
         if sum(p.vp_sources.values()) != p.vp:
             raise InvariantViolation(f"player {p.pid} vp/source mismatch")
