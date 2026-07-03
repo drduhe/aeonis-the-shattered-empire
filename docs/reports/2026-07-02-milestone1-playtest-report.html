@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aeonis — Simulated Playtest Report, Milestone 1</title>
+<style>
+  :root {
+    --ink: #1e2430; --muted: #5c6675; --line: #e3e7ee; --bg: #ffffff;
+    --panel: #f6f8fb; --accent: #7a5af5; --gold: #c9962a; --good: #2e9e5b;
+    --warn: #c74e39;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font: 16px/1.6 Georgia, 'Times New Roman', serif;
+  }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 48px 28px 80px; }
+  header { border-bottom: 3px double var(--ink); padding-bottom: 20px; margin-bottom: 36px; }
+  .kicker {
+    font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 12px;
+    letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); font-weight: 700;
+  }
+  h1 { font-size: 34px; line-height: 1.2; margin: 8px 0 6px; }
+  .subtitle { color: var(--muted); font-size: 15px; }
+  h2 {
+    font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 15px;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink);
+    border-bottom: 1px solid var(--line); padding-bottom: 8px; margin: 44px 0 16px;
+  }
+  p { margin: 0 0 14px; }
+  .tldr {
+    background: var(--panel); border-left: 4px solid var(--accent);
+    padding: 18px 22px; border-radius: 0 8px 8px 0; margin: 0 0 8px;
+  }
+  .tldr strong { color: var(--ink); }
+  .statgrid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px; margin: 20px 0;
+  }
+  .stat {
+    background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .stat .num {
+    font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 26px;
+    font-weight: 700; line-height: 1.1;
+  }
+  .stat .lbl { font-size: 12.5px; color: var(--muted); margin-top: 4px;
+    font-family: 'Helvetica Neue', Arial, sans-serif; }
+  table {
+    border-collapse: collapse; width: 100%; margin: 14px 0 20px;
+    font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 14px;
+  }
+  th {
+    text-align: left; font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--muted); border-bottom: 2px solid var(--ink); padding: 8px 10px;
+  }
+  td { border-bottom: 1px solid var(--line); padding: 9px 10px; vertical-align: top; }
+  td.r, th.r { text-align: right; font-variant-numeric: tabular-nums; }
+  .bar-row { display: grid; grid-template-columns: 190px 1fr 64px; align-items: center;
+    gap: 12px; margin: 7px 0; font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 14px; }
+  .bar-track { background: var(--panel); border-radius: 6px; height: 22px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 6px; }
+  .bar-val { text-align: right; font-variant-numeric: tabular-nums; color: var(--muted); }
+  .note {
+    background: #fdf6ec; border-left: 4px solid var(--gold); padding: 14px 18px;
+    border-radius: 0 8px 8px 0; font-size: 15px; margin: 18px 0;
+  }
+  .warn-chip, .ok-chip {
+    display: inline-block; font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 2px 9px; border-radius: 99px; vertical-align: 1px;
+  }
+  .warn-chip { background: #fbe9e4; color: var(--warn); }
+  .ok-chip { background: #e3f4ea; color: var(--good); }
+  ul { margin: 0 0 14px; padding-left: 22px; }
+  li { margin-bottom: 7px; }
+  code {
+    font: 13px/1.5 'SF Mono', Menlo, Consolas, monospace; background: var(--panel);
+    padding: 1px 6px; border-radius: 5px;
+  }
+  footer {
+    margin-top: 56px; padding-top: 16px; border-top: 1px solid var(--line);
+    color: var(--muted); font-size: 13px; font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+  @media print { .wrap { padding-top: 12px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="kicker">Aeonis · Design &amp; Development</div>
+  <h1>Simulated Playtest Report — Milestone&nbsp;1</h1>
+  <div class="subtitle">Engine-authoritative simulator, first fuzz campaign, and rules-validation findings · July 2, 2026</div>
+</header>
+
+<div class="tldr">
+  <p style="margin:0"><strong>TL;DR —</strong> Aeonis now has a working digital playtest engine. It played
+  <strong>300 complete games with zero crashes</strong>, every game fully replayable from a logged record.
+  Encoding the rulebook into code surfaced <strong>20 concrete rules ambiguities</strong> that need canon
+  answers. Under random play, the <strong>Imperial Seat generates ~75% of all victory points</strong> and
+  games end with an average winning margin of <strong>7 VP</strong> — an early runaway-leader signal to
+  test properly with strategic bots next.</p>
+</div>
+
+<h2>1 · What was built</h2>
+<p>
+The simulator (<code>sim/</code>) is a faithful, coded implementation of the First Playable rules for
+3–4 players: the full round structure, movement with zones of control and portals, recruiting,
+building, battle-line combat with sieges and Lord capture, production &amp; upkeep, territory claims,
+objectives, and the 10&nbsp;VP victory check. AI agents play through the same legal-move interface a
+human would use — the engine enumerates every legal action and rejects anything else, so
+<em>rules violations are impossible by construction</em>.
+</p>
+<div class="statgrid">
+  <div class="stat"><div class="num">2,260</div><div class="lbl">lines of engine + tests</div></div>
+  <div class="stat"><div class="num">52</div><div class="lbl">automated tests, all passing</div></div>
+  <div class="stat"><div class="num">~90 ms</div><div class="lbl">per full simulated game</div></div>
+  <div class="stat"><div class="num">100%</div><div class="lbl">deterministic &amp; replayable</div></div>
+</div>
+<p>
+Every game writes a record containing the seed, every decision made, the verdict, and the final
+board — so any surprising result can be replayed move-for-move.
+</p>
+
+<h2>2 · Engine health: the fuzz campaign <span class="ok-chip">Clean</span></h2>
+<p>
+300 games (150 three-player, 150 four-player) were played by <em>chaos bots</em> — agents that pick
+uniformly random legal moves. Their job is to stress the rules engine, not to play well.
+</p>
+<table>
+  <tr><th>Config</th><th class="r">Games</th><th class="r">Completed</th><th class="r">Degenerate*</th><th class="r">Timeout</th><th class="r">Crashes</th><th class="r">Avg length</th></tr>
+  <tr><td>3 players</td><td class="r">150</td><td class="r">143</td><td class="r">6</td><td class="r">1</td><td class="r"><strong>0</strong></td><td class="r">12.0 rounds</td></tr>
+  <tr><td>4 players</td><td class="r">150</td><td class="r">141</td><td class="r">8</td><td class="r">1</td><td class="r"><strong>0</strong></td><td class="r">12.2 rounds</td></tr>
+</table>
+<p style="font-size:14px;color:var(--muted)">
+*Degenerate = the game finished but tripped a health monitor (e.g. long stretches with no VP progress).
+Timeout = hit the 25-round safety cap. Both are recorded findings, not failures.
+</p>
+<p>
+Even under deliberately senseless play, ~95% of games reached a legitimate 10&nbsp;VP victory in a
+plausible 6–25 rounds. The state-integrity checker (unit duplication, negative resources, phantom
+Lords, VP bookkeeping) ran after every single action across all 300 games without firing.
+</p>
+
+<h2>3 · Rules validation: 20 ambiguities found</h2>
+<p>
+Translating prose rules into code forces every vague sentence into the open. Each gap is logged in
+the <strong>Ambiguity Ledger</strong> with the interpretation the engine currently uses and which
+document should own the canonical answer. Highlights:
+</p>
+<table>
+  <tr><th style="width:52px">ID</th><th>Question the rules don't answer</th><th>Engine's interim ruling</th></tr>
+  <tr><td>AL-1</td><td>Starting Population Cap math conflicts between the Packet (10) and Population.md (+3 per City)</td><td>Base cap 7, so one starting City yields exactly 10</td></tr>
+  <tr><td>AL-5</td><td>When are objectives claimed/scored? No timing window exists</td><td>Auto-scored at Cleanup &amp; Checks, once per card</td></tr>
+  <tr><td>AL-8</td><td>What happens when Castle upkeep can't be paid?</td><td>Castle effects suspend for the round; building persists</td></tr>
+  <tr><td>AL-9</td><td>A captured Lord "returns to Home City" — what if it's enemy-held?</td><td>Nearest safe controlled hex; stays captured if none</td></tr>
+  <tr><td>AL-12</td><td>Do Archers strike again in the main Strike step after their Pre-Strike?</td><td>No — Pre-Strike is their strike for the round</td></tr>
+  <tr><td>AL-15</td><td>Can conquest push a player over the global Population cap?</td><td>Yes — the cap only gates voluntary recruiting/building</td></tr>
+</table>
+<p>
+The full ledger (20 entries) lives at <code>playtest/Ambiguity_Ledger.md</code>. Each “Open” entry is a
+small canon decision waiting to be made; several (AL-1, AL-5, AL-12) affect how the physical game
+should be taught.
+</p>
+
+<h2>4 · Early balance observations <span class="warn-chip">Caveats apply</span></h2>
+<div class="note">
+<strong>Read this first:</strong> these numbers come from random-move bots. They say nothing about how
+skilled players will fare — but they do reveal what the game's <em>structure</em> rewards when nobody
+is steering. Treat everything below as hypotheses for the next phase, not conclusions.
+</div>
+
+<p><strong>Where victory points actually come from</strong> (share of all VP scored, 284 completed games):</p>
+
+<div class="bar-row"><div>Imperial Seat (held per round)</div><div class="bar-track"><div class="bar-fill" style="width:55%;background:var(--accent)"></div></div><div class="bar-val">55.1%</div></div>
+<div class="bar-row"><div>Objectives</div><div class="bar-track"><div class="bar-fill" style="width:26%;background:#9d8df7"></div></div><div class="bar-val">26.2%</div></div>
+<div class="bar-row"><div>Seat streak bonus (3+ rounds)</div><div class="bar-track"><div class="bar-fill" style="width:17%;background:#c3b9fa"></div></div><div class="bar-val">17.4%</div></div>
+<div class="bar-row"><div>Lord capture</div><div class="bar-track"><div class="bar-fill" style="width:2%;background:#ddd7fb"></div></div><div class="bar-val">1.3%</div></div>
+
+<ul style="margin-top:18px">
+  <li><strong>The Imperial Seat is the whole economy.</strong> Seat income plus its streak bonus account
+  for roughly <strong>73%</strong> of every VP scored. Whoever camps the center rides it to 10 VP while
+  opponents watch: the average winning margin was <strong>7.3 VP</strong> (3p) and <strong>6.9 VP</strong>
+  (4p), and the most common margin was 8. In a 10-point game, that is a landslide.</li>
+  <li><strong>Combat barely pays.</strong> Lord captures produced ~1% of VP, and the “win 2 battles”
+  objective rarely landed. Random bots do attack — the reward, not the opportunity, is what's thin.</li>
+  <li><strong>Seat position looks fair so far.</strong> Wins by seat: 38 / 50 / 55 in 3-player,
+  34 / 39 / 34 / 34 in 4-player — within noise for this sample. No first-player advantage visible yet.</li>
+  <li><strong>Game length is healthy.</strong> Median ~12 rounds with a sensible 6–25 spread; the
+  25-round cap fired only twice in 300 games.</li>
+</ul>
+<p>
+If the seat-dominance pattern survives contact with strategic bots, likely levers include the Seat's
+per-round VP rate, making the center costlier to hold uncontested, or raising the VP volume of
+combat and objectives.
+</p>
+
+<h2>5 · What's next</h2>
+<ul>
+  <li><strong>Persona bots</strong> (Warmonger, Economist, Expander, Diplomat) that pursue actual
+  strategies — this is where real balance data starts, including win-rate matrices and
+  runaway-leader detection with statistical weight.</li>
+  <li><strong>Automated balance reports</strong> aggregated across thousand-game tournaments.</li>
+  <li><strong>Canon triage</strong> of the 20 ledger entries — each is a quick ruling that tightens the
+  rulebook before the next physical playtest.</li>
+  <li>Later: LLM agents that read the actual rulebook and report confusion the way human playtesters
+  would, plus expanded content (Strategy cards, Council votes, Whispers, Lords).</li>
+</ul>
+
+<footer>
+  Method: 300 seeded games (seeds 2000–2149 / 3000–3149) played by uniform-random agents against the
+  Milestone-1 engine (<code>sim/</code>, commit 68e8ba4); aggregates computed from the JSONL game records.
+  All games reproducible from their seeds. · Aeonis playtest simulator · July 2, 2026
+</footer>
+
+</div>
+</body>
+</html>
