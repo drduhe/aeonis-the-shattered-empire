@@ -35,6 +35,8 @@ def test_bracket_configs_parse():
         "bracket-c.json",
         "bracket-b-mixed.json",
         "bracket-c-mixed.json",
+        "bracket-6p-mixed.json",
+        "bracket-8p-mixed.json",
         "bracket-b-mixed-plan1.json",
         "bracket-c-mixed-plan1.json",
         "bracket-plan1-step0.json",

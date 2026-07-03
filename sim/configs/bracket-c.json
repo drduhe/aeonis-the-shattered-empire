@@ -1,8 +1,8 @@
 {
-  "name": "bracket-c-pacing-7p",
-  "players": 7,
+  "name": "bracket-c-pacing-6p",
+  "players": 6,
   "games": 200,
-  "seed_base": 30000,
+  "seed_base": 35000,
   "personas": ["balanced"],
   "matchmaking": "solo"
 }

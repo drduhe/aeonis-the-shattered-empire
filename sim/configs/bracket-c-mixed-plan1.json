@@ -1,8 +1,8 @@
 {
-  "name": "bracket-c-pacing-7p-mixed-plan1",
-  "players": 7,
+  "name": "bracket-c-pacing-6p-mixed-plan1",
+  "players": 6,
   "games": 200,
-  "seed_base": 31000,
+  "seed_base": 36000,
   "personas": ["balanced", "expander", "warmonger", "economist", "diplomat"],
   "matchmaking": "mixed",
   "combat": {

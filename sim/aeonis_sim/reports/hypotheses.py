@@ -31,8 +31,8 @@ HYPOTHESES = {
         "kill": "Winner objective share ≥60% at either count",
     },
     "H4": {
-        "name": "7p timeouts are pacing not map bug",
-        "kill": "Timeout rate <3% with VP-seeking bots",
+        "name": "8p timeouts are pacing not map bug",
+        "kill": "Timeout rate <3% with VP-seeking bots at 8p",
     },
     "H5": {
         "name": "Combat VP marginal even for Warmonger",
@@ -48,7 +48,7 @@ HYPOTHESES = {
     },
     "H8": {
         "name": "Economist viable in mixed seats (builder/gold path)",
-        "kill": "Economist win rate ≥5% in mixed 7–8p brackets",
+        "kill": "Economist win rate ≥5% in mixed 6–8p brackets",
     },
     "H9": {
         "name": "Diplomat win rate ≥3% in mixed 4p M2 bracket",
@@ -108,7 +108,7 @@ def _status_h3(records: list[dict]) -> str:
     return "inconclusive"
 
 
-def _status_h4(records: list[dict], players: int = 7) -> str:
+def _status_h4(records: list[dict], players: int = 8) -> str:
     subset = [r for r in records if r["config"].get("players") == players]
     if not subset:
         return "inconclusive"
@@ -159,7 +159,7 @@ def _status_h8(records: list[dict]) -> str:
     if not pm:
         return "inconclusive"
     players = records[0]["config"].get("players", 0) if records else 0
-    if players < 7:
+    if players < 6:
         return "inconclusive"
     eco = pm.get("by_persona", {}).get("economist", {}).get("win_rate", 0.0)
     if eco >= 0.05:
@@ -231,7 +231,7 @@ _EVALUATORS = {
     "H1": _status_h1,
     "H2": _status_h2,
     "H3": _status_h3,
-    "H4": lambda r: _status_h4(r, 7),
+    "H4": lambda r: _status_h4(r, 8),
     "H5": _status_h5,
     "H6": _status_h6,
     "H7": _status_h7,
@@ -263,9 +263,9 @@ def evaluate_hypotheses(records: list[dict]) -> dict[str, dict]:
                 winner_vp_source_mix(completed).get("objective", 0), 3
             )
         elif hid == "H4":
-            p7 = [r for r in records if r["config"].get("players") == 7]
-            detail["timeout_rate_7p"] = round(
-                sum(1 for r in p7 if r["verdict"] == "timeout") / max(len(p7), 1), 3
+            p8 = [r for r in records if r["config"].get("players") == 8]
+            detail["timeout_rate_8p"] = round(
+                sum(1 for r in p8 if r["verdict"] == "timeout") / max(len(p8), 1), 3
             )
         elif hid == "H5":
             detail["winner_lord_capture_share"] = round(

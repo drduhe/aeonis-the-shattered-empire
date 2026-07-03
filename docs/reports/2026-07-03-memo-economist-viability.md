@@ -140,7 +140,7 @@ Read: the row's sixth slot was doing real work — adding one economy-tagged car
 
 1. ~~Encode chosen row change in `playtest/First_Playable_Packet.md` + `Objectives.md` (PROPOSED section).~~ **Done 2026-07-03** (Merchant Lord).
 2. ~~Re-run `bracket-m2-smoke.json` (100 games).~~ **Done** — see §6 read.
-3. ~~Re-run 7–8p mixed brackets (`bracket-c-mixed.json`, `bracket-b-mixed.json`).~~ **Done 2026-07-03** — economist **2.7% at 7p**, **1.8% at 8p** (still below 5% bar); mean rounds **5.3 / 5.4** (faster than 4p's 6.1). Reports: `docs/reports/2026-07-03-baseline-mixed-{7,8}p.md`. Merchant Lord lifts 4p only — high-count Economist viability needs Lever A (pacing) and/or Plan 4, not more row tweaks alone.
+3. ~~Re-run 6–8p mixed brackets (`bracket-6p-mixed.json`, `bracket-8p-mixed.json`).~~ **Done 2026-07-03 (M3)** — economist **2.6% at 6p**, **2.3% at 8p** (still below 5% bar); mean rounds **5.8** at both counts. Reports: `docs/reports/2026-07-03-baseline-mixed-{6,8}p-m3.md`. Merchant Lord lifts 4p only — high-count Economist viability needs Lever A (pacing) and/or Plan 4, not more row tweaks alone.
 4. Remaining: H12 confirmation at M3 gate; Lever A pacing (games getting faster, not slower).
 
 ---
