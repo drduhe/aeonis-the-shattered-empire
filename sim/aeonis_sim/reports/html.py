@@ -86,6 +86,7 @@ def generate_html(
     chaos_baseline_seat_pct: float = 63.0,
 ) -> str:
     n = len(records)
+    players = records[0]["config"].get("players", "?") if records else "?"
     verdicts = verdict_breakdown(records)
     completed = _completed(records)
     n_done = len(completed)
@@ -210,7 +211,7 @@ def generate_html(
 </header>
 
 <div class="tldr">
-  <p style="margin:0"><strong>TL;DR —</strong> {n:,} persona-bot games at 4 players, zero crashes.
+  <p style="margin:0"><strong>TL;DR —</strong> {n:,} persona-bot games at {players} players, zero crashes.
   <strong>{n_done:,} completed ({100*n_done/n:.1f}%)</strong>. Seat+streak supplies
   <strong>{seat_pct:.0f}%</strong> of all VP ({seat_note}). Mean winning margin
   <strong>{avg_margin:.1f} VP</strong>; runaway rate (≥7 margin) <strong>{blowout:.0f}%</strong>.
