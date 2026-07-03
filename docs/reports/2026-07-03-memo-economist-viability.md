@@ -3,7 +3,7 @@
 **Date:** 2026-07-03  
 **Status:** Sim-led recommendation · **not canon** until playtested and registered in `rules_and_systems/INDEX.md`  
 **Audience:** Owner / design review  
-**Evidence:** [Persona parity diagnosis](2026-07-03-persona-parity-diagnosis.md), [Persona parity sprint](../plans/2026-07-03-plan-persona-parity-sprint.md), M2 smoke bracket (`bracket-m2-smoke.json`, 100 games)
+**Evidence:** [Persona parity diagnosis](2026-07-03-persona-parity-diagnosis.md), M2 smoke bracket (`bracket-m2-smoke.json`, 100 games); 7–8p parity-sprint data summarized in `../plans/INDEX.md` (executed plans)
 
 ---
 
@@ -138,7 +138,7 @@ Plan 4 (`docs/plans/2026-07-02-plan-high-player-count.md`) addresses council thr
 | Doc | Role |
 | --- | --- |
 | `docs/reports/2026-07-03-persona-parity-diagnosis.md` | Full pre/post metrics and bot vs design split |
-| `docs/plans/2026-07-03-plan-persona-parity-sprint.md` | H7/H8 hypotheses and 7–8p data |
+| `docs/plans/INDEX.md` | Plan statuses; 7–8p parity-sprint outcome (H7/H8) under executed plans |
 | `docs/plans/2026-07-03-plan-vp-legibility-mvp.md` | First Playable shared row + Rite |
 | `docs/plans/2026-07-02-plan-vp-legibility.md` | Full Plan 3 budget and 8–10 round target |
 | `docs/plans/2026-07-02-plan-high-player-count.md` | Plan 4 — high-count pacing and map |

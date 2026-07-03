@@ -70,10 +70,11 @@ See `docs/reports/2026-07-03-plan1-combat-ladder.md` for calibration notes.
 - **`no_vp_progress`** is cleared if VP resumes; late-game droughts on the way to 10 VP are
   not flagged as degenerate at game end.
 
-Milestone 2 implementation plan: `docs/plans/2026-07-03-agent-playtest-sim-implementation-plan-m2.md`.
+Milestone status and next scope: `docs/plans/INDEX.md` (sim track section);
+architecture spec §5 owns milestone content.
 
 M2 tournament configs: `configs/bracket-m2-smoke.json`, `bracket-m2-4p.json`.
-Impact report: `docs/reports/2026-07-03-m2-events-council-impact.md`.
+Current baselines: `docs/reports/INDEX.md`.
 
 Rules questions found while encoding the docs live in
 `playtest/Ambiguity_Ledger.md`.

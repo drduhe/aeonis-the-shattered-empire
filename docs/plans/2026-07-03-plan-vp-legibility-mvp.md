@@ -125,7 +125,7 @@ Expected total: up to 3×1 + 2 = **5 VP** from Seat play (vs up to unbounded dri
 
 **Persona `features.py`:** Score toward visible shared objectives, not only personal card.
 
-**Regression:** Re-run Bracket A (1,000 games) after MVP encode; compare to `docs/reports/2026-07-02-bracket-a-persona-report.html`.
+**Regression:** MVP encode validated by sim brackets (winner objective share ~68–72%); current post-M2 baselines live in `docs/reports/INDEX.md`.
 
 ---
 

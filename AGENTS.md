@@ -43,7 +43,7 @@ This project already has a strong “source-of-truth” set of docs in `new/`. T
 - `rulebook/` — `Learn_to_Play.md` + `Player_Aid.md` (derived docs; always update after rules changes).
 - `components/` — `Components.md` (prototype kit) + `Production_Manifest.md` (manufacturing BOM).
 - `marketing/` — `Positioning.md` (locked product decisions), pitch, comps, campaign math.
-- `docs/plans/` — dated design plans; PROPOSED ≠ canon.
+- `docs/plans/` — dated design plans; PROPOSED ≠ canon. Start at `docs/plans/INDEX.md` (plan statuses + sim milestone track); current sim baselines at `docs/reports/INDEX.md`.
 - `agents/` — roles, templates, checklists. `mcp/aeonis-tools/` — validation MCP server.
 - `content-manifest.json` + `app.js`/`index.html` — the Codex browsing app.
 

@@ -72,7 +72,8 @@ AGENTS.md            Single source of truth for AI assistant workflows
 **Open work** tracked in:
 
 - `rules_and_systems/INDEX.md` — remaining design items
-- `docs/plans/2026-07-02-improvement-plans-index.md` — six PROPOSED improvement plans
+- `docs/plans/INDEX.md` — plan statuses, sim milestone track, open design questions
+- `docs/reports/INDEX.md` — current sim baselines and hypothesis scoreboard
 - `docs/plans/2026-07-02-aeonis-design-roadmap.md` — phased roadmap
 
 ---
