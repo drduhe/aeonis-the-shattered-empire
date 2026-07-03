@@ -6,6 +6,7 @@ from dataclasses import dataclass, field
 @dataclass
 class DecisionPoint:
     """A point where an agent must choose. kind is one of:
+    - "strategy_draft": Strategy Selection; pick one card from the pool
     - "action":           your Action Phase turn; choices are actions
     - "press":            attacker after a battle round: press or end
     - "defender_retreat": defender after a battle round: retreat or hold

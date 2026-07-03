@@ -60,14 +60,14 @@ tests/
 
 **Files:** `sim/aeonis_sim/engine/strategy.py`, modify `game.py`
 
-- [ ] `STRATEGY_CARDS` — 8 canon cards from `Strategy.md` §3 (id, initiative, primary/secondary costs/effects as data).
-- [ ] Per-player state: `held_cards: list[str]`, `primary_used: set`, `secondary_used: set`.
-- [ ] `_strategy_draft(state, rng)` at Round Start / Strategy Selection window:
+- [x] `STRATEGY_CARDS` — 8 canon cards from `Strategy.md` §3 (id, initiative, primary/secondary costs/effects as data).
+- [x] Per-player state: `held_cards: list[str]`, `primary_used: set`, `secondary_used: set`.
+- [x] `_strategy_draft(state, rng)` at Round Start / Strategy Selection window:
   - Draft order: ascending VP (tie: Renown, then Speaker clockwise).
   - 3–4p: 2 cards each (two passes); 5–8p: 1 card each.
   - Undrafted cards accumulate **1 Gold bounty** (take on draft).
-- [ ] `initiative_order(state) -> list[int]` — lowest card number first; 2-card holders use min number.
-- [ ] Tests: 4p draft order follows VP; bounty accumulates; 3–4p get 2 cards.
+- [x] `initiative_order(state) -> list[int]` — lowest card number first; 2-card holders use min number.
+- [x] Tests: 4p draft order follows VP; bounty accumulates; 3–4p get 2 cards.
 
 **M2 simplification (document in module docstring):** Primaries that reference Arcane Tier II+ resolve as "gain resources only" until M3. Emergency council from Diplomatic Decree deferred to Task 3.
 

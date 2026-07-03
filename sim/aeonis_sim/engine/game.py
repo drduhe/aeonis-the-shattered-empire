@@ -1,8 +1,7 @@
 """Phase machine (Round_Structure.md).
 
-Milestone 1: Event, Strategy Selection, and High Council phases are no-op
-stubs; Action Phase turn order is seating order (Strategy-card initiative
-arrives in Milestone 2 / plan B).
+Milestone 2 (in progress): Strategy Selection draft is live; initiative-driven
+Action Phase and Council arrive in Tasks 2–5.
 """
 from __future__ import annotations
 
@@ -19,6 +18,13 @@ from .observations import DecisionPoint
 from .production import run_production
 from .recruit import apply_recruit, enumerate_recruits
 from .setup import build_initial_state
+from .strategy import (
+    apply_draft_pick,
+    begin_strategy_selection,
+    build_draft_queue,
+    enumerate_draft_choices,
+    finish_undrafted_bounty,
+)
 from .types import (BASE_AP, BuildingType, DEFAULT_ROUND_CAP, Terrain,
                     UNIT_STATS, UnitType)
 
@@ -47,6 +53,7 @@ class Game:
         self._pending: Optional[DecisionPoint] = None
         self.combat_stats = {"battles": 0, "attacker_wins": 0, "defender_wins": 0}
         self.ap_spread_log: list[int] = []
+        self._draft_queue: list[int] = []
         self._round_start()
 
     # ---- phases ----
@@ -105,7 +112,9 @@ class Game:
         # Plan 3 MVP: reveal shared public objective from Round 2 onward.
         if s.round >= 2 and s.shared_public_deck:
             s.shared_public_revealed.append(s.shared_public_deck.pop())
-        # Event / Strategy / Council: no-ops in Milestone 1.
+        begin_strategy_selection(s)
+        self._draft_queue = build_draft_queue(s, s.speaker)
+        # Event / Council: no-ops until M2 Tasks 4–5.
 
     def _end(self, verdict: str) -> None:
         self.over = True
@@ -146,6 +155,16 @@ class Game:
         out.extend(combat.enumerate_attacks(s, pid))
         return out
 
+    def _strategy_draft_decision(self) -> Optional[DecisionPoint]:
+        if not self._draft_queue:
+            return None
+        pid = self._draft_queue[0]
+        return DecisionPoint(
+            kind="strategy_draft",
+            pid=pid,
+            choices=enumerate_draft_choices(self.state),
+        )
+
     def next_decision(self) -> Optional[DecisionPoint]:
         if self.over:
             return None
@@ -155,6 +174,10 @@ class Game:
             self._pending = self._battle_decision()
             if self._pending is not None:
                 return self._pending
+        draft_dp = self._strategy_draft_decision()
+        if draft_dp is not None:
+            self._pending = draft_dp
+            return self._pending
         pid = self._active_pid()
         if pid is None:
             self._advance_phases()
@@ -202,7 +225,12 @@ class Game:
         self.choices_log.append(choice)
         self._pending = None
         s = self.state
-        if dp.kind == "action":
+        if dp.kind == "strategy_draft":
+            apply_draft_pick(s, dp.pid, choice["card"])
+            self._draft_queue.pop(0)
+            if not self._draft_queue:
+                finish_undrafted_bounty(s)
+        elif dp.kind == "action":
             self._actions_taken[dp.pid] += 1
             t = choice["type"]
             if t == "pass":

@@ -119,7 +119,8 @@ def test_score_action_invariant_under_copy():
 
 def test_simulate_action_does_not_mutate_original():
     game = Game({"players": 3}, seed=5)
-    dp = game.next_decision()
+    from .conftest import advance_past_strategy_draft
+    dp = advance_past_strategy_draft(game)
     moves = [c for c in dp.choices if c["type"] == "move"]
     if not moves:
         return

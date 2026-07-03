@@ -1,9 +1,13 @@
 from aeonis_sim.engine.game import Game
 
+from .conftest import advance_past_strategy_draft, complete_strategy_draft
 
-def test_first_decision_is_action_for_player_0():
+
+def test_first_decision_is_strategy_draft_then_action():
     g = Game({"players": 3}, seed=11)
     dp = g.next_decision()
+    assert dp.kind == "strategy_draft"
+    dp = advance_past_strategy_draft(g)
     assert dp.kind == "action" and dp.pid == 0
     kinds = {c["type"] for c in dp.choices}
     assert "pass" in kinds and "move" in kinds and "recruit" in kinds
@@ -12,39 +16,36 @@ def test_first_decision_is_action_for_player_0():
 def test_pass_rotates_and_all_pass_advances_round():
     g = Game({"players": 3}, seed=11)
     for expected_pid in (0, 1, 2):
-        dp = g.next_decision()
+        dp = advance_past_strategy_draft(g)
         assert dp.pid == expected_pid
         g.submit({"type": "pass"})
-    # All passed -> production + cleanup ran -> round 2, player 0 again
+    assert g.state.round == 1
     dp = g.next_decision()
-    assert g.state.round == 2 and dp.pid == 0
+    assert g.state.round == 2 and dp.kind == "strategy_draft"
 
 
 def test_ap_reset_includes_city_bonus_and_banking():
     g = Game({"players": 3}, seed=11)
     for _ in range(3):
-        g.next_decision()
-        g.submit({"type": "pass"})   # banks min(ap,2) = 2
-    g.next_decision()
-    # Round 2 AP: base 5 + banked 2 + city bonus 1 (one City) = 8
+        dp = advance_past_strategy_draft(g)
+        g.submit({"type": "pass"})
+    complete_strategy_draft(g)
     assert g.state.players[0].ap == 8
 
 
 def test_round_start_flips_occupied_hexes():
     g = Game({"players": 3}, seed=11)
     state = g.state
-    p0 = state.players[0]
-    # Manufacture: player 0 unit alone on an enemy-controlled hex
     target = next(t for t in state.tiles.values()
                   if t.controller == 1 and not t.units)
     from aeonis_sim.engine.types import Unit, UnitType
     target.units.append(Unit(uid=state.new_uid(), owner=0,
                              type=UnitType.INFANTRY, hp=1))
     for _ in range(3):
-        g.next_decision()
+        advance_past_strategy_draft(g)
         g.submit({"type": "pass"})
-    g.next_decision()  # round 2 has begun; Round Start ran
-    assert target.controller == 0  # Tiles.md control method 1
+    complete_strategy_draft(g)
+    assert target.controller == 0
 
 
 def test_lord_heals_at_round_start():
@@ -53,16 +54,16 @@ def test_lord_heals_at_round_start():
     coord, lord = state.find_lord(0)
     lord.hp = 1
     for _ in range(3):
-        g.next_decision()
+        advance_past_strategy_draft(g)
         g.submit({"type": "pass"})
-    g.next_decision()  # round 2 began
+    complete_strategy_draft(g)
     _, lord2 = state.find_lord(0)
     assert lord2.hp == 3
 
 
 def test_submit_rejects_unenumerated_choice():
     g = Game({"players": 3}, seed=11)
-    g.next_decision()
+    advance_past_strategy_draft(g)
     try:
         g.submit({"type": "recruit", "city": [9, 9], "units": ["cavalry"] * 9})
         assert False, "should have raised"

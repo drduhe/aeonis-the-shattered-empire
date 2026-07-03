@@ -194,6 +194,9 @@ class PlayerState:
     rite_bonus_scored: bool = False
     recruited_cities: list = field(default_factory=list)  # list[Coord] this round
     vp_sources: dict = field(default_factory=dict)         # source -> total VP
+    held_cards: list = field(default_factory=list)         # strategy card ids this round
+    primary_used: list = field(default_factory=list)       # card ids
+    secondary_used: list = field(default_factory=list)     # card ids
 
     def add_vp(self, n: int, source: str) -> None:
         self.vp += n
@@ -216,6 +219,9 @@ class PlayerState:
             "rite_bonus_scored": self.rite_bonus_scored,
             "recruited_cities": [list(c) for c in self.recruited_cities],
             "vp_sources": dict(self.vp_sources),
+            "held_cards": list(self.held_cards),
+            "primary_used": list(self.primary_used),
+            "secondary_used": list(self.secondary_used),
         }
 
     @staticmethod
@@ -241,6 +247,9 @@ class PlayerState:
             p.rite_bonus_scored = d.get("seat_bonus_scored", False)
         p.recruited_cities = [tuple(c) for c in d["recruited_cities"]]
         p.vp_sources = dict(d["vp_sources"])
+        p.held_cards = list(d.get("held_cards", []))
+        p.primary_used = list(d.get("primary_used", []))
+        p.secondary_used = list(d.get("secondary_used", []))
         return p
 
 
@@ -260,8 +269,9 @@ class GameState:
     # Plan 2 AP economy (PROPOSED; toggled via config["ap_economy"]).
     ap_bonus_cap: Optional[int] = None  # e.g. 2 = unified +2 cap
     rally: bool = False  # +1 AP to lowest VP at Round Start (ignores cap)
-
-    # --- helpers used across the engine ---
+    speaker: int = 0
+    strategy_pool: list = field(default_factory=list)      # undrafted card ids
+    strategy_bounty: dict = field(default_factory=dict)    # card id -> accumulated gold
     def player(self, pid: int) -> PlayerState:
         return self.players[pid]
 
@@ -314,6 +324,9 @@ class GameState:
             "next_uid": self.next_uid,
             "shared_public_revealed": list(self.shared_public_revealed),
             "shared_public_deck": list(self.shared_public_deck),
+            "speaker": self.speaker,
+            "strategy_pool": list(self.strategy_pool),
+            "strategy_bounty": dict(self.strategy_bounty),
         }
 
     @staticmethod
@@ -330,6 +343,9 @@ class GameState:
             next_uid=d["next_uid"],
             shared_public_revealed=list(d.get("shared_public_revealed", [])),
             shared_public_deck=list(d.get("shared_public_deck", [])),
+            speaker=d.get("speaker", 0),
+            strategy_pool=list(d.get("strategy_pool", [])),
+            strategy_bounty=dict(d.get("strategy_bounty", {})),
         )
 
     def copy(self) -> "GameState":
@@ -377,6 +393,9 @@ class GameState:
                 rite_bonus_scored=p.rite_bonus_scored,
                 recruited_cities=list(p.recruited_cities),
                 vp_sources=dict(p.vp_sources),
+                held_cards=list(p.held_cards),
+                primary_used=list(p.primary_used),
+                secondary_used=list(p.secondary_used),
             )
             for p in self.players
         ]
@@ -392,4 +411,7 @@ class GameState:
             pillage=self.pillage,
             ap_bonus_cap=self.ap_bonus_cap,
             rally=self.rally,
+            speaker=self.speaker,
+            strategy_pool=list(self.strategy_pool),
+            strategy_bounty=dict(self.strategy_bounty),
         )

@@ -62,6 +62,16 @@ PERSONA_FEATURE_BOOSTS: dict[str, dict[str, float]] = {
 }
 
 
+from ..engine.strategy import STRATEGY_CARDS
+
+
+def _score_draft_choice(state: GameState, choice: dict) -> float:
+    card = STRATEGY_CARDS[choice["card"]]
+    bounty = state.strategy_bounty.get(choice["card"], 0)
+    # Prefer early initiative and accumulated bounty (sim heuristic).
+    return bounty * 10.0 + (9 - card.initiative)
+
+
 class PersonaBot:
     """Scores legal actions with persona-weighted features; deterministic tie-break."""
 
@@ -75,6 +85,13 @@ class PersonaBot:
     def choose(self, observation: dict, decision_point) -> dict:
         state = GameState.from_dict(observation["state"])
         pid = observation["viewer"]
+        if decision_point.kind == "strategy_draft":
+            scored = [
+                (_score_draft_choice(state, c), c) for c in decision_point.choices
+            ]
+            best = max(s for s, _ in scored)
+            top = [c for s, c in scored if abs(s - best) < 1e-9]
+            return self.rng.choice(top)
         scored: list[tuple[float, dict]] = []
         for choice in decision_point.choices:
             feats = score_action(state, pid, choice, decision_point)
