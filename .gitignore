@@ -74,6 +74,15 @@ pnpm-debug.log*
 .superpowers/
 
 #############################
+# Python / sim
+#############################
+sim/.venv/
+sim/.python/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+#############################
 # Secrets (keep examples tracked)
 #############################
 .env
