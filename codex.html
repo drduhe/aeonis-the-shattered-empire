@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="The Imperial Codex — browse Aeonis rules, lore, Lord sheets, and playtest material."
+    />
+    <title>The Imperial Codex — Aeonis: The Shattered Empire</title>
+
+    <meta name="theme-color" content="#0b1020" />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="canonical" href="https://drduhe.github.io/aeonis-the-shattered-empire/codex.html" />
+
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,350;9..144,550;9..144,700&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <script src="site-config.js"></script>
+    <link rel="stylesheet" href="app.css?v=2026-07-02-1" />
+
+    <script defer src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/dompurify@3.0.8/dist/purify.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github-dark.min.css"
+    />
+    <script defer src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/highlight.min.js"></script>
+    <script defer src="codex.js?v=2026-07-02-1"></script>
+  </head>
+
+  <body>
+    <a class="skip-link" href="#browse">Skip to Codex</a>
+
+    <header class="topbar" role="banner">
+      <div class="container topbar__inner">
+        <a class="brand" href="index.html" aria-label="Aeonis home">
+          <span class="brand__mark" aria-hidden="true">
+            <img class="brand__markImg" src="marketing/assets/aeonis_logo_mark.png" alt="" />
+          </span>
+          <span class="brand__text">
+            <img
+              class="brand__lockup"
+              src="marketing/assets/aeonis_wordmark_lockup.png"
+              alt="Aeonis: The Shattered Empire"
+              decoding="async"
+            />
+            <span class="brand__name brand__fallback">Aeonis</span>
+            <span class="brand__tag brand__fallback">The Shattered Empire</span>
+          </span>
+        </a>
+
+        <nav class="nav" aria-label="Primary">
+          <a class="nav__link" href="index.html">Home</a>
+          <a class="nav__link is-active" href="codex.html">Codex</a>
+        </nav>
+
+        <div class="topbar__actions">
+          <button class="btn btn--ghost" id="themeToggle" type="button" aria-label="Toggle theme">
+            <span class="btn__icon" aria-hidden="true">◐</span>
+            <span class="btn__label">Theme</span>
+          </button>
+          <a class="btn btn--primary" href="index.html#waitlist">
+            <span class="btn__label">Get launch alerts</span>
+            <span class="btn__icon" aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <main id="top" class="main" role="main">
+      <section id="browse" class="section section--browser section--browserFull" aria-label="Content browser">
+        <div class="container">
+          <div class="section__head section__head--tight">
+            <h1 class="section__title">The Imperial Codex</h1>
+            <p class="section__sub">
+              Rules, lore, Lord sheets, and playtest material — browse and share direct links to any chapter.
+            </p>
+          </div>
+
+          <div id="journeys" class="journeys" aria-label="Suggested reading paths"></div>
+
+          <div class="browser">
+            <aside class="browser__sidebar" aria-label="Document navigation">
+              <div class="sidebar__tools">
+                <label class="field" for="searchInput">
+                  <span class="field__label">Search</span>
+                  <input
+                    id="searchInput"
+                    class="input"
+                    type="search"
+                    placeholder="Search documents…"
+                    autocomplete="off"
+                  />
+                </label>
+
+                <label class="field" for="categorySelect">
+                  <span class="field__label">Category</span>
+                  <select id="categorySelect" class="select"></select>
+                </label>
+              </div>
+
+              <div class="sidebar__listHead">
+                <div class="sidebar__count" id="resultsCount">—</div>
+              </div>
+
+              <nav class="docList" id="docList" aria-label="Documents"></nav>
+            </aside>
+
+            <section class="browser__main" aria-label="Document viewer">
+              <div class="viewer">
+                <div class="viewer__top">
+                  <div class="crumbs" id="crumbs" aria-label="Breadcrumbs"></div>
+
+                  <div class="viewer__actions">
+                    <button class="btn btn--ghost btn--sm" id="copyLinkBtn" type="button">
+                      Copy link
+                    </button>
+                    <a class="btn btn--ghost btn--sm" id="openRawBtn" href="#" target="_blank" rel="noreferrer">
+                      Open raw
+                    </a>
+                  </div>
+                </div>
+
+                <div class="viewer__body">
+                  <div class="emptyState" id="emptyState">
+                    <div class="emptyState__badge">Imperial Codex</div>
+                    <div class="emptyState__art" aria-hidden="true"></div>
+                    <h2 class="emptyState__title">Choose a scroll</h2>
+                    <p class="emptyState__text">
+                      Use the sidebar to open a document. The viewer renders Markdown (headings, lists, tables, code blocks).
+                    </p>
+                    <div class="emptyState__actions">
+                      <a class="btn btn--primary" href="#/doc/rulebook/Learn_to_Play.md">Learn to Play</a>
+                      <a class="btn btn--ghost" href="#/doc/rules_and_systems/INDEX.md">Rules Index</a>
+                      <a class="btn btn--ghost" href="#/doc/playtest/First_Playable_Packet.md">First Playable</a>
+                    </div>
+                    <p class="emptyState__hint">
+                      If you’re opening this locally, run a tiny server so files can load:
+                      <code>python3 -m http.server</code>
+                    </p>
+                  </div>
+
+                  <article class="markdown" id="markdown" hidden></article>
+                  <div class="errorBox" id="errorBox" hidden>
+                    <div class="errorBox__art" aria-hidden="true"></div>
+                    <div class="errorBox__title">Couldn’t load this document.</div>
+                    <div class="errorBox__text" id="errorText"></div>
+                    <div class="errorBox__actions">
+                      <a class="btn btn--ghost" id="retryBtn" href="#">Retry</a>
+                      <a class="btn btn--primary" id="fallbackBtn" href="#" target="_blank" rel="noreferrer">Open raw file</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer__inner">
+        <div class="footer__left">
+          <div class="footer__brand">Aeonis: The Shattered Empire</div>
+          <div class="footer__meta">The Imperial Codex</div>
+        </div>
+        <div class="footer__right">
+          <a class="miniLink" href="index.html">Home</a>
+          <span class="dot" aria-hidden="true">•</span>
+          <a class="miniLink" href="index.html#waitlist">Get launch alerts</a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
