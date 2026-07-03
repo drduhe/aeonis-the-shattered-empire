@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from .hexmap import distance, neighbors
+from .artifacts import score_artifact_vp
 from .objectives import PUBLIC_OBJECTIVES, SECRET_OBJECTIVES
 from .types import BuildingType, Terrain, Unit, UNIT_STATS, UnitType, VP_THRESHOLD
 
@@ -121,6 +122,7 @@ def run_cleanup(state) -> None:
     for p in state.players:
         _score_coronation(state, p.pid)
         _score_objectives(state, p.pid)
+        score_artifact_vp(state, p.pid)
 
     if any(p.vp >= VP_THRESHOLD for p in state.players):
         state.final_round = True

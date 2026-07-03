@@ -8,7 +8,7 @@ from __future__ import annotations
 import random
 from typing import TYPE_CHECKING, Optional
 
-from .artifacts import claim_site, place_site
+from .artifacts import apply_site_claim, place_site
 from .hexmap import distance, neighbors
 from .types import Terrain, Unit, UNIT_STATS, UnitType
 
@@ -133,13 +133,13 @@ def apply_exploration_choice(
     card_id: str,
     choice: str,
     rng: random.Random,
-) -> None:
+) -> str | None:
     p = state.player(pid)
     tile = state.tiles[coord]
     if card_id == "ancient_ruins":
         if choice == "leave":
             p.renown += 1
-            return
+            return None
         roll = rng.randint(1, 6)
         if roll >= 4:
             p.remnants += 2
@@ -152,8 +152,8 @@ def apply_exploration_choice(
             _lose_one_unit(state, pid, coord)
     elif card_id == "ancient_vault_discovered":
         if choice == "claim":
-            p.ap -= 1
-            claim_site(state, pid, coord)
+            return apply_site_claim(state, pid, coord)
+    return None
 
 
 def begin_exploration(
@@ -171,6 +171,8 @@ def begin_exploration(
     if card is None:
         return None, False
     if card in CHOICE_CARDS:
+        if card == "ancient_vault_discovered":
+            place_site(state, coord)
         return card, True
     resolve_auto(state, pid, coord, card, rng)
     return card, False

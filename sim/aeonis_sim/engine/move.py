@@ -8,6 +8,7 @@ from __future__ import annotations
 import heapq
 
 from .hexmap import neighbors
+from .artifacts import lord_move_bonus
 from .types import BuildingType, Terrain, TERRAIN_COST, UNIT_STATS, UnitType
 
 
@@ -107,7 +108,13 @@ def enumerate_moves(state, pid, *, waive_terrain: bool = False) -> list:
     for tile in state.tiles.values():
         for group in _groups(tile, pid):
             uids = sorted(u.uid for u in group)
-            max_range = min(UNIT_STATS[u.type].move for u in group)
+            moves = []
+            for u in group:
+                m = UNIT_STATS[u.type].move
+                if u.type == UnitType.LORD:
+                    m += lord_move_bonus(state, pid)
+                moves.append(m)
+            max_range = min(moves)
             has_cav = any(u.type == UnitType.CAVALRY for u in group)
             for dest, (cost, _steps, portaled) in _paths_from(
                     state, pid, tile.coord, max_range, p.ap, has_cav,

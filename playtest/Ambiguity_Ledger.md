@@ -41,3 +41,6 @@ canon.
 | AL-29 | Portal Instability timing | Sets flag for next portal move at 0 AP (not immediate extra decision) | `Events.md` | **Resolved** (2026-07-03, M3 Task 2 sim) |
 | AL-30 | Echo of the Old Empire site tie-break | Closest hex to Seat; ties broken by axial sort from Speaker home | `Events.md` | **Resolved** (2026-07-03, M3 Task 2 sim) |
 | AL-31 | Unexplored hex definition in sim | Home-cluster controlled tiles explored at setup; first unit entry elsewhere triggers exploration draw; board stays fully visible (no fog) | `Events.md` / `First_Playable_Packet.md` §4.5 | **Resolved** (2026-07-03, M3 Task 2 sim) |
+| AL-32 | Wellspring Chalice production choice | Auto-pick +2 Gold at Production & Upkeep | `Artifacts.md` | **Resolved** (2026-07-03, M3 Task 3 sim) |
+| AL-33 | Whisper/Arcane-linked artifact effects | Cards referencing Whispers (Whisperer's Mask, Shroud), Arcane (Archive, Ley Line discovery bonus), fog (Cartographer's Glass), or extra turns deferred until Tasks 4–6 | `Artifacts.md` | **Open** (M3 Task 3 stubs) |
+| AL-34 | Scepter of Command / Windcaller's Horn | Free move riders deferred — no remote-order action enumeration yet | `Artifacts.md` | **Open** (M3 Task 3 stubs) |

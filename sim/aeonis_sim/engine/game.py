@@ -20,6 +20,16 @@ from .council import (
     tally_votes,
 )
 from .events import draw_event, resolve_event
+from .artifacts import (
+    apply_purge_draw,
+    apply_site_claim,
+    attach_building_relic,
+    discard_lord_equipment,
+    enumerate_attach_choices,
+    enumerate_discard_lord,
+    enumerate_purge_draw,
+    enumerate_site_claims,
+)
 from .exploration import (
     apply_cleanse,
     apply_exploration_choice,
@@ -131,6 +141,7 @@ class Game:
         self._trade_used: dict[int, bool] = {}
         self._trade_initiator: Optional[int] = None
         self._exploration_pending: Optional[dict] = None
+        self._artifact_followup: Optional[dict] = None
         self._round_start()
 
     # ---- phases ----
@@ -342,6 +353,33 @@ class Game:
         self._council_motions = []
         self._council_vote_queue = []
 
+    def _after_gain_artifact(self, pid: int, pending: str | None) -> None:
+        if pending == "discard_lord":
+            self._artifact_followup = {"kind": "discard_lord", "pid": pid}
+        elif pending == "attach_building":
+            if enumerate_attach_choices(self.state, pid):
+                self._artifact_followup = {"kind": "attach", "pid": pid}
+
+    def _artifact_decision(self) -> Optional[DecisionPoint]:
+        fu = self._artifact_followup
+        if fu is None:
+            return None
+        pid = fu["pid"]
+        if fu["kind"] == "discard_lord":
+            choices = enumerate_discard_lord(self.state, pid)
+        else:
+            choices = enumerate_attach_choices(self.state, pid)
+        if not choices:
+            self._artifact_followup = None
+            return None
+        return DecisionPoint(
+            kind="artifact",
+            phase="action",
+            pid=pid,
+            choices=choices,
+            context={"step": fu["kind"]},
+        )
+
     def _after_unit_entry(self, pid: int, coord: tuple) -> bool:
         """First entry to unexplored hex draws exploration event. Returns True if choice needed."""
         card, needs = begin_exploration(self.state, pid, coord, self.rng)
@@ -379,6 +417,8 @@ class Game:
         self._exploration_pending = None
         if after == "combat":
             self._battle_stage = "done"
+            return
+        if self._artifact_followup:
             return
         if defer and defer[0] == "mm":
             _, dpid, card = defer
@@ -520,6 +560,10 @@ class Game:
             if free or s.player(pid).ap >= 1:
                 out.extend(self._enumerate_trade_starts(pid))
         out.extend(enumerate_cleanse(s, pid))
+        out.extend(enumerate_purge_draw(s, pid))
+        out.extend(enumerate_site_claims(s, pid))
+        out.extend(enumerate_attach_choices(s, pid))
+        out.extend(enumerate_discard_lord(s, pid))
         return out
 
     def _has_active_market(self, pid: int) -> bool:
@@ -602,6 +646,11 @@ class Game:
             return None
         if self._pending is not None:
             return self._pending
+        if self._artifact_followup is not None:
+            art_dp = self._artifact_decision()
+            if art_dp is not None:
+                self._pending = art_dp
+                return self._pending
         if self._exploration_pending is not None:
             self._pending = self._exploration_decision()
             return self._pending
@@ -805,13 +854,46 @@ class Game:
             elif t == "cleanse":
                 apply_cleanse(s, dp.pid, tuple(choice["hex"]))
                 self._finish_action_turn(dp.pid)
+            elif t == "artifact_purge_draw":
+                pending = apply_purge_draw(s, dp.pid)
+                self._after_gain_artifact(dp.pid, pending)
+                if self._artifact_followup is None:
+                    self._finish_action_turn(dp.pid)
+            elif t == "artifact_claim":
+                pending = apply_site_claim(s, dp.pid, tuple(choice["hex"]))
+                self._after_gain_artifact(dp.pid, pending)
+                if self._artifact_followup is None:
+                    self._finish_action_turn(dp.pid)
+            elif t == "artifact_attach":
+                attach_building_relic(s, dp.pid, choice["card"], tuple(choice["hex"]))
+                if self._artifact_followup and self._artifact_followup.get("kind") == "attach":
+                    self._artifact_followup = None
+                self._finish_action_turn(dp.pid)
+            elif t == "artifact_discard_lord":
+                discard_lord_equipment(s, dp.pid, choice["card"])
+                if len(s.player(dp.pid).lord_equipment) <= 2:
+                    self._artifact_followup = None
+                self._finish_action_turn(dp.pid)
+        elif dp.kind == "artifact":
+            step = dp.context.get("step")
+            if step == "discard_lord":
+                discard_lord_equipment(s, dp.pid, choice["card"])
+                if len(s.player(dp.pid).lord_equipment) <= 2:
+                    self._artifact_followup = None
+                    self._finish_action_turn(dp.pid)
+            elif step == "attach":
+                attach_building_relic(s, dp.pid, choice["card"], tuple(choice["hex"]))
+                self._artifact_followup = None
+                self._finish_action_turn(dp.pid)
         elif dp.kind == "exploration":
             ep = self._exploration_pending
             assert ep is not None
-            apply_exploration_choice(
+            pending = apply_exploration_choice(
                 s, dp.pid, ep["coord"], ep["card"],
                 choice["choice"], self.rng,
             )
+            if pending:
+                self._after_gain_artifact(dp.pid, pending)
             self._finish_exploration()
         elif dp.kind == "strategy_primary":
             t = choice["type"]

@@ -1,6 +1,12 @@
 from __future__ import annotations
 
 from .types import BUILDING_SPECS, BuildingType, Terrain
+from .artifacts import (
+    production_adjacent_gold,
+    production_ley_line_mana,
+    production_verdant_bonus,
+    production_wellspring,
+)
 
 # Tiles.md: base production, upgraded by the matching production building.
 _PLAIN = {Terrain.MOUNTAIN: ("gold", 1), Terrain.FOREST: ("mana", 1),
@@ -85,7 +91,13 @@ def run_production(state) -> dict:
             if produced is None:
                 produced = _PLAIN.get(t.terrain)
             if produced:
-                setattr(p, produced[0], getattr(p, produced[0]) + produced[1])
+                res, amt = produced
+                extra = production_ley_line_mana(t)
+                if res == "gold":
+                    amt += production_adjacent_gold(state, p.pid, t)
+                setattr(p, res, getattr(p, res) + amt + (extra if res == "mana" else 0))
+                if extra and res != "mana":
+                    p.mana += extra
         # 2. Population growth
         growth = 1  # Population.md base growth
         for t in state.controlled(p.pid):
@@ -93,6 +105,7 @@ def run_production(state) -> dict:
                 growth += 2 if t.has(BuildingType.FARM) else 1
             elif t.terrain == Terrain.CITY:
                 growth += 2
+            growth += production_verdant_bonus(t)
         room = state.pop_cap(p.pid) - state.pop_used(p.pid) - p.pop_pool
         p.pop_pool += max(0, min(growth, room))
         # 3. Upkeep (suspend when unpaid)
@@ -101,7 +114,8 @@ def run_production(state) -> dict:
         conv = _bank_conversion(state, p)
         if conv:
             stats["bank_conversions"][p.pid] = conv
-        # 5. Remnants from controlled Ruins (Artifacts.md / Learn_to_Play)
+        production_wellspring(state, p.pid)
+        # 5. Remnants from controlled Ruins
         for t in state.controlled(p.pid):
             if t.terrain == Terrain.RUINS:
                 p.remnants += 1

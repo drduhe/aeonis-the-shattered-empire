@@ -16,6 +16,7 @@ from typing import Optional
 
 from .hexmap import neighbors
 from .production import apply_tile_production
+from .artifacts import attack_die, defense_die, maybe_transfer_shard, transfer_lord_equipment
 from .types import BuildingType, Terrain, UNIT_STATS, UnitType
 
 ATTACK_AP = 2
@@ -261,6 +262,10 @@ def _kill(state, battle, unit) -> None:
         captor = state.player(captor_pid)
         captor.add_vp(1, "lord_capture")     # Combat.md 2.1.4
         captor.renown += 2
+        pending = transfer_lord_equipment(state, unit.owner, captor_pid)
+        # Caller (finish_battle path) cannot queue DPs here; captor trims via
+        # enumerate_discard_lord on next action if over carry limit.
+        _ = pending
 
 
 def _hits(striker_side: str, atk: int, dfn: int, edge_mode: str, *, pre_strike: bool) -> bool:
@@ -284,8 +289,8 @@ def _strike(state, battle, strikers, targets_line, rng, striker_side, *, pre_str
         target = _pick_target(targets_line)
         if target is None:
             return
-        atk = rng.randint(1, UNIT_STATS[striker.type].attack_die)
-        dfn = rng.randint(1, UNIT_STATS[target.type].defense_die)
+        atk = rng.randint(1, attack_die(state, striker.owner, striker))
+        dfn = rng.randint(1, defense_die(state, target.owner, target, battle.target))
         dfn += _defense_bonus(state, battle, def_side)
         if _hits(striker_side, atk, dfn, state.aggressors_edge_mode, pre_strike=pre_strike):
             target.hp -= 1
@@ -370,6 +375,13 @@ def finish_battle(state, battle) -> None:
         t.siege = False
         _clear_siege_committed(t)
         state.player(battle.defender).battle_wins += 1  # AL-10
+        att_lord = any(
+            u.owner == battle.attacker and u.type == UnitType.LORD
+            for u in t.units
+        ) or any(
+            u.type == UnitType.LORD for _, u in battle.att_committed
+        )
+        maybe_transfer_shard(state, battle.attacker, battle.defender, att_lord)
     else:
         # Undecided: siege marker persists on Cities/Fortresses; otherwise the
         # attack simply ends (attacker units never left their origin hexes).

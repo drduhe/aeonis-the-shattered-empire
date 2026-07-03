@@ -59,8 +59,9 @@ def reveal_agenda(state: GameState, rng: random.Random) -> str | None:
 
 
 def council_votes(state: GameState, pid: int) -> int:
+    from .artifacts import council_influence_bonus
     p = state.player(pid)
-    votes = 1
+    votes = 1 + council_influence_bonus(state, pid)
     if p.renown >= 5:
         votes += 1
     if p.renown >= 10:

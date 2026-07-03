@@ -7,6 +7,7 @@ from .objectives import (
     PUBLIC_OBJECTIVE_IDS,
     SECRET_OBJECTIVE_IDS,
 )
+from .artifacts import init_artifact_deck
 from .exploration import init_exploration_deck
 from .council import init_agenda_deck
 from .events import init_event_deck
@@ -35,6 +36,7 @@ def build_initial_state(config: dict, rng: random.Random) -> GameState:
     state.event_deck = init_event_deck(rng)
     state.agenda_deck = init_agenda_deck(rng)
     state.exploration_deck = init_exploration_deck(rng)
+    state.artifact_deck = init_artifact_deck(rng)
 
     public_deck = list(PUBLIC_OBJECTIVE_IDS)
     rng.shuffle(public_deck)

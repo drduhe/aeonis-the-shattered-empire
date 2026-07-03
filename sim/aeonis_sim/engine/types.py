@@ -150,6 +150,7 @@ class Tile:
     siege_def_uids: list = field(default_factory=list)
     explored: bool = False
     cursed: bool = False
+    building_relic: Optional[str] = None  # artifact id attached to a building here
 
     def has(self, b: BuildingType) -> bool:
         return b in self.buildings
@@ -178,6 +179,7 @@ class Tile:
             "siege_def_uids": list(self.siege_def_uids),
             "explored": self.explored,
             "cursed": self.cursed,
+            "building_relic": self.building_relic,
         }
 
     @staticmethod
@@ -197,6 +199,7 @@ class Tile:
             siege_def_uids=list(d.get("siege_def_uids", [])),
             explored=bool(d.get("explored", True)),
             cursed=bool(d.get("cursed", False)),
+            building_relic=d.get("building_relic"),
         )
 
 
@@ -230,6 +233,9 @@ class PlayerState:
     pending_ap: int = 0                                    # Event-granted AP next round
     remnants: int = 0
     portal_instability_free: bool = False  # one 0-AP portal move (AL-29)
+    lord_equipment: list = field(default_factory=list)   # artifact ids, max 2
+    utilities: list = field(default_factory=list)
+    pending_building_relic: Optional[str] = None
 
     def add_vp(self, n: int, source: str) -> None:
         self.vp += n
@@ -258,6 +264,9 @@ class PlayerState:
             "pending_ap": self.pending_ap,
             "remnants": self.remnants,
             "portal_instability_free": self.portal_instability_free,
+            "lord_equipment": list(self.lord_equipment),
+            "utilities": list(self.utilities),
+            "pending_building_relic": self.pending_building_relic,
         }
 
     @staticmethod
@@ -289,6 +298,9 @@ class PlayerState:
         p.pending_ap = int(d.get("pending_ap", 0))
         p.remnants = int(d.get("remnants", 0))
         p.portal_instability_free = bool(d.get("portal_instability_free", False))
+        p.lord_equipment = list(d.get("lord_equipment", []))
+        p.utilities = list(d.get("utilities", []))
+        p.pending_building_relic = d.get("pending_building_relic")
         return p
 
 
@@ -322,6 +334,7 @@ class GameState:
     exploration_deck: list = field(default_factory=list)
     exploration_discard: list = field(default_factory=list)
     artifact_sites: dict = field(default_factory=dict)  # "q,r" -> {card_id, owner}
+    artifact_deck: list = field(default_factory=list)
 
     def player(self, pid: int) -> PlayerState:
         return self.players[pid]
@@ -389,6 +402,7 @@ class GameState:
             "exploration_deck": list(self.exploration_deck),
             "exploration_discard": list(self.exploration_discard),
             "artifact_sites": dict(self.artifact_sites),
+            "artifact_deck": list(self.artifact_deck),
         }
 
     @staticmethod
@@ -419,6 +433,7 @@ class GameState:
             exploration_deck=list(d.get("exploration_deck", [])),
             exploration_discard=list(d.get("exploration_discard", [])),
             artifact_sites=dict(d.get("artifact_sites", {})),
+            artifact_deck=list(d.get("artifact_deck", [])),
         )
 
     def copy(self) -> "GameState":
@@ -442,6 +457,7 @@ class GameState:
                 siege_def_uids=list(tile.siege_def_uids),
                 explored=tile.explored,
                 cursed=tile.cursed,
+                building_relic=tile.building_relic,
             )
             for coord, tile in self.tiles.items()
         }
@@ -475,6 +491,9 @@ class GameState:
                 pending_ap=p.pending_ap,
                 remnants=p.remnants,
                 portal_instability_free=p.portal_instability_free,
+                lord_equipment=list(p.lord_equipment),
+                utilities=list(p.utilities),
+                pending_building_relic=p.pending_building_relic,
             )
             for p in self.players
         ]
@@ -504,4 +523,5 @@ class GameState:
             exploration_deck=list(self.exploration_deck),
             exploration_discard=list(self.exploration_discard),
             artifact_sites=dict(self.artifact_sites),
+            artifact_deck=list(self.artifact_deck),
         )

@@ -51,12 +51,12 @@ Ordered by dependency; each task lands with unit tests, and regenerates goldens 
 
 ### Task 3 — Artifacts, Sites, VP relics
 
-- [ ] Artifact deck (24 ids per `Artifacts.md`), face-down draw, **purge 3 Remnants → draw** as free action on your Action-Phase turn.
-- [ ] **Artifact Sites**: markers created by events; face-up card on site; claim by occupying + 1 AP (per `Artifacts.md` Acquisition); contested sites are territorial bait — no new combat rules.
-- [ ] Ownership model: Lord Equipment (carry limit 2, attach to Lord; on Lord capture follow `Artifacts.md` transfer rules), Building Relics (attach to a controlled building; captured with the hex), Utility (held).
-- [ ] **VP artifacts** (Crown of Aeonis, Eternal Forge, Shard of the Throne, Imperial Seal): +1 VP each checked at Cleanup & Checks (source tag `artifact`).
-- [ ] Effects: encode faithfully where systems exist (stat mods, resource gains, recruit/build riders, combat riders); **stub with AL entry** where they need fog or unbuilt systems (e.g. Cartographer's Glass reveal). One-time purge effects as free-action decision points.
-- [ ] Tests: purge-draw, carry limit, site claim, VP artifact scoring, at least one effect per category, transfer on capture.
+- [x] Artifact deck (24 ids per `Artifacts.md`), face-down draw, **purge 3 Remnants → draw** as free action on your Action-Phase turn.
+- [x] **Artifact Sites**: markers created by events; face-up card on site; claim by occupying + 1 AP (per `Artifacts.md` Acquisition); contested sites are territorial bait — no new combat rules.
+- [x] Ownership model: Lord Equipment (carry limit 2, attach to Lord; on Lord capture follow `Artifacts.md` transfer rules), Building Relics (attach to a controlled building; captured with the hex), Utility (held).
+- [x] **VP artifacts** (Crown of Aeonis, Eternal Forge, Shard of the Throne, Imperial Seal): +1 VP each checked at Cleanup & Checks (source tag `artifact`).
+- [x] Effects: encode faithfully where systems exist (stat mods, resource gains, recruit/build riders, combat riders); **stub with AL entry** where they need fog or unbuilt systems (e.g. Cartographer's Glass reveal). One-time purge effects as free-action decision points.
+- [x] Tests: purge-draw, carry limit, site claim, VP artifact scoring, at least one effect per category, transfer on capture.
 
 ### Task 4 — Arcane Tier I
 
