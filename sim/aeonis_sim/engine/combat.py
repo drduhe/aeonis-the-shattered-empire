@@ -17,6 +17,12 @@ from typing import Optional
 from .hexmap import neighbors
 from .production import apply_tile_production
 from .artifacts import attack_die, defense_die, maybe_transfer_shard, transfer_lord_equipment
+from .arcane import (
+    battle_augury_attack_penalty,
+    battle_runes_attack_bonus,
+    searing_salvo_damage,
+    warding_charm_defense_bonus,
+)
 from .types import BuildingType, Terrain, UNIT_STATS, UnitType
 
 ATTACK_AP = 2
@@ -212,6 +218,7 @@ def start_battle(state, pid, choice) -> Battle:
     else:
         _full_commit(state, b)
     snapshot_initiation(b)
+    searing_salvo_damage(state, pid, b)
     return b
 
 
@@ -290,7 +297,13 @@ def _strike(state, battle, strikers, targets_line, rng, striker_side, *, pre_str
         if target is None:
             return
         atk = rng.randint(1, attack_die(state, striker.owner, striker))
+        if striker_side == "att" and striker.owner == battle.attacker:
+            atk += battle_runes_attack_bonus(state, striker.owner, battle)
         dfn = rng.randint(1, defense_die(state, target.owner, target, battle.target))
+        if striker_side == "att" and target.owner == battle.defender:
+            dfn += warding_charm_defense_bonus(state, battle.defender, battle)
+        if striker_side == "att":
+            atk = max(1, atk - battle_augury_attack_penalty(state, battle.defender, battle))
         dfn += _defense_bonus(state, battle, def_side)
         if _hits(striker_side, atk, dfn, state.aggressors_edge_mode, pre_strike=pre_strike):
             target.hp -= 1

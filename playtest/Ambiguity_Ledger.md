@@ -34,7 +34,7 @@ canon.
 | AL-22 | High Council custom motions / negotiation | Bots propose revealed agenda only; binding deals deferred to Task 6 | `High_Council.md` / `Diplomacy.md` | **Open** (M2 simplification) |
 | AL-23 | Council tie-break when yes/no votes equal | **Motion fails** (no Speaker auto-pass in sim) | `High_Council.md` | **Resolved** (2026-07-03, M2 sim) |
 | AL-24 | Sim round cap with no player at VP threshold | Game **completes** at `DEFAULT_ROUND_CAP` (25) with `round_cap_finish`; tiebreak by current VP | `sim/README.md` pacing | **Resolved** (2026-07-03, sim-only) |
-| AL-25 | Strategy primaries referencing Arcane Tier II+ | Stub to resource/movement effects until M3 Task 7 | `Strategy.md` | **Open** (M2 simplification) |
+| AL-25 | Strategy primaries referencing Arcane Tier II+ | Arcane Ascendancy **primary** real (Task 4); secondary + other cards deferred to Task 7 | `Strategy.md` | **Open** (M3 Task 4 partial) |
 | AL-26 | Bank conversion timing / player choice | Auto-heuristic at end of Production & Upkeep: surplus mana→gold, else gold→mana when mana=0; one use per player per round | `Buildings.md` | **Resolved** (2026-07-03, M3 Task 1 sim) |
 | AL-27 | Market free trade vs one-trade-per-round limit | Market makes trade **initiation** 0 AP; still one initiation per player per round | `Buildings.md` / `Trade_Taxes.md` | **Resolved** (2026-07-03, M3 Task 1 sim) |
 | AL-28 | Lost Cartographer with no fog in sim | +1 AP this round only; no tile reveal | `Events.md` | **Resolved** (2026-07-03, M3 Task 2 sim) |
@@ -44,3 +44,6 @@ canon.
 | AL-32 | Wellspring Chalice production choice | Auto-pick +2 Gold at Production & Upkeep | `Artifacts.md` | **Resolved** (2026-07-03, M3 Task 3 sim) |
 | AL-33 | Whisper/Arcane-linked artifact effects | Cards referencing Whispers (Whisperer's Mask, Shroud), Arcane (Archive, Ley Line discovery bonus), fog (Cartographer's Glass), or extra turns deferred until Tasks 4–6 | `Artifacts.md` | **Open** (M3 Task 3 stubs) |
 | AL-34 | Scepter of Command / Windcaller's Horn | Free move riders deferred — no remote-order action enumeration yet | `Artifacts.md` | **Open** (M3 Task 3 stubs) |
+| AL-35 | Sigil prerequisites / Academy Specialty choice | Tier I only in FP — no sigil prereqs; Academy −1 Mana discount encoded; school specialty choice deferred | `Arcane.md` | **Resolved** (2026-07-03, M3 Task 4 sim) |
+| AL-36 | Combat rituals + Boundary Stones player choice | Auto-heuristic: spend resources when affordable; boundary claims first eligible neutral | `Arcane.md` | **Resolved** (2026-07-03, M3 Task 4 sim) |
+| AL-37 | Scrying Pool agenda peek | No-op in full-info sim | `Arcane.md` | **Resolved** (2026-07-03, M3 Task 4 sim) |

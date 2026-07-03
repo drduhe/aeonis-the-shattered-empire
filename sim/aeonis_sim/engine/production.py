@@ -7,6 +7,7 @@ from .artifacts import (
     production_verdant_bonus,
     production_wellspring,
 )
+from .arcane import production_golden_alchemy
 
 # Tiles.md: base production, upgraded by the matching production building.
 _PLAIN = {Terrain.MOUNTAIN: ("gold", 1), Terrain.FOREST: ("mana", 1),
@@ -115,6 +116,7 @@ def run_production(state) -> dict:
         if conv:
             stats["bank_conversions"][p.pid] = conv
         production_wellspring(state, p.pid)
+        production_golden_alchemy(state, p.pid)
         # 5. Remnants from controlled Ruins
         for t in state.controlled(p.pid):
             if t.terrain == Terrain.RUINS:

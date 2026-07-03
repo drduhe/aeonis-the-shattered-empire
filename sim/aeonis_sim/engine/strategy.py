@@ -74,6 +74,7 @@ PRIMARY_IMPLEMENTED: frozenset[str] = frozenset({
     "resource_surge",
     "military_maneuvers",
     "economic_boom",
+    "arcane_ascendancy",
 })
 
 SECONDARY_EFFECTS: dict[str, dict] = {
@@ -192,6 +193,10 @@ def apply_resource_surge_primary(state: GameState, pid: int) -> None:
 
 def apply_economic_boom_primary(state: GameState, pid: int) -> None:
     state.player(pid).gold += 5
+
+
+def apply_arcane_ascendancy_primary(state: GameState, pid: int) -> None:
+    state.player(pid).mana += 2
 
 
 def pay_primary_ap(state: GameState, pid: int, card_id: str) -> None:

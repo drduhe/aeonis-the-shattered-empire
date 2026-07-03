@@ -8,6 +8,7 @@ _PHASE_SKIP = frozenset({
     "negotiation",
     "exploration",
     "artifact",
+    "research",
 })
 
 

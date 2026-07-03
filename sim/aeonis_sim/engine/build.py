@@ -1,6 +1,12 @@
 from __future__ import annotations
 
 from .hexmap import neighbors
+from .arcane import (
+    build_gold_cost,
+    mark_build_discount_used,
+    mark_waystones_used,
+    waystones_move_discount,
+)
 from .types import BUILDING_SPECS, BuildingType, Terrain
 
 BUILD_AP = 3
@@ -10,8 +16,9 @@ def _slots(tile) -> int:
     return 2 if tile.terrain == Terrain.CITY else 1
 
 
-def _can_afford(p, spec) -> bool:
-    return (p.gold >= spec.gold and p.mana >= spec.mana
+def _can_afford(p, spec, state, pid, btype) -> bool:
+    gold = build_gold_cost(state, pid, btype, spec.gold)
+    return (p.gold >= gold and p.mana >= spec.mana
             and p.influence >= spec.influence and p.pop_pool >= spec.pop)
 
 
@@ -21,7 +28,7 @@ def enumerate_builds(state, pid) -> list:
         return []
     out = []
     for btype, spec in BUILDING_SPECS.items():
-        if not _can_afford(p, spec):
+        if not _can_afford(p, spec, state, pid, btype):
             continue
         if btype == BuildingType.BRIDGE:
             for coord, tile in state.tiles.items():
@@ -53,10 +60,12 @@ def apply_build(state, pid, choice) -> None:
     btype = BuildingType(choice["building"])
     spec = BUILDING_SPECS[btype]
     p.ap -= BUILD_AP
-    p.gold -= spec.gold
+    gold = build_gold_cost(state, pid, btype, spec.gold)
+    p.gold -= gold
     p.mana -= spec.mana
     p.influence -= spec.influence
     p.pop_pool -= spec.pop
+    mark_build_discount_used(state, pid, btype, spec.gold)
     tile.buildings.append(btype)
     if btype == BuildingType.BRIDGE and tile.controller is None:
         tile.controller = pid  # AL-6

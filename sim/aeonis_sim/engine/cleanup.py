@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from .hexmap import distance, neighbors
+from .arcane import apply_boundary_stones
 from .artifacts import score_artifact_vp
 from .objectives import PUBLIC_OBJECTIVES, SECRET_OBJECTIVES
 from .types import BuildingType, Terrain, Unit, UNIT_STATS, UnitType, VP_THRESHOLD
@@ -116,6 +117,8 @@ def _score_objectives(state, pid: int) -> None:
 
 
 def run_cleanup(state) -> None:
+    for p in state.players:
+        apply_boundary_stones(state, p.pid)
     _adjacency_claims(state)
     _release_lords(state)
 
@@ -131,6 +134,7 @@ def run_cleanup(state) -> None:
         p.recruited_cities = []
         p.passed = False
         p.public_scored_this_round = False
+        p.arcane_round = {}
     n = len(state.players)
     state.speaker = (state.speaker + 1) % n
     state.agenda_revealed = None

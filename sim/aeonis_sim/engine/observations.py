@@ -12,6 +12,7 @@ _DEFAULT_PHASE = {
     "negotiation": "council",
     "exploration": "action",
     "artifact": "action",
+    "research": "action",
     "press": "combat",
     "defender_retreat": "combat",
 }

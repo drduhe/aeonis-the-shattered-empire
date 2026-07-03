@@ -9,6 +9,7 @@ import heapq
 
 from .hexmap import neighbors
 from .artifacts import lord_move_bonus
+from .arcane import mark_waystones_used, waystones_move_discount
 from .types import BuildingType, Terrain, TERRAIN_COST, UNIT_STATS, UnitType
 
 
@@ -121,6 +122,7 @@ def enumerate_moves(state, pid, *, waive_terrain: bool = False) -> list:
                     waive_terrain=waive_terrain).items():
                 if portaled and p.portal_instability_free:
                     cost = 0
+                cost = waystones_move_discount(state, pid, cost)
                 out.append({
                     "type": "move",
                     "from": list(tile.coord),
@@ -143,7 +145,10 @@ def apply_move(state, pid, choice) -> None:
     if choice.get("portal") and p.portal_instability_free:
         cost = 0
         p.portal_instability_free = False
-    p.ap -= cost
+    discounted = waystones_move_discount(state, pid, cost)
+    if discounted < cost:
+        mark_waystones_used(state, pid)
+    p.ap -= discounted
     if choice["portal"]:
         p.used_portal_travel = True
     # Tiles.md control method 3: neutral hex claimed immediately.

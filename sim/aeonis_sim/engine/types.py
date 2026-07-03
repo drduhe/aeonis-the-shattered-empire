@@ -236,6 +236,8 @@ class PlayerState:
     lord_equipment: list = field(default_factory=list)   # artifact ids, max 2
     utilities: list = field(default_factory=list)
     pending_building_relic: Optional[str] = None
+    discoveries: list = field(default_factory=list)   # Tier I+ discovery ids owned
+    arcane_round: dict = field(default_factory=dict)  # per-round discovery flags
 
     def add_vp(self, n: int, source: str) -> None:
         self.vp += n
@@ -267,6 +269,8 @@ class PlayerState:
             "lord_equipment": list(self.lord_equipment),
             "utilities": list(self.utilities),
             "pending_building_relic": self.pending_building_relic,
+            "discoveries": list(self.discoveries),
+            "arcane_round": dict(self.arcane_round),
         }
 
     @staticmethod
@@ -301,6 +305,8 @@ class PlayerState:
         p.lord_equipment = list(d.get("lord_equipment", []))
         p.utilities = list(d.get("utilities", []))
         p.pending_building_relic = d.get("pending_building_relic")
+        p.discoveries = list(d.get("discoveries", []))
+        p.arcane_round = dict(d.get("arcane_round", {}))
         return p
 
 
@@ -494,6 +500,8 @@ class GameState:
                 lord_equipment=list(p.lord_equipment),
                 utilities=list(p.utilities),
                 pending_building_relic=p.pending_building_relic,
+                discoveries=list(p.discoveries),
+                arcane_round=dict(p.arcane_round),
             )
             for p in self.players
         ]

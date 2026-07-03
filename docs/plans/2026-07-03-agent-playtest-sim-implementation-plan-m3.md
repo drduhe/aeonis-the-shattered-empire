@@ -60,11 +60,11 @@ Ordered by dependency; each task lands with unit tests, and regenerates goldens 
 
 ### Task 4 — Arcane Tier I
 
-- [ ] **Research action** (`Arcane.md` §4.2): 1 AP + listed cost, one discovery per action, grants **1 Remnant**; Tier I only (all Tier I have no prerequisites — sigil system deferred until Tier II, AL note).
-- [ ] The **10 Tier I discoveries** (§7): encode effects (passives into combat/production/movement hooks; rituals as one-shot decision points). Stub-with-ledger any that reference disabled systems.
-- [ ] Academy Specialty + once/round −1 Mana research discount (Task 1 hook).
-- [ ] **Arcane Ascendancy primary** goes real: 2 Mana + free Tier I research (closes AL-25 for this card).
-- [ ] Tests: research costs/limits, remnant grant, each discovery's effect, Academy discount.
+- [x] **Research action** (`Arcane.md` §4.2): 1 AP + listed cost, one discovery per action, grants **1 Remnant**; Tier I only (all Tier I have no prerequisites — sigil system deferred until Tier II, AL note).
+- [x] The **10 Tier I discoveries** (§7): encode effects (passives into combat/production/movement hooks; rituals as one-shot decision points). Stub-with-ledger any that reference disabled systems.
+- [x] Academy Specialty + once/round −1 Mana research discount (Task 1 hook).
+- [x] **Arcane Ascendancy primary** goes real: 2 Mana + free Tier I research (closes AL-25 for this card).
+- [x] Tests: research costs/limits, remnant grant, each discovery's effect, Academy discount.
 
 ### Task 5 — Secret objectives completion + objective draws
 

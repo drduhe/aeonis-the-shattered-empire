@@ -20,6 +20,7 @@ from .council import (
     tally_votes,
 )
 from .events import draw_event, resolve_event
+from .arcane import apply_research, enumerate_research
 from .artifacts import (
     apply_purge_draw,
     apply_site_claim,
@@ -55,6 +56,7 @@ from .recruit import apply_recruit, enumerate_recruits
 from .setup import build_initial_state
 from .strategy import (
     apply_draft_pick,
+    apply_arcane_ascendancy_primary,
     apply_economic_boom_primary,
     apply_resource_surge_primary,
     apply_strategy_secondary,
@@ -142,6 +144,7 @@ class Game:
         self._trade_initiator: Optional[int] = None
         self._exploration_pending: Optional[dict] = None
         self._artifact_followup: Optional[dict] = None
+        self._research_followup: Optional[dict] = None
         self._round_start()
 
     # ---- phases ----
@@ -352,6 +355,24 @@ class Game:
         self._council_proposal_queue = []
         self._council_motions = []
         self._council_vote_queue = []
+
+    def _research_decision(self) -> Optional[DecisionPoint]:
+        fu = self._research_followup
+        if fu is None:
+            return None
+        pid = fu["pid"]
+        free = bool(fu.get("free"))
+        choices = enumerate_research(self.state, pid, free=free, ap_waived=free)
+        if not choices:
+            self._research_followup = None
+            return None
+        return DecisionPoint(
+            kind="research",
+            phase="action",
+            pid=pid,
+            choices=choices,
+            context={"free": free},
+        )
 
     def _after_gain_artifact(self, pid: int, pending: str | None) -> None:
         if pending == "discard_lord":
@@ -564,6 +585,7 @@ class Game:
         out.extend(enumerate_site_claims(s, pid))
         out.extend(enumerate_attach_choices(s, pid))
         out.extend(enumerate_discard_lord(s, pid))
+        out.extend(enumerate_research(s, pid))
         return out
 
     def _has_active_market(self, pid: int) -> bool:
@@ -646,6 +668,23 @@ class Game:
             return None
         if self._pending is not None:
             return self._pending
+        if self._research_followup is not None:
+            res_dp = self._research_decision()
+            if res_dp is not None:
+                self._pending = res_dp
+                return self._pending
+            fu = self._research_followup
+            pid = fu.get("pid")
+            free = fu.get("free")
+            self._research_followup = None
+            if (
+                free
+                and pid is not None
+                and "arcane_ascendancy" in self.state.player(pid).primary_used
+            ):
+                self._start_secondary_window(pid, "arcane_ascendancy")
+            elif pid is not None:
+                self._finish_action_turn(pid)
         if self._artifact_followup is not None:
             art_dp = self._artifact_decision()
             if art_dp is not None:
@@ -806,6 +845,12 @@ class Game:
                 elif card == "economic_boom":
                     apply_economic_boom_primary(s, dp.pid)
                     self._after_resource_or_boom_primary(dp.pid, card)
+                elif card == "arcane_ascendancy":
+                    apply_arcane_ascendancy_primary(s, dp.pid)
+                    if enumerate_research(s, dp.pid, free=True, ap_waived=True):
+                        self._research_followup = {"pid": dp.pid, "free": True}
+                    else:
+                        self._start_secondary_window(dp.pid, card)
                 elif card == "military_maneuvers":
                     self._after_military_primary_paid(dp.pid, card)
                 else:
@@ -873,6 +918,26 @@ class Game:
                 discard_lord_equipment(s, dp.pid, choice["card"])
                 if len(s.player(dp.pid).lord_equipment) <= 2:
                     self._artifact_followup = None
+                self._finish_action_turn(dp.pid)
+            elif t == "research":
+                apply_research(
+                    s, dp.pid, choice["discovery"],
+                    free=choice.get("free", False),
+                )
+                self._finish_action_turn(dp.pid)
+        elif dp.kind == "research":
+            apply_research(
+                s, dp.pid, choice["discovery"],
+                free=dp.context.get("free", False),
+                ap_waived=dp.context.get("free", False),
+            )
+            self._research_followup = None
+            if (
+                dp.context.get("free")
+                and "arcane_ascendancy" in s.player(dp.pid).primary_used
+            ):
+                self._start_secondary_window(dp.pid, "arcane_ascendancy")
+            else:
                 self._finish_action_turn(dp.pid)
         elif dp.kind == "artifact":
             step = dp.context.get("step")
