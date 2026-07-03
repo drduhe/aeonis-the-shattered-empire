@@ -1947,7 +1947,9 @@ def test_castle_upkeep_suspension():
     p = s.players[0]
     home = s.tiles[p.home]
     home.buildings.append(BuildingType.CASTLE)
-    p.gold = 1  # cannot pay 2
+    # gold 0: even if the mountain's +1 lands before the City in iteration
+    # order, 1 < 2 so upkeep is unpayable either way
+    p.gold = 0
     run_production(s)
     assert home.castle_suspended is True   # AL-8
     p.gold = 5
@@ -2046,6 +2048,8 @@ def make_state():
 
 def test_imperial_seat_vp_and_streak():
     s = make_state()
+    for p in s.players:
+        p.objective = None  # isolate seat VP from objective auto-scoring
     seat = next(t for t in s.tiles.values() if t.imperial_seat)
     seat.controller = 0
     for expected_vp, expected_streak in ((1, 1), (2, 2), (5, 3)):  # +2 bonus at 3
@@ -2070,11 +2074,14 @@ def test_objective_scored_once():
 def test_adjacency_claim_two_checks():
     s = make_state()
     p = s.players[0]
-    home = s.tiles[p.home]
+    for pl in s.players:
+        pl.objective = None
     from aeonis_sim.engine.hexmap import neighbors
+    # All in-disk neighbors of a corner home City are cluster tiles (controlled),
+    # so manufacture a neutral one by un-claiming a cluster tile.
     neutral = next(c for c in neighbors(p.home)
-                   if c in s.tiles and s.tiles[c].controller is None
-                   and s.tiles[c].terrain not in (Terrain.LAKE,))
+                   if c in s.tiles and s.tiles[c].controller == p.pid)
+    s.tiles[neutral].controller = None
     run_cleanup(s)
     assert s.tiles[neutral].controller is None
     assert s.tiles[neutral].adj_claim == (0, 1)
