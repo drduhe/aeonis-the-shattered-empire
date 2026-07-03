@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from .hexmap import distance, neighbors
-from .objectives import OBJECTIVES
+from .objectives import PUBLIC_OBJECTIVES, SECRET_OBJECTIVES
 from .types import BuildingType, Terrain, Unit, UNIT_STATS, UnitType, VP_THRESHOLD
 
 
@@ -33,7 +33,7 @@ def _adjacency_claims(state) -> None:
             continue
         pid = eligible[0]
         if t.adj_claim and t.adj_claim[0] == pid:
-            t.controller = pid  # second consecutive check
+            t.controller = pid
             t.adj_claim = None
         else:
             t.adj_claim = (pid, 1)
@@ -47,17 +47,59 @@ def _release_lords(state) -> None:
         dest = None
         if home.controller == p.pid and not any(u.owner != p.pid for u in home.units):
             dest = home
-        else:  # AL-9: nearest controlled hex without enemy units
+        else:
             cands = [t for t in state.controlled(p.pid)
                      if not any(u.owner != p.pid for u in t.units)]
             if cands:
                 dest = min(cands, key=lambda t: (distance(t.coord, p.home), t.coord))
         if dest is None:
-            continue  # stays captured; retry next round
+            continue
         st = UNIT_STATS[UnitType.LORD]
         dest.units.append(Unit(uid=state.new_uid(), owner=p.pid,
                                type=UnitType.LORD, hp=st.hp))
         p.lord_captured = False
+
+
+def _lord_on_seat(state, pid: int) -> bool:
+    """Coronation Rite: control Seat and Lord unit present on Seat hex."""
+    for t in state.controlled(pid):
+        if not t.imperial_seat:
+            continue
+        for u in t.units:
+            if u.owner == pid and u.type == UnitType.LORD:
+                return True
+    return False
+
+
+def _score_coronation(state, pid: int) -> None:
+    p = state.player(pid)
+    if not _lord_on_seat(state, pid):
+        return
+    p.add_vp(1, "coronation_rite")
+    p.rite_count += 1
+    if p.rite_count >= 3 and not p.rite_bonus_scored:
+        p.add_vp(2, "coronation_milestone")
+        p.rite_bonus_scored = True
+
+
+def _score_objectives(state, pid: int) -> None:
+    """AL-5: score at Cleanup & Checks; VP permanent once awarded."""
+    p = state.player(pid)
+
+    if not p.public_scored_this_round:
+        for obj_id in state.shared_public_revealed:
+            if obj_id in p.shared_scored:
+                continue
+            if PUBLIC_OBJECTIVES[obj_id](state, pid):
+                p.add_vp(2, "objective")
+                p.shared_scored.append(obj_id)
+                p.public_scored_this_round = True
+                break
+
+    if p.secret_objective and not p.secret_scored:
+        if SECRET_OBJECTIVES[p.secret_objective](state, pid):
+            p.add_vp(2, "objective")
+            p.secret_scored = True
 
 
 def run_cleanup(state) -> None:
@@ -65,20 +107,8 @@ def run_cleanup(state) -> None:
     _release_lords(state)
 
     for p in state.players:
-        # Imperial Seat: +1 VP per round held; +2 bonus at 3 consecutive
-        if any(t.imperial_seat for t in state.controlled(p.pid)):
-            p.add_vp(1, "imperial_seat")
-            p.seat_streak += 1
-            if p.seat_streak >= 3 and not p.seat_bonus_scored:
-                p.add_vp(2, "seat_streak_bonus")
-                p.seat_bonus_scored = True
-        else:
-            p.seat_streak = 0
-        # Objectives (AL-5: auto-score at Cleanup, once per card)
-        if p.objective and not p.objective_scored:
-            if OBJECTIVES[p.objective](state, p.pid):
-                p.add_vp(2, "objective")
-                p.objective_scored = True
+        _score_coronation(state, p.pid)
+        _score_objectives(state, p.pid)
 
     if any(p.vp >= VP_THRESHOLD for p in state.players):
         state.final_round = True
@@ -86,4 +116,5 @@ def run_cleanup(state) -> None:
     for p in state.players:
         p.recruited_cities = []
         p.passed = False
+        p.public_scored_this_round = False
     state.round += 1

@@ -53,11 +53,12 @@ Tally the winner's VP by source each game. Healthy state: no single source domin
 | Secret objectives | | | | |
 | Lord objectives | | | | |
 | Council titles | | | | |
-| Imperial Seat (+streak bonus) | | | | |
+| Imperial Seat (Coronation Rite + milestone) | | | | |
 | Legendary Buildings | | | | |
 | VP artifacts | | | | |
 | Lord captures | | | | |
-| Events | | | | |
+
+**Plan 3 MVP target (winner's 10 VP):** objectives ≥60% · Coronation/military ~20% · lord capture ≤25% of winner VP.
 
 ## 4. Pacing tracker
 
@@ -78,7 +79,7 @@ When a problem shows up, reach for the matching dial. Change **one dial at a tim
 
 ### 5.1 Imperial Seat scoring
 - **Symptom:** Seat-holder snowballs / nobody contests the Seat.
-- **Dials:** +1 VP per round → per 2 rounds; 3-round streak bonus (+2) → remove; add a defender penalty (Seat hex grants no terrain/building defense bonus); make the Seat produce nothing.
+- **Dials:** Coronation Rite Lord-presence requirement; third-Rite milestone timing; Seat hex production; defender terrain bonuses on the Seat hex.
 
 ### 5.2 Lord capture loop
 - **Symptom:** Lord-sniping dominates (capture = +1 VP +2 Renown + ability lockout is 3 rewards) or Lords never leave home.

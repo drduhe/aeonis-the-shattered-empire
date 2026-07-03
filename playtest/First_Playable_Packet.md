@@ -79,19 +79,19 @@ Build a map scaled to player count:
 - Scale Lakes to 1 per 3 players (round up, minimum 2).
 - Add additional Plains/Forests/Mountains as needed to fill gaps.
 
-### 3.2 Imperial Seat (First Playable rule)
+### 3.2 Imperial Seat — Coronation Rite (First Playable rule)
 
 The Imperial Seat is a City with this additional rule:
 
-- If you control the Imperial Seat at **Cleanup & Checks**, gain **+1 VP**.
+- **Coronation Rite:** At **Cleanup & Checks**, if you control the Imperial Seat **and** your Lord unit is in the Seat hex, score **1 VP** (max once per round). Track total Rites scored. On your **third** Rite (not necessarily consecutive), score an additional **+2 VP** (once per game). VP from Rites are permanent.
 
 ### 3.3 Starting resources & tracks (per player)
 
 - **AP**: 5
 - **Renown**: 0
 - **VP**: 0
-- **Population Cap**: 10
-- **Population Pool**: 10 (full at start)
+- **Population Cap**: 10 (base 7 + 3 from your home City)
+- **Population Pool**: 6 available at start (4 Population occupied by starting units)
 - **Resources**: Use the starting resources listed on your **Lord sheet** (each Lord has different starting Gold/Mana/Influence). If no Lord sheet is used, default to 2 Gold, 2 Mana, 1 Influence.
 - **Whisper Cards**: 2 (draw from the shared deck during setup, before Round 1 begins)
 
@@ -167,14 +167,18 @@ Use the full 8-card deck from `Strategy.md` (print as cards):
 
 ### 4.4 Objectives (print 6 public + 6 secret)
 
-**Public Objectives (2 VP each):**
+**Shared public row (Plan 3 MVP):** Shuffle the 6 public objective cards. Reveal **2** face-up in a shared row visible to all players. At each **Round Start** from Round 2, reveal **1** additional public card until all 6 are face-up.
+
+**Public Objectives (2 VP each, each player may score each card once):**
 
 - **Frontier Lord**: Control 7 hexes.
 - **Builder**: Have 3 buildings in play.
-- **Council Power**: Win 2 High Council votes you proposed.
+- **Council Power**: Win 2 High Council votes you proposed. *(Deferred until High Council is in play; use a substitute card or omit in Milestone 1 sim.)*
 - **Portal Mastery**: Control a Portal and use Portal travel at least once.
 - **Warlord**: Win 2 battles (attacker or defender).
 - **Seat of Empire**: Control the Imperial Seat at Cleanup & Checks.
+
+**Scoring:** At **Cleanup & Checks**, you may score each revealed public objective **once per game** when you meet its condition. Limit: **1 public objective per player per round.**
 
 **Secret Objectives (2 VP each):**
 
@@ -187,7 +191,8 @@ Use the full 8-card deck from `Strategy.md` (print as cards):
 
 Setup:
 
-- Each player draws 1 public + 1 secret at start.
+- Reveal 2 public objectives in the shared row (see above).
+- Each player draws 1 secret at start.
 - At the start of Round 3, each player draws 1 additional secret.
 
 ### 4.5 Events (print 10 global + 8 exploration)

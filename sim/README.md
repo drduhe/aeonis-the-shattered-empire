@@ -27,7 +27,7 @@ Tournament (balance campaign):
       --config configs/bracket-a.json --out /tmp/bracket-a.jsonl --report /tmp/bracket-a.md
 
 Flags: `--players`, `--seed`, `--games`, `--out`, `--persona`, `--personas`.
-Tournament: `--config`, `--report`, `--session-log`.
+Tournament: `--config`, `--report`, `--session-log`, `--workers` (default: CPU count).
 
 Rules questions found while encoding the docs live in
 `playtest/Ambiguity_Ledger.md`.

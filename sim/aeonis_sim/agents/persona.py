@@ -20,7 +20,7 @@ PERSONA_WEIGHTS: dict[str, dict[str, float]] = {
     },
     "expander": {
         "vp": 1.3, "territory": 3.0, "next_territory": 2.5, "expansion": 3.0,
-        "seat": 2.5, "seat_pull": 2.5, "seat_streak": 2.0, "next_seat": 2.0,
+        "seat": 2.5, "seat_pull": 2.5, "rite_ready": 2.0, "seat_streak": 2.0, "next_seat": 2.0,
         "objective": 1.2, "combat": 1.0, "pass_penalty": 1.2,
     },
     "diplomat": {

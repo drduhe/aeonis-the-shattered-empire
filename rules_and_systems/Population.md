@@ -16,7 +16,8 @@ Population represents the Lord’s ability to sustain and field military units, 
 
 ### 1. **Population Pool**
 
-- Each Lord starts with a **base Population Pool** (e.g., 10 Population Points).
+- Each Lord starts with a **base Population Pool capacity** determined by their Population Cap (see §2).
+- Starting units **occupy** Population Points; the Population Pool at setup is **available capacity minus units and buildings in play** (First Playable default: cap 10, pool 6 with the standard starting army).
 - Population Points represent **available capacity**.
 - When you recruit a unit or build a Population-maintained building, you must have enough Population Points available; those points remain **tied up** while the unit/building remains in play.
 - Population Points are **refunded immediately** when a unit is destroyed/dismissed or a building is demolished/destroyed.
@@ -37,6 +38,7 @@ Note:
 ### 2. **Population Cap**
 
 - The **Population Cap** limits the maximum Population Pool a Lord can sustain.
+- **Base Population Cap:** **7** (before City and building bonuses).
 - **Ways to Increase the Population Cap:**
   - **Plains and Cities:**
     - **Plains with Farms:** +2 Population Cap per Farm.

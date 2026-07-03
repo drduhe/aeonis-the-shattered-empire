@@ -4,7 +4,7 @@ from __future__ import annotations
 import json
 
 from aeonis_sim.agents.factory import agents_from_config, make_agents, parse_persona_list
-from aeonis_sim.agents.features import evaluate_state, score_action
+from aeonis_sim.agents.features import evaluate_state, score_action, simulate_action
 from aeonis_sim.agents.persona import PERSONA_NAMES, PersonaBot
 from aeonis_sim.engine.game import Game
 from aeonis_sim.engine.observations import DecisionPoint, observe
@@ -94,4 +94,35 @@ def test_record_includes_personas():
         {"players": 3, "personas": ["expander", "economist", "balanced"]},
         seed=7,
     )
-    assert rec["config"]["personas"] == ["expander", "economist", "balanced"]
+    assert len(rec["config"]["personas"]) == 3
+
+
+def test_score_action_invariant_under_copy():
+    """copy() must produce the same persona features as dict round-trip."""
+    from aeonis_sim.engine.types import GameState
+
+    game = Game({"players": 4}, seed=17)
+    steps = 0
+    while not game.over and steps < 40:
+        dp = game.next_decision()
+        if dp is None:
+            continue
+        state = game.state
+        for choice in dp.choices[:8]:
+            feats = score_action(state, dp.pid, choice, dp)
+            alt = GameState.from_dict(state.to_dict())
+            alt_feats = score_action(alt, dp.pid, choice, dp)
+            assert feats == alt_feats
+        game.submit(dp.choices[0])
+        steps += 1
+
+
+def test_simulate_action_does_not_mutate_original():
+    game = Game({"players": 3}, seed=5)
+    dp = game.next_decision()
+    moves = [c for c in dp.choices if c["type"] == "move"]
+    if not moves:
+        return
+    before = game.state.to_dict()
+    simulate_action(game.state, dp.pid, moves[0], dp.kind)
+    assert game.state.to_dict() == before

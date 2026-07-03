@@ -33,3 +33,22 @@ def test_bracket_configs_parse():
         cfg = json.loads((root / name).read_text())
         assert cfg["games"] >= 200
         assert len(cfg["personas"]) >= 1
+
+
+def test_run_tournament_parallel_matches_sequential():
+    config = {
+        "name": "parallel-equiv",
+        "players": 4,
+        "games": 6,
+        "seed_base": 900,
+        "personas": ["balanced", "warmonger"],
+        "matchmaking": "solo",
+    }
+    seq = run_tournament(config, workers=1)
+    par = run_tournament(config, workers=2)
+    assert len(seq) == len(par)
+    for a, b in zip(seq, par):
+        assert a["seed"] == b["seed"]
+        assert a["choices"] == b["choices"]
+        assert a["final_vp"] == b["final_vp"]
+        assert a["verdict"] == b["verdict"]

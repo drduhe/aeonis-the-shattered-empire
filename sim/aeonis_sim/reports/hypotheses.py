@@ -6,6 +6,7 @@ from .summary import (
     _winner,
     played_rounds,
     runaway_rate,
+    seat_vp_from_totals,
     verdict_breakdown,
     vp_source_totals,
     winner_vp_source_mix,
@@ -51,7 +52,7 @@ def _avg_margin(records: list[dict]) -> float:
 def _status_h1(records: list[dict]) -> str:
     totals = vp_source_totals(records)
     all_vp = sum(totals.values()) or 1
-    seat = totals.get("imperial_seat", 0) + totals.get("seat_streak_bonus", 0)
+    seat = seat_vp_from_totals(totals)
     pct = 100 * seat / all_vp
     if pct < 40:
         return "killed"
@@ -131,7 +132,7 @@ def evaluate_hypotheses(records: list[dict]) -> dict[str, dict]:
             t = vp_source_totals(completed)
             all_vp = sum(t.values()) or 1
             detail["seat_streak_pct"] = round(
-                100 * (t.get("imperial_seat", 0) + t.get("seat_streak_bonus", 0)) / all_vp, 1
+                100 * seat_vp_from_totals(t) / all_vp, 1
             )
         elif hid == "H2":
             detail["avg_margin"] = round(_avg_margin(completed), 2)

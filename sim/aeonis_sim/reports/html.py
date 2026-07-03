@@ -9,6 +9,7 @@ from .summary import (
     _winner,
     played_rounds,
     runaway_rate,
+    seat_vp_from_totals,
     verdict_breakdown,
     vp_source_totals,
     win_rate_by_persona,
@@ -38,7 +39,7 @@ def _persona_game_stats(records: list[dict]) -> dict[str, dict]:
             continue
         s = stats.setdefault(
             persona,
-            {"games": 0, "completed": 0, "rounds": [], "seat_streak_vp": 0, "total_vp": 0},
+            {"games": 0, "completed": 0, "rounds": [], "seat_vp": 0, "total_vp": 0},
         )
         s["games"] += 1
         if r["verdict"] == "completed":
@@ -46,14 +47,12 @@ def _persona_game_stats(records: list[dict]) -> dict[str, dict]:
             s["rounds"].append(played_rounds(r))
             for sources in r.get("vp_sources", {}).values():
                 s["total_vp"] += sum(sources.values())
-                s["seat_streak_vp"] += sources.get("imperial_seat", 0) + sources.get(
-                    "seat_streak_bonus", 0
-                )
+                s["seat_vp"] += seat_vp_from_totals(sources)
     for s in stats.values():
         s["completion_rate"] = s["completed"] / s["games"] if s["games"] else 0
         s["avg_rounds"] = mean(s["rounds"]) if s["rounds"] else 0
         s["seat_streak_pct"] = (
-            100 * s["seat_streak_vp"] / s["total_vp"] if s["total_vp"] else 0
+            100 * s["seat_vp"] / s["total_vp"] if s["total_vp"] else 0
         )
     return dict(sorted(stats.items()))
 
@@ -93,15 +92,16 @@ def generate_html(
     crashes = verdicts.get("crashed", 0)
     totals = vp_source_totals(records)
     all_vp = sum(totals.values()) or 1
-    seat_vp = totals.get("imperial_seat", 0)
-    streak_vp = totals.get("seat_streak_bonus", 0)
+    seat_total = seat_vp_from_totals(totals)
+    rite_vp = totals.get("coronation_rite", 0) + totals.get("imperial_seat", 0)
+    milestone_vp = totals.get("coronation_milestone", 0) + totals.get("seat_streak_bonus", 0)
     obj_vp = totals.get("objective", 0)
     lord_vp = totals.get("lord_capture", 0)
-    seat_pct = 100 * (seat_vp + streak_vp) / all_vp
+    seat_pct = 100 * seat_total / all_vp
     obj_pct = 100 * obj_vp / all_vp
     lord_pct = 100 * lord_vp / all_vp
-    seat_only = 100 * seat_vp / all_vp
-    streak_only = 100 * streak_vp / all_vp
+    rite_only = 100 * rite_vp / all_vp
+    milestone_only = 100 * milestone_vp / all_vp
     rounds = [played_rounds(r) for r in completed]
     avg_rounds = mean(rounds) if rounds else 0
     med_rounds = median(rounds) if rounds else 0
@@ -244,16 +244,16 @@ def generate_html(
 </div>
 <div class="trend-row">
   <span>All VP</span>
-  {_vp_bar(seat_only, obj_pct, lord_pct, streak_only)}
+  {_vp_bar(rite_only, obj_pct, lord_pct, milestone_only)}
   <span class="r">{all_vp:,}</span>
 </div>
 
 <table>
   <tr><th>Source</th><th class="r">VP</th><th class="r">% total</th><th class="r">% winner VP (avg)</th></tr>
-  <tr><td>imperial_seat</td><td class="r">{seat_vp:,}</td><td class="r">{seat_only:.1f}%</td>
-      <td class="r">{100*winner_mix.get('imperial_seat',0):.1f}%</td></tr>
-  <tr><td>seat_streak_bonus</td><td class="r">{streak_vp:,}</td><td class="r">{streak_only:.1f}%</td>
-      <td class="r">{100*winner_mix.get('seat_streak_bonus',0):.1f}%</td></tr>
+  <tr><td>coronation_rite</td><td class="r">{rite_vp:,}</td><td class="r">{rite_only:.1f}%</td>
+      <td class="r">—</td></tr>
+  <tr><td>coronation_milestone</td><td class="r">{milestone_vp:,}</td><td class="r">{milestone_only:.1f}%</td>
+      <td class="r">—</td></tr>
   <tr><td>objective</td><td class="r">{obj_vp:,}</td><td class="r">{obj_pct:.1f}%</td>
       <td class="r">{100*winner_mix.get('objective',0):.1f}%</td></tr>
   <tr><td>lord_capture</td><td class="r">{lord_vp:,}</td><td class="r">{lord_pct:.1f}%</td>

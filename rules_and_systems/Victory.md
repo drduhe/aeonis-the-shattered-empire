@@ -6,15 +6,22 @@ Players earn **Victory Points (VP)** throughout the game by achieving key object
 
 **Tiebreaker:** Most Renown, then most Influence.
 
+**VP permanence:** Once scored, VP are never removed, even if the source (hex, artifact, building, title) is later lost.
+
+**Objective scoring timing:** Public and secret objectives score at **Cleanup & Checks** when the condition is met. Each card scores **once per player per game**. No separate claim action.
+
 ---
 
 ## Key Sources
 
 ### 1. Variable Objective Cards (Core Feature)
 
-- At the start of the game, each player draws **two Objective Cards**:
-  - **Public Objective:** Revealed to all players. Completing it earns **2 VP**.
-  - **Secret Objective:** Hidden from other players. Completing it earns **2 VP**.
+**First Playable (shared row):** Reveal public objectives in a shared row; every player may score each revealed public objective once. See `playtest/First_Playable_Packet.md` §4.4.
+
+**Full game (default):** At setup, reveal **2 Stage I** public objectives in the shared row; reveal 1 more at each Round Start until the row is full. Each revealed public objective can be scored by **every player, once each**, at Cleanup & Checks (limit: 1 public objective scored per player per round).
+
+- **Public Objective:** Revealed to all players. Completing it earns **2 VP**.
+- **Secret Objective:** Hidden from other players. Completing it earns **2 VP**.
 
 - **Examples of Objectives:**
   - **Military Feats:** Control 5 hexes, win 3 battles, or defeat a Lord.
@@ -63,10 +70,9 @@ Players earn **Victory Points (VP)** throughout the game by achieving key object
 
 ### 5. Imperial Seat (Endgame Objective)
 
-- Controlling the **Imperial Seat** provides **+1 VP per round** (checked at Cleanup & Checks).
-- If a player maintains control for **3 consecutive rounds**, they gain an additional **+2 VP bonus**.
+**Coronation Rite (First Playable):** At Cleanup & Checks, if you control the Imperial Seat **and** your Lord unit is in the Seat hex, score **1 VP** (max once per round). On your **third** total Rite (not necessarily consecutive), score an additional **+2 VP** (once per game).
 
-*Why It Works:* Creates a dynamic conflict point, encouraging competition for the center.
+*Why It Works:* Creates a visible, attackable scoring moment at the thematic centerpiece instead of silent drip VP.
 
 ---
 

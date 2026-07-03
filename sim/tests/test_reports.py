@@ -17,8 +17,8 @@ def _record(verdict="completed", winner_vp=10, loser_vp=3, persona="balanced", p
         "config": {"players": players, "personas": [persona] * players},
         "final_vp": {"0": winner_vp, "1": loser_vp},
         "vp_sources": {
-            "0": {"imperial_seat": 6, "objective": 2, "seat_streak_bonus": 2},
-            "1": {"imperial_seat": 2, "objective": 1},
+            "0": {"coronation_rite": 3, "objective": 4, "coronation_milestone": 2},
+            "1": {"coronation_rite": 2, "objective": 1},
         },
     }
 

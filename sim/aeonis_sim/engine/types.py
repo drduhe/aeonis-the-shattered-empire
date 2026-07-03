@@ -12,8 +12,7 @@ GLOBAL_POP_CAP = 25
 DEFAULT_ROUND_CAP = 25
 BASE_AP = 5
 # Packet §3.3 says "Population Cap: 10" at start while Population.md grants +3 cap
-# per City. Engine rule (Ambiguity Ledger AL-1): cap = POP_BASE + city/building
-# bonuses, with POP_BASE chosen so a starting player (1 City) has cap 10.
+# per City. Canon (AL-1, Population.md): base cap 7 + 3 per controlled City = 10 at start.
 POP_BASE = 7
 
 
@@ -177,13 +176,15 @@ class PlayerState:
     vp: int = 0
     pop_pool: int = 0
     passed: bool = False
-    objective: Optional[str] = None
-    objective_scored: bool = False
+    secret_objective: Optional[str] = None
+    secret_scored: bool = False
+    shared_scored: list = field(default_factory=list)   # public objective ids scored
+    public_scored_this_round: bool = False
     battle_wins: int = 0
     used_portal_travel: bool = False
     lord_captured: bool = False
-    seat_streak: int = 0
-    seat_bonus_scored: bool = False
+    rite_count: int = 0
+    rite_bonus_scored: bool = False
     recruited_cities: list = field(default_factory=list)  # list[Coord] this round
     vp_sources: dict = field(default_factory=dict)         # source -> total VP
 
@@ -196,10 +197,16 @@ class PlayerState:
             "pid": self.pid, "home": list(self.home), "ap": self.ap, "banked": self.banked,
             "gold": self.gold, "mana": self.mana, "influence": self.influence,
             "renown": self.renown, "vp": self.vp, "pop_pool": self.pop_pool,
-            "passed": self.passed, "objective": self.objective,
-            "objective_scored": self.objective_scored, "battle_wins": self.battle_wins,
-            "used_portal_travel": self.used_portal_travel, "lord_captured": self.lord_captured,
-            "seat_streak": self.seat_streak, "seat_bonus_scored": self.seat_bonus_scored,
+            "passed": self.passed,
+            "secret_objective": self.secret_objective,
+            "secret_scored": self.secret_scored,
+            "shared_scored": list(self.shared_scored),
+            "public_scored_this_round": self.public_scored_this_round,
+            "battle_wins": self.battle_wins,
+            "used_portal_travel": self.used_portal_travel,
+            "lord_captured": self.lord_captured,
+            "rite_count": self.rite_count,
+            "rite_bonus_scored": self.rite_bonus_scored,
             "recruited_cities": [list(c) for c in self.recruited_cities],
             "vp_sources": dict(self.vp_sources),
         }
@@ -207,10 +214,24 @@ class PlayerState:
     @staticmethod
     def from_dict(d: dict) -> "PlayerState":
         p = PlayerState(pid=d["pid"], home=tuple(d["home"]))
-        for k in ("ap", "banked", "gold", "mana", "influence", "renown", "vp", "pop_pool",
-                  "passed", "objective", "objective_scored", "battle_wins",
-                  "used_portal_travel", "lord_captured", "seat_streak", "seat_bonus_scored"):
-            setattr(p, k, d[k])
+        if "secret_objective" in d:
+            for k in ("ap", "banked", "gold", "mana", "influence", "renown", "vp", "pop_pool",
+                      "passed", "secret_objective", "secret_scored", "public_scored_this_round",
+                      "battle_wins", "used_portal_travel", "lord_captured",
+                      "rite_count", "rite_bonus_scored"):
+                setattr(p, k, d[k])
+            p.shared_scored = list(d.get("shared_scored", []))
+        else:
+            # Legacy pre-Plan-3-MVP records
+            for k in ("ap", "banked", "gold", "mana", "influence", "renown", "vp", "pop_pool",
+                      "passed", "battle_wins", "used_portal_travel", "lord_captured"):
+                setattr(p, k, d[k])
+            p.secret_objective = d.get("objective")
+            p.secret_scored = d.get("objective_scored", False)
+            p.shared_scored = []
+            p.public_scored_this_round = False
+            p.rite_count = d.get("seat_streak", 0)
+            p.rite_bonus_scored = d.get("seat_bonus_scored", False)
         p.recruited_cities = [tuple(c) for c in d["recruited_cities"]]
         p.vp_sources = dict(d["vp_sources"])
         return p
@@ -223,6 +244,8 @@ class GameState:
     round: int = 1
     final_round: bool = False
     next_uid: int = 1
+    shared_public_revealed: list = field(default_factory=list)  # objective ids
+    shared_public_deck: list = field(default_factory=list)
 
     # --- helpers used across the engine ---
     def player(self, pid: int) -> PlayerState:
@@ -275,6 +298,8 @@ class GameState:
             "round": self.round,
             "final_round": self.final_round,
             "next_uid": self.next_uid,
+            "shared_public_revealed": list(self.shared_public_revealed),
+            "shared_public_deck": list(self.shared_public_deck),
         }
 
     @staticmethod
@@ -289,4 +314,62 @@ class GameState:
             round=d["round"],
             final_round=d["final_round"],
             next_uid=d["next_uid"],
+            shared_public_revealed=list(d.get("shared_public_revealed", [])),
+            shared_public_deck=list(d.get("shared_public_deck", [])),
+        )
+
+    def copy(self) -> "GameState":
+        """Independent clone for persona 1-ply lookahead."""
+        tiles = {
+            coord: Tile(
+                coord=tile.coord,
+                terrain=tile.terrain,
+                imperial_seat=tile.imperial_seat,
+                controller=tile.controller,
+                units=[
+                    Unit(uid=u.uid, owner=u.owner, type=u.type, hp=u.hp)
+                    for u in tile.units
+                ],
+                buildings=list(tile.buildings),
+                siege=tile.siege,
+                adj_claim=tile.adj_claim,
+                castle_suspended=tile.castle_suspended,
+            )
+            for coord, tile in self.tiles.items()
+        }
+        players = [
+            PlayerState(
+                pid=p.pid,
+                home=p.home,
+                ap=p.ap,
+                banked=p.banked,
+                gold=p.gold,
+                mana=p.mana,
+                influence=p.influence,
+                renown=p.renown,
+                vp=p.vp,
+                pop_pool=p.pop_pool,
+                passed=p.passed,
+                secret_objective=p.secret_objective,
+                secret_scored=p.secret_scored,
+                shared_scored=list(p.shared_scored),
+                public_scored_this_round=p.public_scored_this_round,
+                battle_wins=p.battle_wins,
+                used_portal_travel=p.used_portal_travel,
+                lord_captured=p.lord_captured,
+                rite_count=p.rite_count,
+                rite_bonus_scored=p.rite_bonus_scored,
+                recruited_cities=list(p.recruited_cities),
+                vp_sources=dict(p.vp_sources),
+            )
+            for p in self.players
+        ]
+        return GameState(
+            players=players,
+            tiles=tiles,
+            round=self.round,
+            final_round=self.final_round,
+            next_uid=self.next_uid,
+            shared_public_revealed=list(self.shared_public_revealed),
+            shared_public_deck=list(self.shared_public_deck),
         )

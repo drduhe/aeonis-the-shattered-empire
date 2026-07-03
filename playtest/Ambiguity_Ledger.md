@@ -10,11 +10,11 @@ canon.
 
 | ID | Question | Engine interpretation | Owning doc | Status |
 |---|---|---|---|---|
-| AL-1 | Packet §3.3 says starting Pop Cap 10, but `Population.md` grants +3 cap per City — a starting player (1 City) would exceed 10 with any base ≥ 8. What is the base cap? | Base cap 7, so 1 starting City yields exactly 10 | `Population.md` | Open |
+| AL-1 | Packet §3.3 says starting Pop Cap 10, but `Population.md` grants +3 cap per City — a starting player (1 City) would exceed 10 with any base ≥ 8. What is the base cap? | **Base cap 7** + 3 per controlled City = 10 at start with one home City | `Population.md` | **Resolved** (2026-07-03, Plan 3 MVP) |
 | AL-2 | Movement cost of Ruins hexes is undefined in `Movement.md` §2 | 1 AP (treated as easy terrain) | `Movement.md` | Open |
 | AL-3 | (Sim fidelity, not rules) Deserts placed by shuffle, not "between each pair of home clusters" | Positional flavor only in M1 | `First_Playable_Packet.md` | Sim-only |
-| AL-4 | Packet §3.3 says "Population Pool: 10 (full at start)" but starting units occupy 4 Population — is the pool 10 or 6? | Starting units consume Population: pool 6 of cap 10 | `First_Playable_Packet.md` | Open |
-| AL-5 | When are objectives claimed/scored? No timing window in packet §4.4 or `Victory.md` | Auto-scored at Cleanup & Checks, once per card | `Victory.md` | Open |
+| AL-4 | Packet §3.3 says "Population Pool: 10 (full at start)" but starting units occupy 4 Population — is the pool 10 or 6? | **Pool 6** — starting units consume Population (cap 10, 4 in units) | `First_Playable_Packet.md` §3.3 | **Resolved** (2026-07-03, Plan 3 MVP) |
+| AL-5 | When are objectives claimed/scored? No timing window in packet §4.4 or `Victory.md` | **Cleanup & Checks**; once per card per player; no claim action | `Victory.md` | **Resolved** (2026-07-03, Plan 3 MVP) |
 | AL-6 | Does building a Bridge on a neutral Lake grant control of the Lake hex? | Yes — builder controls the bridged Lake | `Tiles.md` | Open |
 | AL-7 | (Sim bound) Defender choice to Hold the Walls for Cities | M1 auto-declares Hold the Walls (strictly better: City retreat is banned anyway) | `Combat.md` | Sim-only |
 | AL-8 | What happens when Castle upkeep (2 Gold) cannot be paid? `Trade_Taxes.md`/`Buildings.md` don't say | Castle effects suspended for the round; building persists | `Buildings.md` | Open |

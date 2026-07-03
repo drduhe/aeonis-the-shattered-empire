@@ -39,5 +39,14 @@ def test_state_round_trips_through_dict():
     assert s.to_dict() == s2.to_dict()
 
 
+def test_state_copy_matches_dict_round_trip():
+    u = Unit(uid=1, owner=0, type=UnitType.CAVALRY, hp=2)
+    t = Tile(coord=(1, -1), terrain=Terrain.CITY, imperial_seat=True,
+             controller=0, units=[u], buildings=[BuildingType.CASTLE])
+    p = PlayerState(pid=0, home=(1, -1))
+    s = GameState(players=[p], tiles={(1, -1): t}, round=3)
+    assert s.copy().to_dict() == s.to_dict()
+
+
 def test_derived_pop_and_constants():
     assert POP_BASE == 7 and VP_THRESHOLD == 10

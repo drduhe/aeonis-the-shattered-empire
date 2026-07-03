@@ -1,12 +1,10 @@
 """Feature extraction for persona-bot scoring (1-ply where deterministic)."""
 from __future__ import annotations
 
-from copy import deepcopy
-
 from ..engine.build import apply_build
 from ..engine.hexmap import distance, neighbors
 from ..engine.move import apply_move
-from ..engine.objectives import OBJECTIVES
+from ..engine.objectives import PUBLIC_OBJECTIVES, SECRET_OBJECTIVES
 from ..engine.recruit import apply_recruit
 from ..engine.types import (
     BUILDING_SPECS,
@@ -19,8 +17,8 @@ from ..engine.types import (
 )
 
 
-def _clone(state) -> GameState:
-    return GameState.from_dict(state.to_dict())
+def _clone(state: GameState) -> GameState:
+    return state.copy()
 
 
 def _seat_coord(state) -> tuple | None:
@@ -52,22 +50,24 @@ def evaluate_state(state, pid: int) -> dict[str, float]:
         military += st.attack_die * 0.08 + st.defense_die * 0.05 + u.hp * 0.05
 
     has_seat = any(t.imperial_seat for t in controlled)
-    obj = 0.0
-    if p.objective and not p.objective_scored:
-        try:
-            if OBJECTIVES[p.objective](state, pid):
-                obj = 1.0
-            else:
-                obj = _objective_progress(state, pid, p.objective)
-        except KeyError:
-            obj = 0.0
+    lord_on_seat = 0.0
+    if has_seat:
+        seat_tile = next(t for t in controlled if t.imperial_seat)
+        if any(u.owner == pid and u.type == UnitType.LORD for u in seat_tile.units):
+            lord_on_seat = 1.0
+
+    obj = _best_shared_objective_progress(state, pid)
+    if p.secret_objective and not p.secret_scored:
+        sec = _objective_progress(state, pid, p.secret_objective, secret=True)
+        obj = max(obj, sec)
 
     return {
         "vp": p.vp / VP_THRESHOLD,
         "vp_lead": (p.vp - max_opp_vp) / VP_THRESHOLD,
         "territory": len(controlled) / map_size,
         "seat": 1.0 if has_seat else 0.0,
-        "seat_streak": min(p.seat_streak, 3) / 3.0,
+        "seat_streak": min(p.rite_count, 3) / 3.0,
+        "rite_ready": lord_on_seat,
         "objective": obj,
         "economy": min(economy, 3.0) / 3.0,
         "military": min(military, 3.0) / 3.0,
@@ -76,7 +76,31 @@ def evaluate_state(state, pid: int) -> dict[str, float]:
     }
 
 
-def _objective_progress(state, pid: int, name: str) -> float:
+def _best_shared_objective_progress(state, pid: int) -> float:
+    best = 0.0
+    p = state.player(pid)
+    for obj_id in state.shared_public_revealed:
+        if obj_id in p.shared_scored:
+            continue
+        if PUBLIC_OBJECTIVES[obj_id](state, pid):
+            return 1.0
+        best = max(best, _objective_progress(state, pid, obj_id))
+    return best
+
+
+def _objective_progress(state, pid: int, name: str, *, secret: bool = False) -> float:
+    if secret:
+        if name == "golden_hoard":
+            return min(state.player(pid).gold, 10) / 10.0
+        if name == "mana_flood":
+            return min(state.player(pid).mana, 10) / 10.0
+        if name == "architect_of_control":
+            special = sum(
+                1 for t in state.controlled(pid)
+                if t.imperial_seat or t.terrain in (Terrain.CITY, Terrain.RUINS, Terrain.PORTAL)
+            )
+            return min(special, 2) / 2.0
+        return 0.0
     if name == "frontier_lord":
         return min(len(state.controlled(pid)), 7) / 7.0
     if name == "builder":
@@ -144,7 +168,8 @@ def _move_features(state, pid: int, choice: dict) -> dict[str, float]:
         before = min(distance(o, seat) for o in origins)
         after = distance(dest, seat)
         seat_pull = max(0.0, (before - after) * 0.25)
-    return {"expansion": expansion, "seat_pull": seat_pull}
+    return {"expansion": expansion, "seat_pull": seat_pull,
+            "rite_ready": 1.0 if (seat is not None and dest == seat) else 0.0}
 
 
 def _build_features(choice: dict) -> dict[str, float]:

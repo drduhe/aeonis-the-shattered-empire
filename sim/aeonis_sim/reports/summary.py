@@ -8,11 +8,23 @@ from pathlib import Path
 from statistics import mean, median
 
 VP_SOURCES = (
-    "imperial_seat",
-    "seat_streak_bonus",
+    "coronation_rite",
+    "coronation_milestone",
+    "imperial_seat",       # legacy records
+    "seat_streak_bonus",   # legacy records
     "objective",
     "lord_capture",
 )
+
+
+def seat_vp_from_totals(totals: dict) -> int:
+    """Coronation Rite + milestone (includes legacy Seat drip keys)."""
+    return (
+        totals.get("coronation_rite", 0)
+        + totals.get("coronation_milestone", 0)
+        + totals.get("imperial_seat", 0)
+        + totals.get("seat_streak_bonus", 0)
+    )
 
 
 def played_rounds(record: dict) -> int:
@@ -171,12 +183,12 @@ def balance_summary(records: list[dict], title: str = "Balance Summary") -> str:
         "| Source | VP | % of total | % of winner VP (avg) |",
         "| --- | ---: | ---: | ---: |",
     ])
-    for src in VP_SOURCES:
+    for src in ("coronation_rite", "coronation_milestone", "objective", "lord_capture"):
         v = totals.get(src, 0)
         lines.append(
             f"| {src} | {v} | {100 * v / all_vp:.1f}% | {100 * winner_mix.get(src, 0):.1f}% |"
         )
-    seat_streak = totals.get("imperial_seat", 0) + totals.get("seat_streak_bonus", 0)
+    seat_streak = seat_vp_from_totals(totals)
     lines.append(
         f"\n**Seat + streak combined:** {100 * seat_streak / all_vp:.1f}% of all VP"
     )

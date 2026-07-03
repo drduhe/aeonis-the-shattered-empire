@@ -80,6 +80,9 @@ class Game:
             p.banked = 0
         self._turn_idx = 0
         self._actions_taken = {p.pid: 0 for p in s.players}
+        # Plan 3 MVP: reveal shared public objective from Round 2 onward.
+        if s.round >= 2 and s.shared_public_deck:
+            s.shared_public_revealed.append(s.shared_public_deck.pop())
         # Event / Strategy / Council: no-ops in Milestone 1.
 
     def _end(self, verdict: str) -> None:
