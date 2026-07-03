@@ -12,6 +12,7 @@ def build_record(game) -> dict:
         "choices": game.choices_log,
         "verdict": game.verdict,
         "degenerate_flags": game.degenerate_flags,
+        "round_cap_finish": game.round_cap_finish,
         "rounds": s.round,
         "final_vp": {p.pid: p.vp for p in s.players},
         "vp_sources": {p.pid: p.vp_sources for p in s.players},

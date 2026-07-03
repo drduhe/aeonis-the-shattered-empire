@@ -113,6 +113,9 @@ class Battle:
     rounds: int = 0
     winner: Optional[str] = None
     def_retreated: bool = False
+    init_att_dice: int = 0
+    init_def_dice: int = 0
+    uncontested: bool = False
 
 
 def _defender_of(state, target) -> Optional[int]:
@@ -137,6 +140,60 @@ def enumerate_attacks(state, pid, *, attack_ap: int = ATTACK_AP) -> list:
     return out
 
 
+def _committed_die_total(committed, die_attr: str) -> int:
+    return sum(getattr(UNIT_STATS[u.type], die_attr) for _, u in committed)
+
+
+def snapshot_initiation(battle: Battle) -> None:
+    """Record att/def die totals at commit time for stratified combat reports."""
+    battle.init_att_dice = _committed_die_total(battle.att_committed, "attack_die")
+    battle.init_def_dice = _committed_die_total(battle.def_committed, "defense_die")
+    battle.uncontested = len(battle.def_committed) == 0
+
+
+def empty_stratified_stats() -> dict:
+    return {
+        "retreats": 0,
+        "uncontested_captures": 0,
+        "contested_gte1_battles": 0,
+        "contested_gte1_att_wins": 0,
+        "contested_gte1_def_wins": 0,
+        "contested_lt1_battles": 0,
+        "contested_lt1_att_wins": 0,
+        "contested_lt1_def_wins": 0,
+    }
+
+
+def record_battle_outcome(stats: dict, battle: Battle) -> None:
+    """Update combat_stats after a battle ends (retreat, capture, or decisive fight)."""
+    strat = stats.setdefault("stratified", empty_stratified_stats())
+    if battle.def_retreated:
+        strat["retreats"] += 1
+        return
+    if battle.winner is None:
+        return
+    stats["battles"] = stats.get("battles", 0) + 1
+    if battle.winner == "attacker":
+        stats["attacker_wins"] = stats.get("attacker_wins", 0) + 1
+    else:
+        stats["defender_wins"] = stats.get("defender_wins", 0) + 1
+    if battle.uncontested and battle.winner == "attacker":
+        strat["uncontested_captures"] += 1
+        return
+    if battle.uncontested:
+        return
+    bucket = (
+        "contested_gte1"
+        if battle.init_att_dice >= battle.init_def_dice
+        else "contested_lt1"
+    )
+    strat[f"{bucket}_battles"] += 1
+    if battle.winner == "attacker":
+        strat[f"{bucket}_att_wins"] += 1
+    else:
+        strat[f"{bucket}_def_wins"] += 1
+
+
 def start_battle(state, pid, choice) -> Battle:
     target = tuple(choice["target"])
     t = state.tiles[target]
@@ -153,6 +210,7 @@ def start_battle(state, pid, choice) -> Battle:
         _reinforce_siege(state, b)
     else:
         _full_commit(state, b)
+    snapshot_initiation(b)
     return b
 
 

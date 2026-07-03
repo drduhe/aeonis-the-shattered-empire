@@ -63,13 +63,19 @@ class Game:
         self.verdict: Optional[str] = None
         self.choices_log: list = []
         self.degenerate_flags: list = []
+        self.round_cap_finish = False
         self._actions_taken: dict = {}
         self._initiative_queue: list[int] = []
         self._battle: Optional[combat.Battle] = None
         self._battle_stage: Optional[str] = None  # "defender_retreat" | "press"
         self._round_hashes: list = []
         self._pending: Optional[DecisionPoint] = None
-        self.combat_stats = {"battles": 0, "attacker_wins": 0, "defender_wins": 0}
+        self.combat_stats = {
+            "battles": 0,
+            "attacker_wins": 0,
+            "defender_wins": 0,
+            "stratified": combat.empty_stratified_stats(),
+        }
         self.ap_spread_log: list[int] = []
         self._draft_queue: list[int] = []
         self._followup: Optional[dict] = None
@@ -83,6 +89,9 @@ class Game:
         self.council_stats = {
             "motions_proposed": 0,
             "motions_passed": 0,
+            "motions_failed": 0,
+            "votes_yes": 0,
+            "votes_no": 0,
             "influence_spent": 0,
         }
         self._round_start()
@@ -112,7 +121,10 @@ class Game:
     def _round_start(self) -> None:
         s = self.state
         if s.round > DEFAULT_ROUND_CAP:
-            self._end("timeout")
+            # Sim-only: end at printed round cap with current VP (tiebreak) instead of
+            # hanging until timeout. See sim/README.md § pacing.
+            self.round_cap_finish = True
+            self._end("completed")
             return
         d = s.to_dict()
         d.pop("round")  # only the counter differs in a true stall
@@ -396,12 +408,7 @@ class Game:
         b = self._battle
         if b.winner is not None or self._battle_stage == "done":
             combat.finish_battle(self.state, b)
-            if b.winner == "attacker":
-                self.combat_stats["attacker_wins"] += 1
-            elif b.winner == "defender":
-                self.combat_stats["defender_wins"] += 1
-            if b.winner is not None:
-                self.combat_stats["battles"] += 1
+            combat.record_battle_outcome(self.combat_stats, b)
             check_invariants(self.state)
             self._battle = None
             self._battle_stage = None
@@ -468,6 +475,10 @@ class Game:
                 "support": bool(choice.get("support")),
                 "lobby": lobby,
             })
+            if choice.get("support"):
+                self.council_stats["votes_yes"] += 1
+            else:
+                self.council_stats["votes_no"] += 1
             self._council_vote_queue.pop(0)
             if not self._council_vote_queue:
                 motion = self._council_motions[self._council_vote_motion_idx]
@@ -475,6 +486,8 @@ class Game:
                 if passed:
                     apply_motion(s, motion["motion"], motion["proposer"])
                     self.council_stats["motions_passed"] += 1
+                else:
+                    self.council_stats["motions_failed"] += 1
                 self._advance_council_vote_motion()
         elif dp.kind == "action":
             self._actions_taken[dp.pid] += 1

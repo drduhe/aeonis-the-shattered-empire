@@ -8,6 +8,7 @@ from aeonis_sim.engine.council import (
     apply_motion,
     council_votes,
     init_agenda_deck,
+    motion_vote_utility,
     reveal_agenda,
     tally_votes,
 )
@@ -63,6 +64,48 @@ def test_apply_motion_hero_grants_renown():
     before = state.player(1).renown
     apply_motion(state, "hero_of_the_realm", 1)
     assert state.player(1).renown == before + 1
+
+
+def test_motion_tie_fails():
+    state = build_initial_state({"players": 3}, random.Random(3))
+    ballots = [
+        {"pid": 0, "support": True, "lobby": 0},
+        {"pid": 1, "support": False, "lobby": 0},
+    ]
+    assert not tally_votes(state, "hero_of_the_realm", ballots)
+
+
+def test_opponent_prefers_no_on_title_motion():
+    state = build_initial_state({"players": 4}, random.Random(7))
+    util_yes = motion_vote_utility(
+        state, 1, "hero_of_the_realm", 0, support=True,
+    )
+    util_no = motion_vote_utility(
+        state, 1, "hero_of_the_realm", 0, support=False,
+    )
+    assert util_no > util_yes
+
+
+def test_council_pass_rate_below_rubber_stamp():
+    """Mixed 4p smoke — council should not pass every motion."""
+    import json
+    from pathlib import Path
+
+    from aeonis_sim.runner.tournament import _play_tournament_game
+
+    config = json.loads(
+        Path("configs/bracket-m2-smoke.json").read_text(encoding="utf-8")
+    )
+    config = {**config, "games": 20}
+    proposed = passed = 0
+    for i in range(config["games"]):
+        rec = _play_tournament_game(config, i)
+        cs = rec.get("council_stats", {})
+        proposed += cs.get("motions_proposed", 0)
+        passed += cs.get("motions_passed", 0)
+    assert proposed > 0
+    assert passed < proposed
+    assert passed / proposed < 0.98
 
 
 def test_agenda_deck_reveals_card():

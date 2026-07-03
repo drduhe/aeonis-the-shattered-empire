@@ -28,6 +28,24 @@ def _seat_coord(state) -> tuple | None:
     return None
 
 
+def _unscored_hard_objectives(state, pid: int) -> list[str]:
+    """Public row objectives that often stall sub-threshold games."""
+    p = state.player(pid)
+    out = []
+    for oid in ("warlord", "portal_mastery"):
+        if oid in state.shared_public_revealed and oid not in p.shared_scored:
+            out.append(oid)
+    return out
+
+
+def _closing_multiplier(vp: int) -> float:
+    if vp >= VP_THRESHOLD - 2:
+        return 1.6
+    if vp >= VP_THRESHOLD - 4:
+        return 1.25
+    return 1.0
+
+
 def evaluate_state(state, pid: int) -> dict[str, float]:
     """Normalized state features for the acting player."""
     p = state.player(pid)
@@ -272,6 +290,20 @@ def score_action(state, pid: int, choice: dict, dp) -> dict[str, float]:
     elif t == "strategy_secondary" and choice.get("use"):
         feats["economy_delta"] = 0.5
     feats.update(_combat_features(state, pid, choice))
+
+    p = state.player(pid)
+    close = _closing_multiplier(p.vp)
+    hard = _unscored_hard_objectives(state, pid)
+    if hard and p.vp >= VP_THRESHOLD - 4:
+        feats["objective"] = max(feats.get("objective", 0), 0.45) * close
+        if "warlord" in hard and t == "attack":
+            feats["combat"] = feats.get("combat", 0) * close + 0.35
+        if "portal_mastery" in hard and t == "move" and choice.get("portal"):
+            feats["expansion"] = feats.get("expansion", 0) + 0.9 * close
+    if p.vp >= VP_THRESHOLD - 2:
+        if t == "move":
+            feats["seat_pull"] = feats.get("seat_pull", 0) * close
+            feats["rite_ready"] = feats.get("rite_ready", 0) * close
 
     nxt = simulate_action(state, pid, choice, dp.kind)
     if nxt is not None:

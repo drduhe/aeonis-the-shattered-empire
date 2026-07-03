@@ -54,6 +54,16 @@ Configs: `configs/regression-plan1-baseline.json`, `regression-plan1-prestrike.j
 
 See `docs/reports/2026-07-03-plan1-combat-ladder.md` for calibration notes.
 
+## Pacing / verdicts (sim-only)
+
+- **`completed`** — someone reached `VP_THRESHOLD` (10) and the final round resolved, **or**
+  the printed round cap (`DEFAULT_ROUND_CAP`, 25) was hit (`round_cap_finish` in the record).
+- **`degenerate`** — `completed` but with `action_cap` or `no_vp_progress` while max VP stayed
+  below threshold (VP drought with no winner).
+- **`stalled`** — identical board state at round start (true engine loop).
+- **`no_vp_progress`** is cleared if VP resumes; late-game droughts on the way to 10 VP are
+  not flagged as degenerate at game end.
+
 Milestone 2 implementation plan: `docs/plans/2026-07-03-agent-playtest-sim-implementation-plan-m2.md`.
 
 M2 tournament configs: `configs/bracket-m2-smoke.json`, `bracket-m2-4p.json`.

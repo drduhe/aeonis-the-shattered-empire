@@ -12,6 +12,7 @@ from .summary import (
     vp_source_totals,
     win_rate_by_persona,
     winner_vp_source_mix,
+    is_mixed_tournament,
 )
 
 HYPOTHESES = {
@@ -46,6 +47,10 @@ HYPOTHESES = {
     "H8": {
         "name": "Economist viable in mixed seats (builder/gold path)",
         "kill": "Economist win rate ≥5% in mixed 7–8p brackets",
+    },
+    "H9": {
+        "name": "Diplomat win rate ≥3% in mixed 4p M2 bracket",
+        "kill": "Diplomat win rate ≥3% in mixed 4p",
     },
 }
 
@@ -150,6 +155,23 @@ def _status_h8(records: list[dict]) -> str:
     return "inconclusive"
 
 
+def _status_h9(records: list[dict]) -> str:
+    if not is_mixed_tournament(records):
+        return "inconclusive"
+    players = records[0]["config"].get("players", 0) if records else 0
+    if players != 4:
+        return "inconclusive"
+    pm = persona_parity_metrics(records)
+    if not pm:
+        return "inconclusive"
+    dip = pm.get("by_persona", {}).get("diplomat", {}).get("win_rate", 0.0)
+    if dip >= 0.03:
+        return "killed"
+    if dip < 0.01:
+        return "confirmed"
+    return "inconclusive"
+
+
 _EVALUATORS = {
     "H1": _status_h1,
     "H2": _status_h2,
@@ -159,6 +181,7 @@ _EVALUATORS = {
     "H6": _status_h6,
     "H7": _status_h7,
     "H8": _status_h8,
+    "H9": _status_h9,
 }
 
 
@@ -203,6 +226,14 @@ def evaluate_hypotheses(records: list[dict]) -> dict[str, dict]:
             detail["economist_win_rate"] = round(
                 pm.get("by_persona", {}).get("economist", {}).get("win_rate", 0.0), 3
             )
+        elif hid == "H9":
+            pm = persona_parity_metrics(records)
+            detail["diplomat_win_rate"] = round(
+                pm.get("by_persona", {}).get("diplomat", {}).get("win_rate", 0.0), 3
+            )
+            detail["mixed_4p"] = is_mixed_tournament(records) and (
+                records[0]["config"].get("players") == 4 if records else False
+            )
         out[hid] = {
             "name": meta["name"],
             "kill_criterion": meta["kill"],
@@ -213,7 +244,7 @@ def evaluate_hypotheses(records: list[dict]) -> dict[str, dict]:
 
 
 def hypotheses_markdown(results: dict[str, dict]) -> str:
-    lines = ["## Hypothesis evaluation (H1–H8)", ""]
+    lines = ["## Hypothesis evaluation (H1–H9)", ""]
     lines.append("| ID | Hypothesis | Status | Detail |")
     lines.append("| --- | --- | --- | --- |")
     for hid, r in results.items():

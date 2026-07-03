@@ -30,8 +30,16 @@ Use this when making any rules change that could ripple.
 
 - [ ] If you want the doc visible in the Codex, update `content-manifest.json`.
 
-## 5) Playtest intent
+## 5) Simulator sync (when behavior changes)
+
+- [ ] Map the change to `sim/aeonis_sim/engine/` (correct module for the system).
+- [ ] Add or update tests in `sim/tests/`; run `cd sim && python -m pytest`.
+- [ ] Regenerate golden replays if outcomes or resolution order changed (`sim/scripts/generate_golden_replays.py`).
+- [ ] Update `sim/configs/regression-*.json` and run regression checks if balance gates move.
+- [ ] Log unresolved doc gaps in `playtest/Ambiguity_Ledger.md` before encoding a guess.
+
+## 6) Playtest intent
 
 - [ ] Add a one-paragraph “why” note near the change (what problem it fixes).
-- [ ] Add 1–3 testable hypotheses for the next playtest.
+- [ ] Add 1–3 testable hypotheses for the next playtest (sim-led until human table time returns).
 

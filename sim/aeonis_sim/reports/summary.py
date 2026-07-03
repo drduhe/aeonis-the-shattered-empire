@@ -150,16 +150,101 @@ def council_metrics(records: list[dict]) -> dict:
         return {}
     proposed = sum(r.get("council_stats", {}).get("motions_proposed", 0) for r in done)
     passed = sum(r.get("council_stats", {}).get("motions_passed", 0) for r in done)
+    failed = sum(r.get("council_stats", {}).get("motions_failed", 0) for r in done)
+    votes_yes = sum(r.get("council_stats", {}).get("votes_yes", 0) for r in done)
+    votes_no = sum(r.get("council_stats", {}).get("votes_no", 0) for r in done)
     influence = sum(r.get("council_stats", {}).get("influence_spent", 0) for r in done)
     rounds = sum(played_rounds(r) for r in done) or 1
+    votes = votes_yes + votes_no
     return {
         "motions_proposed": proposed,
         "motions_passed": passed,
+        "motions_failed": failed,
         "pass_rate": passed / proposed if proposed else 0.0,
         "motions_per_round": proposed / rounds,
+        "votes_yes": votes_yes,
+        "votes_no": votes_no,
+        "yes_vote_rate": votes_yes / votes if votes else 0.0,
         "influence_spent": influence,
         "avg_influence_per_round": influence / rounds,
     }
+
+
+def is_mixed_tournament(records: list[dict]) -> bool:
+    for r in records:
+        personas = r.get("config", {}).get("personas", [])
+        if isinstance(personas, list) and len(set(personas)) > 1:
+            return True
+    return False
+
+
+def strategy_metrics(records: list[dict]) -> dict:
+    """Draft picks and primary uses from choice logs."""
+    done = _completed(records)
+    if not done:
+        return {}
+    draft: Counter = Counter()
+    primary: Counter = Counter()
+    secondary_yes = 0
+    secondary_no = 0
+    for r in done:
+        for c in r.get("choices", []):
+            t = c.get("type")
+            if t == "draft":
+                draft[c["card"]] += 1
+            elif t == "strategy_primary":
+                primary[c["card"]] += 1
+            elif t == "strategy_secondary":
+                if c.get("use"):
+                    secondary_yes += 1
+                else:
+                    secondary_no += 1
+    draft_total = sum(draft.values()) or 1
+    primary_total = sum(primary.values()) or 1
+    return {
+        "draft_picks": dict(draft),
+        "draft_rates": {k: v / draft_total for k, v in draft.items()},
+        "primary_uses": dict(primary),
+        "primary_rates": {k: v / primary_total for k, v in primary.items()},
+        "secondary_opt_in_rate": (
+            secondary_yes / (secondary_yes + secondary_no)
+            if (secondary_yes + secondary_no)
+            else 0.0
+        ),
+    }
+
+
+def format_strategy_section(records: list[dict]) -> list[str]:
+    sm = strategy_metrics(records)
+    if not sm or not sm.get("draft_picks"):
+        return []
+    lines = [
+        "",
+        "## Strategy cards (M2)",
+        "",
+        "### Draft pick rate",
+        "",
+        "| Card | Picks | % |",
+        "| --- | ---: | ---: |",
+    ]
+    draft_total = sum(sm["draft_picks"].values())
+    for card, n in sorted(sm["draft_picks"].items(), key=lambda x: -x[1]):
+        lines.append(f"| {card} | {n} | {100 * n / draft_total:.1f}% |")
+    if sm.get("primary_uses"):
+        lines.extend([
+            "",
+            "### Primary use rate (among primaries played)",
+            "",
+            "| Card | Uses | % |",
+            "| --- | ---: | ---: |",
+        ])
+        primary_total = sum(sm["primary_uses"].values())
+        for card, n in sorted(sm["primary_uses"].items(), key=lambda x: -x[1]):
+            lines.append(f"| {card} | {n} | {100 * n / primary_total:.1f}% |")
+    lines.append(
+        f"\n**Secondary opt-in rate:** {100 * sm['secondary_opt_in_rate']:.1f}%"
+    )
+    return lines
 
 
 def combat_metrics(records: list[dict]) -> dict:
@@ -173,13 +258,127 @@ def combat_metrics(records: list[dict]) -> dict:
     rounds = sum(played_rounds(r) for r in done)
     players = done[0]["config"]["players"]
     player_rounds = rounds * players
-    return {
+    out = {
         "battles": battles,
         "attacker_wins": att_wins,
         "defender_wins": def_wins,
         "attacker_win_rate": att_wins / battles if battles else 0.0,
         "battles_per_player_round": battles / player_rounds if player_rounds else 0.0,
     }
+    scm = stratified_combat_metrics(records)
+    if scm:
+        out["contested_attacker_win_rate"] = scm["contested_attacker_win_rate"]
+    return out
+
+
+_STRATIFIED_KEYS = (
+    "retreats",
+    "uncontested_captures",
+    "contested_gte1_battles",
+    "contested_gte1_att_wins",
+    "contested_gte1_def_wins",
+    "contested_lt1_battles",
+    "contested_lt1_att_wins",
+    "contested_lt1_def_wins",
+)
+
+
+def _merge_stratified(records: list[dict]) -> dict:
+    totals = {k: 0 for k in _STRATIFIED_KEYS}
+    for r in _completed(records):
+        strat = r.get("combat_stats", {}).get("stratified", {})
+        for k in _STRATIFIED_KEYS:
+            totals[k] += strat.get(k, 0)
+    return totals
+
+
+def _att_win_rate(att_wins: int, battles: int) -> float | None:
+    return att_wins / battles if battles else None
+
+
+def stratified_combat_metrics(records: list[dict]) -> dict:
+    """Contested-only attacker win rates by initiation quality (att dice vs def dice)."""
+    done = _completed(records)
+    if not done:
+        return {}
+    s = _merge_stratified(records)
+    if not any(s[k] for k in _STRATIFIED_KEYS):
+        return {}
+    gte1_b = s["contested_gte1_battles"]
+    lt1_b = s["contested_lt1_battles"]
+    contested_b = gte1_b + lt1_b
+    contested_att = s["contested_gte1_att_wins"] + s["contested_lt1_att_wins"]
+    return {
+        **s,
+        "contested_battles": contested_b,
+        "contested_att_wins": contested_att,
+        "contested_attacker_win_rate": (
+            contested_att / contested_b if contested_b else 0.0
+        ),
+        "gte1_attacker_win_rate": (
+            s["contested_gte1_att_wins"] / gte1_b if gte1_b else None
+        ),
+        "lt1_attacker_win_rate": (
+            s["contested_lt1_att_wins"] / lt1_b if lt1_b else None
+        ),
+    }
+
+
+def format_stratified_combat_section(records: list[dict]) -> list[str]:
+    """Markdown lines for stratified combat block."""
+    scm = stratified_combat_metrics(records)
+    if not scm:
+        return []
+    cm = combat_metrics(records)
+    lines = [
+        "",
+        "## Combat stratification (contested initiations)",
+        "",
+        "Initiation quality uses committed **attack dice** vs **defense dice** at "
+        "battle start. Uncontested captures (no defender units) and retreats are "
+        "tracked separately and excluded from contested win rates.",
+        "",
+        f"- All battles (legacy): {cm['battles']} · attacker wins "
+        f"{100 * cm['attacker_win_rate']:.1f}%",
+        f"- Uncontested captures: {scm['uncontested_captures']}",
+        f"- Defender retreats: {scm['retreats']}",
+        "",
+        "| Bucket | Battles | Att wins | Att win % |",
+        "| --- | ---: | ---: | ---: |",
+    ]
+
+    def row(label: str, battles: int, att: int) -> str:
+        rate = _att_win_rate(att, battles)
+        pct = f"{100 * rate:.1f}%" if rate is not None else "—"
+        return f"| {label} | {battles} | {att} | {pct} |"
+
+    lines.append(
+        row(
+            "Contested (all)",
+            scm["contested_battles"],
+            scm["contested_att_wins"],
+        )
+    )
+    lines.append(
+        row(
+            "Ratio ≥ 1.0 (att dice ≥ def dice)",
+            scm["contested_gte1_battles"],
+            scm["contested_gte1_att_wins"],
+        )
+    )
+    lines.append(
+        row(
+            "Ratio < 1.0 (att dice < def dice)",
+            scm["contested_lt1_battles"],
+            scm["contested_lt1_att_wins"],
+        )
+    )
+    lines.append(
+        f"\n**Contested attacker win rate:** "
+        f"{100 * scm['contested_attacker_win_rate']:.1f}% "
+        f"(Plan 1 human target: 55–65%)"
+    )
+    return lines
 
 
 def runaway_rate(records: list[dict], margin: int = 7) -> float:
@@ -270,9 +469,15 @@ def balance_summary(records: list[dict], title: str = "Balance Summary") -> str:
             "## Combat metrics (completed)",
             "",
             f"- Battles resolved: {cm['battles']}",
-            f"- Attacker win rate: {100 * cm['attacker_win_rate']:.1f}%",
+            f"- Attacker win rate (all): {100 * cm['attacker_win_rate']:.1f}%",
             f"- Battles per player-round: {cm['battles_per_player_round']:.3f}",
         ])
+        if "contested_attacker_win_rate" in cm:
+            lines.append(
+                f"- Contested attacker win rate: "
+                f"{100 * cm['contested_attacker_win_rate']:.1f}%"
+            )
+    lines.extend(format_stratified_combat_section(records))
     em = event_metrics(records)
     if em:
         lines.extend([
@@ -293,11 +498,15 @@ def balance_summary(records: list[dict], title: str = "Balance Summary") -> str:
             "",
             f"- Motions proposed: {cr['motions_proposed']}",
             f"- Motions passed: {cr['motions_passed']}",
+            f"- Motions failed: {cr['motions_failed']}",
             f"- Pass rate: {100 * cr['pass_rate']:.1f}%",
+            f"- Yes votes: {cr['votes_yes']} · No votes: {cr['votes_no']} "
+            f"({100 * cr['yes_vote_rate']:.1f}% yes)",
             f"- Motions per round: {cr['motions_per_round']:.2f}",
             f"- Influence spent (lobby): {cr['influence_spent']}",
             f"- Avg influence spent / round: {cr['avg_influence_per_round']:.2f}",
         ])
+    lines.extend(format_strategy_section(records))
     return "\n".join(lines) + "\n"
 
 

@@ -27,7 +27,12 @@ Use this when adding a new Lord, event, objective, strategy card, building, or t
 
 - [ ] If it requires a printed piece (card/token/tile), update `components/Components.md`.
 
-## 6) Balance sanity check
+## 6) Simulator sync
+
+- [ ] Encode mechanical effects in `sim/aeonis_sim/engine/` (Lord setup, events, objectives, etc.).
+- [ ] Run `cd sim && python -m pytest` before finishing.
+
+## 7) Balance sanity check
 
 - [ ] The content has a timing window and clear resolution order.
 - [ ] The content has counterplay or opportunity cost.

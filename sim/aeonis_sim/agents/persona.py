@@ -32,9 +32,9 @@ PERSONA_WEIGHTS: dict[str, dict[str, float]] = {
         "objective": 2.1, "next_objective": 1.9, "combat": 0.45, "pass_penalty": 0.85,
     },
     "diplomat": {
-        "vp": 1.15, "vp_lead": 0.95, "objective": 2.9, "next_objective": 2.3,
-        "economy": 1.35, "territory": 0.65, "combat": 0.3, "military": 0.5,
-        "pass_penalty": 0.8, "renown": 1.0,
+        "vp": 1.25, "vp_lead": 1.0, "objective": 3.0, "next_objective": 2.5,
+        "economy": 1.45, "territory": 0.7, "combat": 0.25, "military": 0.45,
+        "pass_penalty": 0.85, "renown": 1.15, "catch_up": 1.1,
     },
     "balanced": {
         "vp": 1.25, "vp_lead": 1.05, "territory": 0.8, "seat": 0.95, "seat_pull": 0.9,
@@ -63,6 +63,7 @@ PERSONA_FEATURE_BOOSTS: dict[str, dict[str, float]] = {
 
 
 from ..engine.strategy import STRATEGY_CARDS
+from ..engine.council import motion_vote_utility, persona_motion_adjustment
 
 
 def _score_draft_choice(state: GameState, choice: dict) -> float:
@@ -96,6 +97,48 @@ def _score_strategy_choice(state: GameState, pid: int, choice: dict) -> float:
     return 1.0
 
 
+def _score_council_vote(
+    state: GameState,
+    pid: int,
+    choice: dict,
+    context: dict,
+    persona: str,
+) -> float:
+    motion = context.get("motion", "")
+    proposer = int(context.get("proposer", pid))
+    util = motion_vote_utility(
+        state,
+        pid,
+        motion,
+        proposer,
+        support=bool(choice.get("support")),
+        lobby=int(choice.get("lobby", 0)),
+    )
+    util += persona_motion_adjustment(
+        persona, motion, support=bool(choice.get("support")),
+    )
+    return util
+
+
+def _score_council_propose(
+    state: GameState,
+    pid: int,
+    choice: dict,
+    context: dict,
+    persona: str,
+) -> float:
+    if choice["type"] == "council_pass":
+        return 0.55
+    motion = choice.get("motion", context.get("agenda", ""))
+    score = motion_vote_utility(
+        state, pid, motion, pid, support=True, lobby=0,
+    )
+    score += persona_motion_adjustment(persona, motion, support=True)
+    if persona == "diplomat":
+        score += 0.6
+    return score
+
+
 class PersonaBot:
     """Scores legal actions with persona-weighted features; deterministic tie-break."""
 
@@ -125,24 +168,28 @@ class PersonaBot:
             top = [c for s, c in scored if abs(s - best) < 1e-9]
             return self.rng.choice(top)
         if decision_point.kind == "council_propose":
-            scored = []
-            for c in decision_point.choices:
-                score = 1.5 if c["type"] == "council_propose" else 0.2
-                if self.persona == "diplomat":
-                    score += 1.0 if c["type"] == "council_propose" else 0.0
-                scored.append((score, c))
+            scored = [
+                (
+                    _score_council_propose(
+                        state, pid, c, decision_point.context, self.persona,
+                    ),
+                    c,
+                )
+                for c in decision_point.choices
+            ]
             best = max(s for s, _ in scored)
             top = [c for s, c in scored if abs(s - best) < 1e-9]
             return self.rng.choice(top)
         if decision_point.kind == "council_vote":
-            scored = []
-            for c in decision_point.choices:
-                score = 1.0 if c.get("support") else 0.3
-                if c.get("lobby", 0) > 0:
-                    score += 0.5
-                if self.persona == "diplomat":
-                    score += 0.8 if c.get("support") else 0.0
-                scored.append((score, c))
+            scored = [
+                (
+                    _score_council_vote(
+                        state, pid, c, decision_point.context, self.persona,
+                    ),
+                    c,
+                )
+                for c in decision_point.choices
+            ]
             best = max(s for s, _ in scored)
             top = [c for s, c in scored if abs(s - best) < 1e-9]
             return self.rng.choice(top)

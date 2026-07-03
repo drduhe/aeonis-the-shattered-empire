@@ -7,6 +7,7 @@ from ..agents.factory import agents_from_config, parse_persona_list
 from ..engine.game import Game
 from ..engine.observations import observe
 from ..engine.record import build_record, save_record
+from ..engine.types import VP_THRESHOLD
 
 # Degeneracy monitor: no player gains VP for this many consecutive rounds.
 NO_VP_ROUNDS_FLAG = 8
@@ -24,6 +25,8 @@ def play_game(config: dict, seed: int, agents=None) -> dict:
         vp_total = sum(p.vp for p in game.state.players)
         if vp_total > last_vp_total:
             last_vp_total, last_vp_round = vp_total, game.state.round
+            if "no_vp_progress" in game.degenerate_flags:
+                game.degenerate_flags.remove("no_vp_progress")
         elif (game.state.round - last_vp_round >= NO_VP_ROUNDS_FLAG
               and "no_vp_progress" not in game.degenerate_flags):
             game.degenerate_flags.append("no_vp_progress")
@@ -31,7 +34,19 @@ def play_game(config: dict, seed: int, agents=None) -> dict:
         game.submit(agents[dp.pid].choose(obs, dp))
     record = build_record(game)
     if record["verdict"] == "completed" and record["degenerate_flags"]:
-        record["verdict"] = "degenerate"
+        max_vp = max(int(v) for v in record["final_vp"].values())
+        if max_vp >= VP_THRESHOLD:
+            record["degenerate_flags"] = [
+                f
+                for f in record["degenerate_flags"]
+                if f not in ("no_vp_progress", "action_cap")
+            ]
+        if record.get("round_cap_finish"):
+            record["degenerate_flags"] = [
+                f for f in record["degenerate_flags"] if f != "no_vp_progress"
+            ]
+        if record["degenerate_flags"]:
+            record["verdict"] = "degenerate"
     return record
 
 

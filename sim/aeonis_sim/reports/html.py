@@ -8,9 +8,13 @@ from .summary import (
     _completed,
     _winner,
     combat_metrics,
+    council_metrics,
+    is_mixed_tournament,
     played_rounds,
     runaway_rate,
     seat_vp_from_totals,
+    stratified_combat_metrics,
+    strategy_metrics,
     verdict_breakdown,
     vp_source_totals,
     win_rate_by_persona,
@@ -132,9 +136,11 @@ def generate_html(
     blowout = 100 * runaway_rate(completed)
     winner_mix = winner_vp_source_mix(records)
     persona_games = _persona_game_stats(records)
-    mixed = _is_mixed_tournament(records)
+    mixed = is_mixed_tournament(records)
     persona_wins = win_rate_by_persona(records) if mixed else {}
     cm = combat_metrics(records)
+    cr = council_metrics(records)
+    sm = strategy_metrics(records)
     hypotheses = evaluate_hypotheses(records)
 
     h1_status = hypotheses["H1"]["status"]
@@ -190,20 +196,90 @@ not meaningful here — every winner is that persona. Completion rate and VP sha
   {persona_rows}
 </table>
 """
+    scm = stratified_combat_metrics(records)
     if cm:
+        contested_row = ""
+        if "contested_attacker_win_rate" in cm:
+            contested_row = (
+                f"<tr><td>Contested attacker win rate</td>"
+                f"<td class=\"r\">{100 * cm['contested_attacker_win_rate']:.1f}%</td>"
+                f"<td>55–65% (kill &gt;70%)</td></tr>\n"
+            )
         combat_block = f"""
 <h2>5 · Combat metrics (Plan 1)</h2>
 <table>
   <tr><th>Metric</th><th class="r">Value</th><th>Plan 1 target</th></tr>
   <tr><td>Battles resolved</td><td class="r">{cm['battles']:,}</td><td>—</td></tr>
-  <tr><td>Attacker win rate</td><td class="r">{100 * cm['attacker_win_rate']:.1f}%</td><td>55–65% (kill &gt;70%)</td></tr>
+  <tr><td>Attacker win rate (all)</td><td class="r">{100 * cm['attacker_win_rate']:.1f}%</td><td>includes uncontested</td></tr>
+  {contested_row}
   <tr><td>Battles per player-round</td><td class="r">{cm['battles_per_player_round']:.3f}</td><td>≥0.75 from r3+</td></tr>
 </table>
 """
-        hyp_heading = "6"
+        if scm:
+            def _pct(att: int, battles: int) -> str:
+                return f"{100 * att / battles:.1f}%" if battles else "—"
+
+            stratified_block = f"""
+<h2>6 · Combat stratification</h2>
+<p>Contested battles only (defender units present). Uncontested captures and retreats excluded from win rates.</p>
+<table>
+  <tr><th>Bucket</th><th class="r">Battles</th><th class="r">Att wins</th><th class="r">Att win %</th></tr>
+  <tr><td>Contested (all)</td><td class="r">{scm['contested_battles']:,}</td>
+      <td class="r">{scm['contested_att_wins']:,}</td>
+      <td class="r">{_pct(scm['contested_att_wins'], scm['contested_battles'])}</td></tr>
+  <tr><td>Ratio ≥ 1.0 (att dice ≥ def dice)</td><td class="r">{scm['contested_gte1_battles']:,}</td>
+      <td class="r">{scm['contested_gte1_att_wins']:,}</td>
+      <td class="r">{_pct(scm['contested_gte1_att_wins'], scm['contested_gte1_battles'])}</td></tr>
+  <tr><td>Ratio &lt; 1.0 (att dice &lt; def dice)</td><td class="r">{scm['contested_lt1_battles']:,}</td>
+      <td class="r">{scm['contested_lt1_att_wins']:,}</td>
+      <td class="r">{_pct(scm['contested_lt1_att_wins'], scm['contested_lt1_battles'])}</td></tr>
+  <tr><td>Uncontested captures</td><td class="r">{scm['uncontested_captures']:,}</td><td class="r">—</td><td class="r">—</td></tr>
+  <tr><td>Defender retreats</td><td class="r">{scm['retreats']:,}</td><td class="r">—</td><td class="r">—</td></tr>
+</table>
+"""
+            hyp_heading = "7"
+        else:
+            stratified_block = ""
+            hyp_heading = "6"
     else:
         combat_block = ""
+        stratified_block = ""
         hyp_heading = "5"
+
+    politics_block = ""
+    sec = int(hyp_heading)
+    if cr and cr.get("motions_proposed", 0):
+        politics_block += f"""
+<h2>{sec} · High Council (M2)</h2>
+<table>
+  <tr><th>Metric</th><th class="r">Value</th></tr>
+  <tr><td>Motions proposed</td><td class="r">{cr['motions_proposed']:,}</td></tr>
+  <tr><td>Motions passed</td><td class="r">{cr['motions_passed']:,}</td></tr>
+  <tr><td>Motions failed</td><td class="r">{cr['motions_failed']:,}</td></tr>
+  <tr><td>Pass rate</td><td class="r">{100 * cr['pass_rate']:.1f}%</td></tr>
+  <tr><td>Yes vote rate</td><td class="r">{100 * cr['yes_vote_rate']:.1f}%</td></tr>
+  <tr><td>Influence spent (lobby)</td><td class="r">{cr['influence_spent']:,}</td></tr>
+</table>
+"""
+        sec += 1
+    if sm and sm.get("draft_picks"):
+        draft_rows = ""
+        draft_total = sum(sm["draft_picks"].values())
+        for card, n in sorted(sm["draft_picks"].items(), key=lambda x: -x[1])[:8]:
+            draft_rows += (
+                f"<tr><td>{card}</td><td class=\"r\">{n}</td>"
+                f"<td class=\"r\">{100 * n / draft_total:.1f}%</td></tr>\n"
+            )
+        politics_block += f"""
+<h2>{sec} · Strategy cards (M2)</h2>
+<p>Draft pick distribution across completed games.</p>
+<table>
+  <tr><th>Card</th><th class="r">Picks</th><th class="r">%</th></tr>
+  {draft_rows}
+</table>
+"""
+        sec += 1
+    hyp_heading = str(sec)
 
     hyp_rows = ""
     for hid, h in hypotheses.items():
@@ -342,8 +418,10 @@ VP share. Persona bots shift incentives but Seat+streak remains the largest buck
 
 {persona_section}
 {combat_block}
+{stratified_block}
+{politics_block}
 
-<h2>{hyp_heading} · Hypothesis evaluation (H1–H8)</h2>
+<h2>{hyp_heading} · Hypothesis evaluation (H1–H9)</h2>
 <table>
   <tr><th>ID</th><th>Hypothesis</th><th>Status</th><th>Metrics</th></tr>
   {hyp_rows}

@@ -121,8 +121,8 @@ def tally_votes(
         return True
     if no > yes:
         return False
-    # tie: Speaker breaks toward passage (sim default)
-    return True
+    # Tie: motion fails (no Speaker auto-pass in M2 sim).
+    return False
 
 
 def apply_motion(state: GameState, motion_id: str, proposer: int) -> None:
@@ -147,3 +147,79 @@ def apply_motion(state: GameState, motion_id: str, proposer: int) -> None:
     elif motion_id == "border_arbitration":
         p.influence += 1
     # demilitarized_zone / open_borders_treaty: no-op in M2 sim
+
+
+def motion_vote_utility(
+    state: GameState,
+    pid: int,
+    motion_id: str,
+    proposer: int,
+    *,
+    support: bool,
+    lobby: int = 0,
+) -> float:
+    """Heuristic utility for a council ballot (sim-only, not canon)."""
+    if pid == proposer:
+        return 2.5 if support else 0.1
+
+    card = AGENDA_CARDS.get(motion_id)
+    kind = card.kind if card else "decree"
+    p = state.player(pid)
+
+    if not support:
+        score = 0.65
+    else:
+        score = 0.35
+
+    if motion_id == "realm_tax":
+        if support:
+            score = 1.3 if p.gold < 7 else 0.55
+        else:
+            score = 0.85 if p.influence >= 2 else 0.45
+    elif motion_id == "road_networks":
+        score = 0.95 if support else 0.55
+    elif motion_id in ("demilitarized_zone", "open_borders_treaty"):
+        score = 0.45 if support else 0.85
+    elif kind == "title" or motion_id in (
+        "imperial_annexation",
+        "border_arbitration",
+        "magister_of_mana",
+    ):
+        score = 0.2 if support else 1.05
+    elif motion_id == "hero_of_the_realm":
+        score = 0.15 if support else 1.1
+
+    if lobby > 0:
+        if support and p.influence >= lobby + 1:
+            score += 0.35
+        else:
+            score -= 2.0
+    return score
+
+
+def persona_motion_adjustment(
+    persona: str,
+    motion_id: str,
+    *,
+    support: bool,
+) -> float:
+    """Persona-specific council lean (sim-only)."""
+    adj = 0.0
+    if persona == "diplomat":
+        adj += 0.35 if support else -0.1
+        if motion_id in ("open_borders_treaty", "border_arbitration", "demilitarized_zone"):
+            adj += 0.25 if support else -0.15
+    elif persona == "warmonger":
+        if motion_id in ("demilitarized_zone", "open_borders_treaty"):
+            adj -= 0.45 if support else 0.2
+        if motion_id == "hero_of_the_realm":
+            adj += 0.2 if support else -0.1
+    elif persona == "economist":
+        if motion_id == "realm_tax":
+            adj += 0.4 if support else -0.2
+        if motion_id == "road_networks":
+            adj += 0.2 if support else 0.0
+    elif persona == "expander":
+        if motion_id == "imperial_annexation":
+            adj += 0.3 if support else -0.15
+    return adj

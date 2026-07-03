@@ -22,7 +22,7 @@ This project already has a strong “source-of-truth” set of docs in `new/`. T
 - "Imperial Seat" never "Throne of Power" • "Influence" never "IP" • "Speaking Stones" never "Palantír" • "Discovery/Ritual" never "spell" as a rules term • "Renown" not "Fame"/"Prestige".
 - Magi Guild, Iron Vanguard, Sacred Order are retired placeholders — never use them.
 
-**Propagation is mandatory.** A definition changes in exactly one owning doc, then every dependent doc updates in the same pass: affected chapters, `First_Playable_Packet.md`, `rulebook/Learn_to_Play.md` + `rulebook/Player_Aid.md`, and `content-manifest.json` for new/renamed files. Use `agents/checklists/Canon_Change_Checklist.md`.
+**Propagation is mandatory.** A definition changes in exactly one owning doc, then every dependent doc updates in the same pass: affected chapters, `First_Playable_Packet.md`, `rulebook/Learn_to_Play.md` + `rulebook/Player_Aid.md`, `content-manifest.json` for new/renamed files, and **`sim/` when behavior changes**. Use `agents/checklists/Canon_Change_Checklist.md`. See `.cursor/rules/aeonis-mechanics-sim-sync.mdc`.
 
 **Plans are not canon.** Anything in `docs/plans/` marked PROPOSED changes nothing until playtested and recorded under "Design decisions (resolved)" in `INDEX.md`.
 
