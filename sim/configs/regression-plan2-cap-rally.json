@@ -1,0 +1,36 @@
+{
+  "name": "regression-plan2-cap-rally-4p",
+  "players": 4,
+  "games": 30,
+  "seed_base": 60150,
+  "personas": ["warmonger"],
+  "matchmaking": "solo",
+  "combat": {
+    "aggressors_edge_mode": "off",
+    "pillage": false
+  },
+  "ap_economy": {
+    "ap_bonus_cap": 2,
+    "rally": true
+  },
+  "regression": {
+    "plan": 2,
+    "step": "cap_rally",
+    "gates": [
+      {"metric": "crash_rate", "label": "Crash rate", "max": 0.0},
+      {"metric": "timeout_rate", "label": "Timeout rate", "max": 0.10},
+      {"metric": "completed_rate", "label": "Completed rate", "min": 0.85},
+      {
+        "metric": "avg_ap_spread",
+        "label": "Avg round-start AP spread",
+        "min": 0.0,
+        "max": 2.5
+      },
+      {
+        "metric": "max_ap_spread",
+        "label": "Max round-start AP spread",
+        "max": 5.0
+      }
+    ]
+  }
+}

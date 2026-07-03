@@ -1,0 +1,32 @@
+{
+  "name": "regression-plan2-baseline-4p",
+  "players": 4,
+  "games": 30,
+  "seed_base": 60100,
+  "personas": ["warmonger"],
+  "matchmaking": "solo",
+  "combat": {
+    "aggressors_edge_mode": "off",
+    "pillage": false
+  },
+  "regression": {
+    "plan": 2,
+    "step": "baseline",
+    "gates": [
+      {"metric": "crash_rate", "label": "Crash rate", "max": 0.0},
+      {"metric": "timeout_rate", "label": "Timeout rate", "max": 0.10},
+      {"metric": "completed_rate", "label": "Completed rate", "min": 0.85},
+      {
+        "metric": "avg_ap_spread",
+        "label": "Avg round-start AP spread",
+        "min": 0.0,
+        "max": 2.5
+      },
+      {
+        "metric": "max_ap_spread",
+        "label": "Max round-start AP spread",
+        "max": 4.0
+      }
+    ]
+  }
+}

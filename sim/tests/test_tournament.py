@@ -41,10 +41,17 @@ def test_bracket_configs_parse():
         "bracket-plan1-step1.json",
         "bracket-plan1-step1b.json",
         "bracket-plan1-step2.json",
+        "regression-plan1-baseline.json",
+        "regression-plan1-prestrike.json",
+        "regression-plan2-baseline.json",
+        "regression-plan2-cap-rally.json",
     ):
         cfg = json.loads((root / name).read_text())
-        assert cfg["games"] >= 100
+        min_games = 30 if name.startswith("regression-") else 100
+        assert cfg["games"] >= min_games
         assert len(cfg["personas"]) >= 1
+        if name.startswith("regression-"):
+            assert cfg.get("regression", {}).get("gates")
 
 
 def test_mixed_matchmaking_varies_seats():
@@ -87,6 +94,22 @@ def test_combat_config_forwarded_in_tournament():
     assert rec["config"]["combat"]["aggressors_edge"] is True
     assert rec["config"]["combat"]["pillage"] is True
     assert rec["combat_stats"]["battles"] >= 0
+
+
+def test_ap_economy_config_forwarded_in_tournament():
+    config = {
+        "name": "economy-forward",
+        "players": 3,
+        "games": 1,
+        "seed_base": 710,
+        "personas": ["warmonger"],
+        "matchmaking": "solo",
+        "ap_economy": {"ap_bonus_cap": 2, "rally": True},
+    }
+    rec = run_tournament(config, workers=1)[0]
+    assert rec["config"]["ap_economy"]["ap_bonus_cap"] == 2
+    assert rec["config"]["ap_economy"]["rally"] is True
+    assert "avg_spread" in rec["ap_economy_stats"]
 
 
 def test_run_tournament_parallel_matches_sequential():

@@ -23,6 +23,11 @@ def build_initial_state(config: dict, rng: random.Random) -> GameState:
         state.aggressors_edge_mode = "off"
     state.pillage = bool(combat.get("pillage", False))
 
+    economy = config.get("ap_economy", {})
+    cap = economy.get("ap_bonus_cap")
+    state.ap_bonus_cap = int(cap) if cap is not None else None
+    state.rally = bool(economy.get("rally", False))
+
     public_deck = list(PUBLIC_OBJECTIVE_IDS)
     rng.shuffle(public_deck)
     state.shared_public_revealed = [public_deck.pop(), public_deck.pop()]

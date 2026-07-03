@@ -1,0 +1,39 @@
+{
+  "name": "regression-plan1-baseline-4p",
+  "players": 4,
+  "games": 30,
+  "seed_base": 60000,
+  "personas": ["warmonger"],
+  "matchmaking": "solo",
+  "combat": {
+    "aggressors_edge_mode": "off",
+    "pillage": false
+  },
+  "regression": {
+    "plan": 1,
+    "step": "baseline",
+    "gates": [
+      {"metric": "crash_rate", "label": "Crash rate", "max": 0.0},
+      {"metric": "timeout_rate", "label": "Timeout rate", "max": 0.10},
+      {"metric": "completed_rate", "label": "Completed rate", "min": 0.85},
+      {
+        "metric": "attacker_win_rate",
+        "label": "Attacker win %",
+        "min": 0.70,
+        "max": 0.95
+      },
+      {
+        "metric": "battles_per_player_round",
+        "label": "Battles / player-round",
+        "min": 0.30,
+        "max": 0.60
+      },
+      {
+        "metric": "winner_lord_capture_share",
+        "label": "Winner lord-capture VP share",
+        "min": 0.08,
+        "max": 0.25
+      }
+    ]
+  }
+}

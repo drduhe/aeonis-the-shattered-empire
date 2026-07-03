@@ -39,5 +39,22 @@ Tournament: `--config`, `--report`, `--html`, `--session-log`, `--workers` (defa
 Combat variant flags (Plan 1 ladder) live in tournament config under `"combat"`:
 `aggressors_edge_mode` (`off` | `full` | `pre_strike`), legacy `aggressors_edge`, `pillage`.
 
+Plan 2 AP economy toggles (PROPOSED) under `"ap_economy"`:
+`ap_bonus_cap` (e.g. `2`), `rally` (`true` / `false`).
+
+## Regression gates (Plan 1 / Plan 2)
+
+CI runs four 30-game Warmonger brackets with sim-calibrated metric bands
+(not human playtest targets). Local:
+
+    cd sim && python scripts/regression_check.py --config configs/regression-plan1-baseline.json
+
+Configs: `configs/regression-plan1-baseline.json`, `regression-plan1-prestrike.json`,
+`regression-plan2-baseline.json`, `regression-plan2-cap-rally.json`.
+
+See `docs/reports/2026-07-03-plan1-combat-ladder.md` for calibration notes.
+
+Milestone 2 implementation plan: `docs/plans/2026-07-03-agent-playtest-sim-implementation-plan-m2.md`.
+
 Rules questions found while encoding the docs live in
 `playtest/Ambiguity_Ledger.md`.

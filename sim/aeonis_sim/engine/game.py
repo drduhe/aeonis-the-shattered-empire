@@ -46,9 +46,31 @@ class Game:
         self._round_hashes: list = []
         self._pending: Optional[DecisionPoint] = None
         self.combat_stats = {"battles": 0, "attacker_wins": 0, "defender_wins": 0}
+        self.ap_spread_log: list[int] = []
         self._round_start()
 
     # ---- phases ----
+    def _ap_bonus(self, pid: int) -> int:
+        s = self.state
+        cities = sum(1 for t in s.controlled(pid) if t.terrain == Terrain.CITY)
+        guild = sum(1 for t in s.controlled(pid)
+                    if t.has(BuildingType.GUILD_HALL))
+        bonus = min(2, cities) + guild + (1 if s.player(pid).renown >= 5 else 0)
+        if s.ap_bonus_cap is not None:
+            bonus = min(bonus, s.ap_bonus_cap)
+        return bonus
+
+    def _apply_rally(self) -> None:
+        s = self.state
+        if not s.rally:
+            return
+        players = s.players
+        pid = min(
+            players,
+            key=lambda p: (p.vp, p.renown, -p.influence, p.pid),
+        ).pid
+        s.player(pid).ap += 1
+
     def _round_start(self) -> None:
         s = self.state
         if s.round > DEFAULT_ROUND_CAP:
@@ -72,13 +94,12 @@ class Game:
                 if u.type == UnitType.LORD:
                     u.hp = UNIT_STATS[UnitType.LORD].hp
         for p in s.players:
-            cities = sum(1 for t in s.controlled(p.pid)
-                         if t.terrain == Terrain.CITY)
-            guild = sum(1 for t in s.controlled(p.pid)
-                        if t.has(BuildingType.GUILD_HALL))
-            p.ap = (BASE_AP + p.banked + min(2, cities) + guild
-                    + (1 if p.renown >= 5 else 0))
+            p.ap = BASE_AP + p.banked + self._ap_bonus(p.pid)
             p.banked = 0
+        self._apply_rally()
+        self.ap_spread_log.append(
+            max(p.ap for p in s.players) - min(p.ap for p in s.players)
+        )
         self._turn_idx = 0
         self._actions_taken = {p.pid: 0 for p in s.players}
         # Plan 3 MVP: reveal shared public objective from Round 2 onward.

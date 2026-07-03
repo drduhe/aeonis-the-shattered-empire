@@ -12,6 +12,7 @@
 | 2 | [AP economy](2026-07-02-plan-ap-economy.md) | +2 AP bonus cap from all sources + Rally catch-up valve | Solo, after Plan 1 ladder |
 | 3 | [VP legibility](2026-07-02-plan-vp-legibility.md) | Shared public objectives, permanent VP, Coronation Rite, cut purchased VP | Solo + group |
 | 3b | [VP legibility MVP](2026-07-03-plan-vp-legibility-mvp.md) | First Playable slice: shared 6-card row + Rite + AL-5; sim regression gate | After AL lock; parallel Plan 1 |
+| — | [Sim M2 implementation](2026-07-03-agent-playtest-sim-implementation-plan-m2.md) | Strategy draft, initiative Action Phase, Council, Events subset | After Plan 1/2 regression CI green |
 | 4 | [High player count](2026-07-02-plan-high-player-count.md) | Council Docket (2 items/round), Whisper draw scaling, new `Map_Construction.md` | Needs 6p/8p tables |
 | 5 | [Core Lords parity](2026-07-02-plan-core-lords-parity.md) | Signature bar + 6 redesign briefs (Seraphel, Cassian, Elyndra, Vharok, Auriel, Rakhis) | Head-to-head pairs |
 | 6 | [Bookkeeping](2026-07-02-plan-bookkeeping.md) | Renown → milestone track, kill building upkeep, rewrite `Trade_Taxes.md`, player-board ledger | Hygiene parts free |
@@ -19,8 +20,8 @@
 ## Sequencing (dependency-driven)
 
 1. **Now, no gate:** Plan 6 §3.3–3.4 (Trade rewrite, player-board spec) and Plan 4 §3.3 start (`Map_Construction.md` authoring) — pure hygiene/authoring, no balance risk.
-2. **Playtest ladder A (solo):** Plan 1 baseline → Edge → Pillage. Combat frequency data unblocks everything downstream.
-3. **Playtest ladder B (solo):** Plan 2 cap + Rally, then cost variants. Run Plan 6 §3.1–3.2 (Renown/upkeep) in this ladder — same compounding loop.
+2. **Playtest ladder A (solo):** Plan 1 baseline → Edge → Pillage. Combat frequency data unblocks everything downstream. **Sim regression:** `sim/configs/regression-plan1-*.json` (CI matrix in `.github/workflows/sim.yml`).
+3. **Playtest ladder B (solo):** Plan 2 cap + Rally, then cost variants. Run Plan 6 §3.1–3.2 (Renown/upkeep) in this ladder — same compounding loop. **Sim regression:** `sim/configs/regression-plan2-*.json`.
 4. **Plan 3 sweep:** apply the VP frame once military VP frequency has stabilized (largest doc blast radius; one atomic sweep).
 5. **Plan 5 batches:** Seraphel+Cassian anytime; Elyndra+Vharok and Auriel+Rakhis after Plan 1 locks.
 6. **Plan 4 group gates:** Docket + draw scaling text lands early, but the 6-player and 8-player validation sessions are the last gate before `Production_Manifest.md` numbers freeze.

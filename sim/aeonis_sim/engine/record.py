@@ -16,6 +16,13 @@ def build_record(game) -> dict:
         "final_vp": {p.pid: p.vp for p in s.players},
         "vp_sources": {p.pid: p.vp_sources for p in s.players},
         "combat_stats": dict(game.combat_stats),
+        "ap_economy_stats": {
+            "max_spread": max(game.ap_spread_log) if game.ap_spread_log else 0,
+            "avg_spread": (
+                sum(game.ap_spread_log) / len(game.ap_spread_log)
+                if game.ap_spread_log else 0.0
+            ),
+        },
         "final_state": s.to_dict(),
     }
 

@@ -61,6 +61,8 @@ def _play_tournament_game(config: dict, game_index: int) -> dict:
     game_config = {"players": config["players"]}
     if "combat" in config:
         game_config["combat"] = dict(config["combat"])
+    if "ap_economy" in config:
+        game_config["ap_economy"] = dict(config["ap_economy"])
     game_config["personas"] = _assign_personas(config, game_index)
     seed = seed_base + game_index
     agents = agents_from_config(game_config, seed)

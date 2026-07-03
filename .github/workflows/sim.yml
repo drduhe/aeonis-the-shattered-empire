@@ -25,3 +25,26 @@ jobs:
         run: pip install -r requirements-dev.txt
       - name: Run pytest
         run: python -m pytest -q
+
+  regression:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: sim
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - configs/regression-plan1-baseline.json
+          - configs/regression-plan1-prestrike.json
+          - configs/regression-plan2-baseline.json
+          - configs/regression-plan2-cap-rally.json
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dev dependencies
+        run: pip install -r requirements-dev.txt
+      - name: Plan regression gate
+        run: python scripts/regression_check.py --config ${{ matrix.config }} --workers 4

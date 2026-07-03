@@ -257,6 +257,9 @@ class GameState:
     # aggressors_edge_mode: "off" | "full" | "pre_strike"
     aggressors_edge_mode: str = "off"
     pillage: bool = False
+    # Plan 2 AP economy (PROPOSED; toggled via config["ap_economy"]).
+    ap_bonus_cap: Optional[int] = None  # e.g. 2 = unified +2 cap
+    rally: bool = False  # +1 AP to lowest VP at Round Start (ignores cap)
 
     # --- helpers used across the engine ---
     def player(self, pid: int) -> PlayerState:
@@ -387,4 +390,6 @@ class GameState:
             shared_public_deck=list(self.shared_public_deck),
             aggressors_edge_mode=self.aggressors_edge_mode,
             pillage=self.pillage,
+            ap_bonus_cap=self.ap_bonus_cap,
+            rally=self.rally,
         )
