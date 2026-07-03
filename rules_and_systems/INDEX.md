@@ -59,6 +59,7 @@ These items were previously "red flags" and have been addressed:
 
 ## Remaining design work
 
+- **Six improvement plans (2026-07-02, PROPOSED — not canon):** combat aggression tuning, AP economy flattening, VP legibility, 6–8 player scaling (incl. a future `Map_Construction.md` chapter), core-Lords parity pass, and bookkeeping reduction. See `../docs/plans/2026-07-02-improvement-plans-index.md`. None of their changes apply until playtested and recorded under "Design decisions (resolved)" above.
 - **Lakes / water**: Core rules are defined (impassable, Bridge exception). Consider adding more water-related events or abilities.
 - **Additional Lords**: Roster is now **8 Lords** (sufficient for 8-player games). Long-term goal: a much larger roster of Lords with unique races and playstyles so that every session feels different even at the same player count. Future Lords should explore untapped design space (naval/coastal, necromancy, nomadic alliances, religious schisms, etc.) and introduce new faction mechanics that interact with existing systems in novel ways.
 - **Dynamic market** (from retired `TBD.md`): fluctuating resource values driven by events/supply. Unscheduled.

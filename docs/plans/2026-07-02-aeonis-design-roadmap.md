@@ -13,6 +13,7 @@
 - **Phase 5:** `rulebook/Learn_to_Play.md` + `rulebook/Player_Aid.md` drafts; `components/Production_Manifest.md` (manufacturing BOM).
 - **Phase 6:** `marketing/Pitch.md`, `marketing/Comps_Analysis.md`, `marketing/Campaign_Math.md`.
 - Codex manifest updated for all new docs.
+- **Design review (same day):** six focused improvement plans drafted from the post-burn-down critique — combat aggression, AP economy, VP legibility, 6–8p scaling, core-Lords parity, bookkeeping. See `2026-07-02-improvement-plans-index.md` for sequencing.
 
 ---
 
