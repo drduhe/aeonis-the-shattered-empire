@@ -50,6 +50,17 @@ from .negotiation import (
     validate_offer,
 )
 from .move import apply_move, enumerate_moves
+from .objectives import (
+    apply_secret_discard_at_cap,
+    apply_secret_keep,
+    deal_secret_draw,
+    deal_round3_secrets,
+    draw_public_to_row,
+    secret_cap_discard_choices,
+    secret_cap_keep_choices,
+    try_immediate_secrets,
+    winds_draw_choices,
+)
 from .observations import DecisionPoint
 from .production import run_production
 from .recruit import apply_recruit, enumerate_recruits
@@ -145,6 +156,9 @@ class Game:
         self._exploration_pending: Optional[dict] = None
         self._artifact_followup: Optional[dict] = None
         self._research_followup: Optional[dict] = None
+        self._objective_cap_queue: list[dict] = []
+        self._objective_draw_queue: list[int] = []
+        self._objective_followup: Optional[dict] = None
         self._round_start()
 
     # ---- phases ----
@@ -218,7 +232,14 @@ class Game:
         self._council_negotiation_queue = []
         self._negotiation_session = None
         self._trade_used = {p.pid: False for p in s.players}
+        self._objective_cap_queue = []
+        self._objective_draw_queue = []
+        self._objective_followup = None
+        if s.round == 3:
+            self._objective_cap_queue = deal_round3_secrets(s, self.rng)
         self._run_event_phase()
+        self._objective_draw_queue.extend(s.pending_winds_draws)
+        s.pending_winds_draws.clear()
         if s.round >= 2 and s.shared_public_deck:
             s.shared_public_revealed.append(s.shared_public_deck.pop())
         begin_strategy_selection(s)
@@ -549,6 +570,8 @@ class Game:
         self.building_stats["bank_conversions"] += len(
             prod_stats.get("bank_conversions", {})
         )
+        for p in self.state.players:
+            try_immediate_secrets(self.state, p.pid)
         run_cleanup(self.state)
         check_invariants(self.state)
         if self.state.final_round:
@@ -652,6 +675,47 @@ class Game:
         if session is None:
             self._close_negotiation_session(window)
 
+    def _ensure_objective_cap_followup(self) -> None:
+        if self._objective_followup is None and self._objective_cap_queue:
+            self._objective_followup = self._objective_cap_queue.pop(0)
+
+    def _objective_draw_decision(self) -> Optional[DecisionPoint]:
+        self._ensure_objective_cap_followup()
+        fu = self._objective_followup
+        if fu is not None:
+            pid = fu["pid"]
+            if fu["step"] == "keep":
+                return DecisionPoint(
+                    kind="objective_draw",
+                    phase="round_start",
+                    pid=pid,
+                    choices=secret_cap_keep_choices(fu["drawn"]),
+                    context={"step": "keep", "drawn": fu["drawn"]},
+                )
+            kept = fu["kept"]
+            p = self.state.player(pid)
+            return DecisionPoint(
+                kind="objective_draw",
+                phase="round_start",
+                pid=pid,
+                choices=secret_cap_discard_choices(list(p.secret_objectives)),
+                context={"step": "discard", "kept": kept},
+            )
+        if self._objective_draw_queue:
+            pid = self._objective_draw_queue[0]
+            return DecisionPoint(
+                kind="objective_draw",
+                phase="round_start",
+                pid=pid,
+                choices=winds_draw_choices(self.state, pid),
+                context={"source": "winds"},
+            )
+        return None
+
+    def _finish_objective_cap_step(self) -> None:
+        self._objective_followup = None
+        self._ensure_objective_cap_followup()
+
     def _strategy_draft_decision(self) -> Optional[DecisionPoint]:
         if not self._draft_queue:
             return None
@@ -667,6 +731,10 @@ class Game:
         if self.over:
             return None
         if self._pending is not None:
+            return self._pending
+        obj_dp = self._objective_draw_decision()
+        if obj_dp is not None:
+            self._pending = obj_dp
             return self._pending
         if self._research_followup is not None:
             res_dp = self._research_decision()
@@ -771,7 +839,37 @@ class Game:
         self.choices_log.append(choice)
         self._pending = None
         s = self.state
-        if dp.kind == "strategy_draft":
+        if dp.kind == "objective_draw":
+            step = dp.context.get("step")
+            if step == "keep":
+                fu = self._objective_followup
+                assert fu is not None
+                drawn = fu["drawn"]
+                if choice["type"] == "obj_keep_none":
+                    apply_secret_keep(s, dp.pid, None, drawn, self.rng)
+                    self._finish_objective_cap_step()
+                else:
+                    kept = choice["card"]
+                    nxt = apply_secret_keep(s, dp.pid, kept, drawn, self.rng)
+                    if nxt:
+                        self._objective_followup = nxt
+                    else:
+                        self._finish_objective_cap_step()
+            elif step == "discard":
+                apply_secret_discard_at_cap(
+                    s, dp.pid, dp.context["kept"], choice["card"],
+                )
+                self._finish_objective_cap_step()
+            elif dp.context.get("source") == "winds":
+                self._objective_draw_queue.pop(0)
+                if choice["type"] == "obj_draw_public":
+                    draw_public_to_row(s)
+                else:
+                    cap = deal_secret_draw(s, dp.pid, self.rng)
+                    if cap:
+                        self._objective_cap_queue.insert(0, cap)
+                        self._ensure_objective_cap_followup()
+        elif dp.kind == "strategy_draft":
             apply_draft_pick(s, dp.pid, choice["card"])
             self._draft_queue.pop(0)
             if not self._draft_queue:

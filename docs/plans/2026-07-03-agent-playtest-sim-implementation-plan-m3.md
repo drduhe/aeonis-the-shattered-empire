@@ -68,10 +68,10 @@ Ordered by dependency; each task lands with unit tests, and regenerates goldens 
 
 ### Task 5 — Secret objectives completion + objective draws
 
-- [ ] Encode packet secrets missing from sim: **Hidden Arsenal** (built Fortress + win battle on that hex — track built-by), **The Quiet Knife** (gain hex via Influence: annexation/arbitration/Influence takeover — wire M2 council motions), **Borderbreaker** (units in 3 hexes pairwise ≥3 apart, `Objectives.md` concrete rule).
-- [ ] **Round 3 second secret draw** (packet §4.4 setup; sim currently deals only 1 at setup) + secret cap 3 with draw-2-keep-1 at cap (`Objectives.md` §3.3).
-- [ ] Real objective-draw effects: `winds_of_fortune` (draw public/secret choice; currently AP-only stub), Imperial Mandate primary (draw 1 secret when not holding Seat).
-- [ ] Tests: each new secret, round-3 draw, cap behavior, draw effects.
+- [x] Encode packet secrets missing from sim: **Hidden Arsenal** (built Fortress + win battle on that hex — track built-by), **The Quiet Knife** (gain hex via Influence: annexation/arbitration/Influence takeover — wire M2 council motions), **Borderbreaker** (units in 3 hexes pairwise ≥3 apart, `Objectives.md` concrete rule).
+- [x] **Round 3 second secret draw** (packet §4.4 setup; sim currently deals only 1 at setup) + secret cap 3 with draw-2-keep-1 at cap (`Objectives.md` §3.3).
+- [x] Real objective-draw effects: `winds_of_fortune` (draw public/secret choice; currently AP-only stub), Imperial Mandate primary (draw 1 secret when not holding Seat) — **deferred to Task 7**.
+- [x] Tests: each new secret, round-3 draw, cap behavior, draw effects.
 
 ### Task 6 — Whispers (26-card deck, timing windows, Sabotage)
 

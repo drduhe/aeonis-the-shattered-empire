@@ -286,6 +286,17 @@ class PersonaBot:
             best = max(s for s, _ in scored)
             top = [c for s, c in scored if abs(s - best) < 1e-9]
             return self.rng.choice(top)
+        if decision_point.kind == "objective_draw":
+            for c in decision_point.choices:
+                if c["type"] == "obj_draw_secret":
+                    return c
+            for c in decision_point.choices:
+                if c["type"] == "obj_keep":
+                    return c
+            for c in decision_point.choices:
+                if c["type"] == "obj_discard":
+                    return c
+            return decision_point.choices[0]
         scored: list[tuple[float, dict]] = []
         for choice in decision_point.choices:
             feats = score_action(state, pid, choice, decision_point)

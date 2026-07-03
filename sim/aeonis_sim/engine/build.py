@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from .hexmap import neighbors
+from .objectives import record_fortress_built, record_influence_hex_gain
 from .arcane import (
     build_gold_cost,
     mark_build_discount_used,
@@ -67,5 +68,7 @@ def apply_build(state, pid, choice) -> None:
     p.pop_pool -= spec.pop
     mark_build_discount_used(state, pid, btype, spec.gold)
     tile.buildings.append(btype)
+    if btype == BuildingType.FORTRESS:
+        record_fortress_built(state, pid, tile.coord)
     if btype == BuildingType.BRIDGE and tile.controller is None:
         tile.controller = pid  # AL-6

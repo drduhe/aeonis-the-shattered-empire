@@ -77,7 +77,7 @@ def test_building_relic_attach():
 def test_vp_artifact_scoring_at_cleanup():
     state = build_initial_state({"players": 3}, random.Random(5))
     p = state.player(0)
-    p.secret_objective = None
+    p.secret_objectives = []
     state.shared_public_revealed = []
     p.lord_equipment.append("crown_of_aeonis")
     run_cleanup(state)

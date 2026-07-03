@@ -15,6 +15,7 @@ from dataclasses import dataclass, field
 from typing import Optional
 
 from .hexmap import neighbors
+from .objectives import record_battle_win_at
 from .production import apply_tile_production
 from .artifacts import attack_die, defense_die, maybe_transfer_shard, transfer_lord_equipment
 from .arcane import (
@@ -375,6 +376,7 @@ def finish_battle(state, battle) -> None:
         _clear_siege_committed(t)
         captor = state.player(battle.attacker)
         captor.battle_wins += 1
+        record_battle_win_at(state, battle.attacker, battle.target)
         if state.pillage:
             apply_tile_production(captor, t)
         # Occupation: move up to cap surviving committed units in (auto-pick
@@ -388,6 +390,7 @@ def finish_battle(state, battle) -> None:
         t.siege = False
         _clear_siege_committed(t)
         state.player(battle.defender).battle_wins += 1  # AL-10
+        record_battle_win_at(state, battle.defender, battle.target)
         att_lord = any(
             u.owner == battle.attacker and u.type == UnitType.LORD
             for u in t.units

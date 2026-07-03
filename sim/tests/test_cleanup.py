@@ -24,7 +24,7 @@ def test_shared_public_row_setup():
 def test_coronation_rite_requires_lord_on_seat():
     s = make_state()
     s.shared_public_revealed = []
-    s.players[0].secret_objective = None
+    s.players[0].secret_objectives = []
     seat = next(t for t in s.tiles.values() if t.imperial_seat)
     seat.controller = 0
     # Control without Lord on seat — no VP
@@ -56,7 +56,7 @@ def test_shared_objective_scored_once_per_player():
 def test_one_public_objective_per_round():
     s = make_state()
     p = s.players[0]
-    p.secret_objective = None
+    p.secret_objectives = []
     s.shared_public_revealed = ["warlord", "frontier_lord"]
     p.battle_wins = 2
     while len(s.controlled(0)) < 7:
@@ -88,10 +88,10 @@ def test_secret_objective_scored_once():
     s = make_state()
     p = s.players[0]
     s.shared_public_revealed = []  # isolate from merchant_lord public (also gold-based)
-    p.secret_objective = "golden_hoard"
+    p.secret_objectives = ["golden_hoard"]
     p.gold = 10
     run_cleanup(s)
-    assert p.vp == 2 and p.secret_scored
+    assert p.vp == 2 and "golden_hoard" in p.secrets_scored
     run_cleanup(s)
     assert p.vp == 2
 

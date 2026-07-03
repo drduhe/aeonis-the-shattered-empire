@@ -8,6 +8,9 @@ import random
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
+from .hexmap import neighbors
+from .objectives import record_influence_hex_gain
+
 if TYPE_CHECKING:
     from .types import GameState
 
@@ -130,6 +133,38 @@ def tally_votes(
     return False
 
 
+def _fortress_blocks_annex(state: "GameState", coord, pid: int) -> bool:
+    for n in neighbors(coord):
+        nt = state.tiles.get(n)
+        if nt is None or nt.controller is None or nt.controller == pid:
+            continue
+        from .types import BuildingType
+        if nt.has(BuildingType.FORTRESS):
+            return True
+    return False
+
+
+def _claim_influence_hex(state: "GameState", proposer: int) -> None:
+    """Annexation / arbitration: claim one eligible neutral adjacent to proposer territory."""
+    cands = []
+    for t in state.controlled(proposer):
+        for nb in neighbors(t.coord):
+            nt = state.tiles.get(nb)
+            if nt is None or nt.controller is not None:
+                continue
+            if any(u.owner != proposer for u in nt.units):
+                continue
+            if _fortress_blocks_annex(state, nb, proposer):
+                continue
+            cands.append(nb)
+    if not cands:
+        return
+    coord = min(cands)
+    state.tiles[coord].controller = proposer
+    state.tiles[coord].explored = True
+    record_influence_hex_gain(state, proposer, coord)
+
+
 def apply_motion(state: GameState, motion_id: str, proposer: int) -> None:
     p = state.player(proposer)
     if motion_id == "road_networks":
@@ -144,6 +179,7 @@ def apply_motion(state: GameState, motion_id: str, proposer: int) -> None:
                 pl.influence -= 1
     elif motion_id == "imperial_annexation":
         p.influence += 2
+        _claim_influence_hex(state, proposer)
     elif motion_id == "hero_of_the_realm":
         p.renown += 1
         p.influence += 1
@@ -151,6 +187,7 @@ def apply_motion(state: GameState, motion_id: str, proposer: int) -> None:
         p.mana += 2
     elif motion_id == "border_arbitration":
         p.influence += 1
+        _claim_influence_hex(state, proposer)
     # demilitarized_zone / open_borders_treaty: no-op in M2 sim
 
 

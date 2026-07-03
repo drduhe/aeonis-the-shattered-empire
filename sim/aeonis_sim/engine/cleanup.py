@@ -3,7 +3,7 @@ from __future__ import annotations
 from .hexmap import distance, neighbors
 from .arcane import apply_boundary_stones
 from .artifacts import score_artifact_vp
-from .objectives import PUBLIC_OBJECTIVES, SECRET_OBJECTIVES
+from .objectives import PUBLIC_OBJECTIVES, score_cleanup_secrets
 from .types import BuildingType, Terrain, Unit, UNIT_STATS, UnitType, VP_THRESHOLD
 
 
@@ -110,10 +110,7 @@ def _score_objectives(state, pid: int) -> None:
                 p.public_scored_this_round = True
                 break
 
-    if p.secret_objective and not p.secret_scored:
-        if SECRET_OBJECTIVES[p.secret_objective](state, pid):
-            p.add_vp(2, "objective")
-            p.secret_scored = True
+    score_cleanup_secrets(state, pid)
 
 
 def run_cleanup(state) -> None:

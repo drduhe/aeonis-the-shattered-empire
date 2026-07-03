@@ -126,6 +126,7 @@ def _resolve_populist_uprising(state: GameState) -> None:
 def _resolve_winds_of_fortune(state: GameState) -> None:
     for pid in _players_with_fewest(state, lambda s, p: s.player(p).vp):
         state.player(pid).pending_ap += 2
+        state.pending_winds_draws.append(pid)
 
 
 def _resolve_council_crisis(state: GameState) -> None:

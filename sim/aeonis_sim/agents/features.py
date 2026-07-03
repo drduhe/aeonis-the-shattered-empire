@@ -75,8 +75,8 @@ def evaluate_state(state, pid: int) -> dict[str, float]:
             lord_on_seat = 1.0
 
     obj = _best_shared_objective_progress(state, pid)
-    if p.secret_objective and not p.secret_scored:
-        sec = _objective_progress(state, pid, p.secret_objective, secret=True)
+    for sid in p.secret_objectives:
+        sec = _objective_progress(state, pid, sid, secret=True)
         obj = max(obj, sec)
 
     n_ctrl = len(controlled)
@@ -134,6 +134,22 @@ def _objective_progress(state, pid: int, name: str, *, secret: bool = False) -> 
                 if t.imperial_seat or t.terrain in (Terrain.CITY, Terrain.RUINS, Terrain.PORTAL)
             )
             return min(special, 2) / 2.0
+        if name == "hidden_arsenal":
+            p = state.player(pid)
+            built = 1.0 if p.fortress_built else 0.0
+            won = 1.0 if any(c in p.battle_wins_at for c in p.fortress_built) else 0.0
+            return (built + won) / 2.0
+        if name == "quiet_knife":
+            return 1.0 if state.player(pid).influence_hex_gains else 0.0
+        if name == "borderbreaker":
+            unit_hexes = {coord for coord, _ in state.units_of(pid)}
+            if len(unit_hexes) < 3:
+                return len(unit_hexes) / 3.0
+            from itertools import combinations
+            for trio in combinations(unit_hexes, 3):
+                if all(distance(a, b) >= 3 for a, b in combinations(trio, 2)):
+                    return 1.0
+            return 0.5
         return 0.0
     if name == "frontier_lord":
         return min(len(state.controlled(pid)), 7) / 7.0

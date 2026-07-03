@@ -11,8 +11,10 @@ _DEFAULT_PHASE = {
     "council_vote": "council",
     "negotiation": "council",
     "exploration": "action",
+    "objective_draw": "round_start",
     "artifact": "action",
     "research": "action",
+    "objective_draw": "round_start",
     "press": "combat",
     "defender_retreat": "combat",
 }

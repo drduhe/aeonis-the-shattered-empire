@@ -6,6 +6,8 @@ from .hexmap import generate_map, neighbors
 from .objectives import (
     PUBLIC_OBJECTIVE_IDS,
     SECRET_OBJECTIVE_IDS,
+    deal_secret_draw,
+    deal_round3_secrets,
 )
 from .artifacts import init_artifact_deck
 from .exploration import init_exploration_deck
@@ -38,21 +40,22 @@ def build_initial_state(config: dict, rng: random.Random) -> GameState:
     state.exploration_deck = init_exploration_deck(rng)
     state.artifact_deck = init_artifact_deck(rng)
 
+    secret_deck = list(SECRET_OBJECTIVE_IDS)
+    rng.shuffle(secret_deck)
+    state.secret_objective_deck = secret_deck
+
     public_deck = list(PUBLIC_OBJECTIVE_IDS)
     rng.shuffle(public_deck)
     state.shared_public_revealed = [public_deck.pop(), public_deck.pop()]
     state.shared_public_deck = public_deck
 
-    secret_deck: list = []
-
     for pid in range(n):
         p = PlayerState(pid=pid, home=homes[pid], ap=BASE_AP,
                         gold=2, mana=2, influence=1)
-        if not secret_deck:
-            secret_deck = list(SECRET_OBJECTIVE_IDS)
-            rng.shuffle(secret_deck)
-        p.secret_objective = secret_deck.pop()
         state.players.append(p)
+        cap = deal_secret_draw(state, pid, rng)
+        if cap:
+            raise RuntimeError("unexpected cap draw at setup")
 
         home = tiles[homes[pid]]
         for ut in (UnitType.INFANTRY, UnitType.INFANTRY, UnitType.INFANTRY,

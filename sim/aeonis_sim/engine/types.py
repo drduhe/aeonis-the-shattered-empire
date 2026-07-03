@@ -216,8 +216,11 @@ class PlayerState:
     vp: int = 0
     pop_pool: int = 0
     passed: bool = False
-    secret_objective: Optional[str] = None
-    secret_scored: bool = False
+    secret_objectives: list = field(default_factory=list)  # unscored secret ids held
+    secrets_scored: list = field(default_factory=list)     # scored secret ids
+    fortress_built: list = field(default_factory=list)     # coords where pid built Fortress
+    battle_wins_at: list = field(default_factory=list)     # hexes where pid won a battle
+    influence_hex_gains: list = field(default_factory=list)  # hexes gained via Influence council
     shared_scored: list = field(default_factory=list)   # public objective ids scored
     public_scored_this_round: bool = False
     battle_wins: int = 0
@@ -249,8 +252,11 @@ class PlayerState:
             "gold": self.gold, "mana": self.mana, "influence": self.influence,
             "renown": self.renown, "vp": self.vp, "pop_pool": self.pop_pool,
             "passed": self.passed,
-            "secret_objective": self.secret_objective,
-            "secret_scored": self.secret_scored,
+            "secret_objectives": list(self.secret_objectives),
+            "secrets_scored": list(self.secrets_scored),
+            "fortress_built": [list(c) for c in self.fortress_built],
+            "battle_wins_at": [list(c) for c in self.battle_wins_at],
+            "influence_hex_gains": [list(c) for c in self.influence_hex_gains],
             "shared_scored": list(self.shared_scored),
             "public_scored_this_round": self.public_scored_this_round,
             "battle_wins": self.battle_wins,
@@ -276,20 +282,40 @@ class PlayerState:
     @staticmethod
     def from_dict(d: dict) -> "PlayerState":
         p = PlayerState(pid=d["pid"], home=tuple(d["home"]))
-        if "secret_objective" in d:
+        if "secret_objectives" in d:
             for k in ("ap", "banked", "gold", "mana", "influence", "renown", "vp", "pop_pool",
-                      "passed", "secret_objective", "secret_scored", "public_scored_this_round",
+                      "passed", "public_scored_this_round",
                       "battle_wins", "used_portal_travel", "lord_captured",
                       "rite_count", "rite_bonus_scored"):
                 setattr(p, k, d[k])
+            p.secret_objectives = list(d.get("secret_objectives", []))
+            p.secrets_scored = list(d.get("secrets_scored", []))
+            p.fortress_built = [tuple(c) for c in d.get("fortress_built", [])]
+            p.battle_wins_at = [tuple(c) for c in d.get("battle_wins_at", [])]
+            p.influence_hex_gains = [tuple(c) for c in d.get("influence_hex_gains", [])]
+            p.shared_scored = list(d.get("shared_scored", []))
+        elif "secret_objective" in d:
+            for k in ("ap", "banked", "gold", "mana", "influence", "renown", "vp", "pop_pool",
+                      "passed", "public_scored_this_round",
+                      "battle_wins", "used_portal_travel", "lord_captured",
+                      "rite_count", "rite_bonus_scored"):
+                setattr(p, k, d[k])
+            if d.get("secret_objective"):
+                p.secret_objectives = [d["secret_objective"]]
+            if d.get("secret_scored") and p.secret_objectives:
+                p.secrets_scored = [p.secret_objectives[0]]
+                p.secret_objectives = []
             p.shared_scored = list(d.get("shared_scored", []))
         else:
             # Legacy pre-Plan-3-MVP records
             for k in ("ap", "banked", "gold", "mana", "influence", "renown", "vp", "pop_pool",
                       "passed", "battle_wins", "used_portal_travel", "lord_captured"):
                 setattr(p, k, d[k])
-            p.secret_objective = d.get("objective")
-            p.secret_scored = d.get("objective_scored", False)
+            if d.get("objective"):
+                p.secret_objectives = [d["objective"]]
+            if d.get("objective_scored") and p.secret_objectives:
+                p.secrets_scored = [p.secret_objectives[0]]
+                p.secret_objectives = []
             p.shared_scored = []
             p.public_scored_this_round = False
             p.rite_count = d.get("seat_streak", 0)
@@ -341,6 +367,9 @@ class GameState:
     exploration_discard: list = field(default_factory=list)
     artifact_sites: dict = field(default_factory=dict)  # "q,r" -> {card_id, owner}
     artifact_deck: list = field(default_factory=list)
+    secret_objective_deck: list = field(default_factory=list)
+    secret_objective_discard: list = field(default_factory=list)
+    pending_winds_draws: list = field(default_factory=list)
 
     def player(self, pid: int) -> PlayerState:
         return self.players[pid]
@@ -409,6 +438,9 @@ class GameState:
             "exploration_discard": list(self.exploration_discard),
             "artifact_sites": dict(self.artifact_sites),
             "artifact_deck": list(self.artifact_deck),
+            "secret_objective_deck": list(self.secret_objective_deck),
+            "secret_objective_discard": list(self.secret_objective_discard),
+            "pending_winds_draws": list(self.pending_winds_draws),
         }
 
     @staticmethod
@@ -440,6 +472,9 @@ class GameState:
             exploration_discard=list(d.get("exploration_discard", [])),
             artifact_sites=dict(d.get("artifact_sites", {})),
             artifact_deck=list(d.get("artifact_deck", [])),
+            secret_objective_deck=list(d.get("secret_objective_deck", [])),
+            secret_objective_discard=list(d.get("secret_objective_discard", [])),
+            pending_winds_draws=list(d.get("pending_winds_draws", [])),
         )
 
     def copy(self) -> "GameState":
@@ -480,8 +515,11 @@ class GameState:
                 vp=p.vp,
                 pop_pool=p.pop_pool,
                 passed=p.passed,
-                secret_objective=p.secret_objective,
-                secret_scored=p.secret_scored,
+                secret_objectives=list(p.secret_objectives),
+                secrets_scored=list(p.secrets_scored),
+                fortress_built=list(p.fortress_built),
+                battle_wins_at=list(p.battle_wins_at),
+                influence_hex_gains=list(p.influence_hex_gains),
                 shared_scored=list(p.shared_scored),
                 public_scored_this_round=p.public_scored_this_round,
                 battle_wins=p.battle_wins,
@@ -532,4 +570,7 @@ class GameState:
             exploration_discard=list(self.exploration_discard),
             artifact_sites=dict(self.artifact_sites),
             artifact_deck=list(self.artifact_deck),
+            secret_objective_deck=list(self.secret_objective_deck),
+            secret_objective_discard=list(self.secret_objective_discard),
+            pending_winds_draws=list(self.pending_winds_draws),
         )

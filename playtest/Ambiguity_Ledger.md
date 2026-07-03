@@ -47,3 +47,5 @@ canon.
 | AL-35 | Sigil prerequisites / Academy Specialty choice | Tier I only in FP — no sigil prereqs; Academy −1 Mana discount encoded; school specialty choice deferred | `Arcane.md` | **Resolved** (2026-07-03, M3 Task 4 sim) |
 | AL-36 | Combat rituals + Boundary Stones player choice | Auto-heuristic: spend resources when affordable; boundary claims first eligible neutral | `Arcane.md` | **Resolved** (2026-07-03, M3 Task 4 sim) |
 | AL-37 | Scrying Pool agenda peek | No-op in full-info sim | `Arcane.md` | **Resolved** (2026-07-03, M3 Task 4 sim) |
+| AL-38 | Quiet Knife — Influence bid / takeover in sim | Annexation + Border Arbitration hex claims count; contested Influence bid and Influence takeover deferred (AL-14 adjacency stays neutral) | `Objectives.md` / `Tiles.md` | **Open** (M3 Task 5 partial) |
+| AL-39 | FP 6-card secret pool vs 4p round-3 draws | Shared deck reshuffles discard when empty; with 6-card FP pool some players may not receive a round-3 secret if deck exhausts before their draw | `Objectives.md` §3.2 | **Resolved** (2026-07-03, M3 Task 5 sim) |

@@ -33,5 +33,5 @@ def test_shared_public_row_and_secrets():
     s = make_state()
     assert len(s.shared_public_revealed) == 2
     assert all(o in PUBLIC_OBJECTIVES for o in s.shared_public_revealed)
-    secrets = [p.secret_objective for p in s.players]
+    secrets = [p.secret_objectives[0] for p in s.players if p.secret_objectives]
     assert all(o in SECRET_OBJECTIVES for o in secrets)
