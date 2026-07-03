@@ -1,7 +1,7 @@
 """Phase machine (Round_Structure.md).
 
-Milestone 2 (in progress): Strategy Selection draft is live; initiative-driven
-Action Phase and Council arrive in Tasks 2–5.
+Milestone 2: Event phase, Strategy draft, High Council, initiative Action Phase,
+and strategy primaries/secondaries (subset).
 """
 from __future__ import annotations
 
@@ -12,6 +12,14 @@ from typing import Optional
 from . import combat
 from .build import apply_build, enumerate_builds
 from .cleanup import run_cleanup
+from .council import (
+    apply_motion,
+    enumerate_proposal_choices,
+    enumerate_vote_choices,
+    reveal_agenda,
+    tally_votes,
+)
+from .events import draw_event, resolve_event
 from .invariants import check_invariants
 from .move import apply_move, enumerate_moves
 from .observations import DecisionPoint
@@ -20,10 +28,20 @@ from .recruit import apply_recruit, enumerate_recruits
 from .setup import build_initial_state
 from .strategy import (
     apply_draft_pick,
+    apply_economic_boom_primary,
+    apply_resource_surge_primary,
+    apply_strategy_secondary,
     begin_strategy_selection,
     build_draft_queue,
     enumerate_draft_choices,
+    enumerate_military_maneuver_attacks,
+    enumerate_military_maneuver_moves,
+    enumerate_secondary_choices,
+    enumerate_strategy_primaries,
     finish_undrafted_bounty,
+    initiative_order,
+    pay_primary_ap,
+    secondary_eligible_players,
 )
 from .types import (BASE_AP, BuildingType, DEFAULT_ROUND_CAP, Terrain,
                     UNIT_STATS, UnitType)
@@ -45,8 +63,8 @@ class Game:
         self.verdict: Optional[str] = None
         self.choices_log: list = []
         self.degenerate_flags: list = []
-        self._turn_idx = 0
         self._actions_taken: dict = {}
+        self._initiative_queue: list[int] = []
         self._battle: Optional[combat.Battle] = None
         self._battle_stage: Optional[str] = None  # "defender_retreat" | "press"
         self._round_hashes: list = []
@@ -54,6 +72,19 @@ class Game:
         self.combat_stats = {"battles": 0, "attacker_wins": 0, "defender_wins": 0}
         self.ap_spread_log: list[int] = []
         self._draft_queue: list[int] = []
+        self._followup: Optional[dict] = None
+        self._deferred_followup: Optional[dict] = None
+        self._council_proposal_queue: list[int] = []
+        self._council_motions: list[dict] = []
+        self._council_vote_motion_idx: int = 0
+        self._council_vote_queue: list[int] = []
+        self._council_ballots: list[dict] = []
+        self.event_stats = {"resolved": 0, "by_card": {}}
+        self.council_stats = {
+            "motions_proposed": 0,
+            "motions_passed": 0,
+            "influence_spent": 0,
+        }
         self._round_start()
 
     # ---- phases ----
@@ -101,20 +132,186 @@ class Game:
                 if u.type == UnitType.LORD:
                     u.hp = UNIT_STATS[UnitType.LORD].hp
         for p in s.players:
-            p.ap = BASE_AP + p.banked + self._ap_bonus(p.pid)
+            pending = p.pending_ap
+            p.pending_ap = 0
+            p.ap = BASE_AP + p.banked + self._ap_bonus(p.pid) + pending
             p.banked = 0
         self._apply_rally()
         self.ap_spread_log.append(
             max(p.ap for p in s.players) - min(p.ap for p in s.players)
         )
-        self._turn_idx = 0
         self._actions_taken = {p.pid: 0 for p in s.players}
-        # Plan 3 MVP: reveal shared public objective from Round 2 onward.
+        self._initiative_queue = []
+        self._followup = None
+        self._deferred_followup = None
+        self._council_proposal_queue = []
+        self._council_motions = []
+        self._council_vote_motion_idx = 0
+        self._council_vote_queue = []
+        self._council_ballots = []
+        self._run_event_phase()
         if s.round >= 2 and s.shared_public_deck:
             s.shared_public_revealed.append(s.shared_public_deck.pop())
         begin_strategy_selection(s)
         self._draft_queue = build_draft_queue(s, s.speaker)
-        # Event / Council: no-ops until M2 Tasks 4–5.
+
+    def _run_event_phase(self) -> None:
+        card = draw_event(self.state, self.rng)
+        if not card:
+            return
+        resolve_event(self.state, card)
+        self.event_stats["resolved"] += 1
+        by = self.event_stats["by_card"]
+        by[card] = by.get(card, 0) + 1
+
+    def _begin_council_phase(self) -> None:
+        reveal_agenda(self.state, self.rng)
+        self._council_proposal_queue = initiative_order(self.state)
+        self._council_motions = []
+        self._council_vote_motion_idx = 0
+        self._council_vote_queue = []
+        self._council_ballots = []
+
+    def _start_council_voting(self) -> None:
+        if not self._council_motions:
+            self._begin_action_phase()
+            return
+        self._council_vote_motion_idx = 0
+        self._council_ballots = []
+        self._council_vote_queue = initiative_order(self.state)
+
+    def _advance_council_vote_motion(self) -> None:
+        self._council_vote_motion_idx += 1
+        self._council_ballots = []
+        if self._council_vote_motion_idx >= len(self._council_motions):
+            self._begin_action_phase()
+            return
+        self._council_vote_queue = initiative_order(self.state)
+
+    def _council_decision(self) -> Optional[DecisionPoint]:
+        if self._council_proposal_queue:
+            pid = self._council_proposal_queue[0]
+            return DecisionPoint(
+                kind="council_propose",
+                phase="council",
+                pid=pid,
+                choices=enumerate_proposal_choices(self.state, pid),
+                context={"agenda": self.state.agenda_revealed},
+            )
+        if (
+            self._council_motions
+            and self._council_vote_motion_idx < len(self._council_motions)
+            and self._council_vote_queue
+        ):
+            motion = self._council_motions[self._council_vote_motion_idx]
+            pid = self._council_vote_queue[0]
+            return DecisionPoint(
+                kind="council_vote",
+                phase="council",
+                pid=pid,
+                choices=enumerate_vote_choices(
+                    self.state, pid, motion["motion"],
+                ),
+                context={
+                    "motion": motion["motion"],
+                    "proposer": motion["proposer"],
+                },
+            )
+        return None
+
+    def _begin_action_phase(self) -> None:
+        """Action Phase turn order from lowest Strategy card (Strategy.md §1.4)."""
+        self._initiative_queue = initiative_order(self.state)
+        self._council_proposal_queue = []
+        self._council_motions = []
+        self._council_vote_queue = []
+
+    def _rotate_initiative(self, pid: int) -> None:
+        if self._initiative_queue and self._initiative_queue[0] == pid:
+            self._initiative_queue.append(self._initiative_queue.pop(0))
+
+    def _remove_from_initiative(self, pid: int) -> None:
+        if pid in self._initiative_queue:
+            self._initiative_queue.remove(pid)
+
+    def _start_secondary_window(self, owner_pid: int, card_id: str) -> None:
+        queue = secondary_eligible_players(self.state, owner_pid, card_id)
+        payload = {
+            "kind": "strategy_secondary",
+            "owner": owner_pid,
+            "card": card_id,
+            "queue": queue,
+        }
+        if self._battle is not None:
+            self._deferred_followup = payload
+        else:
+            self._followup = payload
+
+    def _finish_action_turn(self, pid: int) -> None:
+        self._rotate_initiative(pid)
+
+    def _followup_decision(self) -> Optional[DecisionPoint]:
+        fu = self._followup
+        if fu is None:
+            return None
+        kind = fu["kind"]
+        if kind == "mm_move":
+            pid = fu["pid"]
+            moves = enumerate_military_maneuver_moves(self.state, pid)
+            choices = moves + [{"type": "mm_skip_move", "card": fu["card"]}]
+            return DecisionPoint(
+                kind="strategy_primary",
+                phase="action",
+                pid=pid,
+                choices=choices,
+                context={"step": "mm_move", "card": fu["card"]},
+            )
+        if kind == "mm_attack":
+            pid = fu["pid"]
+            attacks = enumerate_military_maneuver_attacks(self.state, pid)
+            choices = attacks + [{"type": "mm_skip_attack", "card": fu["card"]}]
+            return DecisionPoint(
+                kind="strategy_primary",
+                phase="action",
+                pid=pid,
+                choices=choices,
+                context={"step": "mm_attack", "card": fu["card"]},
+            )
+        if kind == "strategy_secondary":
+            if not fu["queue"]:
+                owner = fu["owner"]
+                self._followup = None
+                self._finish_action_turn(owner)
+                return None
+            pid = fu["queue"][0]
+            choices = enumerate_secondary_choices(
+                self.state, pid, fu["card"], fu["owner"],
+            )
+            if not choices:
+                fu["queue"].pop(0)
+                return self._followup_decision()
+            return DecisionPoint(
+                kind="strategy_secondary",
+                phase="action",
+                pid=pid,
+                choices=choices,
+                context={"card": fu["card"], "owner": fu["owner"]},
+            )
+        return None
+
+    def _after_resource_or_boom_primary(self, pid: int, card_id: str) -> None:
+        self._start_secondary_window(pid, card_id)
+
+    def _after_military_primary_paid(self, pid: int, card_id: str) -> None:
+        moves = enumerate_military_maneuver_moves(self.state, pid)
+        if moves:
+            self._followup = {"kind": "mm_move", "pid": pid, "card": card_id}
+        else:
+            attacks = enumerate_military_maneuver_attacks(self.state, pid)
+            if attacks:
+                self._followup = {"kind": "mm_attack", "pid": pid, "card": card_id}
+            else:
+                self._start_secondary_window(pid, card_id)
 
     def _end(self, verdict: str) -> None:
         self.over = True
@@ -133,14 +330,9 @@ class Game:
 
     # ---- decision loop ----
     def _active_pid(self) -> Optional[int]:
-        s = self.state
-        n = len(s.players)
-        for i in range(n):
-            pid = (self._turn_idx + i) % n
-            if not s.players[pid].passed:
-                self._turn_idx = pid
-                return pid
-        return None
+        if not self._initiative_queue:
+            return None
+        return self._initiative_queue[0]
 
     def _action_choices(self, pid: int) -> list:
         s = self.state
@@ -149,6 +341,7 @@ class Game:
                 self.degenerate_flags.append("action_cap")
             return [{"type": "pass"}]
         out = [{"type": "pass"}]
+        out.extend(enumerate_strategy_primaries(s, pid))
         out.extend(enumerate_moves(s, pid))
         out.extend(enumerate_recruits(s, pid))
         out.extend(enumerate_builds(s, pid))
@@ -161,6 +354,7 @@ class Game:
         pid = self._draft_queue[0]
         return DecisionPoint(
             kind="strategy_draft",
+            phase="strategy",
             pid=pid,
             choices=enumerate_draft_choices(self.state),
         )
@@ -174,16 +368,28 @@ class Game:
             self._pending = self._battle_decision()
             if self._pending is not None:
                 return self._pending
+        followup_dp = self._followup_decision()
+        if followup_dp is not None:
+            self._pending = followup_dp
+            return self._pending
         draft_dp = self._strategy_draft_decision()
         if draft_dp is not None:
             self._pending = draft_dp
+            return self._pending
+        council_dp = self._council_decision()
+        if council_dp is not None:
+            self._pending = council_dp
             return self._pending
         pid = self._active_pid()
         if pid is None:
             self._advance_phases()
             return None if self.over else self.next_decision()
-        self._pending = DecisionPoint(kind="action", pid=pid,
-                                      choices=self._action_choices(pid))
+        self._pending = DecisionPoint(
+            kind="action",
+            phase="action",
+            pid=pid,
+            choices=self._action_choices(pid),
+        )
         return self._pending
 
     def _battle_decision(self) -> Optional[DecisionPoint]:
@@ -199,19 +405,30 @@ class Game:
             check_invariants(self.state)
             self._battle = None
             self._battle_stage = None
+            if self._deferred_followup is not None:
+                self._followup = self._deferred_followup
+                self._deferred_followup = None
             return None
         if self._battle_stage == "defender_retreat":
             retreats = combat.enumerate_defender_retreats(self.state, b)
             if retreats:
-                return DecisionPoint(kind="defender_retreat", pid=b.defender,
-                                     choices=retreats + [{"type": "hold"}],
-                                     context={"target": list(b.target)})
+                return DecisionPoint(
+                    kind="defender_retreat",
+                    phase="combat",
+                    pid=b.defender,
+                    choices=retreats + [{"type": "hold"}],
+                    context={"target": list(b.target)},
+                )
             self._battle_stage = "press"
         if self._battle_stage == "press":
             if b.rounds < 2 and self.state.player(b.attacker).ap >= combat.PRESS_AP:
-                return DecisionPoint(kind="press", pid=b.attacker,
-                                     choices=[{"type": "press"}, {"type": "end"}],
-                                     context={"target": list(b.target)})
+                return DecisionPoint(
+                    kind="press",
+                    phase="combat",
+                    pid=b.attacker,
+                    choices=[{"type": "press"}, {"type": "end"}],
+                    context={"target": list(b.target)},
+                )
             self._battle_stage = "done"
             return self._battle_decision()
         return None
@@ -230,6 +447,35 @@ class Game:
             self._draft_queue.pop(0)
             if not self._draft_queue:
                 finish_undrafted_bounty(s)
+                self._begin_council_phase()
+        elif dp.kind == "council_propose":
+            self._council_proposal_queue.pop(0)
+            if choice["type"] == "council_propose":
+                self._council_motions.append({
+                    "motion": choice["motion"],
+                    "proposer": dp.pid,
+                })
+                self.council_stats["motions_proposed"] += 1
+            if not self._council_proposal_queue:
+                self._start_council_voting()
+        elif dp.kind == "council_vote":
+            lobby = int(choice.get("lobby", 0))
+            if lobby:
+                s.player(dp.pid).influence -= lobby
+                self.council_stats["influence_spent"] += lobby
+            self._council_ballots.append({
+                "pid": dp.pid,
+                "support": bool(choice.get("support")),
+                "lobby": lobby,
+            })
+            self._council_vote_queue.pop(0)
+            if not self._council_vote_queue:
+                motion = self._council_motions[self._council_vote_motion_idx]
+                passed = tally_votes(s, motion["motion"], self._council_ballots)
+                if passed:
+                    apply_motion(s, motion["motion"], motion["proposer"])
+                    self.council_stats["motions_passed"] += 1
+                self._advance_council_vote_motion()
         elif dp.kind == "action":
             self._actions_taken[dp.pid] += 1
             t = choice["type"]
@@ -237,21 +483,74 @@ class Game:
                 p = s.player(dp.pid)
                 p.passed = True
                 p.banked = min(2, p.ap)  # Actions.md banking
-                self._turn_idx = (dp.pid + 1) % len(s.players)
+                self._remove_from_initiative(dp.pid)
+            elif t == "strategy_primary":
+                card = choice["card"]
+                pay_primary_ap(s, dp.pid, card)
+                if card == "resource_surge":
+                    apply_resource_surge_primary(s, dp.pid)
+                    self._after_resource_or_boom_primary(dp.pid, card)
+                elif card == "economic_boom":
+                    apply_economic_boom_primary(s, dp.pid)
+                    self._after_resource_or_boom_primary(dp.pid, card)
+                elif card == "military_maneuvers":
+                    self._after_military_primary_paid(dp.pid, card)
+                else:
+                    self._finish_action_turn(dp.pid)
             elif t == "move":
                 apply_move(s, dp.pid, choice)
-                self._turn_idx = (dp.pid + 1) % len(s.players)
+                self._finish_action_turn(dp.pid)
             elif t == "recruit":
                 apply_recruit(s, dp.pid, choice)
-                self._turn_idx = (dp.pid + 1) % len(s.players)
+                self._finish_action_turn(dp.pid)
             elif t == "build":
                 apply_build(s, dp.pid, choice)
-                self._turn_idx = (dp.pid + 1) % len(s.players)
+                self._finish_action_turn(dp.pid)
             elif t == "attack":
                 self._battle = combat.start_battle(s, dp.pid, choice)
                 combat.resolve_round(s, self._battle, self.rng)
                 self._battle_stage = "defender_retreat"
-                self._turn_idx = (dp.pid + 1) % len(s.players)
+                self._finish_action_turn(dp.pid)
+        elif dp.kind == "strategy_primary":
+            t = choice["type"]
+            pid = dp.pid
+            card = dp.context.get("card", choice.get("card"))
+            if t == "move":
+                apply_move(s, pid, choice)
+                attacks = enumerate_military_maneuver_attacks(s, pid)
+                if attacks:
+                    self._followup = {"kind": "mm_attack", "pid": pid, "card": card}
+                else:
+                    self._start_secondary_window(pid, card)
+            elif t == "attack":
+                self._battle = combat.start_battle(s, dp.pid, choice)
+                combat.resolve_round(s, self._battle, self.rng)
+                self._battle_stage = "defender_retreat"
+                self._deferred_followup = {
+                    "kind": "strategy_secondary",
+                    "owner": pid,
+                    "card": card,
+                    "queue": secondary_eligible_players(s, pid, card),
+                }
+            elif t in ("mm_skip_move", "mm_skip_attack"):
+                if t == "mm_skip_move":
+                    attacks = enumerate_military_maneuver_attacks(s, pid)
+                    if attacks:
+                        self._followup = {"kind": "mm_attack", "pid": pid, "card": card}
+                    else:
+                        self._start_secondary_window(pid, card)
+                else:
+                    self._start_secondary_window(pid, card)
+        elif dp.kind == "strategy_secondary":
+            apply_strategy_secondary(
+                s, dp.pid, choice["card"], use=choice["use"],
+            )
+            if self._followup and self._followup.get("queue"):
+                self._followup["queue"].pop(0)
+            if self._followup and not self._followup.get("queue"):
+                owner = self._followup["owner"]
+                self._followup = None
+                self._finish_action_turn(owner)
         elif dp.kind == "defender_retreat":
             if choice["type"] == "retreat":
                 combat.apply_defender_retreat(s, self._battle, choice)

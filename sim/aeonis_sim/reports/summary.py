@@ -127,6 +127,41 @@ def persona_parity_metrics(records: list[dict]) -> dict:
     }
 
 
+def event_metrics(records: list[dict]) -> dict:
+    done = _completed(records)
+    if not done:
+        return {}
+    total = sum(r.get("event_stats", {}).get("resolved", 0) for r in done)
+    by_card: dict[str, int] = Counter()
+    for r in done:
+        for card, n in r.get("event_stats", {}).get("by_card", {}).items():
+            by_card[card] += n
+    rounds = sum(played_rounds(r) for r in done) or 1
+    return {
+        "events_resolved": total,
+        "events_per_round": total / rounds,
+        "by_card": dict(by_card),
+    }
+
+
+def council_metrics(records: list[dict]) -> dict:
+    done = _completed(records)
+    if not done:
+        return {}
+    proposed = sum(r.get("council_stats", {}).get("motions_proposed", 0) for r in done)
+    passed = sum(r.get("council_stats", {}).get("motions_passed", 0) for r in done)
+    influence = sum(r.get("council_stats", {}).get("influence_spent", 0) for r in done)
+    rounds = sum(played_rounds(r) for r in done) or 1
+    return {
+        "motions_proposed": proposed,
+        "motions_passed": passed,
+        "pass_rate": passed / proposed if proposed else 0.0,
+        "motions_per_round": proposed / rounds,
+        "influence_spent": influence,
+        "avg_influence_per_round": influence / rounds,
+    }
+
+
 def combat_metrics(records: list[dict]) -> dict:
     """Aggregate Plan 1 combat stats from completed games."""
     done = _completed(records)
@@ -237,6 +272,31 @@ def balance_summary(records: list[dict], title: str = "Balance Summary") -> str:
             f"- Battles resolved: {cm['battles']}",
             f"- Attacker win rate: {100 * cm['attacker_win_rate']:.1f}%",
             f"- Battles per player-round: {cm['battles_per_player_round']:.3f}",
+        ])
+    em = event_metrics(records)
+    if em:
+        lines.extend([
+            "",
+            "## Event phase (M2)",
+            "",
+            f"- Events resolved: {em['events_resolved']}",
+            f"- Events per round: {em['events_per_round']:.2f}",
+        ])
+        top = sorted(em["by_card"].items(), key=lambda x: -x[1])[:5]
+        if top:
+            lines.append("- Top events: " + ", ".join(f"{k} ({v})" for k, v in top))
+    cr = council_metrics(records)
+    if cr:
+        lines.extend([
+            "",
+            "## High Council (M2)",
+            "",
+            f"- Motions proposed: {cr['motions_proposed']}",
+            f"- Motions passed: {cr['motions_passed']}",
+            f"- Pass rate: {100 * cr['pass_rate']:.1f}%",
+            f"- Motions per round: {cr['motions_per_round']:.2f}",
+            f"- Influence spent (lobby): {cr['influence_spent']}",
+            f"- Avg influence spent / round: {cr['avg_influence_per_round']:.2f}",
         ])
     return "\n".join(lines) + "\n"
 

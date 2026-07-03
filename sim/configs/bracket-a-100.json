@@ -1,0 +1,8 @@
+{
+  "name": "bracket-a-core-4p-100",
+  "players": 4,
+  "games": 100,
+  "seed_base": 10000,
+  "personas": ["warmonger", "economist", "expander", "diplomat", "balanced"],
+  "matchmaking": "solo"
+}

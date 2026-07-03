@@ -121,7 +121,7 @@ def main() -> None:
         title = config.get("name", "Tournament")
         body = balance_summary(records, title=title)
         body += "\n" + hypotheses_markdown(evaluate_hypotheses(records))
-        Path(args.report).write_text(body)
+        Path(args.report).write_text(body, encoding="utf-8")
         print(f"report -> {args.report}")
 
     if args.html:
@@ -135,7 +135,7 @@ def main() -> None:
             title=config.get("name", "Persona Tournament"),
             subtitle=subtitle,
         )
-        Path(args.html).write_text(html)
+        Path(args.html).write_text(html, encoding="utf-8")
         print(f"html -> {args.html}")
 
     if args.session_log:

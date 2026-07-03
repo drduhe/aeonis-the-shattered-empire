@@ -1,0 +1,8 @@
+{
+  "name": "m2-smoke-4p-mixed",
+  "players": 4,
+  "games": 100,
+  "seed_base": 70000,
+  "personas": ["warmonger", "economist", "expander", "diplomat", "balanced"],
+  "matchmaking": "mixed"
+}

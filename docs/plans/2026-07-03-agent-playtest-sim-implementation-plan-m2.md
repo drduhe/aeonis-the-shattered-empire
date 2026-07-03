@@ -77,10 +77,10 @@ tests/
 
 **Files:** modify `game.py`, `observations.py`
 
-- [ ] Replace seating-order `_active_pid` with initiative queue from `strategy.initiative_order`.
-- [ ] After a player passes, they leave the queue for this round; when empty → Production.
-- [ ] `DecisionPoint` includes `phase` field (`action`, `strategy_primary`, `council_vote`, …).
-- [ ] Tests: player with Strategy card 1 acts before card 8; passing removes player from queue.
+- [x] Replace seating-order `_active_pid` with initiative queue from `strategy.initiative_order`.
+- [x] After a player passes, they leave the queue for this round; when empty → Production.
+- [x] `DecisionPoint` includes `phase` field (`action`, `strategy_primary`, `council_vote`, …).
+- [x] Tests: player with Strategy card 1 acts before card 8; passing removes player from queue.
 
 ---
 
@@ -88,14 +88,14 @@ tests/
 
 **Files:** `strategy.py`, `actions` integration
 
-- [ ] `enumerate_strategy_actions(state, pid)` — legal primaries for held cards not yet used.
-- [ ] Implement **high-value subset** first (balance-critical):
+- [x] `enumerate_strategy_actions(state, pid)` — legal primaries for held cards not yet used.
+- [x] Implement **high-value subset** first (balance-critical):
   - Resource Surge (0 AP resources)
   - Military Maneuvers (discount move/attack)
-  - Consolidation of Power (+AP or resources — pick one canonical effect)
-- [ ] `enumerate_secondaries(state, pid, triggering_card)` after primary resolves.
-- [ ] Bot scoring: persona weights for strategy picks at draft + primary use.
-- [ ] Tests: Resource Surge grants gold/mana/influence; secondary opt-in once per card per round.
+  - Economic Boom (+5 Gold; plan "Consolidation of Power" alias)
+- [x] `enumerate_secondaries(state, pid, triggering_card)` after primary resolves.
+- [x] Bot scoring: persona weights for strategy picks at draft + primary use.
+- [x] Tests: Resource Surge grants gold/mana/influence; secondary opt-in once per card per round.
 
 **Defer to M2.1:** Arcane Ascendancy free research, Diplomatic Decree emergency council, full secondary menu.
 
@@ -105,10 +105,10 @@ tests/
 
 **Files:** `sim/aeonis_sim/engine/events.py`, modify `game.py`
 
-- [ ] First Playable global event deck (6–8 cards from `First_Playable_Packet.md` / `Events.md`).
-- [ ] At Event phase (before Strategy): reveal top card, apply effect, discard.
-- [ ] Effects as typed handlers: resource grant, unit spawn neutral, VPless tempo (AP ±1 this round).
-- [ ] Tests: event fires before strategy draft; deck cycles; no crash on empty deck.
+- [x] First Playable global event deck (6–8 cards from `First_Playable_Packet.md` / `Events.md`).
+- [x] At Event phase (before Strategy): reveal top card, apply effect, discard.
+- [x] Effects as typed handlers: resource grant, unit spawn neutral, VPless tempo (AP ±1 this round).
+- [x] Tests: event fires before strategy draft; deck cycles; no crash on empty deck.
 
 ---
 
@@ -116,14 +116,14 @@ tests/
 
 **Files:** `sim/aeonis_sim/engine/council.py`, modify `game.py`
 
-- [ ] State: `speaker: int`, `agenda_deck`, `agenda_revealed` (1–2 items/round per First Playable).
-- [ ] Procedure per `High_Council.md` §3 (simplified):
+- [x] State: `speaker: int`, `agenda_deck`, `agenda_revealed` (1–2 items/round per First Playable).
+- [x] Procedure per `High_Council.md` §3 (simplified):
   - Reveal agenda card(s).
   - Proposal window: bots auto-propose agenda item or pass.
   - Vote: base 1 + Renown tiers; optional Influence lobby (2 Influence = +1 vote).
   - Resolve passed motion (decree/law/title from card text).
-- [ ] Speaker passes clockwise at Cleanup (already in cleanup — wire token).
-- [ ] Tests: speaker rotates; motion passes with majority; failed motion discarded.
+- [x] Speaker passes clockwise at Cleanup (already in cleanup — wire token).
+- [x] Tests: speaker rotates; motion passes with majority; failed motion discarded.
 
 **M2 simplification:** Player-authored custom motions deferred; bots vote on agenda cards only. Contested adjacency Influence bids use council lobby math (replaces AL-14 sim-only neutral tie).
 

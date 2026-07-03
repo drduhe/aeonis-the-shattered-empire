@@ -47,7 +47,8 @@ def _portal_exits(state, pid, coord):
     return out
 
 
-def _paths_from(state, pid, start, max_range, max_cost, has_cavalry):
+def _paths_from(state, pid, start, max_range, max_cost, has_cavalry,
+                *, waive_terrain: bool = False):
     """Dijkstra over (hex, flank_spent). Returns dest -> (cost, hexes_entered, used_portal)."""
     best = {}
     # (cost, hexes_entered, coord, flank_spent, used_portal)
@@ -69,7 +70,7 @@ def _paths_from(state, pid, start, max_range, max_cost, has_cavalry):
         for nxt in neighbors(coord):
             if not _passable(state, pid, nxt):
                 continue
-            step = TERRAIN_COST[state.tiles[nxt].terrain]
+            step = 0 if waive_terrain else TERRAIN_COST[state.tiles[nxt].terrain]
             f2 = flanked
             if nxt in zoc:
                 if not flanked:
@@ -94,7 +95,7 @@ def _groups(tile, pid):
     return groups
 
 
-def enumerate_moves(state, pid) -> list:
+def enumerate_moves(state, pid, *, waive_terrain: bool = False) -> list:
     p = state.player(pid)
     out = []
     for tile in state.tiles.values():
@@ -103,7 +104,8 @@ def enumerate_moves(state, pid) -> list:
             max_range = min(UNIT_STATS[u.type].move for u in group)
             has_cav = any(u.type == UnitType.CAVALRY for u in group)
             for dest, (cost, _steps, portaled) in _paths_from(
-                    state, pid, tile.coord, max_range, p.ap, has_cav).items():
+                    state, pid, tile.coord, max_range, p.ap, has_cav,
+                    waive_terrain=waive_terrain).items():
                 out.append({
                     "type": "move",
                     "from": list(tile.coord),

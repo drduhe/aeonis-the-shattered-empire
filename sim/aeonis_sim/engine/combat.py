@@ -122,8 +122,8 @@ def _defender_of(state, target) -> Optional[int]:
     return t.controller
 
 
-def enumerate_attacks(state, pid) -> list:
-    if state.player(pid).ap < ATTACK_AP:
+def enumerate_attacks(state, pid, *, attack_ap: int = ATTACK_AP) -> list:
+    if state.player(pid).ap < attack_ap:
         return []
     my_hexes = {t.coord for t in state.tiles.values()
                 if any(u.owner == pid for u in t.units)}
@@ -133,7 +133,7 @@ def enumerate_attacks(state, pid) -> list:
         if d is None or d == pid:
             continue
         if any(n in my_hexes for n in neighbors(coord)):
-            out.append({"type": "attack", "target": list(coord), "cost": ATTACK_AP})
+            out.append({"type": "attack", "target": list(coord), "cost": attack_ap})
     return out
 
 

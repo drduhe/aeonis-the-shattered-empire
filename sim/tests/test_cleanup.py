@@ -23,6 +23,7 @@ def test_shared_public_row_setup():
 
 def test_coronation_rite_requires_lord_on_seat():
     s = make_state()
+    s.shared_public_revealed = []
     seat = next(t for t in s.tiles.values() if t.imperial_seat)
     seat.controller = 0
     # Control without Lord on seat — no VP

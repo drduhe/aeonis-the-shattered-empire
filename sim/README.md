@@ -56,5 +56,8 @@ See `docs/reports/2026-07-03-plan1-combat-ladder.md` for calibration notes.
 
 Milestone 2 implementation plan: `docs/plans/2026-07-03-agent-playtest-sim-implementation-plan-m2.md`.
 
+M2 tournament configs: `configs/bracket-m2-smoke.json`, `bracket-m2-4p.json`.
+Impact report: `docs/reports/2026-07-03-m2-events-council-impact.md`.
+
 Rules questions found while encoding the docs live in
 `playtest/Ambiguity_Ledger.md`.

@@ -23,6 +23,8 @@ def build_record(game) -> dict:
                 if game.ap_spread_log else 0.0
             ),
         },
+        "event_stats": dict(game.event_stats),
+        "council_stats": dict(game.council_stats),
         "final_state": s.to_dict(),
     }
 

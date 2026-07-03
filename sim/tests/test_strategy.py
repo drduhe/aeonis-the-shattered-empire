@@ -14,7 +14,7 @@ from aeonis_sim.engine.strategy import (
 )
 from aeonis_sim.engine.types import GameState, PlayerState
 
-from .conftest import advance_past_strategy_draft
+from .conftest import advance_to_action_phase, complete_strategy_draft
 
 
 def _state(players: int, *, speaker: int = 0) -> GameState:
@@ -100,7 +100,7 @@ def test_4p_players_receive_two_cards_each():
     for pid, cards in picks.items():
         assert len(cards) == 2
     dp = g.next_decision()
-    assert dp.kind == "action"
+    assert dp.kind == "council_propose"
 
 
 def test_3p_players_receive_two_cards_each():
@@ -123,3 +123,45 @@ def test_lowest_vp_drafts_first_in_game():
     g._draft_queue = build_draft_queue(g.state, g.state.speaker)
     dp = g.next_decision()
     assert dp.pid == 2
+
+
+def test_initiative_card_1_acts_before_card_8():
+    g = Game({"players": 3}, seed=1)
+    advance_to_action_phase(g)
+    g.state.player(0).held_cards = ["imperial_mandate"]
+    g.state.player(1).held_cards = ["arcane_ascendancy"]
+    g.state.player(2).held_cards = ["economic_boom"]
+    g._initiative_queue = initiative_order(g.state)
+    g._pending = None
+    dp = g.next_decision()
+    assert dp.kind == "action" and dp.pid == 1
+
+
+def test_pass_removes_player_from_initiative_queue():
+    g = Game({"players": 3}, seed=5)
+    advance_to_action_phase(g)
+    dp = g.next_decision()
+    passed = dp.pid
+    g.submit({"type": "pass"})
+    assert passed not in g._initiative_queue
+
+
+def test_non_pass_action_rotates_initiative():
+    g = Game({"players": 3}, seed=5)
+    advance_to_action_phase(g)
+    first = g._initiative_queue[0]
+    dp = g.next_decision()
+    assert dp.pid == first
+    g.submit({"type": "pass"})
+    # second player is now at head after first passed
+    dp = g.next_decision()
+    second = dp.pid
+    g.submit({"type": "pass"})
+    dp = g.next_decision()
+    third = dp.pid
+    # third takes a non-pass if available, else pass
+    if any(c["type"] != "pass" for c in dp.choices):
+        choice = next(c for c in dp.choices if c["type"] != "pass")
+        g.submit(choice)
+        assert g._initiative_queue[0] == third
+        assert g._initiative_queue[-1] == third

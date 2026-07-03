@@ -259,6 +259,18 @@ def score_action(state, pid: int, choice: dict, dp) -> dict[str, float]:
         feats.update(_build_features(state, pid, choice))
     elif t == "recruit":
         feats.update(_recruit_features(state, pid, choice))
+    elif t == "strategy_primary":
+        card = choice.get("card", "")
+        if card == "resource_surge":
+            feats["economy_delta"] = 1.2
+            feats["economy"] = feats.get("economy", 0) + 0.2
+        elif card == "economic_boom":
+            feats["economy_delta"] = 1.5
+        elif card == "military_maneuvers":
+            feats["military_delta"] = 1.0
+            feats["combat"] = feats.get("combat", 0) + 0.5
+    elif t == "strategy_secondary" and choice.get("use"):
+        feats["economy_delta"] = 0.5
     feats.update(_combat_features(state, pid, choice))
 
     nxt = simulate_action(state, pid, choice, dp.kind)

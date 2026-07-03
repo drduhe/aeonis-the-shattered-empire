@@ -197,6 +197,7 @@ class PlayerState:
     held_cards: list = field(default_factory=list)         # strategy card ids this round
     primary_used: list = field(default_factory=list)       # card ids
     secondary_used: list = field(default_factory=list)     # card ids
+    pending_ap: int = 0                                    # Event-granted AP next round
 
     def add_vp(self, n: int, source: str) -> None:
         self.vp += n
@@ -222,6 +223,7 @@ class PlayerState:
             "held_cards": list(self.held_cards),
             "primary_used": list(self.primary_used),
             "secondary_used": list(self.secondary_used),
+            "pending_ap": self.pending_ap,
         }
 
     @staticmethod
@@ -250,6 +252,7 @@ class PlayerState:
         p.held_cards = list(d.get("held_cards", []))
         p.primary_used = list(d.get("primary_used", []))
         p.secondary_used = list(d.get("secondary_used", []))
+        p.pending_ap = int(d.get("pending_ap", 0))
         return p
 
 
@@ -272,6 +275,12 @@ class GameState:
     speaker: int = 0
     strategy_pool: list = field(default_factory=list)      # undrafted card ids
     strategy_bounty: dict = field(default_factory=dict)    # card id -> accumulated gold
+    event_deck: list = field(default_factory=list)
+    event_discard: list = field(default_factory=list)
+    last_event_id: Optional[str] = None
+    agenda_deck: list = field(default_factory=list)
+    agenda_revealed: Optional[str] = None
+    active_laws: list = field(default_factory=list)
     def player(self, pid: int) -> PlayerState:
         return self.players[pid]
 
@@ -327,6 +336,12 @@ class GameState:
             "speaker": self.speaker,
             "strategy_pool": list(self.strategy_pool),
             "strategy_bounty": dict(self.strategy_bounty),
+            "event_deck": list(self.event_deck),
+            "event_discard": list(self.event_discard),
+            "last_event_id": self.last_event_id,
+            "agenda_deck": list(self.agenda_deck),
+            "agenda_revealed": self.agenda_revealed,
+            "active_laws": list(self.active_laws),
         }
 
     @staticmethod
@@ -346,6 +361,12 @@ class GameState:
             speaker=d.get("speaker", 0),
             strategy_pool=list(d.get("strategy_pool", [])),
             strategy_bounty=dict(d.get("strategy_bounty", {})),
+            event_deck=list(d.get("event_deck", [])),
+            event_discard=list(d.get("event_discard", [])),
+            last_event_id=d.get("last_event_id"),
+            agenda_deck=list(d.get("agenda_deck", [])),
+            agenda_revealed=d.get("agenda_revealed"),
+            active_laws=list(d.get("active_laws", [])),
         )
 
     def copy(self) -> "GameState":
@@ -396,6 +417,7 @@ class GameState:
                 held_cards=list(p.held_cards),
                 primary_used=list(p.primary_used),
                 secondary_used=list(p.secondary_used),
+                pending_ap=p.pending_ap,
             )
             for p in self.players
         ]
@@ -414,4 +436,10 @@ class GameState:
             speaker=self.speaker,
             strategy_pool=list(self.strategy_pool),
             strategy_bounty=dict(self.strategy_bounty),
+            event_deck=list(self.event_deck),
+            event_discard=list(self.event_discard),
+            last_event_id=self.last_event_id,
+            agenda_deck=list(self.agenda_deck),
+            agenda_revealed=self.agenda_revealed,
+            active_laws=list(self.active_laws),
         )

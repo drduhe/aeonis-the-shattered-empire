@@ -129,4 +129,7 @@ def run_cleanup(state) -> None:
         p.recruited_cities = []
         p.passed = False
         p.public_scored_this_round = False
+    n = len(state.players)
+    state.speaker = (state.speaker + 1) % n
+    state.agenda_revealed = None
     state.round += 1

@@ -68,8 +68,32 @@ from ..engine.strategy import STRATEGY_CARDS
 def _score_draft_choice(state: GameState, choice: dict) -> float:
     card = STRATEGY_CARDS[choice["card"]]
     bounty = state.strategy_bounty.get(choice["card"], 0)
-    # Prefer early initiative and accumulated bounty (sim heuristic).
-    return bounty * 10.0 + (9 - card.initiative)
+    tempo = 9 - card.initiative
+    economy = 0.0
+    if choice["card"] == "resource_surge":
+        economy = 2.5
+    elif choice["card"] == "economic_boom":
+        economy = 2.0
+    elif choice["card"] == "military_maneuvers":
+        economy = 0.5
+    return bounty * 10.0 + tempo + economy
+
+
+def _score_strategy_choice(state: GameState, pid: int, choice: dict) -> float:
+    if choice["type"] == "strategy_primary":
+        card_id = choice["card"]
+        if card_id == "resource_surge":
+            return 3.0
+        if card_id == "economic_boom":
+            return 2.5
+        if card_id == "military_maneuvers":
+            return 2.0
+        return 1.0
+    if choice["type"] == "strategy_secondary":
+        return 1.5 if choice.get("use") else 0.0
+    if choice["type"] in ("mm_skip_move", "mm_skip_attack"):
+        return 0.0
+    return 1.0
 
 
 class PersonaBot:
@@ -89,6 +113,36 @@ class PersonaBot:
             scored = [
                 (_score_draft_choice(state, c), c) for c in decision_point.choices
             ]
+            best = max(s for s, _ in scored)
+            top = [c for s, c in scored if abs(s - best) < 1e-9]
+            return self.rng.choice(top)
+        if decision_point.kind in ("strategy_primary", "strategy_secondary"):
+            scored = [
+                (_score_strategy_choice(state, pid, c), c)
+                for c in decision_point.choices
+            ]
+            best = max(s for s, _ in scored)
+            top = [c for s, c in scored if abs(s - best) < 1e-9]
+            return self.rng.choice(top)
+        if decision_point.kind == "council_propose":
+            scored = []
+            for c in decision_point.choices:
+                score = 1.5 if c["type"] == "council_propose" else 0.2
+                if self.persona == "diplomat":
+                    score += 1.0 if c["type"] == "council_propose" else 0.0
+                scored.append((score, c))
+            best = max(s for s, _ in scored)
+            top = [c for s, c in scored if abs(s - best) < 1e-9]
+            return self.rng.choice(top)
+        if decision_point.kind == "council_vote":
+            scored = []
+            for c in decision_point.choices:
+                score = 1.0 if c.get("support") else 0.3
+                if c.get("lobby", 0) > 0:
+                    score += 0.5
+                if self.persona == "diplomat":
+                    score += 0.8 if c.get("support") else 0.0
+                scored.append((score, c))
             best = max(s for s, _ in scored)
             top = [c for s, c in scored if abs(s - best) < 1e-9]
             return self.rng.choice(top)

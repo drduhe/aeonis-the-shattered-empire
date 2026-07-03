@@ -1,0 +1,8 @@
+{
+  "name": "m2-bracket-a-4p-solo",
+  "players": 4,
+  "games": 200,
+  "seed_base": 71000,
+  "personas": ["warmonger", "economist", "expander", "diplomat", "balanced"],
+  "matchmaking": "solo"
+}

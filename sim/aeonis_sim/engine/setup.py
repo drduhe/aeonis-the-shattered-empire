@@ -7,6 +7,8 @@ from .objectives import (
     PUBLIC_OBJECTIVE_IDS,
     SECRET_OBJECTIVE_IDS,
 )
+from .council import init_agenda_deck
+from .events import init_event_deck
 from .types import BASE_AP, GameState, PlayerState, Unit, UNIT_STATS, UnitType
 
 
@@ -27,6 +29,10 @@ def build_initial_state(config: dict, rng: random.Random) -> GameState:
     cap = economy.get("ap_bonus_cap")
     state.ap_bonus_cap = int(cap) if cap is not None else None
     state.rally = bool(economy.get("rally", False))
+
+    state.speaker = int(rng.randrange(n))
+    state.event_deck = init_event_deck(rng)
+    state.agenda_deck = init_agenda_deck(rng)
 
     public_deck = list(PUBLIC_OBJECTIVE_IDS)
     rng.shuffle(public_deck)

@@ -1,0 +1,149 @@
+"""High Council phase (High_Council.md / First_Playable_Packet.md §5).
+
+M2 simplification: bots propose/vote on revealed agenda cards only; custom
+motions and negotiation deferred to Task 6.
+"""
+from __future__ import annotations
+
+import random
+from dataclasses import dataclass
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from .types import GameState
+
+AGENDA_CARD_IDS: tuple[str, ...] = (
+    "road_networks",
+    "demilitarized_zone",
+    "open_borders_treaty",
+    "imperial_annexation",
+    "border_arbitration",
+    "realm_tax",
+    "hero_of_the_realm",
+    "magister_of_mana",
+)
+
+
+@dataclass(frozen=True)
+class AgendaCard:
+    id: str
+    name: str
+    kind: str  # law | decree | title
+
+
+AGENDA_CARDS: dict[str, AgendaCard] = {
+    "road_networks": AgendaCard("road_networks", "Road Networks", "law"),
+    "demilitarized_zone": AgendaCard("demilitarized_zone", "Demilitarized Zone", "decree"),
+    "open_borders_treaty": AgendaCard("open_borders_treaty", "Open Borders Treaty", "decree"),
+    "imperial_annexation": AgendaCard("imperial_annexation", "Imperial Annexation", "decree"),
+    "border_arbitration": AgendaCard("border_arbitration", "Border Arbitration", "decree"),
+    "realm_tax": AgendaCard("realm_tax", "Realm Tax", "law"),
+    "hero_of_the_realm": AgendaCard("hero_of_the_realm", "Hero of the Realm", "title"),
+    "magister_of_mana": AgendaCard("magister_of_mana", "Magister of Mana", "title"),
+}
+
+
+def init_agenda_deck(rng: random.Random) -> list[str]:
+    deck = list(AGENDA_CARD_IDS)
+    rng.shuffle(deck)
+    return deck
+
+
+def reveal_agenda(state: GameState, rng: random.Random) -> str | None:
+    if not state.agenda_deck:
+        state.agenda_deck = init_agenda_deck(rng)
+    if not state.agenda_deck:
+        return None
+    card = state.agenda_deck.pop()
+    state.agenda_revealed = card
+    return card
+
+
+def council_votes(state: GameState, pid: int) -> int:
+    p = state.player(pid)
+    votes = 1
+    if p.renown >= 5:
+        votes += 1
+    if p.renown >= 10:
+        votes += 1
+    return votes
+
+
+def enumerate_proposal_choices(state: GameState, pid: int) -> list[dict]:
+    if not state.agenda_revealed:
+        return [{"type": "council_pass"}]
+    return [
+        {"type": "council_pass"},
+        {
+            "type": "council_propose",
+            "motion": state.agenda_revealed,
+        },
+    ]
+
+
+def enumerate_vote_choices(state: GameState, pid: int, motion_id: str) -> list[dict]:
+    p = state.player(pid)
+    choices = [
+        {"type": "council_vote", "motion": motion_id, "support": False, "lobby": 0},
+        {"type": "council_vote", "motion": motion_id, "support": True, "lobby": 0},
+    ]
+    if p.influence >= 2:
+        choices.append({
+            "type": "council_vote",
+            "motion": motion_id,
+            "support": True,
+            "lobby": 2,
+        })
+    if p.influence >= 4:
+        choices.append({
+            "type": "council_vote",
+            "motion": motion_id,
+            "support": True,
+            "lobby": 4,
+        })
+    return choices
+
+
+def tally_votes(
+    state: GameState,
+    motion_id: str,
+    ballots: list[dict],
+) -> bool:
+    """Majority of votes cast passes; Speaker breaks ties."""
+    yes = no = 0
+    for b in ballots:
+        if not b.get("support"):
+            no += council_votes(state, b["pid"])
+            continue
+        lobby = int(b.get("lobby", 0))
+        yes += council_votes(state, b["pid"]) + lobby // 2
+    if yes > no:
+        return True
+    if no > yes:
+        return False
+    # tie: Speaker breaks toward passage (sim default)
+    return True
+
+
+def apply_motion(state: GameState, motion_id: str, proposer: int) -> None:
+    p = state.player(proposer)
+    if motion_id == "road_networks":
+        if motion_id not in state.active_laws:
+            state.active_laws.append(motion_id)
+    elif motion_id == "realm_tax":
+        if motion_id not in state.active_laws:
+            state.active_laws.append(motion_id)
+        for pl in state.players:
+            pl.gold += 1
+            if pl.influence > 0:
+                pl.influence -= 1
+    elif motion_id == "imperial_annexation":
+        p.influence += 2
+    elif motion_id == "hero_of_the_realm":
+        p.renown += 1
+        p.influence += 1
+    elif motion_id == "magister_of_mana":
+        p.mana += 2
+    elif motion_id == "border_arbitration":
+        p.influence += 1
+    # demilitarized_zone / open_borders_treaty: no-op in M2 sim
