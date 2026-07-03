@@ -1,0 +1,172 @@
+"""Evaluate structural hypotheses H1–H6 from readiness brief."""
+from __future__ import annotations
+
+from .summary import (
+    _completed,
+    _winner,
+    played_rounds,
+    runaway_rate,
+    verdict_breakdown,
+    vp_source_totals,
+    winner_vp_source_mix,
+)
+
+HYPOTHESES = {
+    "H1": {
+        "name": "Seat+streak >50% of all VP under contest",
+        "kill": "Seat+streak <40% with strategic contest",
+    },
+    "H2": {
+        "name": "Winning margin >5 VP under strategic play",
+        "kill": "Margin <4 VP → runaway acceptable",
+    },
+    "H3": {
+        "name": "Objectives can reach ≥60% of winner VP",
+        "kill": "Winner objective share ≥60% at either count",
+    },
+    "H4": {
+        "name": "7p timeouts are pacing not map bug",
+        "kill": "Timeout rate <3% with VP-seeking bots",
+    },
+    "H5": {
+        "name": "Combat VP marginal even for Warmonger",
+        "kill": "Lord capture >10% of winner VP",
+    },
+    "H6": {
+        "name": "no_vp_progress is chaos artifact",
+        "kill": "Degenerate rate <2% with strategic bots",
+    },
+}
+
+
+def _avg_margin(records: list[dict]) -> float:
+    margins = []
+    for r in _completed(records):
+        vp = sorted((int(v) for v in r["final_vp"].values()), reverse=True)
+        if len(vp) >= 2:
+            margins.append(vp[0] - vp[1])
+    return sum(margins) / len(margins) if margins else 0.0
+
+
+def _status_h1(records: list[dict]) -> str:
+    totals = vp_source_totals(records)
+    all_vp = sum(totals.values()) or 1
+    seat = totals.get("imperial_seat", 0) + totals.get("seat_streak_bonus", 0)
+    pct = 100 * seat / all_vp
+    if pct < 40:
+        return "killed"
+    if pct > 50:
+        return "confirmed"
+    return "inconclusive"
+
+
+def _status_h2(records: list[dict]) -> str:
+    m = _avg_margin(records)
+    if m < 4:
+        return "killed"
+    if m > 5:
+        return "confirmed"
+    return "inconclusive"
+
+
+def _status_h3(records: list[dict]) -> str:
+    mix = winner_vp_source_mix(records)
+    if mix.get("objective", 0) >= 0.6:
+        return "killed"  # kill criterion met = hypothesis goal achieved
+    if mix.get("objective", 0) < 0.3:
+        return "confirmed"  # objectives still marginal
+    return "inconclusive"
+
+
+def _status_h4(records: list[dict], players: int = 7) -> str:
+    subset = [r for r in records if r["config"].get("players") == players]
+    if not subset:
+        return "inconclusive"
+    timeouts = sum(1 for r in subset if r["verdict"] == "timeout")
+    rate = timeouts / len(subset)
+    if rate < 0.03:
+        return "killed"
+    if rate > 0.08:
+        return "confirmed"
+    return "inconclusive"
+
+
+def _status_h5(records: list[dict]) -> str:
+    mix = winner_vp_source_mix(records)
+    if mix.get("lord_capture", 0) > 0.10:
+        return "killed"  # combat path viable — Plan 1 urgent
+    if mix.get("lord_capture", 0) < 0.03:
+        return "confirmed"
+    return "inconclusive"
+
+
+def _status_h6(records: list[dict]) -> str:
+    n = len(records)
+    deg = sum(1 for r in records if r["verdict"] == "degenerate")
+    rate = deg / n if n else 0
+    if rate < 0.02:
+        return "killed"
+    if rate > 0.05:
+        return "confirmed"
+    return "inconclusive"
+
+
+_EVALUATORS = {
+    "H1": _status_h1,
+    "H2": _status_h2,
+    "H3": _status_h3,
+    "H4": lambda r: _status_h4(r, 7),
+    "H5": _status_h5,
+    "H6": _status_h6,
+}
+
+
+def evaluate_hypotheses(records: list[dict]) -> dict[str, dict]:
+    completed = _completed(records)
+    out = {}
+    for hid, meta in HYPOTHESES.items():
+        status = _EVALUATORS[hid](records)
+        detail = {}
+        if hid == "H1":
+            t = vp_source_totals(completed)
+            all_vp = sum(t.values()) or 1
+            detail["seat_streak_pct"] = round(
+                100 * (t.get("imperial_seat", 0) + t.get("seat_streak_bonus", 0)) / all_vp, 1
+            )
+        elif hid == "H2":
+            detail["avg_margin"] = round(_avg_margin(completed), 2)
+            detail["runaway_rate"] = round(runaway_rate(completed), 3)
+        elif hid == "H3":
+            detail["winner_objective_share"] = round(
+                winner_vp_source_mix(completed).get("objective", 0), 3
+            )
+        elif hid == "H4":
+            p7 = [r for r in records if r["config"].get("players") == 7]
+            detail["timeout_rate_7p"] = round(
+                sum(1 for r in p7 if r["verdict"] == "timeout") / max(len(p7), 1), 3
+            )
+        elif hid == "H5":
+            detail["winner_lord_capture_share"] = round(
+                winner_vp_source_mix(completed).get("lord_capture", 0), 3
+            )
+        elif hid == "H6":
+            detail["degenerate_rate"] = round(
+                verdict_breakdown(records).get("degenerate", 0) / max(len(records), 1), 3
+            )
+        out[hid] = {
+            "name": meta["name"],
+            "kill_criterion": meta["kill"],
+            "status": status,
+            "detail": detail,
+        }
+    return out
+
+
+def hypotheses_markdown(results: dict[str, dict]) -> str:
+    lines = ["## Hypothesis evaluation (H1–H6)", ""]
+    lines.append("| ID | Hypothesis | Status | Detail |")
+    lines.append("| --- | --- | --- | --- |")
+    for hid, r in results.items():
+        detail = ", ".join(f"{k}={v}" for k, v in r["detail"].items())
+        lines.append(f"| {hid} | {r['name']} | **{r['status']}** | {detail} |")
+    return "\n".join(lines) + "\n"

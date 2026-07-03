@@ -3,7 +3,7 @@ from __future__ import annotations
 import argparse
 import json
 
-from ..agents.chaos import ChaosBot
+from ..agents.factory import agents_from_config, parse_persona_list
 from ..engine.game import Game
 from ..engine.observations import observe
 from ..engine.record import build_record, save_record
@@ -15,8 +15,7 @@ NO_VP_ROUNDS_FLAG = 8
 def play_game(config: dict, seed: int, agents=None) -> dict:
     game = Game(config, seed)
     if agents is None:
-        agents = {p.pid: ChaosBot(seed * 1000 + p.pid)
-                  for p in game.state.players}
+        agents = agents_from_config(config, seed)
     last_vp_round, last_vp_total = 1, 0
     while not game.over:
         dp = game.next_decision()
@@ -37,15 +36,30 @@ def play_game(config: dict, seed: int, agents=None) -> dict:
 
 
 def main() -> None:
-    ap = argparse.ArgumentParser(description="Run chaos-bot Aeonis games")
+    ap = argparse.ArgumentParser(description="Run Aeonis bot games")
     ap.add_argument("--players", type=int, default=4)
     ap.add_argument("--seed", type=int, default=1)
     ap.add_argument("--games", type=int, default=1)
     ap.add_argument("--out", default=None, help="JSONL path to append records")
+    ap.add_argument(
+        "--persona",
+        default=None,
+        help="Persona for all seats (warmonger|economist|expander|diplomat|balanced|chaos)",
+    )
+    ap.add_argument(
+        "--personas",
+        default=None,
+        help="Comma-separated persona per seat (overrides --persona)",
+    )
     args = ap.parse_args()
     counts = {}
     for i in range(args.games):
-        rec = play_game({"players": args.players}, seed=args.seed + i)
+        config: dict = {"players": args.players}
+        if args.personas:
+            config["personas"] = list(parse_persona_list(args.personas, args.players).values())
+        elif args.persona:
+            config["personas"] = [args.persona] * args.players
+        rec = play_game(config, seed=args.seed + i)
         counts[rec["verdict"]] = counts.get(rec["verdict"], 0) + 1
         if args.out:
             save_record(rec, args.out)
