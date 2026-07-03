@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://drduhe.github.io/aeonis-the-shattered-empire/sitemap.xml

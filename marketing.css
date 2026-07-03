@@ -1,0 +1,385 @@
+/* Marketing homepage — story-led funnel (Arcane Night) */
+
+.marketing-main {
+  padding-top: 0;
+}
+
+.opening {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  align-items: flex-end;
+  padding: 6rem 0 3.5rem;
+  background:
+    linear-gradient(to bottom, rgba(11, 16, 32, 0.35) 0%, rgba(11, 16, 32, 0.72) 55%, var(--bg2) 96%),
+    url("marketing/assets/aeonis_hero_banner.png") center 30% / cover no-repeat;
+}
+
+.opening__inner {
+  position: relative;
+  z-index: 1;
+}
+
+.opening__kicker {
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent2);
+  margin: 0 0 1rem;
+}
+
+.opening__quote {
+  font-family: var(--font-serif);
+  font-size: clamp(1.55rem, 4vw, 2.35rem);
+  font-weight: 550;
+  line-height: 1.28;
+  color: #f3ecd8;
+  max-width: 38rem;
+  margin: 0 0 0.75rem;
+}
+
+.opening__attr {
+  font-size: 0.9rem;
+  color: var(--dim);
+  margin: 0;
+}
+
+.opening__scroll {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--accent2);
+  font-size: 1.25rem;
+  opacity: 0.85;
+}
+
+.reveal {
+  text-align: center;
+  padding: 4.5rem 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(20, 29, 61, 0.65) 0%, transparent 68%);
+}
+
+.reveal__kicker {
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent2);
+  margin: 0 0 0.75rem;
+}
+
+.reveal__title {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 5vw, 2.75rem);
+  margin: 0 0 1rem;
+}
+
+.reveal__lede {
+  max-width: 40rem;
+  margin: 0 auto 1.25rem;
+  font-size: 1.05rem;
+  line-height: 1.65;
+  color: var(--muted);
+}
+
+.facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+  margin: 1.75rem 0;
+}
+
+.fact {
+  border: 1px solid var(--stroke);
+  background: var(--panel);
+  border-radius: var(--r-sm);
+  padding: 0.75rem 1.35rem;
+  min-width: 7rem;
+}
+
+.fact__num {
+  display: block;
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  color: #f3ecd8;
+}
+
+.fact__label {
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+.capture {
+  max-width: 32rem;
+  margin: 1.5rem auto 0;
+  padding: 1.35rem;
+  border-radius: var(--r-md);
+  border: 1px solid var(--stroke);
+  background: var(--panel);
+  text-align: left;
+}
+
+.capture__title {
+  font-weight: 600;
+  color: #f3ecd8;
+  margin: 0 0 0.35rem;
+}
+
+.capture__sub {
+  font-size: 0.88rem;
+  color: var(--dim);
+  margin: 0 0 1rem;
+}
+
+.capture__row {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.capture__row .input {
+  flex: 1 1 12rem;
+}
+
+.capture__actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 0.75rem;
+}
+
+.waitlist__msg {
+  font-size: 0.88rem;
+  color: var(--accent2);
+  margin-top: 0.65rem;
+  min-height: 1.25rem;
+}
+
+.lords-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-top: 1.75rem;
+}
+
+.lordCard {
+  position: relative;
+  border-radius: var(--r-md);
+  border: 1px solid var(--stroke);
+  background: var(--panel);
+  overflow: hidden;
+  cursor: pointer;
+  perspective: 900px;
+  min-height: 18rem;
+}
+
+.lordCard__inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 18rem;
+  transition: transform 0.45s ease;
+  transform-style: preserve-3d;
+}
+
+.lordCard.is-flipped .lordCard__inner {
+  transform: rotateY(180deg);
+}
+
+.lordCard__face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.lordCard__back {
+  transform: rotateY(180deg);
+  padding: 1rem;
+  justify-content: center;
+  text-align: center;
+}
+
+.lordCard__img {
+  width: 100%;
+  aspect-ratio: 1 / 1.05;
+  object-fit: cover;
+  display: block;
+}
+
+.lordCard__name {
+  padding: 0.65rem 0.85rem 0.15rem;
+  font-weight: 650;
+  color: #f3ecd8;
+}
+
+.lordCard__role {
+  padding: 0 0.85rem 0.85rem;
+  font-size: 0.78rem;
+  color: var(--dim);
+}
+
+.lordCard__quote {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.92rem;
+  margin: 0 0 1rem;
+  color: var(--muted);
+}
+
+.expansion-teaser {
+  margin-top: 1.5rem;
+  padding: 1rem 1.25rem;
+  border-radius: var(--r-sm);
+  border: 1px dashed var(--stroke);
+  text-align: center;
+  color: var(--dim);
+  font-size: 0.92rem;
+}
+
+.expansion-teaser strong {
+  color: var(--accent2);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  display: block;
+  margin-bottom: 0.35rem;
+}
+
+.pillars {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.pillar-card {
+  padding: 1.25rem;
+  border-radius: var(--r-md);
+  border: 1px solid var(--stroke);
+  background: var(--panel);
+}
+
+.pillar-card h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.05rem;
+  color: #f3ecd8;
+}
+
+.pillar-card p {
+  margin: 0 0 0.75rem;
+  font-size: 0.92rem;
+  color: var(--muted);
+}
+
+.open-dev {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.codex-card {
+  padding: 1.5rem;
+  border-radius: var(--r-md);
+  border: 1px solid var(--stroke);
+  background: linear-gradient(140deg, rgba(20, 29, 61, 0.55), rgba(15, 23, 48, 0.85));
+}
+
+.faq {
+  margin-top: 1.25rem;
+}
+
+.faq__item {
+  border-bottom: 1px solid var(--stroke);
+}
+
+.faq__q {
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  color: var(--text);
+  font: inherit;
+  padding: 1rem 0.25rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.faq__q::after {
+  content: "+";
+  color: var(--accent2);
+  font-size: 1.1rem;
+}
+
+.faq__item.is-open .faq__q::after {
+  content: "−";
+}
+
+.faq__a {
+  padding: 0 0.25rem 1rem;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.final-cta {
+  text-align: center;
+  padding: 4rem 0;
+  background: radial-gradient(ellipse at 50% 100%, rgba(20, 29, 61, 0.55) 0%, transparent 70%);
+}
+
+.final-cta__title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.5rem, 3.5vw, 2rem);
+  margin: 0 0 0.5rem;
+}
+
+.footer__socials {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.25rem;
+}
+
+.footer__socials .is-disabled {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.section--browserFull {
+  padding-top: 1.5rem;
+  min-height: calc(100svh - 4rem);
+}
+
+.section--browserFull .browser {
+  min-height: 70vh;
+}
+
+@media (max-width: 900px) {
+  .lords-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .pillars {
+    grid-template-columns: 1fr;
+  }
+  .open-dev {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 520px) {
+  .lords-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .capture__row {
+    flex-direction: column;
+  }
+}

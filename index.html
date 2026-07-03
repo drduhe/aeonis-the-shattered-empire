@@ -5,72 +5,71 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="Aeonis: The Shattered Empire — a TI4-scale fantasy grand strategy board game. Kickstarter pre-launch: follow development, read the playable packet, and get notified at launch."
+      content="Aeonis: The Shattered Empire — epic fantasy grand strategy board game for 3–8 players. Join the Kickstarter waitlist."
     />
     <title>Aeonis: The Shattered Empire</title>
 
     <meta name="theme-color" content="#0b1020" />
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="canonical" href="https://drduhe.github.io/aeonis-the-shattered-empire/" />
 
     <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://drduhe.github.io/aeonis-the-shattered-empire/" />
     <meta property="og:title" content="Aeonis: The Shattered Empire" />
     <meta
       property="og:description"
-      content="Aeonis: The Shattered Empire — a TI4-scale fantasy grand strategy board game. Kickstarter pre-launch: read the playable packet and get notified at launch."
+      content="Epic fantasy grand strategy for 3–8 players. Eight banished Lords. One empty throne."
     />
-    <meta property="og:image" content="favicon.svg" />
+    <meta property="og:image" content="https://drduhe.github.io/aeonis-the-shattered-empire/marketing/assets/og-share.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
 
-    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Aeonis: The Shattered Empire" />
     <meta
       name="twitter:description"
-      content="Aeonis: The Shattered Empire — a TI4-scale fantasy grand strategy board game. Kickstarter pre-launch: read the playable packet and get notified at launch."
+      content="Epic fantasy grand strategy for 3–8 players. Eight banished Lords. One empty throne."
     />
-    <meta name="twitter:image" content="favicon.svg" />
+    <meta name="twitter:image" content="https://drduhe.github.io/aeonis-the-shattered-empire/marketing/assets/og-share.png" />
 
-    <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+    <script>
+      if (/^#\/doc\//.test(location.hash)) {
+        location.replace("codex.html" + location.hash);
+      }
+    </script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-
     <link
       href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,350;9..144,550;9..144,700&family=Inter:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
 
-    <link rel="stylesheet" href="app.css?v=2026-01-28-1" />
+    <script src="site-config.js"></script>
+    <link rel="stylesheet" href="app.css?v=2026-07-02-1" />
+    <link rel="stylesheet" href="marketing.css?v=2026-07-02-1" />
+    <script defer src="marketing.js?v=2026-07-02-1"></script>
 
-    <script defer src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/dompurify@3.0.8/dist/purify.min.js"></script>
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github-dark.min.css"
-    />
-    <script defer src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/highlight.min.js"></script>
-
-    <script>
-      // Optional runtime config (GitHub Pages-friendly).
-      // If `AEONIS_WAITLIST_ENDPOINT` is set, the waitlist form will POST JSON to it:
-      //   { email, ts, source }
-      // The endpoint must allow CORS from your GitHub Pages origin.
-      //
-      // Example (Cloudflare Worker / any serverless endpoint):
-      // window.AEONIS_WAITLIST_ENDPOINT = "https://<your-worker>.workers.dev/waitlist";
-      //
-      // Fallback if no endpoint is set:
-      // window.AEONIS_CONTACT_EMAIL = "you@example.com";
-      window.AEONIS_WAITLIST_ENDPOINT = "";
-      window.AEONIS_CONTACT_EMAIL = "";
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Game",
+        "name": "Aeonis: The Shattered Empire",
+        "description": "Epic fantasy grand strategy board game for 3–8 players.",
+        "numberOfPlayers": { "@type": "QuantitativeValue", "minValue": 3, "maxValue": 8 },
+        "genre": "Strategy",
+        "gamePlatform": "Tabletop",
+        "url": "https://drduhe.github.io/aeonis-the-shattered-empire/"
+      }
     </script>
-
-    <script defer src="app.js?v=2026-01-28-1"></script>
   </head>
 
   <body>
-    <a class="skip-link" href="#browse">Skip to content browser</a>
+    <a class="skip-link" href="#opening">Skip to content</a>
 
     <header class="topbar" role="banner">
       <div class="container topbar__inner">
-        <a class="brand" href="#top" aria-label="Aeonis home">
+        <a class="brand" href="index.html" aria-label="Aeonis home">
           <span class="brand__mark" aria-hidden="true">
             <img class="brand__markImg" src="marketing/assets/aeonis_logo_mark.png" alt="" />
           </span>
@@ -87,12 +86,9 @@
         </a>
 
         <nav class="nav" aria-label="Primary">
-          <a class="nav__link" href="#kickstarter">Kickstarter</a>
-          <a class="nav__link" href="#overview">Overview</a>
+          <a class="nav__link" href="codex.html">Codex</a>
           <a class="nav__link" href="#lords">Lords</a>
-          <a class="nav__link" href="#pillars">Pillars</a>
-          <a class="nav__link" href="#browse">Browse</a>
-          <a class="nav__link" href="#about">About</a>
+          <a class="nav__link" href="#faq">FAQ</a>
         </nav>
 
         <div class="topbar__actions">
@@ -107,12 +103,8 @@
             <span class="btn__icon" aria-hidden="true">≡</span>
             <span class="btn__label">Menu</span>
           </button>
-          <button class="btn btn--ghost" id="themeToggle" type="button" aria-label="Toggle theme">
-            <span class="btn__icon" aria-hidden="true">◐</span>
-            <span class="btn__label">Theme</span>
-          </button>
-          <a class="btn btn--primary" href="#browse">
-            <span class="btn__label">Open Codex</span>
+          <a class="btn btn--primary" href="#waitlist">
+            <span class="btn__label">Get launch alerts</span>
             <span class="btn__icon" aria-hidden="true">→</span>
           </a>
         </div>
@@ -121,211 +113,76 @@
 
     <div class="mobileNav" id="mobileNav" hidden>
       <div class="container mobileNav__inner" aria-label="Mobile navigation">
-        <a class="mobileNav__link" data-nav="kickstarter" href="#kickstarter">Kickstarter</a>
-        <a class="mobileNav__link" data-nav="overview" href="#overview">Overview</a>
-        <a class="mobileNav__link" data-nav="lords" href="#lords">Lords</a>
-        <a class="mobileNav__link" data-nav="pillars" href="#pillars">Pillars</a>
-        <a class="mobileNav__link" data-nav="browse" href="#browse">Browse</a>
-        <a class="mobileNav__link" data-nav="about" href="#about">About</a>
+        <a class="mobileNav__link" href="codex.html">Codex</a>
+        <a class="mobileNav__link" href="#lords">Lords</a>
+        <a class="mobileNav__link" href="#faq">FAQ</a>
+        <a class="mobileNav__link" href="#waitlist">Get launch alerts</a>
       </div>
     </div>
 
-    <main id="top" class="main" role="main">
-      <section class="hero" aria-label="Hero">
-        <div class="container hero__inner">
-          <div class="hero__copy">
-            <p class="kicker">Kickstarter pre-launch • TI4-scale fantasy grand strategy</p>
-            <h1 class="hero__title">
-              <span class="hero__titleMain">Claim the Shattered Throne</span>
-              <span class="hero__titleTagline">— and help fund the first print run.</span>
-            </h1>
-            <p class="hero__lede">
-              <strong>Aeonis: The Shattered Empire</strong> is a “big strategy” board game of rotating turns, ruthless diplomacy,
-              arcane discovery, and border wars across a living map. We’re building toward a <strong>Kickstarter</strong> to
-              manufacture the first copies — and to fund refinement, balance, and a much larger faction roster.
-            </p>
-            <p class="hero__meta">
-              If you love negotiation, timing windows, and “one more turn” deals, you’re in the right war room.
-            </p>
-            <div class="hero__cta">
-              <a class="btn btn--primary btn--lg" href="#waitlist">
-                <span class="btn__label">Get launch alerts</span>
-                <span class="btn__icon" aria-hidden="true">→</span>
-              </a>
-              <a class="btn btn--ghost btn--lg" href="#/doc/playtest/First_Playable_Packet.md">
-                <span class="btn__label">Read the Playable Packet</span>
-              </a>
-              <a class="btn btn--ghost btn--lg" href="#browse">
-                <span class="btn__label">Browse Rules & Lore</span>
-              </a>
-            </div>
+    <main id="top" class="main marketing-main" role="main">
+      <section id="opening" class="opening" aria-label="Lore opening">
+        <div class="container opening__inner">
+          <p class="opening__kicker">From the Speaking Stones</p>
+          <h1 class="opening__quote">
+            &ldquo;The empire did not fall in a day. It fell in a single breath &mdash; and the world has spent a
+            hundred years learning to breathe again.&rdquo;
+          </h1>
+          <p class="opening__attr">&mdash; inscription above the Pilgrims&rsquo; Gate, the Imperial Seat</p>
+        </div>
+        <div class="opening__scroll" aria-hidden="true">▾</div>
+      </section>
 
-            <div id="waitlist">
-              <form class="waitlist" id="waitlistForm" autocomplete="on">
-              <div class="waitlist__left">
-                <div class="waitlist__title">Get Kickstarter launch alerts</div>
-                <div class="waitlist__sub">
-                  One email when we launch + occasional playtest drops and faction reveals. (No spam.)
-                </div>
-              </div>
-              <div class="waitlist__right">
-                <label class="srOnly" for="waitlistEmail">Email</label>
+      <section id="waitlist" class="reveal">
+        <div class="container">
+          <p class="reveal__kicker">A grand-strategy board game</p>
+          <h2 class="reveal__title">Aeonis: The Shattered Empire</h2>
+          <p class="reveal__lede">
+            The throne has been empty for a hundred years, and it kills its claimants. Eight banished Lords return to
+            take it anyway &mdash; through armies, laws, trade, and resurgent magic. In the tradition of the great epic
+            4X board games.
+          </p>
+
+          <div class="facts" role="list" aria-label="At a glance">
+            <div class="fact" role="listitem">
+              <span class="fact__num">3&ndash;8</span>
+              <span class="fact__label">players</span>
+            </div>
+            <div class="fact" role="listitem">
+              <span class="fact__num">4&ndash;10 hrs</span>
+              <span class="fact__label">one epic session</span>
+            </div>
+            <div class="fact" role="listitem">
+              <span class="fact__num">8 Lords</span>
+              <span class="fact__label">asymmetric factions</span>
+            </div>
+          </div>
+
+          <div class="capture">
+            <p class="capture__title">Be first to the Kickstarter</p>
+            <p class="capture__sub">One email at launch, plus occasional faction reveals. No spam.</p>
+            <form id="waitlistFormHero" class="capture__form" autocomplete="on">
+              <div class="capture__row">
+                <label class="srOnly" for="waitlistEmailHero">Email</label>
                 <input
-                  id="waitlistEmail"
-                  class="input waitlist__input"
-                  name="email"
+                  id="waitlistEmailHero"
+                  class="input"
+                  name="email_address"
                   type="email"
                   inputmode="email"
                   autocomplete="email"
                   placeholder="you@domain.com"
                   required
                 />
-                <button class="btn btn--primary waitlist__btn" type="submit">
-                  <span class="btn__label">Notify me</span>
-                  <span class="btn__icon" aria-hidden="true">↯</span>
+                <button class="btn btn--primary" type="submit">
+                  <span class="btn__label">Get launch alerts</span>
                 </button>
               </div>
-              <div class="waitlist__foot">
-                <div class="waitlist__msg" id="waitlistMsg" aria-live="polite"></div>
-                <button class="btn btn--ghost btn--sm" id="exportWaitlistBtn" type="button">
-                  Export CSV
-                </button>
+              <div class="capture__actions">
+                <a class="btn btn--ghost" id="kickstarterBtn" href="#">Follow on Kickstarter</a>
               </div>
-              </form>
-            </div>
-
-            <div class="hero__stats" role="list" aria-label="Highlights">
-              <div class="stat" role="listitem">
-                <div class="stat__num">AP</div>
-                <div class="stat__label">Rotating action economy</div>
-              </div>
-              <div class="stat" role="listitem">
-                <div class="stat__num">Council</div>
-                <div class="stat__label">Negotiation & laws</div>
-              </div>
-              <div class="stat" role="listitem">
-                <div class="stat__num">Factions</div>
-                <div class="stat__label">Starter roster + many more planned</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="hero__art" aria-hidden="true">
-            <img
-              class="hero__banner"
-              src="marketing/assets/aeonis_hero_banner.png"
-              alt=""
-              loading="eager"
-              decoding="async"
-            />
-            <div class="sigil">
-              <div class="sigil__ring"></div>
-              <div class="sigil__core"></div>
-              <div class="sigil__glyph"></div>
-            </div>
-            <div class="decree" aria-hidden="true">
-              <div class="decree__kicker">Council Decree</div>
-              <div class="decree__text" id="decreeText">“Kingdoms fall to blades. Empires fall to ledgers.”</div>
-            </div>
-            <div class="hero__card consider">
-              <div class="hero__cardTitle">Start here</div>
-              <div class="hero__cardBody">
-                Read the playable packet, then browse the living Codex for rules, lore, and Lord sheets.
-              </div>
-              <div class="hero__cardActions">
-                <a class="miniLink" href="#/doc/rules_and_systems/INDEX.md">Rules Index</a>
-                <span class="dot" aria-hidden="true">•</span>
-                <a class="miniLink" href="#/doc/playtest/First_Playable_Packet.md">First Playable</a>
-                <span class="dot" aria-hidden="true">•</span>
-                <a class="miniLink" id="kickstarterLink" href="#kickstarter">Kickstarter</a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="hero__fade" aria-hidden="true"></div>
-      </section>
-
-      <section class="loreDivider" aria-label="Lore divider">
-        <div class="container loreDivider__inner">
-          <div class="loreDivider__sigil" aria-hidden="true"></div>
-          <div class="loreDivider__text">
-            <span class="loreDivider__label">From the Speaking Stones</span>
-            <span class="loreDivider__quote">“All have sought the throne. All have perished. The empire remembers.”</span>
-          </div>
-        </div>
-      </section>
-
-      <section id="kickstarter" class="section section--alt">
-        <div class="container">
-          <div class="section__head">
-            <h2 class="section__title">Kickstarter: bring Aeonis to the table</h2>
-            <p class="section__sub">
-              We’re preparing a campaign to fund the first manufactured copies — and to accelerate development: refine systems,
-              balance the core loop, and build many more factions.
-            </p>
-          </div>
-
-          <div class="grid grid--3">
-            <article class="card">
-              <h3 class="card__title">The first print run</h3>
-              <p class="card__text">
-                Funding goes to manufacturing, component quality, and logistics — the unglamorous steps that turn prototypes into
-                real boxes you can play.
-              </p>
-              <a class="card__link" href="#/doc/components/Components.md">View components →</a>
-            </article>
-            <article class="card">
-              <h3 class="card__title">Refine what’s here</h3>
-              <p class="card__text">
-                Tighten balance, clarify rules, polish timing windows, and improve onboarding so the game plays as smoothly as it
-                negotiates.
-              </p>
-              <a class="card__link" href="#/doc/rules_and_systems/INDEX.md">Open rules index →</a>
-            </article>
-            <article class="card">
-              <h3 class="card__title">Expand the roster</h3>
-              <p class="card__text">
-                Eight Lords ship at launch — and many more are planned. Every new faction brings a unique race, economy,
-                and battlefield identity so no two sessions play the same.
-              </p>
-              <a class="card__link" href="#lords">Meet the Lords →</a>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section id="overview" class="section">
-        <div class="container">
-          <div class="section__head">
-            <h2 class="section__title">A bold strategy sandbox (in active development)</h2>
-            <p class="section__sub">
-              Aeonis combines the sweep of 4X with sharp tactical constraints: population caps, contested borders, and one action per
-              turn. The Codex below shows what’s playable today — and what we’re refining for Kickstarter.
-            </p>
-          </div>
-
-          <div class="grid grid--3">
-            <article class="card">
-              <h3 class="card__title">Rotating actions</h3>
-              <p class="card__text">
-                Spend Action Points for movement, building, diplomacy, trade, and arcane progress — while opponents respond between turns.
-              </p>
-              <a class="card__link" href="#/doc/rules_and_systems/Actions.md">Read Actions →</a>
-            </article>
-            <article class="card">
-              <h3 class="card__title">Politics with teeth</h3>
-              <p class="card__text">
-                The High Council reshapes the board: laws, decrees, titles, and timing windows for negotiation and betrayal.
-              </p>
-              <a class="card__link" href="#/doc/rules_and_systems/High_Council.md">Read High Council →</a>
-            </article>
-            <article class="card">
-              <h3 class="card__title">Campaign-scale conflict</h3>
-              <p class="card__text">
-                Battle line + reserves rewards commitment and timing. Sieges become campaigns, not single-roll blowouts.
-              </p>
-              <a class="card__link" href="#/doc/rules_and_systems/Combat.md">Read Combat →</a>
-            </article>
+              <div class="waitlist__msg" aria-live="polite"></div>
+            </form>
           </div>
         </div>
       </section>
@@ -333,327 +190,236 @@
       <section id="lords" class="section section--alt">
         <div class="container">
           <div class="section__head">
-            <h2 class="section__title">Eight Factions, Eight Lords</h2>
+            <p class="opening__kicker">The contenders</p>
+            <h2 class="section__title">Eight banished Lords. One empty throne.</h2>
             <p class="section__sub">
-              Every Lord brings a unique race, economy, and battlefield identity to the table. Choose your faction and
-              shape the fate of Aeonis for up to 8 players.
+              Each Lord is a different race, economy, and battlefield identity. Click a card to read their quote.
             </p>
           </div>
 
-          <div class="grid grid--4">
+          <div class="lords-grid">
             <article class="lordCard lordCard--gold">
-              <div class="lordCard__art">
-                <img
-                  class="lordCard__img"
-                  src="marketing/assets/lord_cassian_portrait.png"
-                  alt="Cassian, Merchant Prince"
-                  loading="lazy"
-                  decoding="async"
-                />
+              <div class="lordCard__inner">
+                <div class="lordCard__face lordCard__front">
+                  <img class="lordCard__img" src="marketing/assets/lord_cassian_portrait.png" alt="" loading="lazy" />
+                  <div class="lordCard__name">Cassian</div>
+                  <div class="lordCard__role">Merchant Prince &bull; Golden Consortium</div>
+                </div>
+                <div class="lordCard__face lordCard__back">
+                  <blockquote class="lordCard__quote">&ldquo;Kingdoms fall to blades. Empires fall to ledgers.&rdquo;</blockquote>
+                  <a class="btn btn--ghost btn--sm" href="codex.html#/doc/lords/Cassian.md">Read their story</a>
+                </div>
               </div>
-              <div class="lordCard__top">
-                <div class="lordCard__name">Cassian</div>
-                <div class="lordCard__role">Merchant Prince • Golden Consortium</div>
-              </div>
-              <p class="lordCard__pitch">Trades, Influence leverage, and economic tempo — turning votes into profit.</p>
-              <blockquote class="lordCard__quote">“Kingdoms fall to blades. Empires fall to ledgers.”</blockquote>
-              <a class="btn btn--ghost btn--sm" href="#/doc/lords/Cassian.md">Open Lord Sheet</a>
             </article>
 
             <article class="lordCard lordCard--teal">
-              <div class="lordCard__art">
-                <img
-                  class="lordCard__img"
-                  src="marketing/assets/lord_elyndra_portrait.png"
-                  alt="Elyndra, Warden of Groves"
-                  loading="lazy"
-                  decoding="async"
-                />
+              <div class="lordCard__inner">
+                <div class="lordCard__face lordCard__front">
+                  <img class="lordCard__img" src="marketing/assets/lord_elyndra_portrait.png" alt="" loading="lazy" />
+                  <div class="lordCard__name">Elyndra</div>
+                  <div class="lordCard__role">Warden of Groves &bull; Verdant Covenant</div>
+                </div>
+                <div class="lordCard__face lordCard__back">
+                  <blockquote class="lordCard__quote">&ldquo;You see trees. I see a thousand hands ready to pull you under.&rdquo;</blockquote>
+                  <a class="btn btn--ghost btn--sm" href="codex.html#/doc/lords/Elyndra.md">Read their story</a>
+                </div>
               </div>
-              <div class="lordCard__top">
-                <div class="lordCard__name">Elyndra</div>
-                <div class="lordCard__role">Warden of Groves • Verdant Covenant</div>
-              </div>
-              <p class="lordCard__pitch">Population growth, fortified forests, and attrition wars that choke invaders dry.</p>
-              <blockquote class="lordCard__quote">“You see trees. I see a thousand hands ready to pull you under.”</blockquote>
-              <a class="btn btn--ghost btn--sm" href="#/doc/lords/Elyndra.md">Open Lord Sheet</a>
             </article>
 
             <article class="lordCard lordCard--purple">
-              <div class="lordCard__art">
-                <img
-                  class="lordCard__img"
-                  src="marketing/assets/lord_seraphel_portrait.png"
-                  alt="Seraphel, Lord of the Arcane"
-                  loading="lazy"
-                  decoding="async"
-                />
+              <div class="lordCard__inner">
+                <div class="lordCard__face lordCard__front">
+                  <img class="lordCard__img" src="marketing/assets/lord_seraphel_portrait.png" alt="" loading="lazy" />
+                  <div class="lordCard__name">Seraphel</div>
+                  <div class="lordCard__role">Lord of the Arcane &bull; Arcanum Concord</div>
+                </div>
+                <div class="lordCard__face lordCard__back">
+                  <blockquote class="lordCard__quote">&ldquo;The battlefield is only a diagram. I prefer to win with the first stroke of chalk.&rdquo;</blockquote>
+                  <a class="btn btn--ghost btn--sm" href="codex.html#/doc/lords/Seraphel.md">Read their story</a>
+                </div>
               </div>
-              <div class="lordCard__top">
-                <div class="lordCard__name">Seraphel</div>
-                <div class="lordCard__role">Lord of the Arcane • Arcanum Concord</div>
-              </div>
-              <p class="lordCard__pitch">Mana advantage, information control, and tempo bursts that end wars in one opening.</p>
-              <blockquote class="lordCard__quote">“The battlefield is only a diagram. I prefer to win with the first stroke of chalk.”</blockquote>
-              <a class="btn btn--ghost btn--sm" href="#/doc/lords/Seraphel.md">Open Lord Sheet</a>
             </article>
 
             <article class="lordCard lordCard--rose">
-              <div class="lordCard__art">
-                <img
-                  class="lordCard__img"
-                  src="marketing/assets/lord_vharok_portrait.png"
-                  alt="Vharok, Lord of Steel"
-                  loading="lazy"
-                  decoding="async"
-                />
+              <div class="lordCard__inner">
+                <div class="lordCard__face lordCard__front">
+                  <img class="lordCard__img" src="marketing/assets/lord_vharok_portrait.png" alt="" loading="lazy" />
+                  <div class="lordCard__name">Vharok</div>
+                  <div class="lordCard__role">Lord of Steel &bull; Iron Dominion</div>
+                </div>
+                <div class="lordCard__face lordCard__back">
+                  <blockquote class="lordCard__quote">&ldquo;Strike the wall if you must. You will only learn what it costs to move the unmovable.&rdquo;</blockquote>
+                  <a class="btn btn--ghost btn--sm" href="codex.html#/doc/lords/Vharok.md">Read their story</a>
+                </div>
               </div>
-              <div class="lordCard__top">
-                <div class="lordCard__name">Vharok</div>
-                <div class="lordCard__role">Lord of Steel • Iron Dominion</div>
-              </div>
-              <p class="lordCard__pitch">Durable fronts, fortress geometry, and sieges that grind attackers into scrap.</p>
-              <blockquote class="lordCard__quote">“Strike the wall if you must. You will only learn what it costs to move the unmovable.”</blockquote>
-              <a class="btn btn--ghost btn--sm" href="#/doc/lords/Vharok.md">Open Lord Sheet</a>
             </article>
 
             <article class="lordCard lordCard--amber">
-              <div class="lordCard__art">
-                <img
-                  class="lordCard__img"
-                  src="marketing/assets/lord_rakhis_portrait.png"
-                  alt="Rakhis, the Sandlord"
-                  loading="lazy"
-                  decoding="async"
-                />
+              <div class="lordCard__inner">
+                <div class="lordCard__face lordCard__front">
+                  <img class="lordCard__img" src="marketing/assets/lord_rakhis_portrait.png" alt="" loading="lazy" />
+                  <div class="lordCard__name">Rakhis</div>
+                  <div class="lordCard__role">The Sandlord &bull; Windsworn Horde</div>
+                </div>
+                <div class="lordCard__face lordCard__back">
+                  <blockquote class="lordCard__quote">&ldquo;The desert does not conquer. It simply outlasts everything that stands still.&rdquo;</blockquote>
+                  <a class="btn btn--ghost btn--sm" href="codex.html#/doc/lords/Rakhis.md">Read their story</a>
+                </div>
               </div>
-              <div class="lordCard__top">
-                <div class="lordCard__name">Rakhis</div>
-                <div class="lordCard__role">The Sandlord • Windsworn Horde</div>
-              </div>
-              <p class="lordCard__pitch">Fast cavalry, desert mastery, and hit-and-run raids that strike before the dust settles.</p>
-              <blockquote class="lordCard__quote">"The desert does not conquer. It simply outlasts everything that stands still."</blockquote>
-              <a class="btn btn--ghost btn--sm" href="#/doc/lords/Rakhis.md">Open Lord Sheet</a>
             </article>
 
             <article class="lordCard lordCard--indigo">
-              <div class="lordCard__art">
-                <img
-                  class="lordCard__img"
-                  src="marketing/assets/lord_nyxara_portrait.png"
-                  alt="Nyxara, the Veiled"
-                  loading="lazy"
-                  decoding="async"
-                />
+              <div class="lordCard__inner">
+                <div class="lordCard__face lordCard__front">
+                  <img class="lordCard__img" src="marketing/assets/lord_nyxara_portrait.png" alt="" loading="lazy" />
+                  <div class="lordCard__name">Nyxara</div>
+                  <div class="lordCard__role">The Veiled &bull; The Silent Court</div>
+                </div>
+                <div class="lordCard__face lordCard__back">
+                  <blockquote class="lordCard__quote">&ldquo;You think you chose to attack me. Adorable.&rdquo;</blockquote>
+                  <a class="btn btn--ghost btn--sm" href="codex.html#/doc/lords/Nyxara.md">Read their story</a>
+                </div>
               </div>
-              <div class="lordCard__top">
-                <div class="lordCard__name">Nyxara</div>
-                <div class="lordCard__role">The Veiled • The Silent Court</div>
-              </div>
-              <p class="lordCard__pitch">Whisper manipulation, espionage, and surgical strikes — she knows your plan before you do.</p>
-              <blockquote class="lordCard__quote">"You think you chose to attack me. Adorable."</blockquote>
-              <a class="btn btn--ghost btn--sm" href="#/doc/lords/Nyxara.md">Open Lord Sheet</a>
             </article>
 
             <article class="lordCard lordCard--ivory">
-              <div class="lordCard__art">
-                <img
-                  class="lordCard__img"
-                  src="marketing/assets/lord_auriel_portrait.png"
-                  alt="Auriel, Voice of the World Tree"
-                  loading="lazy"
-                  decoding="async"
-                />
+              <div class="lordCard__inner">
+                <div class="lordCard__face lordCard__front">
+                  <img class="lordCard__img" src="marketing/assets/lord_auriel_portrait.png" alt="" loading="lazy" />
+                  <div class="lordCard__name">Auriel</div>
+                  <div class="lordCard__role">Voice of the World Tree &bull; Radiant Accord</div>
+                </div>
+                <div class="lordCard__face lordCard__back">
+                  <blockquote class="lordCard__quote">&ldquo;The Tree remembers every oath sworn and every oath broken. So do I.&rdquo;</blockquote>
+                  <a class="btn btn--ghost btn--sm" href="codex.html#/doc/lords/Auriel.md">Read their story</a>
+                </div>
               </div>
-              <div class="lordCard__top">
-                <div class="lordCard__name">Auriel</div>
-                <div class="lordCard__role">Voice of the World Tree • Radiant Accord</div>
-              </div>
-              <p class="lordCard__pitch">Renown engine, council dominance, and defensive auras that make her nearly impossible to dislodge.</p>
-              <blockquote class="lordCard__quote">"The Tree remembers every oath sworn and every oath broken. So do I."</blockquote>
-              <a class="btn btn--ghost btn--sm" href="#/doc/lords/Auriel.md">Open Lord Sheet</a>
             </article>
 
             <article class="lordCard lordCard--cyan">
-              <div class="lordCard__art">
-                <img
-                  class="lordCard__img"
-                  src="marketing/assets/lord_thalrik_portrait.png"
-                  alt="Thal'rik, the Gatekeeper"
-                  loading="lazy"
-                  decoding="async"
-                />
+              <div class="lordCard__inner">
+                <div class="lordCard__face lordCard__front">
+                  <img class="lordCard__img" src="marketing/assets/lord_thalrik_portrait.png" alt="" loading="lazy" />
+                  <div class="lordCard__name">Thal&rsquo;rik</div>
+                  <div class="lordCard__role">The Gatekeeper &bull; The Threshold</div>
+                </div>
+                <div class="lordCard__face lordCard__back">
+                  <blockquote class="lordCard__quote">&ldquo;You cross my gates because I allow it. Remember that.&rdquo;</blockquote>
+                  <a class="btn btn--ghost btn--sm" href="codex.html#/doc/lords/Thalrik.md">Read their story</a>
+                </div>
               </div>
-              <div class="lordCard__top">
-                <div class="lordCard__name">Thal'rik</div>
-                <div class="lordCard__role">The Gatekeeper • The Threshold</div>
-              </div>
-              <p class="lordCard__pitch">Portal control, teleportation, and map-wide presence — everywhere and nowhere at once.</p>
-              <blockquote class="lordCard__quote">"You cross my gates because I allow it. Remember that."</blockquote>
-              <a class="btn btn--ghost btn--sm" href="#/doc/lords/Thalrik.md">Open Lord Sheet</a>
+            </article>
+          </div>
+
+          <div class="expansion-teaser">
+            <strong>Shadows on the Horizon</strong>
+            Serathis &bull; Morvane &bull; Tsuvara &bull; Ozren &mdash; expansion contenders, coming after launch.
+          </div>
+        </div>
+      </section>
+
+      <section id="game" class="section">
+        <div class="container">
+          <div class="section__head">
+            <p class="opening__kicker">The game</p>
+            <h2 class="section__title">Politics with teeth. Wars that are campaigns.</h2>
+          </div>
+          <div class="pillars">
+            <article class="pillar-card">
+              <h3>One action per turn</h3>
+              <p>Rotating turns and an Action Point economy keep everyone at the table leaning in &mdash; no long waits between decisions.</p>
+              <a class="miniLink" href="codex.html#/doc/rules_and_systems/Actions.md">Read Actions</a>
+            </article>
+            <article class="pillar-card">
+              <h3>The High Council</h3>
+              <p>Players author their own motions: laws, titles, and border rulings. Every vote is a negotiation, and every negotiation is a debt.</p>
+              <a class="miniLink" href="codex.html#/doc/rules_and_systems/High_Council.md">Read High Council</a>
+            </article>
+            <article class="pillar-card">
+              <h3>Battle lines &amp; sieges</h3>
+              <p>Combat rewards commitment and timing. Reserves, flanking cavalry, and fortress sieges turn wars into campaigns, not coin flips.</p>
+              <a class="miniLink" href="codex.html#/doc/rules_and_systems/Combat.md">Read Combat</a>
             </article>
           </div>
         </div>
       </section>
 
-      <section id="pillars" class="section section--alt">
-        <div class="container">
-          <div class="section__head">
-            <h2 class="section__title">What Aeonis is trying to do (on purpose)</h2>
+      <section id="open" class="section section--alt">
+        <div class="container open-dev">
+          <div>
+            <p class="opening__kicker">Built in the open</p>
+            <h2 class="section__title">Follow the design as it happens</h2>
             <p class="section__sub">
-              The goal is a grand strategy experience that stays readable at the table: clear windows, meaningful constraints, and
-              factions that change how you negotiate and expand.
+              Aeonis is in active playtesting toward a Kickstarter. The rules, lore, and Lord sheets are public &mdash;
+              read what&rsquo;s on the table today and watch it sharpen.
             </p>
           </div>
+          <div class="codex-card">
+            <h3 class="capture__title">The Imperial Codex</h3>
+            <p class="capture__sub">Rules chapters &bull; Lorebook &bull; Lord sheets &bull; How to play</p>
+            <a class="btn btn--primary" href="codex.html">Open the Codex</a>
+          </div>
+        </div>
+      </section>
 
-          <div class="pillars">
-            <div class="pillar">
-              <div class="pillar__badge">1</div>
-              <div class="pillar__body">
-                <h3 class="pillar__title">Clear timing spine</h3>
-                <p class="pillar__text">
-                  A canonical round structure with explicit windows, so “when can I do X?” has one answer.
-                </p>
-                <a class="miniLink" href="#/doc/rules_and_systems/Round_Structure.md">Round Structure</a>
+      <section id="faq" class="section">
+        <div class="container">
+          <div class="section__head">
+            <p class="opening__kicker">Questions</p>
+            <h2 class="section__title">FAQ</h2>
+          </div>
+          <div class="faq">
+            <div class="faq__item">
+              <button class="faq__q" type="button" aria-expanded="false">When does the Kickstarter launch?</button>
+              <div class="faq__a" hidden>
+                <p>We&rsquo;re building toward a Kickstarter to fund the first print run. Join the email list above to get one message when we go live &mdash; no spam, no weekly drip campaign.</p>
               </div>
             </div>
-            <div class="pillar">
-              <div class="pillar__badge">2</div>
-              <div class="pillar__body">
-                <h3 class="pillar__title">Meaningful constraints</h3>
-                <p class="pillar__text">
-                  Population as a growth limiter; upkeep pressures only when it matters; borders that make positioning real.
-                </p>
-                <a class="miniLink" href="#/doc/rules_and_systems/Population.md">Population</a>
-                <span class="dot" aria-hidden="true">•</span>
-                <a class="miniLink" href="#/doc/rules_and_systems/Movement.md">Movement</a>
+            <div class="faq__item">
+              <button class="faq__q" type="button" aria-expanded="false">Is this a Twilight Imperium clone?</button>
+              <div class="faq__a" hidden>
+                <p>No. Aeonis is inspired by the genre Twilight Imperium defined &mdash; reforged in epic fantasy. Same weight and negotiation, new world: Lords on the map, sieges and cavalry, Arcane Discovery, the Whisper deck, and a High Council where players author their own motions.</p>
               </div>
             </div>
-            <div class="pillar">
-              <div class="pillar__badge">3</div>
-              <div class="pillar__body">
-                <h3 class="pillar__title">Asymmetry with a setting spine</h3>
-                <p class="pillar__text">
-                  Speaking Stones, rediscovered magic, banished lords — lore that drives objectives, politics, and faction identity.
-                </p>
-                <a class="miniLink" href="#/doc/rules_and_systems/Lore.md">Setting Lore</a>
+            <div class="faq__item">
+              <button class="faq__q" type="button" aria-expanded="false">How long does a game take?</button>
+              <div class="faq__a" hidden>
+                <p>The full game targets 4&ndash;10 hours depending on player count and victory variant &mdash; deliberate epic-session territory for 3&ndash;8 players. The First Playable packet in the Codex is a compressed test scope for faster playtests.</p>
+              </div>
+            </div>
+            <div class="faq__item">
+              <button class="faq__q" type="button" aria-expanded="false">Can I playtest it?</button>
+              <div class="faq__a" hidden>
+                <p>Yes. Download the First Playable packet from the Codex, or join our Discord community (link in the footer) for playtest coordination. Join the waitlist to hear about organized playtest drops.</p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section id="browse" class="section section--browser" aria-label="Content browser">
+      <section id="cta" class="final-cta">
         <div class="container">
-          <div class="section__head section__head--tight">
-            <h2 class="section__title">The Imperial Codex</h2>
-            <p class="section__sub">
-              Browse and share design docs directly from this repo — no build step.
-            </p>
-          </div>
-
-          <div class="browser">
-            <aside class="browser__sidebar" aria-label="Document navigation">
-              <div class="sidebar__tools">
-                <label class="field" for="searchInput">
-                  <span class="field__label">Search</span>
-                  <input
-                    id="searchInput"
-                    class="input"
-                    type="search"
-                    placeholder="Search documents…"
-                    autocomplete="off"
-                  />
-                </label>
-
-                <label class="field" for="categorySelect">
-                  <span class="field__label">Category</span>
-                  <select id="categorySelect" class="select"></select>
-                </label>
-              </div>
-
-              <div class="sidebar__listHead">
-                <div class="sidebar__count" id="resultsCount">—</div>
-              </div>
-
-              <nav class="docList" id="docList" aria-label="Documents"></nav>
-            </aside>
-
-            <section class="browser__main" aria-label="Document viewer">
-              <div class="viewer">
-                <div class="viewer__top">
-                  <div class="crumbs" id="crumbs" aria-label="Breadcrumbs"></div>
-
-                  <div class="viewer__actions">
-                    <button class="btn btn--ghost btn--sm" id="copyLinkBtn" type="button">
-                      Copy link
-                    </button>
-                    <a class="btn btn--ghost btn--sm" id="openRawBtn" href="#" target="_blank" rel="noreferrer">
-                      Open raw
-                    </a>
-                  </div>
-                </div>
-
-                <div class="viewer__body">
-                  <div class="emptyState" id="emptyState">
-                    <div class="emptyState__badge">Imperial Codex</div>
-                    <div class="emptyState__art" aria-hidden="true"></div>
-                    <h3 class="emptyState__title">Choose a scroll</h3>
-                    <p class="emptyState__text">
-                      Use the sidebar to open a document. The viewer renders Markdown (headings, lists, tables, code blocks).
-                    </p>
-                    <div class="emptyState__actions">
-                      <a class="btn btn--primary" href="#/doc/rules_and_systems/INDEX.md">Open Rules Index</a>
-                      <a class="btn btn--ghost" href="#/doc/README.md">Open Repo README</a>
-                    </div>
-                    <p class="emptyState__hint">
-                      If you’re opening this locally, run a tiny server so files can load:
-                      <code>python3 -m http.server</code>
-                    </p>
-                  </div>
-
-                  <article class="markdown" id="markdown" hidden></article>
-                  <div class="errorBox" id="errorBox" hidden>
-                    <div class="errorBox__art" aria-hidden="true"></div>
-                    <div class="errorBox__title">Couldn’t load this document.</div>
-                    <div class="errorBox__text" id="errorText"></div>
-                    <div class="errorBox__actions">
-                      <a class="btn btn--ghost" id="retryBtn" href="#">Retry</a>
-                      <a class="btn btn--primary" id="fallbackBtn" href="#" target="_blank" rel="noreferrer">Open raw file</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </section>
-          </div>
-        </div>
-      </section>
-
-      <section id="about" class="section">
-        <div class="container">
-          <div class="section__head">
-            <h2 class="section__title">About Aeonis (and this Codex)</h2>
-            <p class="section__sub">
-              Aeonis is being built in the open. This site is a living, linkable Codex: rules, lore, and playtest material — all in one place.
-            </p>
-          </div>
-
-          <div class="grid grid--2">
-            <div class="note">
-              <h3 class="note__title">Kickstarter-focused development</h3>
-              <p class="note__text">
-                The campaign is aimed at funding the first manufactured copies, while giving us the runway to refine systems and add
-                many more factions.
-              </p>
+          <h2 class="final-cta__title">The stones are whispering. The roads are open.</h2>
+          <p class="section__sub" style="margin: 0 auto 1.25rem; text-align: center">Get one email when the Kickstarter goes live.</p>
+          <form id="waitlistFormFooter" class="capture" style="margin: 0 auto" autocomplete="on">
+            <div class="capture__row">
+              <label class="srOnly" for="waitlistEmailFooter">Email</label>
+              <input
+                id="waitlistEmailFooter"
+                class="input"
+                name="email_address"
+                type="email"
+                inputmode="email"
+                autocomplete="email"
+                placeholder="you@domain.com"
+                required
+              />
+              <button class="btn btn--primary" type="submit">
+                <span class="btn__label">Get launch alerts</span>
+              </button>
             </div>
-            <div class="note">
-              <h3 class="note__title">A shareable, no-build Codex</h3>
-              <p class="note__text">
-                Everything is client-side. When you open a document, the URL updates (hash-based) so you can link playtesters to
-                specific chapters.
-              </p>
-            </div>
-          </div>
+            <div class="waitlist__msg" aria-live="polite"></div>
+          </form>
         </div>
       </section>
     </main>
@@ -662,10 +428,13 @@
       <div class="container footer__inner">
         <div class="footer__left">
           <div class="footer__brand">Aeonis: The Shattered Empire</div>
-          <div class="footer__meta">Kickstarter pre-launch • living design codex</div>
+          <div class="footer__meta">Kickstarter pre-launch</div>
         </div>
-        <div class="footer__right">
-          <a class="miniLink" href="#top">Back to top</a>
+        <div class="footer__right footer__socials">
+          <a class="miniLink" data-social="discord" href="#">Discord</a>
+          <a class="miniLink" data-social="bgg" href="#">BoardGameGeek</a>
+          <a class="miniLink" data-social="instagram" href="#">Instagram</a>
+          <a class="miniLink" data-social="kickstarter" href="#">Kickstarter</a>
         </div>
       </div>
     </footer>
