@@ -30,3 +30,8 @@ canon.
 | AL-18 | Coronation milestone re-trigger after broken streak? | Third **total** Rite awards +2 VP once per player per game | `Victory.md` | **Resolved** (2026-07-03, doc + engine) |
 | AL-19 | Portal-to-Portal ZOC and 0 AP hops | No ZOC surcharge; 0-AP hops legal at 0 AP | `Movement.md` | **Resolved** (engine: `move.py`) |
 | AL-20 | Siege reinforcement +3/round cap | Persist committed uids; ≤3 reinforcements per siege round | `Combat.md` | **Resolved** (2026-07-03, M1 fidelity sprint) |
+| AL-21 | Event phase frequency in First Playable | **Every round** at Round Start (before Strategy); 8-card global deck auto-resolves | `Events.md` / `Round_Structure.md` | **Resolved** (2026-07-03, M2 sim; plan draft said every 3 rounds) |
+| AL-22 | High Council custom motions / negotiation | Bots propose revealed agenda only; binding deals deferred to Task 6 | `High_Council.md` / `Diplomacy.md` | **Open** (M2 simplification) |
+| AL-23 | Council tie-break when yes/no votes equal | **Motion fails** (no Speaker auto-pass in sim) | `High_Council.md` | **Resolved** (2026-07-03, M2 sim) |
+| AL-24 | Sim round cap with no player at VP threshold | Game **completes** at `DEFAULT_ROUND_CAP` (25) with `round_cap_finish`; tiebreak by current VP | `sim/README.md` pacing | **Resolved** (2026-07-03, sim-only) |
+| AL-25 | Strategy primaries referencing Arcane Tier II+ | Stub to resource/movement effects until M3 | `Strategy.md` | **Open** (M2 simplification) |

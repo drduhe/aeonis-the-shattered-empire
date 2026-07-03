@@ -18,14 +18,14 @@
 
 ## M2 gate (definition of done)
 
-- [ ] **100 consecutive** `completed` persona-bot games at **4p** with **zero** `crashed` / invariant failures.
-- [ ] Strategy draft runs every round (VP-ordered; bounty gold on undrafted cards).
-- [ ] Action Phase turn order follows **lowest Strategy card initiative**, not seating order.
-- [ ] High Council resolves **≥1 agenda item** per round (8-card First Playable agenda deck).
-- [ ] Event phase resolves **≥1 global event** every **3 rounds** (reduced deck for sim).
-- [ ] `playtest/Ambiguity_Ledger.md` updated for any new engine interpretations.
-- [ ] Persona **Diplomat** win rate >0% in mixed 4p bracket (smoke — not parity target).
-- [ ] Golden replays regenerated; pytest ≥ current count + M2 chapter tests.
+- [x] **100 consecutive** `completed` persona-bot games at **4p** with **zero** `crashed` / invariant failures (smoke bracket 100/100; CI enforces 20/20 via `bracket-m2-ci.json`).
+- [x] Strategy draft runs every round (VP-ordered; bounty gold on undrafted cards).
+- [x] Action Phase turn order follows **lowest Strategy card initiative**, not seating order.
+- [x] High Council resolves **≥1 agenda item** per round (8-card First Playable agenda deck).
+- [x] Event phase resolves **≥1 global event** every round (sim; plan draft said every 3 — see AL-21).
+- [x] `playtest/Ambiguity_Ledger.md` updated for M2 engine interpretations.
+- [x] Persona **Diplomat** win rate >0% in mixed 4p bracket (smoke — not parity target).
+- [x] Golden replays regenerated; pytest ≥ current count + M2 chapter tests (`test_m2_smoke.py`).
 
 ---
 
@@ -147,10 +147,10 @@ tests/
 
 **Files:** `agents/features.py`, `agents/persona.py`, `reports/summary.py`, `reports/hypotheses.py`
 
-- [ ] Features: `influence`, `council_votes`, `strategy_initiative`, `bounty_gold`.
-- [ ] Diplomat persona: weight council/influence features > military.
-- [ ] Reports: `council_pass_rate`, `motions_proposed`, `avg_influence_spent`, strategy card pick rates.
-- [ ] Optional H9 hypothesis: "Diplomat win rate ≥3% in mixed 4p M2 bracket."
+- [x] Features: `influence`, `council_votes`, `strategy_initiative`, `bounty_gold` (partial — via council stats + strategy metrics).
+- [x] Diplomat persona: weight council/influence features > military.
+- [x] Reports: `council_pass_rate`, `motions_proposed`, `avg_influence_spent`, strategy card pick rates.
+- [x] H9 hypothesis: "Diplomat win rate ≥3% in mixed 4p M2 bracket."
 
 ---
 
@@ -158,10 +158,11 @@ tests/
 
 **Files:** `sim/configs/bracket-m2-smoke.json`, `bracket-m2-4p.json`
 
-- [ ] `bracket-m2-smoke.json` — 4p, 20 games, mixed personas, fast CI smoke.
-- [ ] `bracket-m2-4p.json` — 4p, 200 games × 5 personas = 1,000 (mirror Bracket A).
-- [ ] Run gate; HTML report to `docs/reports/YYYY-MM-DD-bracket-m2-report.html`.
-- [ ] Regenerate golden replays if action log format changes.
+- [x] `bracket-m2-smoke.json` — 4p, 100 games, mixed personas (full gate run).
+- [x] `bracket-m2-ci.json` — 4p, 20 games, mixed personas, CI regression gates.
+- [x] `bracket-m2-4p.json` — 4p, 200 games × 5 personas solo ladder.
+- [x] Run gate; HTML report to `docs/reports/2026-07-03-m2-gate.md` (+ `.html`).
+- [x] Golden replays regenerated after council/vote changes.
 
 ---
 

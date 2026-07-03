@@ -24,6 +24,11 @@ def _completed_rate(records: list[dict]) -> float:
     return len(_completed(records)) / n
 
 
+def _degenerate_rate(records: list[dict]) -> float:
+    n = len(records) or 1
+    return verdict_breakdown(records).get("degenerate", 0) / n
+
+
 def _avg_ap_spread(records: list[dict]) -> float:
     vals = [
         r.get("ap_economy_stats", {}).get("avg_spread", 0.0)
@@ -44,6 +49,7 @@ _METRICS = {
     "crash_rate": _crash_rate,
     "timeout_rate": _timeout_rate,
     "completed_rate": _completed_rate,
+    "degenerate_rate": _degenerate_rate,
     "attacker_win_rate": lambda rs: combat_metrics(rs).get("attacker_win_rate", 0.0),
     "battles_per_player_round": lambda rs: combat_metrics(rs).get(
         "battles_per_player_round", 0.0

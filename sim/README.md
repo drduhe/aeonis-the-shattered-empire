@@ -52,6 +52,12 @@ CI runs four 30-game Warmonger brackets with sim-calibrated metric bands
 Configs: `configs/regression-plan1-baseline.json`, `regression-plan1-prestrike.json`,
 `regression-plan2-baseline.json`, `regression-plan2-cap-rally.json`.
 
+**M2 gate (CI):** `configs/bracket-m2-ci.json` — 20 mixed 4p games, zero crash/timeout/degenerate.
+
+    cd sim && python scripts/regression_check.py --config configs/bracket-m2-ci.json
+
+Full gate smoke: `configs/bracket-m2-smoke.json` (100 games). Solo ladder: `bracket-m2-4p.json`.
+
 See `docs/reports/2026-07-03-plan1-combat-ladder.md` for calibration notes.
 
 ## Pacing / verdicts (sim-only)
