@@ -1,15 +1,14 @@
 {
   "appName": "Aeonis Codex",
-  "version": 1,
+  "version": 2,
   "journeys": [
     {
       "id": "new",
       "label": "New to Aeonis? Read this path",
       "steps": [
+        { "label": "Learn to Play", "path": "rulebook/Learn_to_Play.md" },
         { "label": "Round timing", "path": "rules_and_systems/Round_Structure.md" },
         { "label": "Actions", "path": "rules_and_systems/Actions.md" },
-        { "label": "Movement & borders", "path": "rules_and_systems/Movement.md" },
-        { "label": "Combat", "path": "rules_and_systems/Combat.md" },
         { "label": "First Playable", "path": "playtest/First_Playable_Packet.md" }
       ]
     },
@@ -30,28 +29,20 @@
       "color": "gold",
       "docs": [
         {
-          "title": "Repo README",
-          "path": "README.md",
-          "description": "High-level overview, folder map, and the current design spine.",
-          "status": "core",
-          "minutes": 4,
-          "tags": ["overview"]
+          "title": "Learn to Play (draft)",
+          "path": "rulebook/Learn_to_Play.md",
+          "description": "Teaching rulebook draft for First Playable: setup, round walkthrough, combat, council, scoring.",
+          "status": "draft",
+          "minutes": 25,
+          "tags": ["rulebook", "teaching"]
         },
         {
-          "title": "Agent Framework",
-          "path": "AGENTS.md",
-          "description": "How to use AI reliably: canon rules, workflows, templates, and checklists.",
-          "status": "core",
-          "minutes": 6,
-          "tags": ["overview", "workflow"]
-        },
-        {
-          "title": "Rules & Systems Index",
-          "path": "rules_and_systems/INDEX.md",
-          "description": "Rulebook draft table of contents and design red flags.",
-          "status": "core",
+          "title": "Player Aid",
+          "path": "rulebook/Player_Aid.md",
+          "description": "Quick reference: round sequence, action costs, unit stats, combat steps, vote math.",
+          "status": "draft",
           "minutes": 5,
-          "tags": ["rules", "toc"]
+          "tags": ["rulebook", "reference"]
         },
         {
           "title": "First Playable Packet",
@@ -60,22 +51,6 @@
           "status": "playtest",
           "minutes": 12,
           "tags": ["playtest", "setup"]
-        },
-        {
-          "title": "Components Checklist",
-          "path": "components/Components.md",
-          "description": "Physical components list for the first playable build.",
-          "status": "playtest",
-          "minutes": 3,
-          "tags": ["components"]
-        },
-        {
-          "title": "Production Manifest",
-          "path": "components/Production_Manifest.md",
-          "description": "Full-game manufacturing bill of materials: tiles, standees, cards, tokens, dice, print.",
-          "status": "internal",
-          "minutes": 6,
-          "tags": ["components", "manufacturing", "kickstarter"]
         }
       ]
     },
@@ -84,6 +59,14 @@
       "label": "Rules & Systems",
       "color": "purple",
       "docs": [
+        {
+          "title": "Rules & Systems Index",
+          "path": "rules_and_systems/INDEX.md",
+          "description": "Rulebook draft table of contents and design red flags.",
+          "status": "core",
+          "minutes": 5,
+          "tags": ["rules", "toc"]
+        },
         {
           "title": "Round Structure",
           "path": "rules_and_systems/Round_Structure.md",
@@ -173,6 +156,14 @@
           "tags": ["rules", "events"]
         },
         {
+          "title": "Whispers",
+          "path": "rules_and_systems/Whispers.md",
+          "description": "Whisper Cards: Speaking Stone intelligence, timing windows, and tactical one-shots.",
+          "status": "playtest",
+          "minutes": 10,
+          "tags": ["rules", "whispers", "intelligence"]
+        },
+        {
           "title": "Artifacts",
           "path": "rules_and_systems/Artifacts.md",
           "description": "Artifact deck, Remnant acquisition, three artifact categories, and VP-bearing relics.",
@@ -235,76 +226,6 @@
           "status": "draft",
           "minutes": 8,
           "tags": ["rules", "units", "combat"]
-        }
-      ]
-    },
-    {
-      "id": "playtest-tools",
-      "label": "Playtest & Rulebook",
-      "color": "purple",
-      "docs": [
-        {
-          "title": "Full Game Scope",
-          "path": "playtest/Full_Game_Scope.md",
-          "description": "Second playable: Arcane tiers II-III, advanced units, Accords, full decks, and pacing goals.",
-          "status": "playtest",
-          "minutes": 5,
-          "tags": ["playtest", "scope"]
-        },
-        {
-          "title": "Balance Dashboard",
-          "path": "playtest/Balance_Dashboard.md",
-          "description": "Session metrics, Lord win-rate tracking, VP source distribution, and tuning levers.",
-          "status": "playtest",
-          "minutes": 8,
-          "tags": ["playtest", "balance"]
-        },
-        {
-          "title": "Learn to Play (draft)",
-          "path": "rulebook/Learn_to_Play.md",
-          "description": "Teaching rulebook draft for First Playable: setup, round walkthrough, combat, council, scoring.",
-          "status": "draft",
-          "minutes": 25,
-          "tags": ["rulebook", "teaching"]
-        },
-        {
-          "title": "Player Aid",
-          "path": "rulebook/Player_Aid.md",
-          "description": "Quick reference: round sequence, action costs, unit stats, combat steps, vote math.",
-          "status": "draft",
-          "minutes": 5,
-          "tags": ["rulebook", "reference"]
-        }
-      ]
-    },
-    {
-      "id": "lore",
-      "label": "Lore",
-      "color": "teal",
-      "docs": [
-        {
-          "title": "Lorebook",
-          "path": "lore/Lore.md",
-          "description": "History, factions, locations, and myths of Aeonis (lore draft).",
-          "status": "draft",
-          "minutes": 6,
-          "tags": ["lore"]
-        },
-        {
-          "title": "Naming Bible",
-          "path": "lore/Naming_Bible.md",
-          "description": "Canonical terms, faction and race names, regions, naming conventions, pronunciation.",
-          "status": "core",
-          "minutes": 6,
-          "tags": ["lore", "terminology", "reference"]
-        },
-        {
-          "title": "Lore README",
-          "path": "lore/README.md",
-          "description": "What’s in the lore folder and how it’s organized.",
-          "status": "notes",
-          "minutes": 2,
-          "tags": ["lore", "overview"]
         }
       ]
     },
@@ -412,60 +333,42 @@
       ]
     },
     {
-      "id": "marketing",
-      "label": "Marketing",
+      "id": "lore",
+      "label": "Lore",
+      "color": "teal",
+      "docs": [
+        {
+          "title": "Lorebook",
+          "path": "lore/Lore.md",
+          "description": "History, factions, locations, and myths of Aeonis (lore draft).",
+          "status": "draft",
+          "minutes": 6,
+          "tags": ["lore"]
+        },
+        {
+          "title": "Naming Bible",
+          "path": "lore/Naming_Bible.md",
+          "description": "Canonical terms, faction and race names, regions, naming conventions, pronunciation.",
+          "status": "core",
+          "minutes": 6,
+          "tags": ["lore", "terminology", "reference"]
+        }
+      ]
+    },
+    {
+      "id": "components",
+      "label": "Components",
       "color": "gold",
       "docs": [
         {
-          "title": "Positioning & Product Decisions",
-          "path": "marketing/Positioning.md",
-          "description": "Locked decisions: positioning vs TI4, 4-10 hour sessions, 3-8 players, standees with miniature stretch goals.",
-          "status": "core",
-          "minutes": 4,
-          "tags": ["marketing", "positioning", "decisions"]
-        },
-        {
-          "title": "Marketing Plan",
-          "path": "marketing/Marketing.md",
-          "description": "Campaign plan toward Kickstarter: phases, beats, and assets.",
-          "status": "internal",
-          "minutes": 10,
-          "tags": ["marketing"]
-        },
-        {
-          "title": "Development Plan",
-          "path": "marketing/Development_Plan.md",
-          "description": "High-level milestones, deliverables, and timelines.",
-          "status": "internal",
-          "minutes": 8,
-          "tags": ["marketing", "planning"]
-        },
-        {
-          "title": "Pitch Copy",
-          "path": "marketing/Pitch.md",
-          "description": "One-liner, elevator pitch, campaign hooks, fact box, and press boilerplate.",
-          "status": "draft",
-          "minutes": 5,
-          "tags": ["marketing", "pitch", "copy"]
-        },
-        {
-          "title": "Comps Analysis",
-          "path": "marketing/Comps_Analysis.md",
-          "description": "Comparable titles (TI4, Eclipse, HLAS, Arcs/Oath): pricing bands and campaign lessons.",
-          "status": "internal",
-          "minutes": 7,
-          "tags": ["marketing", "pricing", "kickstarter"]
-        },
-        {
-          "title": "Campaign Math",
-          "path": "marketing/Campaign_Math.md",
-          "description": "Funding goal template, pledge tiers, stretch ladder, timeline, and go/no-go gates.",
-          "status": "internal",
-          "minutes": 7,
-          "tags": ["marketing", "kickstarter", "budget"]
+          "title": "Components Checklist",
+          "path": "components/Components.md",
+          "description": "Physical components list for the first playable build.",
+          "status": "playtest",
+          "minutes": 3,
+          "tags": ["components"]
         }
       ]
     }
   ]
 }
-
