@@ -114,6 +114,11 @@ class Game:
             "promises_broken": 0,
         }
         self.promises_log: list[dict] = []
+        self.building_stats = {
+            "bank_conversions": 0,
+            "forge_recruits": 0,
+            "market_trades": 0,
+        }
         self._negotiation_session: Optional[NegotiationSession] = None
         self._council_negotiation_queue: list[int] = []
         self._trade_used: dict[int, bool] = {}
@@ -420,7 +425,10 @@ class Game:
 
     def _advance_phases(self) -> None:
         """All players have passed: Production, Cleanup, next round or end."""
-        run_production(self.state)
+        prod_stats = run_production(self.state)
+        self.building_stats["bank_conversions"] += len(
+            prod_stats.get("bank_conversions", {})
+        )
         run_cleanup(self.state)
         check_invariants(self.state)
         if self.state.final_round:
@@ -446,9 +454,17 @@ class Game:
         out.extend(enumerate_recruits(s, pid))
         out.extend(enumerate_builds(s, pid))
         out.extend(combat.enumerate_attacks(s, pid))
-        if not self._trade_used.get(pid, False) and s.player(pid).ap >= 1:
-            out.extend(self._enumerate_trade_starts(pid))
+        # Market (Buildings.md): the once-per-round trade initiation costs
+        # 0 AP with an active Market; limit stays one trade per round (AL-27).
+        if not self._trade_used.get(pid, False):
+            free = self._has_active_market(pid)
+            if free or s.player(pid).ap >= 1:
+                out.extend(self._enumerate_trade_starts(pid))
         return out
+
+    def _has_active_market(self, pid: int) -> bool:
+        return any(t.active(BuildingType.MARKET)
+                   for t in self.state.controlled(pid))
 
     def _enumerate_trade_starts(self, pid: int) -> list[dict]:
         return enumerate_trade_starts(self.state, pid)
@@ -679,6 +695,8 @@ class Game:
                 apply_move(s, dp.pid, choice)
                 self._finish_action_turn(dp.pid)
             elif t == "recruit":
+                if len(choice["units"]) > 2:
+                    self.building_stats["forge_recruits"] += 1
                 apply_recruit(s, dp.pid, choice)
                 self._finish_action_turn(dp.pid)
             elif t == "build":
@@ -692,7 +710,10 @@ class Game:
                 )
                 if err:
                     raise ValueError(err)
-                s.player(dp.pid).ap -= 1
+                if self._has_active_market(dp.pid):
+                    self.building_stats["market_trades"] += 1  # 0 AP (AL-27)
+                else:
+                    s.player(dp.pid).ap -= 1
                 self._trade_used[dp.pid] = True
                 self._trade_initiator = dp.pid
                 self._negotiation_session = start_session(

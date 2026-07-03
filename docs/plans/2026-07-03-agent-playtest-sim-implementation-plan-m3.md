@@ -33,14 +33,12 @@ Mirrors M1/M2 gates; all must hold at once on the final task's commit:
 
 Ordered by dependency; each task lands with unit tests, and regenerates goldens **only if** it changes decision-point sequence or resolution order (expected for Tasks 2, 3, 4, 5, 6, 7).
 
-### Task 1 — Building roster completion (Forge, Academy, Bank, Market)
+### Task 1 — Building roster completion (Forge, Academy, Bank, Market) — **DONE** (2026-07-03)
 
-Packet §4.2 allows the full standard roster; sim still has the M1 subset (`types.py` note). Legendary Buildings stay M4 (Lord sheets).
-
-- [ ] `BUILDING_SPECS` + build rules: **Forge** (5g, 1 pop, 1 mana upkeep; recruit +1 unit over limit at that City, −1 Gold per unit min 1), **Academy** (4g 3m, 2 pop, 1 mana upkeep; School Specialty + once/round −1 Mana on Research), **Bank** (5g, 1 pop; once per Production & Upkeep convert 2:3 among Gold/Mana/Influence), **Market** (2g 2i, 1 pop; once/round initiate one Trade at 0 AP — hooks M2 negotiation `_enumerate_trade_starts`).
-- [ ] Upkeep handling in `production.py` (Forge/Academy mana upkeep with suspension semantics mirroring Castle AL-8).
-- [ ] Bank conversion + Market free-trade as decision points or auto-heuristics (bot chooses conversion greedily; log choice in record).
-- [ ] Tests: build legality per terrain (Cities), upkeep suspension, Bank conversion math, Market 0-AP trade.
+- [x] `BUILDING_SPECS` + build rules: **Forge**, **Academy**, **Bank**, **Market** (Cities only).
+- [x] Upkeep in `production.py` — Forge/Academy mana upkeep with AL-8 suspension via `Tile.active()`.
+- [x] Bank conversion auto-heuristic at Production & Upkeep (AL-26); Market 0-AP trade initiation (AL-27).
+- [x] Tests: `sim/tests/test_advanced_buildings.py` + `test_types.py` specs.
 
 ### Task 2 — Remnants, exploration layer, missing FP globals
 

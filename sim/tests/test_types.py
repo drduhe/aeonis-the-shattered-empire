@@ -23,6 +23,10 @@ def test_building_specs_match_canon():
     assert fortress.gold == 5 and fortress.mana == 2 and fortress.pop == 2
     castle = BUILDING_SPECS[BuildingType.CASTLE]
     assert castle.terrain == Terrain.CITY and castle.upkeep_gold == 2
+    forge = BUILDING_SPECS[BuildingType.FORGE]
+    assert forge.upkeep_mana == 1
+    market = BUILDING_SPECS[BuildingType.MARKET]
+    assert market.influence == 2
 
 
 def test_state_round_trips_through_dict():

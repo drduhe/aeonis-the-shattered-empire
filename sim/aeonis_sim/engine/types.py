@@ -76,6 +76,10 @@ class BuildingType(str, Enum):
     FORTRESS = "fortress"
     BRIDGE = "bridge"
     GUILD_HALL = "guild_hall"
+    FORGE = "forge"
+    ACADEMY = "academy"
+    BANK = "bank"
+    MARKET = "market"
     CASTLE = "castle"
 
 
@@ -87,10 +91,12 @@ class BuildingSpec:
     influence: int = 0
     pop: int = 0
     upkeep_gold: int = 0
+    upkeep_mana: int = 0
 
 
-# Buildings.md. Milestone 1 roster only: Forge/Academy/Bank/Market/Legendaries
-# depend on systems from later milestones (Trade, Arcane, Lord sheets).
+# Buildings.md standard roster (M3 Task 1 completes Forge/Academy/Bank/Market).
+# Legendary capstones stay M4 (Lord sheets). Academy's Arcane effect activates
+# with M3 Task 4 (Research); the building itself costs/upkeeps now.
 BUILDING_SPECS = {
     BuildingType.FARM: BuildingSpec(Terrain.PLAINS, gold=2, pop=1),
     BuildingType.MINE: BuildingSpec(Terrain.MOUNTAIN, gold=3, pop=1),
@@ -100,6 +106,11 @@ BUILDING_SPECS = {
     BuildingType.FORTRESS: BuildingSpec(None, gold=5, mana=2, pop=2),
     BuildingType.BRIDGE: BuildingSpec(Terrain.LAKE, gold=4, pop=0),
     BuildingType.GUILD_HALL: BuildingSpec(Terrain.CITY, gold=4, influence=2, pop=1),
+    BuildingType.FORGE: BuildingSpec(Terrain.CITY, gold=5, pop=1, upkeep_mana=1),
+    BuildingType.ACADEMY: BuildingSpec(Terrain.CITY, gold=4, mana=3, pop=2,
+                                       upkeep_mana=1),
+    BuildingType.BANK: BuildingSpec(Terrain.CITY, gold=5, pop=1),
+    BuildingType.MARKET: BuildingSpec(Terrain.CITY, gold=2, influence=2, pop=1),
     BuildingType.CASTLE: BuildingSpec(Terrain.CITY, gold=6, pop=2, upkeep_gold=2),
 }
 
@@ -131,12 +142,23 @@ class Tile:
     # Adjacency Claim tracker (Tiles.md control method 5): (pid, consecutive checks)
     adj_claim: Optional[tuple] = None
     castle_suspended: bool = False  # AL-8: Castle upkeep unpaid -> effects off this round
+    # Mana-upkeep buildings with unpaid upkeep this round (AL-8 pattern
+    # generalized for Forge/Academy). Stores BuildingType values.
+    suspended: list = field(default_factory=list)
     # Ongoing siege: unit uids still committed between Attack actions (Combat.md §6.4).
     siege_att_uids: list = field(default_factory=list)
     siege_def_uids: list = field(default_factory=list)
 
     def has(self, b: BuildingType) -> bool:
         return b in self.buildings
+
+    def active(self, b: BuildingType) -> bool:
+        """Building present and its upkeep paid this round."""
+        if b not in self.buildings:
+            return False
+        if b == BuildingType.CASTLE:
+            return not self.castle_suspended
+        return b.value not in self.suspended
 
     def to_dict(self) -> dict:
         return {
@@ -149,6 +171,7 @@ class Tile:
             "siege": self.siege,
             "adj_claim": list(self.adj_claim) if self.adj_claim else None,
             "castle_suspended": self.castle_suspended,
+            "suspended": list(self.suspended),
             "siege_att_uids": list(self.siege_att_uids),
             "siege_def_uids": list(self.siege_def_uids),
         }
@@ -165,6 +188,7 @@ class Tile:
             siege=d["siege"],
             adj_claim=tuple(d["adj_claim"]) if d["adj_claim"] else None,
             castle_suspended=d["castle_suspended"],
+            suspended=list(d.get("suspended", [])),
             siege_att_uids=list(d.get("siege_att_uids", [])),
             siege_def_uids=list(d.get("siege_def_uids", [])),
         )
@@ -385,6 +409,7 @@ class GameState:
                 siege=tile.siege,
                 adj_claim=tile.adj_claim,
                 castle_suspended=tile.castle_suspended,
+                suspended=list(tile.suspended),
                 siege_att_uids=list(tile.siege_att_uids),
                 siege_def_uids=list(tile.siege_def_uids),
             )

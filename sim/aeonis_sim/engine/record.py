@@ -27,6 +27,7 @@ def build_record(game) -> dict:
         "event_stats": dict(game.event_stats),
         "council_stats": dict(game.council_stats),
         "negotiation_stats": dict(game.negotiation_stats),
+        "building_stats": dict(game.building_stats),
         "final_state": s.to_dict(),
     }
 

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from .types import BuildingType, Terrain
+from .types import BUILDING_SPECS, BuildingType, Terrain
 
 # Tiles.md: base production, upgraded by the matching production building.
 _PLAIN = {Terrain.MOUNTAIN: ("gold", 1), Terrain.FOREST: ("mana", 1),
@@ -31,8 +31,48 @@ def apply_tile_production(player, tile) -> None:
         setattr(player, res, getattr(player, res) + amt)
 
 
-def run_production(state) -> None:
-    # Round_Structure.md §6: production, then growth, then upkeep.
+def _pay_upkeep(state, p) -> None:
+    """Building upkeep with AL-8 suspension (Castle gold; Forge/Academy mana)."""
+    for t in state.controlled(p.pid):
+        t.suspended = []
+        for b in t.buildings:
+            spec = BUILDING_SPECS[b]
+            if b == BuildingType.CASTLE:
+                if p.gold >= spec.upkeep_gold:
+                    p.gold -= spec.upkeep_gold
+                    t.castle_suspended = False
+                else:
+                    t.castle_suspended = True
+            elif spec.upkeep_mana:
+                if p.mana >= spec.upkeep_mana:
+                    p.mana -= spec.upkeep_mana
+                else:
+                    t.suspended.append(b.value)
+
+
+def _bank_conversion(state, p) -> str | None:
+    """Bank (Buildings.md): once per Production & Upkeep, convert at 2:3.
+
+    Sim auto-heuristic (AL-26): runs at end of Production & Upkeep; converts
+    surplus mana to gold, or gold to mana when mana-starved. One Bank use per
+    player per round regardless of Bank count.
+    """
+    if not any(t.active(BuildingType.BANK) for t in state.controlled(p.pid)):
+        return None
+    if p.mana >= 4:
+        p.mana -= 2
+        p.gold += 3
+        return "mana_to_gold"
+    if p.gold >= 6 and p.mana == 0:
+        p.gold -= 2
+        p.mana += 3
+        return "gold_to_mana"
+    return None
+
+
+def run_production(state) -> dict:
+    """Round_Structure.md §6: production, growth, upkeep. Returns stats."""
+    stats: dict = {"bank_conversions": {}}
     for p in state.players:
         # 1. Resource production (AL-13: Cities print growth only, not trade resources)
         for t in state.controlled(p.pid):
@@ -53,11 +93,10 @@ def run_production(state) -> None:
                 growth += 2
         room = state.pop_cap(p.pid) - state.pop_used(p.pid) - p.pop_pool
         p.pop_pool += max(0, min(growth, room))
-        # 3. Castle upkeep (AL-8: suspend when unpaid)
-        for t in state.controlled(p.pid):
-            if t.has(BuildingType.CASTLE):
-                if p.gold >= 2:
-                    p.gold -= 2
-                    t.castle_suspended = False
-                else:
-                    t.castle_suspended = True
+        # 3. Upkeep (suspend when unpaid)
+        _pay_upkeep(state, p)
+        # 4. Bank conversion (after upkeep so it never starves upkeep mana)
+        conv = _bank_conversion(state, p)
+        if conv:
+            stats["bank_conversions"][p.pid] = conv
+    return stats
