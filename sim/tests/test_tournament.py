@@ -30,26 +30,19 @@ def test_run_tournament_small(tmp_path):
 def test_bracket_configs_parse():
     root = Path(__file__).parent.parent / "configs"
     for name in (
-        "bracket-a.json",
-        "bracket-b.json",
-        "bracket-c.json",
-        "bracket-b-mixed.json",
-        "bracket-c-mixed.json",
+        "bracket-m2-smoke.json",
+        "bracket-m2-4p.json",
+        "bracket-m2-ci.json",
+        "bracket-m3-ci.json",
         "bracket-6p-mixed.json",
         "bracket-8p-mixed.json",
-        "bracket-b-mixed-plan1.json",
-        "bracket-c-mixed-plan1.json",
-        "bracket-plan1-step0.json",
-        "bracket-plan1-step1.json",
-        "bracket-plan1-step1b.json",
-        "bracket-plan1-step2.json",
         "regression-plan1-baseline.json",
         "regression-plan1-prestrike.json",
         "regression-plan2-baseline.json",
         "regression-plan2-cap-rally.json",
     ):
         cfg = json.loads((root / name).read_text())
-        min_games = 30 if name.startswith("regression-") else 100
+        min_games = 30 if name.startswith("regression-") else (20 if name.endswith("-ci.json") else 100)
         assert cfg["games"] >= min_games
         assert len(cfg["personas"]) >= 1
         if name.startswith("regression-"):

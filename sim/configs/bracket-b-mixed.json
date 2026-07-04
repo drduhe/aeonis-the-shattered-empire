@@ -1,8 +1,0 @@
-{
-  "name": "bracket-8p-mixed-m3",
-  "players": 8,
-  "games": 200,
-  "seed_base": 38000,
-  "personas": ["balanced", "expander", "warmonger", "economist", "diplomat"],
-  "matchmaking": "mixed"
-}

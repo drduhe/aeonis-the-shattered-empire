@@ -82,13 +82,14 @@ def evaluate_state(state, pid: int) -> dict[str, float]:
     n_ctrl = len(controlled)
     territory_sat = max(0.0, min((n_ctrl - 3) / 5.0, 1.0))
     building_count = sum(len(t.buildings) for t in controlled)
-    builder_track = min(building_count, 3) / 3.0
+    b_need = state.builder_min_buildings
+    builder_track = min(building_count, b_need) / float(b_need)
     gold_track = min(p.gold, 10) / 10.0
     catch_up = max(0, max_opp_vp - p.vp) / threshold
     built = sum(len(t.buildings) for t in controlled)
     builder_push = 0.0
     if "builder" in state.shared_public_revealed and "builder" not in p.shared_scored:
-        builder_push = max(0.0, (3 - min(built, 3)) / 3.0)
+        builder_push = max(0.0, (b_need - min(built, b_need)) / float(b_need))
 
     return {
         "vp": p.vp / threshold,
@@ -165,9 +166,11 @@ def _objective_progress(state, pid: int, name: str, *, secret: bool = False) -> 
         return min(len(state.controlled(pid)), need) / float(need)
     if name == "builder":
         b = sum(len(t.buildings) for t in state.controlled(pid))
-        return min(b, 3) / 3.0
+        need = state.builder_min_buildings
+        return min(b, need) / float(need)
     if name == "merchant_lord":
-        return min(state.player(pid).gold, 8) / 8.0
+        need = state.merchant_lord_min_gold
+        return min(state.player(pid).gold, need) / float(need)
     if name == "portal_mastery":
         portal = any(t.terrain == Terrain.PORTAL for t in state.controlled(pid))
         travel = state.player(pid).used_portal_travel
@@ -216,10 +219,11 @@ def _attack_value(state, pid: int, target: tuple) -> float:
 
 def _builder_need(state, pid: int) -> float:
     p = state.player(pid)
+    need = state.builder_min_buildings
     if "builder" in state.shared_public_revealed and "builder" not in p.shared_scored:
         built = sum(len(t.buildings) for t in state.controlled(pid))
-        if built < 3:
-            return (3 - built) / 3.0
+        if built < need:
+            return (need - built) / float(need)
     return 0.0
 
 
@@ -255,7 +259,8 @@ def _build_features(state, pid: int, choice: dict) -> dict[str, float]:
     mil = 0.3 if b in (BuildingType.FORTRESS, BuildingType.TOWER, BuildingType.CASTLE) else 0.0
     before = sum(len(t.buildings) for t in state.controlled(pid))
     after = before + 1
-    builder_delta = max(0.0, min(after, 3) / 3.0 - min(before, 3) / 3.0)
+    need = state.builder_min_buildings
+    builder_delta = max(0.0, min(after, need) / float(need) - min(before, need) / float(need))
     production_bonus = 0.4 if b in (
         BuildingType.MINE, BuildingType.GROVE, BuildingType.FARM, BuildingType.EMBASSY,
     ) else 0.0

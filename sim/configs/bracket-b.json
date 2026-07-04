@@ -1,8 +1,0 @@
-{
-  "name": "bracket-b-high-8p",
-  "players": 8,
-  "games": 600,
-  "seed_base": 20000,
-  "personas": ["balanced", "expander", "warmonger"],
-  "matchmaking": "solo"
-}

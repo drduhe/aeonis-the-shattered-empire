@@ -43,11 +43,11 @@ def _frontier_lord(state, pid) -> bool:
 
 
 def _builder(state, pid) -> bool:
-    return sum(len(t.buildings) for t in state.controlled(pid)) >= 3
+    return sum(len(t.buildings) for t in state.controlled(pid)) >= state.builder_min_buildings
 
 
 def _merchant_lord(state, pid) -> bool:
-    return state.player(pid).gold >= 8
+    return state.player(pid).gold >= state.merchant_lord_min_gold
 
 
 def _portal_mastery(state, pid) -> bool:

@@ -1,9 +1,0 @@
-{
-  "name": "seat-sweep-s1-4p-solo",
-  "players": 4,
-  "games": 200,
-  "seed_base": 77000,
-  "personas": ["warmonger", "economist", "expander", "diplomat", "balanced"],
-  "matchmaking": "solo",
-  "seat_rewards": {"seat_of_empire_vp": 1}
-}

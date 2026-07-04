@@ -1,9 +1,0 @@
-{
-  "name": "lever-b-frontier8-4p-smoke",
-  "players": 4,
-  "games": 100,
-  "seed_base": 74000,
-  "personas": ["warmonger", "economist", "expander", "diplomat", "balanced"],
-  "matchmaking": "mixed",
-  "objectives": {"frontier_lord_min_hexes": 8}
-}

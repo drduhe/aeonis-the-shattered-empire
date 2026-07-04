@@ -50,6 +50,17 @@ def build_initial_state(config: dict, rng: random.Random) -> GameState:
     if sov is not None:
         state.seat_of_empire_vp = int(sov)
 
+    economy_exp = config.get("economy", {})
+    ml = economy_exp.get("merchant_lord_min_gold")
+    if ml is not None:
+        state.merchant_lord_min_gold = int(ml)
+    bb = economy_exp.get("builder_min_buildings")
+    if bb is not None:
+        state.builder_min_buildings = int(bb)
+    t1 = economy_exp.get("tier1_production_build_ap")
+    if t1 is not None:
+        state.tier1_production_build_ap = int(t1)
+
     state.speaker = int(rng.randrange(n))
     state.event_deck = init_event_deck(rng)
     state.agenda_deck = init_agenda_deck(rng)

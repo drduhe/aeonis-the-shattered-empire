@@ -69,3 +69,29 @@ def test_bridge_requires_adjacent_control_and_claims_lake():
     apply_build(s, 0, choice)
     assert s.tiles[lake].has(BuildingType.BRIDGE)
     assert s.tiles[lake].controller == 0  # AL-6
+
+
+def test_tier1_production_build_ap_from_economy_config():
+    s = build_initial_state(
+        {"players": 3, "economy": {"tier1_production_build_ap": 2}},
+        random.Random(68),
+    )
+    assert s.tier1_production_build_ap == 2
+    p = s.players[0]
+    p.gold = 20
+    p.mana = 20
+    p.influence = 20
+    p.ap = 2
+    plains = next(t.coord for t in s.controlled(0) if t.terrain == Terrain.PLAINS)
+    builds = enumerate_builds(s, 0)
+    assert any(
+        tuple(b["hex"]) == plains and b["building"] == "farm"
+        for b in builds
+    )
+    assert not any(b["building"] == "tower" for b in builds)
+    choice = next(
+        b for b in builds
+        if tuple(b["hex"]) == plains and b["building"] == "farm"
+    )
+    apply_build(s, 0, choice)
+    assert p.ap == 0

@@ -1,9 +1,0 @@
-{
-  "name": "lever-a-vp12-4p-solo",
-  "players": 4,
-  "games": 200,
-  "seed_base": 73000,
-  "personas": ["warmonger", "economist", "expander", "diplomat", "balanced"],
-  "matchmaking": "solo",
-  "pacing": {"vp_threshold": 12}
-}

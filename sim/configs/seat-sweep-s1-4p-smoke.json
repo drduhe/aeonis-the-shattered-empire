@@ -1,9 +1,0 @@
-{
-  "name": "seat-sweep-s1-4p-smoke",
-  "players": 4,
-  "games": 100,
-  "seed_base": 76000,
-  "personas": ["warmonger", "economist", "expander", "diplomat", "balanced"],
-  "matchmaking": "mixed",
-  "seat_rewards": {"seat_of_empire_vp": 1}
-}

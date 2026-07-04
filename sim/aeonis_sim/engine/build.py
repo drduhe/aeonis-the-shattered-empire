@@ -8,9 +8,22 @@ from .arcane import (
     mark_waystones_used,
     waystones_move_discount,
 )
-from .types import BUILDING_SPECS, BuildingType, Terrain
+from .types import BUILDING_SPECS, BuildingType, DEFAULT_BUILD_AP, Terrain
 
-BUILD_AP = 3
+TIER1_PRODUCTION = frozenset({
+    BuildingType.FARM,
+    BuildingType.MINE,
+    BuildingType.GROVE,
+    BuildingType.EMBASSY,
+})
+
+BUILD_AP = DEFAULT_BUILD_AP  # legacy alias for tests/docs
+
+
+def build_ap_cost(state, btype: BuildingType) -> int:
+    if btype in TIER1_PRODUCTION:
+        return state.tier1_production_build_ap
+    return DEFAULT_BUILD_AP
 
 
 def _slots(tile) -> int:
@@ -25,10 +38,10 @@ def _can_afford(p, spec, state, pid, btype) -> bool:
 
 def enumerate_builds(state, pid) -> list:
     p = state.player(pid)
-    if p.ap < BUILD_AP:
-        return []
     out = []
     for btype, spec in BUILDING_SPECS.items():
+        if p.ap < build_ap_cost(state, btype):
+            continue
         if not _can_afford(p, spec, state, pid, btype):
             continue
         if btype == BuildingType.BRIDGE:
@@ -60,7 +73,7 @@ def apply_build(state, pid, choice) -> None:
     tile = state.tiles[tuple(choice["hex"])]
     btype = BuildingType(choice["building"])
     spec = BUILDING_SPECS[btype]
-    p.ap -= BUILD_AP
+    p.ap -= build_ap_cost(state, btype)
     gold = build_gold_cost(state, pid, btype, spec.gold)
     p.gold -= gold
     p.mana -= spec.mana

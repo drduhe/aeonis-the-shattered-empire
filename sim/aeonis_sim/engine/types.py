@@ -11,6 +11,10 @@ VP_THRESHOLD = 10  # canon default; override per-game via GameState.vp_threshold
 FRONTIER_LORD_MIN_HEXES = 7  # canon default; override via GameState (H7 Lever B experiment)
 PUBLIC_OBJECTIVE_VP = 2  # canon default for public row cards
 SEAT_OF_EMPIRE_VP = 2  # canon default; override via GameState (seat sweep S1)
+MERCHANT_LORD_MIN_GOLD = 8  # canon default; early-economy E1 (config["economy"])
+BUILDER_MIN_BUILDINGS = 3  # canon default; early-economy E2 (config["economy"])
+TIER1_PRODUCTION_BUILD_AP = 3  # Farm/Mine/Grove/Embassy; early-economy E5 (config["economy"])
+DEFAULT_BUILD_AP = 3  # all other buildings (Actions.md)
 GLOBAL_POP_CAP = 25
 DEFAULT_ROUND_CAP = 25
 BASE_AP = 5
@@ -369,6 +373,9 @@ class GameState:
     vp_threshold: int = VP_THRESHOLD  # Plan 3 pacing experiment (config["pacing"])
     frontier_lord_min_hexes: int = FRONTIER_LORD_MIN_HEXES  # Lever B row tempo (config["objectives"])
     seat_of_empire_vp: int = SEAT_OF_EMPIRE_VP  # Seat sweep S1 (config["seat_rewards"])
+    merchant_lord_min_gold: int = MERCHANT_LORD_MIN_GOLD  # Early economy E1 (config["economy"])
+    builder_min_buildings: int = BUILDER_MIN_BUILDINGS  # Early economy E2 (config["economy"])
+    tier1_production_build_ap: int = TIER1_PRODUCTION_BUILD_AP  # Early economy E5 (config["economy"])
     speaker: int = 0
     strategy_pool: list = field(default_factory=list)      # undrafted card ids
     strategy_bounty: dict = field(default_factory=dict)    # card id -> accumulated gold
@@ -584,6 +591,9 @@ class GameState:
             vp_threshold=self.vp_threshold,
             frontier_lord_min_hexes=self.frontier_lord_min_hexes,
             seat_of_empire_vp=self.seat_of_empire_vp,
+            merchant_lord_min_gold=self.merchant_lord_min_gold,
+            builder_min_buildings=self.builder_min_buildings,
+            tier1_production_build_ap=self.tier1_production_build_ap,
             speaker=self.speaker,
             strategy_pool=list(self.strategy_pool),
             strategy_bounty=dict(self.strategy_bounty),

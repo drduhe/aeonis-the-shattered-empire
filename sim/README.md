@@ -31,7 +31,7 @@ Persona bots:
 Tournament (balance campaign):
 
     cd sim && python3.11 -m aeonis_sim.runner.tournament \
-      --config configs/bracket-a.json --out /tmp/bracket-a.jsonl --report /tmp/bracket-a.md
+      --config configs/bracket-m2-smoke.json --out /tmp/smoke.jsonl --report /tmp/smoke.md
 
 Flags: `--players`, `--seed`, `--games`, `--out`, `--persona`, `--personas`.
 Tournament: `--config`, `--report`, `--html`, `--session-log`, `--workers` (default: CPU count).
@@ -43,9 +43,10 @@ Plan 2 AP economy toggles (PROPOSED) under `"ap_economy"`:
 `ap_bonus_cap` (e.g. `2`), `rally` (`true` / `false`).
 
 H7 calibration toggles (PROPOSED, sim-only): `"pacing"` (`vp_threshold`), `"objectives"`
-(`frontier_lord_min_hexes`), `"seat_rewards"` (`seat_of_empire_vp`). Default smoke
-(`bracket-m2-smoke.json`) uses `seat_of_empire_vp: 1` plus Lever C expander brakes in
-`persona.py`. See `docs/reports/INDEX.md`.
+(`frontier_lord_min_hexes`), `"seat_rewards"` (`seat_of_empire_vp`), `"economy"` (see
+`docs/reports/2026-07-03-early-economy-sweep-conclusion.md`). Default smoke uses
+`seat_of_empire_vp: 1` plus Lever C brakes in `persona.py`. See
+`docs/reports/2026-07-03-current-baselines.md`.
 
 ## Regression gates (Plan 1 / Plan 2)
 
@@ -78,8 +79,8 @@ See `docs/reports/2026-07-03-plan1-combat-ladder.md` for calibration notes.
 Milestone status and next scope: `docs/plans/INDEX.md` (sim track section);
 architecture spec §5 owns milestone content.
 
-M2 tournament configs: `configs/bracket-m2-smoke.json`, `bracket-m2-4p.json`.
-Current baselines: `docs/reports/INDEX.md`.
+M2 tournament configs: `configs/bracket-m2-smoke.json`, `bracket-m2-4p.json`, `bracket-6p-mixed.json`, `bracket-8p-mixed.json`.
+Current baselines: `docs/reports/2026-07-03-current-baselines.md`.
 
 Rules questions found while encoding the docs live in
 `playtest/Ambiguity_Ledger.md`.

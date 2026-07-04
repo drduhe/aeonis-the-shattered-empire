@@ -1,92 +1,34 @@
-# Sim reports — index & current baselines
+# Sim reports — index
 
-**Updated:** 2026-07-03 · Entry point for `docs/reports/`. Everything here is **sim-only** (persona bots, not humans) unless a report says otherwise.
+**Updated:** 2026-07-03 · Sim-only unless noted. Full tournament dumps are **regenerable** — conclusions live in the memos below.
 
-**Engine state for current baselines:** M1 core loop + Plan 3 MVP + M2 politics + **M3 card systems** (Remnants/exploration, Artifacts/Sites, Arcane Tier I, secrets, Whispers, strategy primaries). 232 pytest passing.
-
----
-
-## Lever experiments (sim-only, 2026-07-03)
-
-| Report | Config | What it answers |
-|---|---|---|
-| [Lever A — VP threshold sweep](2026-07-03-lever-a-pacing-vp-threshold.md) | `lever-a-vp11/12-4p-smoke.json` | Pacing vs expander dominance; 12 VP hits 7.5 rounds but H7 still fails |
-| [Lever B — frontier_lord 8 hexes](2026-07-03-lever-b-frontier-lord-8hex.md) | `lever-b-frontier8-4p-smoke.json` | H7 still fails; economist H12 passes (8.9%) |
-| [Lever C — expander lead brake](2026-07-03-lever-c-expander-brake-m3.md) | `bracket-m2-smoke.json` (persona weights) | Expander **20%**; balanced **40.8%** — partial H7 fix |
-| [Seat/rite analysis](2026-07-03-seat-rite-analysis-m3.md) | JSONL + `analyze_seat_rite.py` | Expander does not monopolize seat; sweep plan filed |
-| [Seat sweep S1 — seat_of_empire 1 VP](2026-07-03-seat-sweep-s1-seat-of-empire-1vp.md) | `seat-sweep-s1-4p-smoke.json` | Balanced 40.8%→29.3%; expander ~20%; warmonger 37.3% |
-| [High-count economist read](2026-07-03-calibration-high-count-economist.md) | 6p/8p mixed brackets | Economist lift is **4p-only**; 6p 3.6%, 8p 2.0% |
+**Engine:** M3 card systems + Lever C brakes + S1 seat VP. **235 pytest** passing.
 
 ---
 
-## Current baselines (regenerated 2026-07-03, post H7 calibration)
+## Conclusions (read these)
 
-| Report | Config | Games | What it answers |
-|---|---|---|---|
-| [H7 Expander dominance report](2026-07-03-h7-expander-dominance-m3.md) | pre-calibration JSONL | 100 | Diagnosis at 40.5% expander; lever ranking (historical) |
-| [Mixed 4p M3 baseline](2026-07-03-baseline-mixed-4p-m3.md) | `sim/configs/bracket-m2-smoke.json` | 100 | **Current default:** Lever C + S1; whispers/artifacts/research; H1–H12 |
-| [Mixed 6p M3 baseline](2026-07-03-baseline-mixed-6p-m3.md) | `sim/configs/bracket-6p-mixed.json` | 200 | Mid-count pacing + persona mix at M3 fidelity |
-| [Mixed 8p M3 baseline](2026-07-03-baseline-mixed-8p-m3.md) | `sim/configs/bracket-8p-mixed.json` | 200 | High-count stress (council/whispers); H4/H7/H8 |
-| [Solo 4p M3 ladder](2026-07-03-baseline-solo-4p-m3.md) | `sim/configs/bracket-m2-4p.json` | 200 | Pacing sanity per persona at M3 fidelity |
-| [Mixed 4p pre-M3 baseline](2026-07-03-baseline-mixed-4p.md) | `sim/configs/bracket-m2-smoke.json` | 100 | Pre-M3 comparison (Merchant Lord only) |
-| [Solo 4p pre-M3 ladder](2026-07-03-baseline-solo-4p.md) | `sim/configs/bracket-m2-4p.json` | 200 | Pre-M3 solo ladder |
-
-**Headlines (mixed 4p M3, Lever C + S1 default):** 100% completed · mean **6.2** rounds · economist **10.7%** (H12 killed) · expander **23.3%** · max persona balanced **33.8%** (H7 expander inconclusive).
-
-**Headlines (mixed 6p M3, Lever C + S1):** 200/200 completed · mean **6.4** rounds · economist **3.6%** (H8 fail) · warmonger 27.2%.
-
-**Headlines (mixed 8p M3, Lever C + S1):** 200/200 completed · mean **6.2** rounds · economist **2.0%** (H8 fail) · H7 killed (max persona 22.6%).
-
-Regenerate after engine changes:
-
-    cd sim && py -3.11 -m aeonis_sim.runner.tournament --config configs/bracket-m2-smoke.json --report ../docs/reports/2026-07-03-baseline-mixed-4p-m3.md --workers 4
-    cd sim && py -3.11 -m aeonis_sim.runner.tournament --config configs/bracket-6p-mixed.json --report ../docs/reports/<date>-baseline-mixed-6p-m3.md --workers 4
-
-## Hypothesis scoreboard (mixed 4p M3 baseline)
-
-| ID | Hypothesis | Status | Read |
-|---|---|---|---|
-| H1 | Seat+streak >50% of all VP | **killed** | 6.5% — Coronation Rite fixed the drip |
-| H2 | Winning margin >5 VP | **killed** | 3.1 VP avg |
-| H3 | Objectives ≥60% of winner VP | **killed** (goal met) | 79.5% |
-| H4 | 8p timeouts are pacing | **killed** | 0% timeout at 8p (200 games, M3) |
-| H5 | Combat VP marginal even for Warmonger | inconclusive | 4.8% winner share at 8p |
-| H6 | no_vp_progress is chaos artifact | **killed** | 0% degenerate |
-| H7 | No persona dominates mixed seats | **4p inconclusive, 8p killed** | 4p expander **23.3%**, max **33.8%** (balanced) — post [Lever C + S1](2026-07-03-seat-sweep-s1-seat-of-empire-1vp.md); pre-calibration [H7 report](2026-07-03-h7-expander-dominance-m3.md) |
-| H8 | Economist viable in mixed seats | **4p met, 6–8p not** | 4p **10.7%** · 6p **3.6%** · 8p **2.0%** (bar ≥5%) — see [high-count read](2026-07-03-calibration-high-count-economist.md) |
-| H9 | Diplomat ≥3% mixed 4p | **killed** (goal met) | 21.6% |
-| H10 | Whisper hands manageable | **killed** | 1.3% forced discard at 4p |
-| H11 | First artifact round 3–4 | **killed** | Median round 3 |
-| H12 | Economist ≥5% mixed 4p at M3 | **killed** (goal met) | **10.7%** |
-
-## Design memos & calibration (keep)
-
-| Doc | Role |
-|---|---|
-| [Economist viability memo](2026-07-03-memo-economist-viability.md) | Owner decision memo: stop bot tuning; levers are Plan 3 pacing (8–10 rounds) + row composition. Checklist in §6 |
-| [Persona parity diagnosis](2026-07-03-persona-parity-diagnosis.md) | Bot-artifact vs design-pressure methodology; pre/post-fix data; calibration stop rule |
-| [Plan 1 combat ladder](2026-07-03-plan1-combat-ladder.md) | Edge/Pillage variant sweep; recommends Pre-Strike Edge for first human test |
-
-## Regression gates (CI-enforced, no stored reports)
-
-CI (`.github/workflows/sim.yml`) re-runs these every push — green means gates hold; stored snapshots add nothing:
-
-- Plan 1/2: `sim/configs/regression-plan{1,2}-*.json` (4 bracket matrix)
-- M2 gate: `sim/configs/bracket-m2-ci.json` (20 mixed 4p, zero crash/timeout/degenerate)
-- M3 gate: `sim/configs/bracket-m3-ci.json` (20 mixed 4p, zero crash/timeout/degenerate)
-
-Local check: `cd sim && python scripts/regression_check.py --config <config> --report <optional.md>`
+| Doc | What it answers |
+| --- | --- |
+| [Current baselines](2026-07-03-current-baselines.md) | Active configs, headline metrics, regenerate commands |
+| [H7 calibration sweep](2026-07-03-h7-calibration-sweep-conclusion.md) | Expander dominance fix (C+S1); Levers A/B killed |
+| [Early economy sweep](2026-07-03-early-economy-sweep-conclusion.md) | E1/E2/E5 killed — single-knob easing fails |
+| [Economist viability memo](2026-07-03-memo-economist-viability.md) | Owner decision: stop bot tuning; packet levers |
+| [Persona parity diagnosis](2026-07-03-persona-parity-diagnosis.md) | Bot vs design-pressure methodology |
+| [Plan 1 combat ladder](2026-07-03-plan1-combat-ladder.md) | Edge/Pillage variants; Pre-Strike for human test |
 
 ---
 
-## Removed reports (git history has full text)
+## CI / regression (no stored reports)
 
-Superseded snapshots removed 2026-07-03: M1-era bracket/persona HTML reports (2026-07-02), milestone-1 gate and playtest HTML, Plan B synthesis, MVP/parity/parity-v2 bracket generations, pre-Task-6 M2 gate/smoke/impact reports, **7p mixed baseline** (replaced by 6p/8p M3 baselines), and regression markdown snapshots. Their surviving conclusions:
+- `regression-plan1-baseline.json`, `regression-plan1-prestrike.json`
+- `regression-plan2-baseline.json`, `regression-plan2-cap-rally.json`
+- `bracket-m2-ci.json`, `bracket-m3-ci.json`
 
-- **M1 gate (2026-07-02):** engine crash-free at all counts; chaos-bot timeouts expected (no VP pursuit).
-- **Plan B brackets:** H1 killed (seat drip dominated pre-MVP — motivated Plan 3 MVP), H5 killed, H6 killed.
-- **MVP encode brackets:** winner objective share ~68–72% — Plan 3 MVP promoted to canon (see `rules_and_systems/INDEX.md`).
-- **Parity v2 (8p):** expander tamed at 8p via full-roster mixed matchmaking; economist <3% at 6–8p (H8 origin).
-- **M2 gate (pre-negotiation):** 100/100 smoke, solo 200/200, CI 20/20 — gate recorded in `docs/plans/INDEX.md`.
+Local: `cd sim && python scripts/regression_check.py --config configs/<config>`
 
-Recover any file: `git log --diff-filter=D --summary -- docs/reports/`
+---
+
+## Removed artifacts (2026-07-03 cleanup)
+
+Per-bracket tournament snapshots, one-off experiment configs (lever-a/b, seat-sweep, early-economy, legacy bracket-a/b/c), and pre-M3 baselines removed. Conclusions preserved in the docs above; recover deleted files via `git log --diff-filter=D --summary -- docs/reports/` or `sim/configs/`.

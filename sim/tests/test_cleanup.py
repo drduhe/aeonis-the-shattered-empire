@@ -102,6 +102,39 @@ def test_one_public_objective_per_round():
     assert p.vp == 4
 
 
+def test_builder_min_buildings_from_economy_config():
+    s = build_initial_state(
+        {"players": 3, "economy": {"builder_min_buildings": 2}},
+        random.Random(67),
+    )
+    assert s.builder_min_buildings == 2
+    p = s.players[0]
+    s.shared_public_revealed = ["builder"]
+    controlled = list(s.controlled(0))
+    controlled[0].buildings.append(BuildingType.FARM)
+    run_cleanup(s)
+    assert p.vp == 0 and "builder" not in p.shared_scored
+    controlled[0].buildings.append(BuildingType.MINE)
+    run_cleanup(s)
+    assert p.vp == 2 and "builder" in p.shared_scored
+
+
+def test_merchant_lord_min_gold_from_economy_config():
+    s = build_initial_state(
+        {"players": 3, "economy": {"merchant_lord_min_gold": 6}},
+        random.Random(66),
+    )
+    assert s.merchant_lord_min_gold == 6
+    p = s.players[0]
+    s.shared_public_revealed = ["merchant_lord"]
+    p.gold = 5
+    run_cleanup(s)
+    assert p.vp == 0
+    p.gold = 6
+    run_cleanup(s)
+    assert p.vp == 2 and "merchant_lord" in p.shared_scored
+
+
 def test_merchant_lord_scores_at_8_gold():
     s = make_state()
     p = s.players[0]
