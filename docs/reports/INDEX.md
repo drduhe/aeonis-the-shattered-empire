@@ -15,6 +15,7 @@
 | [Lever C — expander lead brake](2026-07-03-lever-c-expander-brake-m3.md) | `bracket-m2-smoke.json` (persona weights) | Expander **20%**; balanced **40.8%** — partial H7 fix |
 | [Seat/rite analysis](2026-07-03-seat-rite-analysis-m3.md) | JSONL + `analyze_seat_rite.py` | Expander does not monopolize seat; sweep plan filed |
 | [Seat sweep S1 — seat_of_empire 1 VP](2026-07-03-seat-sweep-s1-seat-of-empire-1vp.md) | `seat-sweep-s1-4p-smoke.json` | Balanced 40.8%→29.3%; expander ~20%; warmonger 37.3% |
+| [High-count economist read](2026-07-03-calibration-high-count-economist.md) | 6p/8p mixed brackets | Economist lift is **4p-only**; 6p 3.6%, 8p 2.0% |
 
 ---
 
@@ -32,9 +33,9 @@
 
 **Headlines (mixed 4p M3, Lever C + S1 default):** 100% completed · mean **6.2** rounds · economist **10.7%** (H12 killed) · expander **23.3%** · max persona balanced **33.8%** (H7 expander inconclusive).
 
-**Headlines (mixed 6p M3):** 200/200 completed · mean **5.8** rounds · economist **2.6%** · warmonger 25.2%.
+**Headlines (mixed 6p M3, Lever C + S1):** 200/200 completed · mean **6.4** rounds · economist **3.6%** (H8 fail) · warmonger 27.2%.
 
-**Headlines (mixed 8p M3):** 200/200 completed · mean **5.8** rounds · economist **2.3%** · H7 killed (max persona 21.9%) · H4 killed (0% timeout).
+**Headlines (mixed 8p M3, Lever C + S1):** 200/200 completed · mean **6.2** rounds · economist **2.0%** (H8 fail) · H7 killed (max persona 22.6%).
 
 Regenerate after engine changes:
 
@@ -52,7 +53,7 @@ Regenerate after engine changes:
 | H5 | Combat VP marginal even for Warmonger | inconclusive | 4.8% winner share at 8p |
 | H6 | no_vp_progress is chaos artifact | **killed** | 0% degenerate |
 | H7 | No persona dominates mixed seats | **4p inconclusive, 8p killed** | 4p expander **23.3%**, max **33.8%** (balanced) — post [Lever C + S1](2026-07-03-seat-sweep-s1-seat-of-empire-1vp.md); pre-calibration [H7 report](2026-07-03-h7-expander-dominance-m3.md) |
-| H8 | Economist viable in mixed seats | **4p met, 6–8p not** | 4p **10.7%** · 6p 2.6% · 8p 2.3% (bar ≥5%) |
+| H8 | Economist viable in mixed seats | **4p met, 6–8p not** | 4p **10.7%** · 6p **3.6%** · 8p **2.0%** (bar ≥5%) — see [high-count read](2026-07-03-calibration-high-count-economist.md) |
 | H9 | Diplomat ≥3% mixed 4p | **killed** (goal met) | 21.6% |
 | H10 | Whisper hands manageable | **killed** | 1.3% forced discard at 4p |
 | H11 | First artifact round 3–4 | **killed** | Median round 3 |

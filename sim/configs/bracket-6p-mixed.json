@@ -4,5 +4,6 @@
   "games": 200,
   "seed_base": 36000,
   "personas": ["balanced", "expander", "warmonger", "economist", "diplomat"],
-  "matchmaking": "mixed"
+  "matchmaking": "mixed",
+  "seat_rewards": {"seat_of_empire_vp": 1}
 }
