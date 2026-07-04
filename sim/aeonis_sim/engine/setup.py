@@ -4,10 +4,10 @@ import random
 
 from .hexmap import generate_map, neighbors
 from .objectives import (
-    PUBLIC_OBJECTIVE_IDS,
     SECRET_OBJECTIVE_IDS,
     deal_secret_draw,
     deal_round3_secrets,
+    setup_shared_public_row,
 )
 from .artifacts import init_artifact_deck
 from .exploration import init_exploration_deck
@@ -72,9 +72,8 @@ def build_initial_state(config: dict, rng: random.Random) -> GameState:
     rng.shuffle(secret_deck)
     state.secret_objective_deck = secret_deck
 
-    public_deck = list(PUBLIC_OBJECTIVE_IDS)
-    rng.shuffle(public_deck)
-    state.shared_public_revealed = [public_deck.pop(), public_deck.pop()]
+    revealed, public_deck = setup_shared_public_row(rng, objectives)
+    state.shared_public_revealed = revealed
     state.shared_public_deck = public_deck
 
     for pid in range(n):

@@ -1,6 +1,6 @@
 # Plan — Early economy impact (PROPOSED)
 
-**Date:** 2026-07-03 · **Status:** PROPOSED (sim-led) · **E1/E2/E5:** **KILLED** — see [sweep conclusion](../reports/2026-07-03-early-economy-sweep-conclusion.md)  
+**Date:** 2026-07-03 · **Status:** PROPOSED (sim-led) · **E1/E2/E3/E5:** **KILLED** — see [sweep conclusion](../reports/2026-07-03-early-economy-sweep-conclusion.md)  
 **Goal:** Make economy-focused play **threatening in rounds 2–3** without stretching game length (~6–7 rounds at 4p is acceptable).  
 **Stacked with:** Lever C expander brakes + S1 `seat_of_empire` 1 VP (current sim defaults).
 
@@ -19,12 +19,12 @@ Tempo objectives score on the same cleanup they complete. Economy paths (`mercha
 | E1 | `merchant_lord` 8→6 gold | **KILLED** 2026-07-03 |
 | E2 | `builder` 3→2 buildings | **KILLED** 2026-07-03 |
 | E5 | Tier-1 production build 3→2 AP | **KILLED** 2026-07-03 |
-| E3 | Staged row reveal (economy in opening 2) | open — packet |
+| E3 | Staged row reveal (economy in opening 2) | **KILLED** 2026-07-03 |
 | E4 | New early economy public | open — design |
 | E6 | City +1 gold production | open — rules |
 | E7 | Economic Boom initiative | open — strategy card |
 
-**Do not re-run E1/E2/E5** or stack killed levers without a combo study.
+**Do not re-run E1/E2/E3/E5** or stack killed levers without a combo study.
 
 ---
 
@@ -35,6 +35,8 @@ Tempo objectives score on the same cleanup they complete. Economy paths (`mercha
 | `economy.merchant_lord_min_gold` | 8 |
 | `economy.builder_min_buildings` | 3 |
 | `economy.tier1_production_build_ap` | 3 (Farm/Mine/Grove/Embassy only) |
+| `objectives.staged_economy_opening` | false (random opening 2) |
+| `objectives.opening_public_ids` | — (optional explicit list) |
 
 ---
 

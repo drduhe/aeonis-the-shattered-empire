@@ -29,6 +29,16 @@ def test_starting_units_and_control():
         assert len(s.controlled(p.pid)) == 4
 
 
+def test_staged_economy_opening_from_objectives_config():
+    s = build_initial_state(
+        {"players": 4, "objectives": {"staged_economy_opening": True}},
+        random.Random(99),
+    )
+    assert set(s.shared_public_revealed) == {"builder", "merchant_lord"}
+    assert len(s.shared_public_deck) == 4
+    assert not {"builder", "merchant_lord"} & set(s.shared_public_deck)
+
+
 def test_shared_public_row_and_secrets():
     s = make_state()
     assert len(s.shared_public_revealed) == 2

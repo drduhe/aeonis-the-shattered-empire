@@ -25,6 +25,9 @@ PUBLIC_OBJECTIVE_IDS = (
     "seat_of_empire",
 )
 
+# E3 staged row: economy cards fixed in opening 2 (First Playable PROPOSED experiment).
+STAGED_ECONOMY_OPENING = ("builder", "merchant_lord")
+
 SECRET_OBJECTIVE_IDS = (
     "hidden_arsenal",
     "golden_hoard",
@@ -36,6 +39,38 @@ SECRET_OBJECTIVE_IDS = (
 
 SECRET_CAP = 3
 IMMEDIATE_SECRETS = frozenset({"golden_hoard", "mana_flood"})
+
+
+def setup_shared_public_row(
+    rng: random.Random,
+    objectives_config: dict | None = None,
+) -> tuple[list[str], list[str]]:
+    """Deal opening shared row + remaining deck (First Playable §4.4).
+
+    Default: shuffle all 6, reveal 2 at random.
+    E3: ``staged_economy_opening`` or ``opening_public_ids`` fixes opening cards.
+    """
+    objectives_config = objectives_config or {}
+    opening = objectives_config.get("opening_public_ids")
+    if opening is None and objectives_config.get("staged_economy_opening"):
+        opening = list(STAGED_ECONOMY_OPENING)
+    public_deck = list(PUBLIC_OBJECTIVE_IDS)
+    if opening is not None:
+        opening = [str(x) for x in opening]
+        for oid in opening:
+            if oid not in PUBLIC_OBJECTIVE_IDS:
+                raise ValueError(f"unknown opening public objective: {oid}")
+        if len(opening) > 2:
+            raise ValueError("opening_public_ids exceeds First Playable opening size (2)")
+        for oid in opening:
+            public_deck.remove(oid)
+        rng.shuffle(public_deck)
+        revealed = list(opening)
+        while len(revealed) < 2:
+            revealed.append(public_deck.pop())
+        return revealed, public_deck
+    rng.shuffle(public_deck)
+    return [public_deck.pop(), public_deck.pop()], public_deck
 
 
 def _frontier_lord(state, pid) -> bool:

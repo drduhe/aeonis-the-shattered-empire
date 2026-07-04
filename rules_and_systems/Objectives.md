@@ -394,6 +394,12 @@ Cards in this section are **PROPOSED** balance experiments: they are legal only 
 - **Clarifications:** Read directly from your Gold stock at the moment of verification. This is separate from, and may be scored in addition to, the secret objective **Golden Hoard** (10 Gold, Immediate window) — banking toward one naturally progresses the other.
 - **Status:** PROPOSED (2026-07-03) — First Playable public-row experiment addressing Economist viability (see `../docs/reports/2026-07-03-memo-economist-viability.md`, Lever B). Included in the First Playable shared row per `../playtest/First_Playable_Packet.md` §4.4; intended as a **Stage I public** if promoted.
 
+#### Staged economy opening (E3)
+
+- **Rule (PROPOSED):** At setup, the shared row's opening **2** revealed cards are **Builder** and **Merchant Lord** instead of a random pair. Remaining public cards shuffle into the deck and reveal per the normal Round Start schedule.
+- **Intent:** Make economy paths **visible from round 1** without changing thresholds or pacing knobs (contrast E1/E2/E5, killed in sim).
+- **Status:** PROPOSED (2026-07-03) — sim toggle `objectives.staged_economy_opening`; see `../docs/plans/2026-07-03-plan-early-economy-impact.md` track E3.
+
 ---
 
 ## 5. Design Notes

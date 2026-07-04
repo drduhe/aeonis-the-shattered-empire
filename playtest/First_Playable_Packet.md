@@ -171,6 +171,8 @@ Use the full 8-card deck from `Strategy.md` (print as cards):
 
 **Shared public row (Plan 3 MVP):** Shuffle the 6 public objective cards. Reveal **2** face-up in a shared row visible to all players. At each **Round Start** from Round 2, reveal **1** additional public card until all 6 are face-up.
 
+**Staged economy opening (PROPOSED E3, sim-led 2026-07-03):** For economist-row experiments, the opening **2** cards are always **Builder** and **Merchant Lord** (either order). The remaining four public cards are shuffled into the deck and reveal one per Round Start from Round 2 as usual. Tempo objectives (`Frontier Lord`, `Seat of Empire`, etc.) enter the row from Round 2 onward. Not promoted until human playtest; sim toggle `objectives.staged_economy_opening`.
+
 **Public Objectives (2 VP each, each player may score each card once):**
 
 - **Frontier Lord**: Control 7 hexes.
