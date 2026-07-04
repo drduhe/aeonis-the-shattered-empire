@@ -3,7 +3,7 @@ from __future__ import annotations
 from .hexmap import distance, neighbors
 from .arcane import apply_boundary_stones
 from .artifacts import score_artifact_vp
-from .objectives import PUBLIC_OBJECTIVES, score_cleanup_secrets
+from .objectives import PUBLIC_OBJECTIVES, public_objective_vp, score_cleanup_secrets
 from .whispers import expire_whisper_flags, hand_over_limit
 from .types import BuildingType, Terrain, Unit, UNIT_STATS, UnitType
 
@@ -106,7 +106,7 @@ def _score_objectives(state, pid: int) -> None:
             if obj_id in p.shared_scored:
                 continue
             if PUBLIC_OBJECTIVES[obj_id](state, pid):
-                p.add_vp(2, "objective")
+                p.add_vp(public_objective_vp(state, obj_id), "objective")
                 p.shared_scored.append(obj_id)
                 p.public_scored_this_round = True
                 break

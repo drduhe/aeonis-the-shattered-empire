@@ -15,6 +15,22 @@ def put(s, coord, owner, utype):
     return u
 
 
+def test_seat_of_empire_vp_from_seat_rewards_config():
+    s = build_initial_state(
+        {"players": 3, "seat_rewards": {"seat_of_empire_vp": 1}},
+        random.Random(77),
+    )
+    assert s.seat_of_empire_vp == 1
+    seat = next(t for t in s.tiles.values() if t.imperial_seat)
+    seat.controller = 0
+    s.shared_public_revealed = ["seat_of_empire"]
+    from aeonis_sim.engine.cleanup import _score_objectives
+
+    _score_objectives(s, 0)
+    assert s.players[0].vp == 1
+    assert s.players[0].vp_sources["objective"] == 1
+
+
 def test_objectives_frontier_lord_min_hexes_from_config():
     s = build_initial_state(
         {"players": 4, "objectives": {"frontier_lord_min_hexes": 8}},

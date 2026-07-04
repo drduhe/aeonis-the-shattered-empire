@@ -6,7 +6,7 @@ from itertools import combinations
 from typing import TYPE_CHECKING, Optional
 
 from .hexmap import distance
-from .types import BuildingType, Terrain
+from .types import BuildingType, Terrain, PUBLIC_OBJECTIVE_VP
 
 if TYPE_CHECKING:
     from .types import GameState
@@ -71,6 +71,13 @@ PUBLIC_OBJECTIVES = {
     "warlord": _warlord,
     "seat_of_empire": _seat_of_empire,
 }
+
+
+def public_objective_vp(state, obj_id: str) -> int:
+    """VP awarded for scoring a public row card (seat sweep S1 varies seat_of_empire)."""
+    if obj_id == "seat_of_empire":
+        return state.seat_of_empire_vp
+    return PUBLIC_OBJECTIVE_VP
 
 
 def _hidden_arsenal(state, pid) -> bool:

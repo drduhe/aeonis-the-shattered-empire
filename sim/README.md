@@ -42,6 +42,11 @@ Combat variant flags (Plan 1 ladder) live in tournament config under `"combat"`:
 Plan 2 AP economy toggles (PROPOSED) under `"ap_economy"`:
 `ap_bonus_cap` (e.g. `2`), `rally` (`true` / `false`).
 
+H7 calibration toggles (PROPOSED, sim-only): `"pacing"` (`vp_threshold`), `"objectives"`
+(`frontier_lord_min_hexes`), `"seat_rewards"` (`seat_of_empire_vp`). Default smoke
+(`bracket-m2-smoke.json`) uses `seat_of_empire_vp: 1` plus Lever C expander brakes in
+`persona.py`. See `docs/reports/INDEX.md`.
+
 ## Regression gates (Plan 1 / Plan 2)
 
 CI runs four 30-game Warmonger brackets with sim-calibrated metric bands

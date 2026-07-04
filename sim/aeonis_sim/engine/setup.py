@@ -45,6 +45,11 @@ def build_initial_state(config: dict, rng: random.Random) -> GameState:
     if fl is not None:
         state.frontier_lord_min_hexes = int(fl)
 
+    seat_rewards = config.get("seat_rewards", {})
+    sov = seat_rewards.get("seat_of_empire_vp")
+    if sov is not None:
+        state.seat_of_empire_vp = int(sov)
+
     state.speaker = int(rng.randrange(n))
     state.event_deck = init_event_deck(rng)
     state.agenda_deck = init_agenda_deck(rng)

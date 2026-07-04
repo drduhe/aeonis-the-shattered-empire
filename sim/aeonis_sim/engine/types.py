@@ -9,6 +9,8 @@ Coord = tuple  # axial (q, r)
 # --- Global constants (First_Playable_Packet.md / Victory.md / Population.md) ---
 VP_THRESHOLD = 10  # canon default; override per-game via GameState.vp_threshold (Plan 3 pacing)
 FRONTIER_LORD_MIN_HEXES = 7  # canon default; override via GameState (H7 Lever B experiment)
+PUBLIC_OBJECTIVE_VP = 2  # canon default for public row cards
+SEAT_OF_EMPIRE_VP = 2  # canon default; override via GameState (seat sweep S1)
 GLOBAL_POP_CAP = 25
 DEFAULT_ROUND_CAP = 25
 BASE_AP = 5
@@ -366,6 +368,7 @@ class GameState:
     rally: bool = False  # +1 AP to lowest VP at Round Start (ignores cap)
     vp_threshold: int = VP_THRESHOLD  # Plan 3 pacing experiment (config["pacing"])
     frontier_lord_min_hexes: int = FRONTIER_LORD_MIN_HEXES  # Lever B row tempo (config["objectives"])
+    seat_of_empire_vp: int = SEAT_OF_EMPIRE_VP  # Seat sweep S1 (config["seat_rewards"])
     speaker: int = 0
     strategy_pool: list = field(default_factory=list)      # undrafted card ids
     strategy_bounty: dict = field(default_factory=dict)    # card id -> accumulated gold
@@ -580,6 +583,7 @@ class GameState:
             rally=self.rally,
             vp_threshold=self.vp_threshold,
             frontier_lord_min_hexes=self.frontier_lord_min_hexes,
+            seat_of_empire_vp=self.seat_of_empire_vp,
             speaker=self.speaker,
             strategy_pool=list(self.strategy_pool),
             strategy_bounty=dict(self.strategy_bounty),

@@ -17,7 +17,7 @@
 | 4 | [High player count](2026-07-02-plan-high-player-count.md) | PROPOSED | Not encoded (Docket, Whisper scaling, map construction) | Docket text + `Map_Construction.md` authoring can start anytime; 6p/8p tables gate promotion |
 | 5 | [Core Lords parity](2026-07-02-plan-core-lords-parity.md) | PROPOSED | Not encoded — **blocks sim M4** (Lord asymmetry needs redesigned sheets) | Redesign briefs → sheets → sim M4 encode |
 | 6 | [Bookkeeping](2026-07-02-plan-bookkeeping.md) | PROPOSED | Not encoded | `Trade_Taxes.md` rewrite + Renown milestone track are no-gate hygiene; start anytime |
-| 7 | [Seat reward sweep](2026-07-03-plan-seat-reward-sweep.md) | PROPOSED | Toggles **not yet encoded**; analysis done | Run **S1** after Lever C; one knob per bracket |
+| 7 | [Seat reward sweep](2026-07-03-plan-seat-reward-sweep.md) | **S1 tested** | `seat_rewards.seat_of_empire_vp` live | **S1 pass** — see [report](../reports/2026-07-03-seat-sweep-s1-seat-of-empire-1vp.md); next S2 or re-baseline |
 
 ## Open design questions (sim-flagged, owner decision needed)
 

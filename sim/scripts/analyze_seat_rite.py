@@ -20,6 +20,10 @@ def pid_persona(rec: dict) -> dict[int, str]:
     return {i: personas[i] for i in range(len(personas))}
 
 
+def seat_obj_vp(rec: dict) -> int:
+    return int(rec.get("config", {}).get("seat_rewards", {}).get("seat_of_empire_vp", 2))
+
+
 def analyze(path: Path) -> None:
     records = [json.loads(l) for l in path.read_text().splitlines() if l.strip()]
     completed = [r for r in records if r["verdict"] == "completed"]
@@ -31,6 +35,7 @@ def analyze(path: Path) -> None:
             "rite_vp": 0.0,
             "milestone_vp": 0.0,
             "seat_obj_scored": 0,
+            "seat_obj_vp": 0.0,
             "held_seat_end": 0,
             "rite_count_sum": 0,
             "total_vp": 0.0,
@@ -45,6 +50,7 @@ def analyze(path: Path) -> None:
         fs = rec["final_state"]
         winner = max(rec["final_vp"], key=lambda k: rec["final_vp"][k])
         seat_pid = seat_holder(fs)
+        sov = seat_obj_vp(rec)
 
         if seat_pid is not None:
             end_seat[pmap[seat_pid]] += 1
@@ -65,6 +71,7 @@ def analyze(path: Path) -> None:
                 s["milestone_games"] += 1
             if "seat_of_empire" in p.get("shared_scored", []):
                 s["seat_obj_scored"] += 1
+                s["seat_obj_vp"] += sov
             if seat_pid is not None and seat_pid == pid:
                 s["held_seat_end"] += 1
             if str(pid) == winner:
@@ -79,7 +86,7 @@ def analyze(path: Path) -> None:
     for persona in personas:
         s = stats[persona]
         g = s["seat_games"] or 1
-        seat_vp = s["rite_vp"] + s["milestone_vp"] + s["seat_obj_scored"] * 2
+        seat_vp = s["rite_vp"] + s["milestone_vp"] + s["seat_obj_vp"]
         total = s["total_vp"] or 1
         print(
             f"{persona:12} {g:6d} {100 * s['wins'] / g:5.1f}% "
@@ -105,7 +112,7 @@ def analyze(path: Path) -> None:
         seat_vp = (
             vp_src.get("coronation_rite", 0)
             + vp_src.get("coronation_milestone", 0)
-            + (2 if "seat_of_empire" in p.get("shared_scored", []) else 0)
+            + (seat_obj_vp(rec) if "seat_of_empire" in p.get("shared_scored", []) else 0)
         )
         w = wstats[pmap[pid]]
         w["n"] += 1
@@ -169,7 +176,7 @@ def analyze(path: Path) -> None:
             seat_all += src.get("coronation_rite", 0)
             seat_all += src.get("coronation_milestone", 0)
             if "seat_of_empire" in p.get("shared_scored", []):
-                seat_all += 2
+                seat_all += seat_obj_vp(rec)
     print(f"\n=== Global ===")
     print(f"  All seat-related VP: {seat_all} / {total_vp} ({100 * seat_all / total_vp:.1f}% of all VP)")
     print(f"  Per-game avg seat VP: {seat_all / len(completed):.2f}")

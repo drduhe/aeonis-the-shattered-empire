@@ -1,9 +1,9 @@
 {
-  "name": "m2-smoke-4p-mixed",
+  "name": "seat-sweep-s1-4p-solo",
   "players": 4,
-  "games": 100,
-  "seed_base": 70000,
+  "games": 200,
+  "seed_base": 77000,
   "personas": ["warmonger", "economist", "expander", "diplomat", "balanced"],
-  "matchmaking": "mixed",
+  "matchmaking": "solo",
   "seat_rewards": {"seat_of_empire_vp": 1}
 }

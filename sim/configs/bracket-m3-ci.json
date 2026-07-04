@@ -5,6 +5,7 @@
   "seed_base": 73000,
   "personas": ["warmonger", "economist", "expander", "diplomat", "balanced"],
   "matchmaking": "mixed",
+  "seat_rewards": {"seat_of_empire_vp": 1},
   "regression": {
     "plan": "m3",
     "step": "gate_ci",
