@@ -10,6 +10,7 @@
 
 | Report | Config | Games | What it answers |
 |---|---|---|---|
+| [H7 Expander dominance report](2026-07-03-h7-expander-dominance-m3.md) | M3 mixed 4p JSONL | 100 | **Confirmed** at 4p (40.5%); design vs bot decomposition; lever ranking |
 | [Mixed 4p M3 baseline](2026-07-03-baseline-mixed-4p-m3.md) | `sim/configs/bracket-m2-smoke.json` | 100 | Full M3 fidelity: whispers/artifacts/research metrics; H1–H12 |
 | [Mixed 6p M3 baseline](2026-07-03-baseline-mixed-6p-m3.md) | `sim/configs/bracket-6p-mixed.json` | 200 | Mid-count pacing + persona mix at M3 fidelity |
 | [Mixed 8p M3 baseline](2026-07-03-baseline-mixed-8p-m3.md) | `sim/configs/bracket-8p-mixed.json` | 200 | High-count stress (council/whispers); H4/H7/H8 |
@@ -37,7 +38,7 @@ Regenerate after engine changes:
 | H4 | 8p timeouts are pacing | **killed** | 0% timeout at 8p (200 games, M3) |
 | H5 | Combat VP marginal even for Warmonger | inconclusive | 4.8% winner share at 8p |
 | H6 | no_vp_progress is chaos artifact | **killed** | 0% degenerate |
-| H7 | No persona dominates mixed seats | **4p confirmed, 8p killed** | 4p expander 40.5%; 8p max 21.9% |
+| H7 | No persona dominates mixed seats | **4p confirmed, 8p killed** | 4p expander **40.5%** — see [H7 report](2026-07-03-h7-expander-dominance-m3.md); 8p max 21.9% |
 | H8 | Economist viable in mixed seats | **4p met, 6–8p not** | 4p 5.3% · 6p 2.6% · 8p 2.3% (bar ≥5%) |
 | H9 | Diplomat ≥3% mixed 4p | **killed** (goal met) | 21.6% |
 | H10 | Whisper hands manageable | **killed** | 1.3% forced discard at 4p |
