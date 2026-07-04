@@ -27,11 +27,12 @@ PERSONA_WEIGHTS: dict[str, dict[str, float]] = {
         "military_delta": -0.8, "pass_penalty": 1.6,
     },
     "expander": {
-        "vp": 1.25, "vp_lead": -2.5, "next_vp_lead": -2.0,
+        # M3 re-tune (H7 Lever 4, 2026-07-03): stronger lead/territory brakes post-M3 VP velocity.
+        "vp": 1.25, "vp_lead": -4.0, "next_vp_lead": -3.5,
         "territory": 0.7, "next_territory": 0.55, "expansion": 0.65,
-        "territory_sat": -5.5, "next_territory_sat": -4.0,
-        "seat": 0.55, "seat_pull": 0.55, "rite_ready": 0.55, "seat_streak": 0.45,
-        "next_seat": 0.45,
+        "territory_sat": -8.0, "next_territory_sat": -6.5,
+        "seat": 0.40, "seat_pull": 0.40, "rite_ready": 0.40, "seat_streak": 0.35,
+        "next_seat": 0.35,
         "objective": 2.1, "next_objective": 1.9, "combat": 0.45, "pass_penalty": 0.85,
     },
     "diplomat": {

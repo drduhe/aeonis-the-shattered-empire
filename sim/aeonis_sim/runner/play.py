@@ -7,7 +7,7 @@ from ..agents.factory import agents_from_config, parse_persona_list
 from ..engine.game import Game
 from ..engine.observations import observe
 from ..engine.record import build_record, save_record
-from ..engine.types import VP_THRESHOLD
+from ..engine.types import VP_THRESHOLD  # re-export for tests; play uses state.vp_threshold
 
 # Degeneracy monitor: no player gains VP for this many consecutive rounds.
 NO_VP_ROUNDS_FLAG = 8
@@ -35,7 +35,7 @@ def play_game(config: dict, seed: int, agents=None) -> dict:
     record = build_record(game)
     if record["verdict"] == "completed" and record["degenerate_flags"]:
         max_vp = max(int(v) for v in record["final_vp"].values())
-        if max_vp >= VP_THRESHOLD:
+        if max_vp >= game.state.vp_threshold:
             record["degenerate_flags"] = [
                 f
                 for f in record["degenerate_flags"]

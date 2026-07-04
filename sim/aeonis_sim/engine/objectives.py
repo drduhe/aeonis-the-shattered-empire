@@ -39,7 +39,7 @@ IMMEDIATE_SECRETS = frozenset({"golden_hoard", "mana_flood"})
 
 
 def _frontier_lord(state, pid) -> bool:
-    return len(state.controlled(pid)) >= 7
+    return len(state.controlled(pid)) >= state.frontier_lord_min_hexes
 
 
 def _builder(state, pid) -> bool:

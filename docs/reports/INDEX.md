@@ -2,7 +2,18 @@
 
 **Updated:** 2026-07-03 · Entry point for `docs/reports/`. Everything here is **sim-only** (persona bots, not humans) unless a report says otherwise.
 
-**Engine state for current baselines:** M1 core loop + Plan 3 MVP + M2 politics + **M3 card systems** (Remnants/exploration, Artifacts/Sites, Arcane Tier I, secrets, Whispers, strategy primaries). 229 pytest passing.
+**Engine state for current baselines:** M1 core loop + Plan 3 MVP + M2 politics + **M3 card systems** (Remnants/exploration, Artifacts/Sites, Arcane Tier I, secrets, Whispers, strategy primaries). 230 pytest passing.
+
+---
+
+## Lever experiments (sim-only, 2026-07-03)
+
+| Report | Config | What it answers |
+|---|---|---|
+| [Lever A — VP threshold sweep](2026-07-03-lever-a-pacing-vp-threshold.md) | `lever-a-vp11/12-4p-smoke.json` | Pacing vs expander dominance; 12 VP hits 7.5 rounds but H7 still fails |
+| [Lever B — frontier_lord 8 hexes](2026-07-03-lever-b-frontier-lord-8hex.md) | `lever-b-frontier8-4p-smoke.json` | H7 still fails; economist H12 passes (8.9%) |
+| [Lever C — expander lead brake](2026-07-03-lever-c-expander-brake-m3.md) | `bracket-m2-smoke.json` (persona weights) | Expander **20%**; balanced **40.8%** — partial H7 fix |
+| [Seat/rite analysis](2026-07-03-seat-rite-analysis-m3.md) | JSONL + `analyze_seat_rite.py` | Expander does not monopolize seat; sweep plan filed |
 
 ---
 

@@ -7,7 +7,8 @@ from typing import Optional
 Coord = tuple  # axial (q, r)
 
 # --- Global constants (First_Playable_Packet.md / Victory.md / Population.md) ---
-VP_THRESHOLD = 10
+VP_THRESHOLD = 10  # canon default; override per-game via GameState.vp_threshold (Plan 3 pacing)
+FRONTIER_LORD_MIN_HEXES = 7  # canon default; override via GameState (H7 Lever B experiment)
 GLOBAL_POP_CAP = 25
 DEFAULT_ROUND_CAP = 25
 BASE_AP = 5
@@ -363,6 +364,8 @@ class GameState:
     # Plan 2 AP economy (PROPOSED; toggled via config["ap_economy"]).
     ap_bonus_cap: Optional[int] = None  # e.g. 2 = unified +2 cap
     rally: bool = False  # +1 AP to lowest VP at Round Start (ignores cap)
+    vp_threshold: int = VP_THRESHOLD  # Plan 3 pacing experiment (config["pacing"])
+    frontier_lord_min_hexes: int = FRONTIER_LORD_MIN_HEXES  # Lever B row tempo (config["objectives"])
     speaker: int = 0
     strategy_pool: list = field(default_factory=list)      # undrafted card ids
     strategy_bounty: dict = field(default_factory=dict)    # card id -> accumulated gold
@@ -575,6 +578,8 @@ class GameState:
             pillage=self.pillage,
             ap_bonus_cap=self.ap_bonus_cap,
             rally=self.rally,
+            vp_threshold=self.vp_threshold,
+            frontier_lord_min_hexes=self.frontier_lord_min_hexes,
             speaker=self.speaker,
             strategy_pool=list(self.strategy_pool),
             strategy_bounty=dict(self.strategy_bounty),

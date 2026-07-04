@@ -13,7 +13,6 @@ from ..engine.types import (
     Terrain,
     UNIT_STATS,
     UnitType,
-    VP_THRESHOLD,
 )
 
 
@@ -38,10 +37,10 @@ def _unscored_hard_objectives(state, pid: int) -> list[str]:
     return out
 
 
-def _closing_multiplier(vp: int) -> float:
-    if vp >= VP_THRESHOLD - 2:
+def _closing_multiplier(vp: int, threshold: int) -> float:
+    if vp >= threshold - 2:
         return 1.6
-    if vp >= VP_THRESHOLD - 4:
+    if vp >= threshold - 4:
         return 1.25
     return 1.0
 
@@ -49,6 +48,7 @@ def _closing_multiplier(vp: int) -> float:
 def evaluate_state(state, pid: int) -> dict[str, float]:
     """Normalized state features for the acting player."""
     p = state.player(pid)
+    threshold = state.vp_threshold
     n_players = len(state.players)
     max_opp_vp = max(
         (q.vp for q in state.players if q.pid != pid),
@@ -84,15 +84,15 @@ def evaluate_state(state, pid: int) -> dict[str, float]:
     building_count = sum(len(t.buildings) for t in controlled)
     builder_track = min(building_count, 3) / 3.0
     gold_track = min(p.gold, 10) / 10.0
-    catch_up = max(0, max_opp_vp - p.vp) / VP_THRESHOLD
+    catch_up = max(0, max_opp_vp - p.vp) / threshold
     built = sum(len(t.buildings) for t in controlled)
     builder_push = 0.0
     if "builder" in state.shared_public_revealed and "builder" not in p.shared_scored:
         builder_push = max(0.0, (3 - min(built, 3)) / 3.0)
 
     return {
-        "vp": p.vp / VP_THRESHOLD,
-        "vp_lead": (p.vp - max_opp_vp) / VP_THRESHOLD,
+        "vp": p.vp / threshold,
+        "vp_lead": (p.vp - max_opp_vp) / threshold,
         "territory": len(controlled) / map_size,
         "territory_sat": territory_sat,
         "builder_track": builder_track,
@@ -161,7 +161,8 @@ def _objective_progress(state, pid: int, name: str, *, secret: bool = False) -> 
             return 0.5
         return 0.0
     if name == "frontier_lord":
-        return min(len(state.controlled(pid)), 7) / 7.0
+        need = state.frontier_lord_min_hexes
+        return min(len(state.controlled(pid)), need) / float(need)
     if name == "builder":
         b = sum(len(t.buildings) for t in state.controlled(pid))
         return min(b, 3) / 3.0
@@ -331,15 +332,16 @@ def score_action(state, pid: int, choice: dict, dp) -> dict[str, float]:
     feats.update(_combat_features(state, pid, choice))
 
     p = state.player(pid)
-    close = _closing_multiplier(p.vp)
+    threshold = state.vp_threshold
+    close = _closing_multiplier(p.vp, threshold)
     hard = _unscored_hard_objectives(state, pid)
-    if hard and p.vp >= VP_THRESHOLD - 4:
+    if hard and p.vp >= threshold - 4:
         feats["objective"] = max(feats.get("objective", 0), 0.45) * close
         if "warlord" in hard and t == "attack":
             feats["combat"] = feats.get("combat", 0) * close + 0.35
         if "portal_mastery" in hard and t == "move" and choice.get("portal"):
             feats["expansion"] = feats.get("expansion", 0) + 0.9 * close
-    if p.vp >= VP_THRESHOLD - 2:
+    if p.vp >= threshold - 2:
         if t == "move":
             feats["seat_pull"] = feats.get("seat_pull", 0) * close
             feats["rite_ready"] = feats.get("rite_ready", 0) * close

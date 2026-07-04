@@ -5,7 +5,7 @@ from .arcane import apply_boundary_stones
 from .artifacts import score_artifact_vp
 from .objectives import PUBLIC_OBJECTIVES, score_cleanup_secrets
 from .whispers import expire_whisper_flags, hand_over_limit
-from .types import BuildingType, Terrain, Unit, UNIT_STATS, UnitType, VP_THRESHOLD
+from .types import BuildingType, Terrain, Unit, UNIT_STATS, UnitType
 
 
 def _influence_range(state, pid):
@@ -126,7 +126,7 @@ def run_cleanup(state) -> None:
         _score_objectives(state, p.pid)
         score_artifact_vp(state, p.pid)
 
-    if any(p.vp >= VP_THRESHOLD for p in state.players):
+    if any(p.vp >= state.vp_threshold for p in state.players):
         state.final_round = True
 
     for p in state.players:

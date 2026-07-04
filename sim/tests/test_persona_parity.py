@@ -34,6 +34,7 @@ def test_merchant_lord_progress_feeds_objective_feature():
 def test_expander_has_vp_lead_brake():
     assert PERSONA_WEIGHTS["expander"]["vp_lead"] < 0
     assert PERSONA_WEIGHTS["expander"]["territory_sat"] < -4.0
+    assert PERSONA_WEIGHTS["expander"]["vp_lead"] <= -4.0  # M3 Lever 4 floor
 
 
 def test_economist_draft_favors_economic_cards():

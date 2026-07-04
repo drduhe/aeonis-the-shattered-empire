@@ -1,0 +1,9 @@
+{
+  "name": "lever-b-frontier8-4p-solo",
+  "players": 4,
+  "games": 200,
+  "seed_base": 75000,
+  "personas": ["warmonger", "economist", "expander", "diplomat", "balanced"],
+  "matchmaking": "solo",
+  "objectives": {"frontier_lord_min_hexes": 8}
+}

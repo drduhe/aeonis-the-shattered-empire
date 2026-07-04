@@ -35,6 +35,16 @@ def build_initial_state(config: dict, rng: random.Random) -> GameState:
     state.ap_bonus_cap = int(cap) if cap is not None else None
     state.rally = bool(economy.get("rally", False))
 
+    pacing = config.get("pacing", {})
+    vp = pacing.get("vp_threshold")
+    if vp is not None:
+        state.vp_threshold = int(vp)
+
+    objectives = config.get("objectives", {})
+    fl = objectives.get("frontier_lord_min_hexes")
+    if fl is not None:
+        state.frontier_lord_min_hexes = int(fl)
+
     state.speaker = int(rng.randrange(n))
     state.event_deck = init_event_deck(rng)
     state.agenda_deck = init_agenda_deck(rng)

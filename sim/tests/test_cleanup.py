@@ -15,6 +15,22 @@ def put(s, coord, owner, utype):
     return u
 
 
+def test_objectives_frontier_lord_min_hexes_from_config():
+    s = build_initial_state(
+        {"players": 4, "objectives": {"frontier_lord_min_hexes": 8}},
+        random.Random(88),
+    )
+    assert s.frontier_lord_min_hexes == 8
+
+
+def test_pacing_vp_threshold_from_config():
+    s = build_initial_state(
+        {"players": 4, "pacing": {"vp_threshold": 12}},
+        random.Random(99),
+    )
+    assert s.vp_threshold == 12
+
+
 def test_shared_public_row_setup():
     s = make_state()
     assert len(s.shared_public_revealed) == 2

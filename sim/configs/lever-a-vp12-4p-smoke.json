@@ -1,0 +1,9 @@
+{
+  "name": "lever-a-vp12-4p-smoke",
+  "players": 4,
+  "games": 100,
+  "seed_base": 72000,
+  "personas": ["warmonger", "economist", "expander", "diplomat", "balanced"],
+  "matchmaking": "mixed",
+  "pacing": {"vp_threshold": 12}
+}
