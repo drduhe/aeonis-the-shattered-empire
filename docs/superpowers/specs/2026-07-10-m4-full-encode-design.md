@@ -1,7 +1,7 @@
 # M4 full Lord-asymmetry encode — design
 
 **Date:** 2026-07-10  
-**Status:** DRAFT — awaiting owner review before implementation plan  
+**Status:** APPROVED 2026-07-10 — implementation plan next  
 **Prior art:** Plan 5 promoted; M4 foundation live (`docs/reports/2026-07-09-plan5-m4-foundation.md`); AL-49 open  
 **Canon:** eight launch sheets in `lords/`; architecture milestone 4 in `docs/plans/2026-07-02-agent-playtest-simulation-design.md` §5
 
