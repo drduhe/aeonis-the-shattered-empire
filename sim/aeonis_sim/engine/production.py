@@ -31,15 +31,15 @@ def tile_printed_production(tile) -> dict[str, int]:
         if plain:
             res, amt = plain
             out[res] = amt
-    elif not out and tile.unique_tile_id:
+    if tile.unique_tile_id:
         spec = unique_spec_by_id(tile.unique_tile_id)
         if spec:
             if spec.gold:
-                out["gold"] = spec.gold
+                out["gold"] = out.get("gold", 0) + spec.gold
             if spec.mana:
-                out["mana"] = spec.mana
+                out["mana"] = out.get("mana", 0) + spec.mana
             if spec.influence:
-                out["influence"] = spec.influence
+                out["influence"] = out.get("influence", 0) + spec.influence
     return out
 
 
@@ -123,6 +123,8 @@ def run_production(state) -> dict:
                     p.mana += dm * (mult - 1)
                     p.influence += di * (mult - 1)
                     p.pop_pool += dp * (mult - 1)
+                    headroom = state.pop_cap(p.pid) - state.pop_used(p.pid)
+                    p.pop_pool = min(p.pop_pool, max(0, headroom))
         if controls_unique(state, p.pid, "sacred_grove"):
             room = state.pop_cap(p.pid) - state.pop_used(p.pid) - p.pop_pool
             p.pop_pool += min(1, max(0, room))

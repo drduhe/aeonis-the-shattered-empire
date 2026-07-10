@@ -27,7 +27,7 @@ def _unit_gold(ut: UnitType, *, forge: bool, eternal: bool, discount: int = 0) -
     if eternal:
         gold = max(1, gold - 1)
     if discount:
-        gold = max(1, gold - discount)
+        gold = max(0, gold - discount)
     return gold
 
 

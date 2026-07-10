@@ -75,6 +75,21 @@ def has_academy_discount(state: GameState, pid: int) -> bool:
     return any(t.active(BT.ACADEMY) for t in state.controlled(pid))
 
 
+def _mana_after_academy(
+    state: GameState,
+    pid: int,
+    spec: DiscoverySpec,
+    *,
+    free: bool,
+) -> int:
+    if free:
+        return 0
+    mana = spec.mana
+    if has_academy_discount(state, pid):
+        mana = max(0, mana - 1)
+    return mana
+
+
 def research_resource_cost(
     state: GameState,
     pid: int,
@@ -84,9 +99,8 @@ def research_resource_cost(
 ) -> tuple[int, int, int]:
     if free:
         return 0, 0, 0
-    mana, gold, inf = spec.mana, spec.gold, spec.influence
-    if has_academy_discount(state, pid):
-        mana = max(0, mana - 1)
+    mana = _mana_after_academy(state, pid, spec, free=free)
+    gold, inf = spec.gold, spec.influence
     if (
         controls_unique(state, pid, "arcane_nexus")
         and round_unused(state, pid, "nexus_discount")
@@ -150,6 +164,7 @@ def apply_research(
     if discovery_id in p.discoveries:
         raise ValueError("already owned")
     spec = DISCOVERIES[discovery_id]
+    mana_after_academy_val = _mana_after_academy(state, pid, spec, free=free)
     mana, gold, inf = research_resource_cost(state, pid, spec, free=free)
     if not free and not ap_waived:
         if p.whisper_flags.pop("free_research_ap", False):
@@ -166,7 +181,7 @@ def apply_research(
         not free
         and controls_unique(state, pid, "arcane_nexus")
         and round_unused(state, pid, "nexus_discount")
-        and spec.mana > 0
+        and mana_after_academy_val > 0
     ):
         mark_round_used(state, pid, "nexus_discount")
     p.mana -= mana

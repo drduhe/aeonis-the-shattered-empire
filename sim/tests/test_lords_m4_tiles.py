@@ -101,28 +101,38 @@ def test_hallowed_grove_grants_renown_on_cleanup():
 
 
 def test_obsidian_spire_grants_extra_whisper_draw():
+    from aeonis_sim.engine.game import Game
     from aeonis_sim.engine.lords import controls_unique
-    from aeonis_sim.engine.whispers import draw_whispers
-    state = build_initial_state(
+    from tests.conftest import advance_to_action_phase
+
+    g = Game(
         {
             "players": 3,
-            "lord_asymmetry": {"enabled": True, "lords": ["nyxara", "cassian", "vharok"]},
+            "lord_asymmetry": {
+                "enabled": True,
+                "lords": ["nyxara", "cassian", "vharok"],
+            },
         },
-        random.Random(13),
+        seed=13,
     )
     spire = next(
-        t for t in state.tiles.values() if t.unique_tile_id == "obsidian_spire"
+        t for t in g.state.tiles.values() if t.unique_tile_id == "obsidian_spire"
     )
     assert spire.controller == 0
-    assert controls_unique(state, 0, "obsidian_spire")
-    p = state.player(0)
+    assert controls_unique(g.state, 0, "obsidian_spire")
+    p = g.state.player(0)
+
+    advance_to_action_phase(g)
     p.whisper_hand = []
-    rng = random.Random(99)
-    base = draw_whispers(state, 0, 3, rng)
-    bonus = draw_whispers(state, 0, 1, rng)
-    assert base == 3
-    assert bonus == 1
-    assert len(p.whisper_hand) == 4
+
+    for _ in range(3):
+        dp = g.next_decision()
+        g.submit({"type": "pass"})
+
+    g.next_decision()  # triggers cleanup + round 2 _round_start
+
+    assert g.state.round == 2
+    assert len(p.whisper_hand) == 4  # Nyxara whisper network (3) + Obsidian Spire (1)
 
 
 def test_ironworks_allows_fortress_build():
@@ -150,6 +160,8 @@ def test_arcane_nexus_research_mana_discount():
         research_resource_cost,
         DISCOVERIES,
     )
+    from aeonis_sim.engine.lords import round_unused
+    from aeonis_sim.engine.types import BuildingType
     state = build_initial_state(
         {
             "players": 3,
@@ -165,7 +177,28 @@ def test_arcane_nexus_research_mana_discount():
     apply_research(state, 0, "battle_runes")
     assert p.mana == 0
     assert "battle_runes" in p.discoveries
+    assert not round_unused(state, 0, "nexus_discount")
     assert not any(c["discovery"] == "sigiled_masonry" for c in enumerate_research(state, 0))
+
+
+def test_nexus_discount_not_marked_when_academy_zeroes_mana():
+    from aeonis_sim.engine.arcane import apply_research
+    from aeonis_sim.engine.lords import round_unused
+    from aeonis_sim.engine.types import BuildingType
+    state = build_initial_state(
+        {
+            "players": 3,
+            "lord_asymmetry": {"enabled": True, "lords": ["seraphel", "cassian", "vharok"]},
+        },
+        random.Random(3),
+    )
+    p = state.player(0)
+    nexus = next(t for t in state.tiles.values() if t.unique_tile_id == "arcane_nexus")
+    nexus.buildings.append(BuildingType.ACADEMY)
+    p.ap, p.mana = 1, 0
+    apply_research(state, 0, "sigiled_masonry")
+    assert "sigiled_masonry" in p.discoveries
+    assert round_unused(state, 0, "nexus_discount")
 
 
 def test_ironworks_mine_and_fortress_gold_discount():
