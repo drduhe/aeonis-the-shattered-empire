@@ -1,6 +1,6 @@
 # Lord Sheet Template (Aeonis)
 
-> Copy this file to `new/lords/<Name>.md` and fill it in.
+> Copy this file to `lords/<Name>.md` and fill it in.
 
 ---
 

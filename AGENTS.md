@@ -1,6 +1,6 @@
 # Aeonis — Smart Agent Framework (Design/Build/Maintain)
 
-This project already has a strong “source-of-truth” set of docs in `new/`. The purpose of this framework is to make an AI assistant reliable at:
+This project already has a strong source-of-truth set of docs at the repository root. The purpose of this framework is to make an AI assistant reliable at:
 
 - Designing new rules/content **without drifting** from canon.
 - Maintaining consistency across chapters, playtest packets, and the Codex app.

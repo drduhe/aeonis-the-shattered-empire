@@ -64,10 +64,14 @@ The Luminari are crystalline beings formed from the sap of the World Tree King d
 
 ## Abilities
 
-### 1) Divine Mandate (Faction Mechanic)
+### 1) The Tree's Assent (Faction Mechanic)
 
-**Effect:** Whenever a **High Council motion** that you voted **"for"** passes, gain **+1 Renown**. This applies to any motion (not just ones you proposed), as long as you cast at least one vote in favor and the motion is approved.
-**Theme:** The World Tree rewards those who shape the law. Every motion that passes with Auriel's blessing strengthens her divine claim.
+**Timing:** Once per round, when you cast your vote on a motion during the **High Council Phase**, before votes are tallied.
+
+**Effect:** You may sanctify that motion. Your Council Votes, including votes gained from Lobbying, count **double** on it. Whenever a motion you voted **for** passes, gain **+1 Renown**; if it was the motion you sanctified, gain **+2 Renown** instead.
+
+**Limits:** Sanctify affects only your own votes and can be used once per round.
+**Theme:** The World Tree does not merely endorse the law; it speaks through you.
 
 ### 2) Radiant Presence (Passive Ability)
 
@@ -153,7 +157,7 @@ Win **2 or more High Council votes** in a single round (motions you voted "for" 
 
 ### Strengths
 
-- **Renown engine:** Divine Mandate + Exaltation + Hallowed Grove create the fastest Renown accumulation in the game.
+- **Council rule-bend:** The Tree's Assent, Exaltation, and Hallowed Grove create the fastest Renown accumulation in the game.
 - **Council powerhouse:** High starting Influence and Renown synergies make Auriel dominant in the political game.
 - **Defensive fortress:** d10 Defense Lord + Radiant Presence + Luminous Bulwark creates layers of defense that are extremely hard to crack.
 - **Alternative VP path:** Sacred Rite awards VP for Renown milestones, giving Auriel a victory route that doesn't require military conquest.
@@ -162,7 +166,7 @@ Win **2 or more High Council votes** in a single round (motions you voted "for" 
 
 - **Low offense:** d6 Attack on Auriel and no attack bonuses mean the Radiant Accord struggles to win battles as the aggressor.
 - **Gold-poor:** 1 starting Gold and no Gold bonuses make early building and recruitment expensive.
-- **Council dependency:** If the High Council is inactive (few motions, vetoes), Divine Mandate generates little value.
+- **Council dependency:** If the High Council is inactive (few motions, vetoes), the Tree's Assent generates little value.
 - **Slow ramp:** Auriel's power scales with Renown, which takes time to accumulate. She's vulnerable to early aggression before her defenses crystallize.
 
 ---
@@ -173,7 +177,7 @@ Win **2 or more High Council votes** in a single round (motions you voted "for" 
 
 ## Notes for Playtesting
 
-- **Divine Mandate:** Track how many Renown Auriel gains per round through council votes. In an 8-player game with many motions, this could snowball quickly.
+- **Tree's Assent:** Track pass-rate swing and Renown gained from the sanctified motion; watch for automatic majorities in 3-player games.
 - **Exaltation (3 Influence for +2 Renown):** Validate that the Influence cost is steep enough. Auriel generates Influence from Hallowed Grove (+1/round) and her starting resources (3), so she could fire this early.
 - **Sacred Rite (VP from Renown thresholds):** This awards up to 2 VP from a single research. Confirm that reaching 5 and 10 Renown requires enough effort that these VP feel earned.
 - **Radiant Presence + Luminous Bulwark stacking:** With both active, defending units in a building hex with Auriel committed could have +2 Defense. Ensure this doesn't make positions unbreakable.

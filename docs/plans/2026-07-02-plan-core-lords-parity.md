@@ -1,6 +1,6 @@
 # Plan 5: Core Lords Parity Pass
 
-- **Status:** PROPOSED — nothing here is canon until playtested and locked in `rules_and_systems/INDEX.md`. Lord sheets in `lords/` remain authoritative.
+- **Status:** **PROMOTED 2026-07-09** — signature redesigns are canonical and registered in `rules_and_systems/INDEX.md`. Sim-led validation; human confirmation remains pending.
 - **Date:** 2026-07-02
 - **Owning docs:** the 8 core Lord sheets (`lords/Cassian.md` … `lords/Thalrik.md`)
 - **Related plans:** Plan 1 (Engaged state — Rakhis synergy), Plan 4 (Docket — Ozren/Auriel council effects), Plan 6 (Diplomacy binding deals — Cassian)
@@ -46,7 +46,7 @@ Each brief replaces or upgrades the *weakest existing ability* — sheets keep t
 - **Elyndra — "The Deep Roots."** Map connectivity bends for her: once per round, one of her unit groups may move between **any two Forest hexes she controls** as if adjacent (1 AP). Her forests become a private road network — a green mirror of Thal'rik's portals. *"Her forests are one forest."*
 - **Vharok — "Bastion Doctrine."** The siege system bends for him: Vharok may declare **Hold the Walls in any hex containing one of his buildings** (not just Cities), and his Battle Line cap is **+1 when defending** such a hex. Every Tower and Mine becomes a keep. *"Every wall is his wall."*
 - **Auriel — "The Tree's Assent."** The council bends for her: once per round she may **sanctify one motion** — her Council Votes count **double** on it, and if it passes she scores the existing Divine Mandate Renown twice. (If Plan 4's Docket lands: sanctifying also lets her place a motion on the docket without bidding, once per game.) *"The Tree votes through her."*
-- **Rakhis — "Sandstride" (sharpen).** His units **disengage freely**: they are never Engaged (Plan 1 §4.3), may retreat before any battle round resolves, and keep the existing post-win free move. Depends on Plan 1 terminology. *"You cannot pin the wind."*
+- **Rakhis — "Sandstride" (sharpen).** His groups treat Deserts as 1 AP, ignore enemy ZOC surcharges, may retreat once per battle before the first Pre-Strike, and keep the existing post-win free move. This uses existing ZOC and retreat rules rather than Plan 1's unpromoted Engaged term. *"You cannot pin the wind."*
 - **Nyxara, Thal'rik** — no redesign; re-cost only if playtests show drift.
 
 ## 5. Process
@@ -62,6 +62,8 @@ Each brief replaces or upgrades the *weakest existing ability* — sheets keep t
 - **No new components** beyond what `Components.md` already lists, except at most one marker type per Lord.
 
 ## 6. Playtest validation
+
+**Execution record (2026-07-09):** The six redesigned sheets and all owning/derived chapters were propagated in one pass. Nine deterministic M4 tests cover setup and signature hooks; the rotating 40-game foundation bracket completed 40/40 without crash, timeout, or degeneracy. Because human playtesters are unavailable, the blind-identification test and matchup win-rate band remain human-confirmation gates rather than blockers to sim-led promotion. The small partial-M4 balance read is preserved in `../reports/2026-07-09-plan5-m4-foundation.md`; it must not be used for tuning until full M4 fidelity lands.
 
 - **Blind identification test:** an observer watching rounds 2–4 should name the Lord from play pattern alone — target 6/8 correct.
 - **Win-rate band:** 35–65% per Lord across the pairing matrix (`Balance_Dashboard.md` Lord tracker).
@@ -85,4 +87,4 @@ Each brief replaces or upgrades the *weakest existing ability* — sheets keep t
 
 ## 8. Sequencing
 
-Runs **after** Plan 1 locks (Rakhis and Vharok briefs read Plan 1's Engaged/siege outcomes) and can interleave with Plan 3. Batch 1 (Seraphel+Cassian) has no Plan 1 dependency and can start as soon as drafting capacity exists.
+Executed independently of Plan 1 by expressing Rakhis through existing ZOC and retreat windows. M4 Lord-asymmetry implementation may now proceed without a sheet-redesign blocker.

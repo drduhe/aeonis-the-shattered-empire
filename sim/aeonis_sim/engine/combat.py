@@ -33,6 +33,7 @@ from .arcane import (
     warding_charm_defense_bonus,
 )
 from .types import BuildingType, Terrain, UNIT_STATS, UnitType
+from .lords import is_lord
 
 ATTACK_AP = 2
 PRESS_AP = 1
@@ -216,9 +217,16 @@ def start_battle(state, pid, choice) -> Battle:
     t = state.tiles[target]
     defender = _defender_of(state, target)
     b = Battle(attacker=pid, defender=defender, target=target)
+    bastion = (
+        is_lord(state, defender, "vharok")
+        and t.controller == defender
+        and bool(t.buildings)
+    )
     b.cap = 5 if t.terrain == Terrain.CITY or t.has(BuildingType.FORTRESS) else 3
+    if bastion:
+        b.whisper_mods.def_cap_bonus += 1
     # AL-7: Fortress -> siege (canon); City -> defender auto-declares Hold the Walls.
-    b.siege = t.terrain == Terrain.CITY or t.has(BuildingType.FORTRESS)
+    b.siege = t.terrain == Terrain.CITY or t.has(BuildingType.FORTRESS) or bastion
     state.player(pid).ap -= choice["cost"]
 
     if b.siege and t.siege and (t.siege_att_uids or t.siege_def_uids):
@@ -259,6 +267,12 @@ def _defense_bonus(state, battle, side) -> int:
         bonus += 2
     if t.has(BuildingType.CASTLE) and not t.castle_suspended:
         bonus += 2
+    if (
+        is_lord(state, battle.defender, "vharok")
+        and t.controller == battle.defender
+        and bool(t.buildings)
+    ):
+        bonus += 1
     return bonus
 
 

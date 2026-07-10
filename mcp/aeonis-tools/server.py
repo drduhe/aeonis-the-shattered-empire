@@ -147,7 +147,7 @@ def _format_findings(findings: List[Dict[str, Any]]) -> str:
 
 def tool_validate_manifest(args: Dict[str, Any]) -> str:
     root = _repo_root()
-    manifest_rel = args.get("manifestPath", "new/content-manifest.json")
+    manifest_rel = args.get("manifestPath", "content-manifest.json")
     manifest_path = _safe_join(root, manifest_rel)
 
     errors: List[str] = []
@@ -215,10 +215,10 @@ def tool_validate_manifest(args: Dict[str, Any]) -> str:
 
             seen_paths.setdefault(path, []).append(loc)
 
-            # In this repo, the Codex runs from `new/`, so manifest paths are relative to `new/`.
-            expected = _safe_join(root, str(Path("new") / path))
+            # Manifest document paths are relative to the repository root.
+            expected = _safe_join(root, path)
             if not expected.exists():
-                errors.append(f"{loc}.path missing on disk: new/{path}")
+                errors.append(f"{loc}.path missing on disk: {path}")
 
     for p, locs in seen_paths.items():
         if len(locs) > 1:
@@ -258,8 +258,8 @@ def _is_external_href(href: str) -> bool:
 
 def tool_broken_links_report(args: Dict[str, Any]) -> str:
     root = _repo_root()
-    root_dir = args.get("rootDir", "new")
-    manifest_rel = args.get("manifestPath", "new/content-manifest.json")
+    root_dir = args.get("rootDir", ".")
+    manifest_rel = args.get("manifestPath", "content-manifest.json")
     manifest_only = bool(args.get("manifestOnly", True))
 
     base = _safe_join(root, root_dir)
@@ -277,7 +277,7 @@ def tool_broken_links_report(args: Dict[str, Any]) -> str:
             for doc in (cat.get("docs") or []):
                 p = doc.get("path")
                 if isinstance(p, str) and p.endswith(".md"):
-                    targets.append(_safe_join(root, str(Path("new") / p)))
+                    targets.append(_safe_join(root, p))
     else:
         targets = list(_iter_files(base, ("**/*.md",)))
 
@@ -319,7 +319,7 @@ def tool_broken_links_report(args: Dict[str, Any]) -> str:
 
 def tool_impact_report(args: Dict[str, Any]) -> str:
     root = _repo_root()
-    root_dir = args.get("rootDir", "new")
+    root_dir = args.get("rootDir", ".")
     query = args.get("query")
     if not isinstance(query, str) or not query.strip():
         return _format_findings([{"level": "error", "message": "query must be a non-empty string"}])
@@ -393,7 +393,7 @@ class TermRule:
 
 def tool_check_defined_terms(args: Dict[str, Any]) -> str:
     root = _repo_root()
-    root_dir = args.get("rootDir", "new")
+    root_dir = args.get("rootDir", ".")
     rules_raw = args.get("rules")
     if rules_raw is None:
         # Default project rules (can be extended via args)
@@ -455,10 +455,20 @@ def tool_check_defined_terms(args: Dict[str, Any]) -> str:
 
 _DEFAULT_WINDOW_PHRASES = (
     "during",
+    "before",
+    "after",
+    "when",
+    "whenever",
+    "until end of round",
     "at the start",
     "at cleanup",
     "at the end",
+    "round start",
+    "cleanup & checks",
     "on your turn",
+    "action phase",
+    "high council phase",
+    "production & upkeep",
     "in the action phase",
     "in the high council phase",
     "in the production",
@@ -468,7 +478,7 @@ _DEFAULT_WINDOW_PHRASES = (
 
 def tool_timing_window_lint(args: Dict[str, Any]) -> str:
     root = _repo_root()
-    root_dir = args.get("rootDir", "new")
+    root_dir = args.get("rootDir", ".")
     window_phrases = args.get("windowPhrases", list(_DEFAULT_WINDOW_PHRASES))
     max_findings = int(args.get("maxFindings", 200))
     max_findings = max(1, min(max_findings, 5000))
@@ -495,15 +505,25 @@ def tool_timing_window_lint(args: Dict[str, Any]) -> str:
             s = ln.strip()
             if not s:
                 continue
-            # Skip headings, code fences, and obvious references
-            if s.startswith("#") or s.startswith("```") or s.startswith(">"):
+            # Skip headings, code fences, tables, and obvious references/stat lines.
+            if s.startswith(("#", "```", ">", "|")):
                 continue
-            # Only lint lines that look like rules bullets or numbered steps
-            if not (s.startswith("- ") or re.match(r"^\d+\.", s)):
+            if re.match(
+                r"^- \*\*(attack|defense|health|movement range|cost|build cost|"
+                r"population|upkeep|vp|prerequisite|type|stats|notes?)\*\*\s*:",
+                s,
+                flags=re.I,
+            ):
+                continue
+            # Lint explicit effect/rule-text fields, not stat blocks, action
+            # menus, examples, or component lists that merely contain verbs.
+            if not re.search(r"(?i)\*\*(effect|rule text)\*\*\s*:", s):
                 continue
             if not effect_words.search(s):
                 continue
-            if timing_words.search(s):
+            # A standard ability block may put `Timing:` on a nearby line.
+            context = " ".join(lines[max(0, i - 4):i])
+            if timing_words.search(s) or re.search(r"(?i)\*\*timing\*\*\s*:", context):
                 continue
             findings.append(
                 {
@@ -575,11 +595,11 @@ def tool_components_diff(args: Dict[str, Any]) -> str:
 
 TOOLS = {
     "validate_manifest": {
-        "description": "Validate new/content-manifest.json and ensure referenced docs exist.",
+        "description": "Validate content-manifest.json and ensure referenced docs exist.",
         "inputSchema": {
             "type": "object",
             "properties": {
-                "manifestPath": {"type": "string", "default": "new/content-manifest.json"},
+                "manifestPath": {"type": "string", "default": "content-manifest.json"},
             },
             "required": [],
             "additionalProperties": False,
@@ -592,7 +612,7 @@ TOOLS = {
             "type": "object",
             "properties": {
                 "rootDir": {"type": "string", "default": "new"},
-                "manifestPath": {"type": "string", "default": "new/content-manifest.json"},
+                "manifestPath": {"type": "string", "default": "content-manifest.json"},
                 "manifestOnly": {"type": "boolean", "default": True},
             },
             "required": [],

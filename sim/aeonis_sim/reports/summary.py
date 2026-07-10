@@ -63,6 +63,12 @@ def _persona_of(record: dict, pid: int) -> str:
     return personas.get(str(pid), personas.get(pid, "unknown"))
 
 
+def _lord_of(record: dict, pid: int) -> str:
+    block = record.get("config", {}).get("lord_asymmetry", {})
+    lords = block.get("lords", []) if isinstance(block, dict) else []
+    return lords[pid] if pid < len(lords) else ""
+
+
 def _completed(records: list[dict]) -> list[dict]:
     return [r for r in records if r["verdict"] == "completed"]
 
@@ -88,6 +94,29 @@ def win_rate_by_persona(records: list[dict]) -> dict[str, dict]:
             "win_rate": s["wins"] / g if g else 0.0,
         }
     return out
+
+
+def win_rate_by_lord(records: list[dict]) -> dict[str, dict]:
+    stats: dict[str, dict] = defaultdict(lambda: {"games": 0, "wins": 0})
+    for r in _completed(records):
+        w = _winner(r)
+        if w is None:
+            continue
+        for raw_pid in r["final_vp"]:
+            pid = int(raw_pid)
+            lord = _lord_of(r, pid)
+            if not lord:
+                continue
+            stats[lord]["games"] += 1
+            if pid == w:
+                stats[lord]["wins"] += 1
+    return {
+        lord: {
+            **s,
+            "win_rate": s["wins"] / s["games"] if s["games"] else 0.0,
+        }
+        for lord, s in sorted(stats.items())
+    }
 
 
 def vp_source_totals(records: list[dict]) -> dict[str, int]:
@@ -536,6 +565,20 @@ def balance_summary(records: list[dict], title: str = "Balance Summary") -> str:
         lines.append(
             f"| {persona} | {s['games']} | {s['wins']} | {100 * s['win_rate']:.1f}% |"
         )
+
+    lord_rates = win_rate_by_lord(records)
+    if lord_rates:
+        lines.extend([
+            "",
+            "## Win rate by Lord (seat games, completed only)",
+            "",
+            "| Lord | Games | Wins | Win % |",
+            "| --- | ---: | ---: | ---: |",
+        ])
+        for lord, s in lord_rates.items():
+            lines.append(
+                f"| {lord} | {s['games']} | {s['wins']} | {100 * s['win_rate']:.1f}% |"
+            )
 
     totals = vp_source_totals(records)
     all_vp = sum(totals.values()) or 1

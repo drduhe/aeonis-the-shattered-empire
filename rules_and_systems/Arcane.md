@@ -71,6 +71,8 @@ Examples of where specialties can live:
 - An **Academy** upgrade line (see `Buildings.md`) that says “you have an **ENC specialty**.”
 - A **relic** that says “while equipped, you have **TRN specialty**.”
 
+**Seraphel — Polymath:** While Seraphel is not captured, he counts as having one additional sigil in every school when checking prerequisites. These virtual sigils grant no Discovery effects. Once per round, immediately after Seraphel resolves a Research action on his turn in the Action Phase, he may resolve a second Research action and pay all of its normal AP and resource costs. See `../lords/Seraphel.md`.
+
 ---
 
 ## 4) Researching a discovery (core action)

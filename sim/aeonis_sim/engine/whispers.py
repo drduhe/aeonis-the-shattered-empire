@@ -131,7 +131,10 @@ def discard_whisper(state: GameState, pid: int, card_id: str) -> None:
 
 
 def hand_over_limit(state: GameState, pid: int) -> bool:
-    return len(state.player(pid).whisper_hand) > WHISPER_HAND_LIMIT
+    from .lords import whisper_hand_limit
+    return len(state.player(pid).whisper_hand) > whisper_hand_limit(
+        state, pid, WHISPER_HAND_LIMIT,
+    )
 
 
 def enumerate_whisper_discard(state: GameState, pid: int) -> list[dict]:

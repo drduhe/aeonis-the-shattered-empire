@@ -214,6 +214,8 @@ class Tile:
 class PlayerState:
     pid: int
     home: Coord
+    lord_id: str = ""
+    lord_round: dict = field(default_factory=dict)
     ap: int = 0
     banked: int = 0
     gold: int = 0
@@ -259,7 +261,7 @@ class PlayerState:
             self.pending_whisper_draws += 1
 
     def to_dict(self) -> dict:
-        return {
+        out = {
             "pid": self.pid, "home": list(self.home), "ap": self.ap, "banked": self.banked,
             "gold": self.gold, "mana": self.mana, "influence": self.influence,
             "renown": self.renown, "vp": self.vp, "pop_pool": self.pop_pool,
@@ -293,10 +295,17 @@ class PlayerState:
             "whisper_flags": dict(self.whisper_flags),
             "pending_whisper_draws": self.pending_whisper_draws,
         }
+        # Keep pre-M4 records byte-stable when the opt-in layer is disabled.
+        if self.lord_id:
+            out["lord_id"] = self.lord_id
+            out["lord_round"] = dict(self.lord_round)
+        return out
 
     @staticmethod
     def from_dict(d: dict) -> "PlayerState":
         p = PlayerState(pid=d["pid"], home=tuple(d["home"]))
+        p.lord_id = str(d.get("lord_id", ""))
+        p.lord_round = dict(d.get("lord_round", {}))
         if "secret_objectives" in d:
             for k in ("ap", "banked", "gold", "mana", "influence", "renown", "vp", "pop_pool",
                       "passed", "public_scored_this_round",
@@ -536,6 +545,8 @@ class GameState:
             PlayerState(
                 pid=p.pid,
                 home=p.home,
+                lord_id=p.lord_id,
+                lord_round=dict(p.lord_round),
                 ap=p.ap,
                 banked=p.banked,
                 gold=p.gold,

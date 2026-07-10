@@ -21,7 +21,7 @@ Use this when adding a new Lord, event, objective, strategy card, building, or t
 ## 4) Update the browsing layer (Codex)
 
 - [ ] Add the doc to `content-manifest.json` in the right category (if desired).
-- [ ] Confirm the `path` is correct relative to `new/`.
+- [ ] Confirm the `path` is correct relative to the repository root.
 
 ## 5) Update components
 

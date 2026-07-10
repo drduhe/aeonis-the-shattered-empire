@@ -15,6 +15,7 @@ from .whispers import draw_whispers, init_whisper_deck
 from .council import init_agenda_deck
 from .events import init_event_deck
 from .types import BASE_AP, GameState, PlayerState, Unit, UNIT_STATS, UnitType
+from .lords import LORD_SPECS, configured_roster
 
 
 def build_initial_state(config: dict, rng: random.Random) -> GameState:
@@ -76,19 +77,32 @@ def build_initial_state(config: dict, rng: random.Random) -> GameState:
     state.shared_public_revealed = revealed
     state.shared_public_deck = public_deck
 
+    lord_roster = configured_roster(config, n)
     for pid in range(n):
-        p = PlayerState(pid=pid, home=homes[pid], ap=BASE_AP,
-                        gold=2, mana=2, influence=1)
+        lord = LORD_SPECS.get(lord_roster[pid])
+        p = PlayerState(
+            pid=pid,
+            home=homes[pid],
+            lord_id=lord_roster[pid],
+            ap=BASE_AP,
+            gold=lord.gold if lord else 2,
+            mana=lord.mana if lord else 2,
+            influence=lord.influence if lord else 1,
+        )
         state.players.append(p)
         cap = deal_secret_draw(state, pid, rng)
         if cap:
             raise RuntimeError("unexpected cap draw at setup")
 
         home = tiles[homes[pid]]
-        for ut in (UnitType.INFANTRY, UnitType.INFANTRY, UnitType.INFANTRY,
-                   UnitType.ARCHER, UnitType.LORD):
+        starting_units = lord.start_units if lord else (
+            UnitType.INFANTRY, UnitType.INFANTRY, UnitType.INFANTRY,
+            UnitType.ARCHER,
+        )
+        for ut in (*starting_units, UnitType.LORD):
             home.units.append(Unit(uid=state.new_uid(), owner=pid, type=ut,
-                                   hp=UNIT_STATS[ut].hp))
+                                   hp=lord.hp if lord and ut == UnitType.LORD
+                                   else UNIT_STATS[ut].hp))
 
         home.controller = pid
         for nb in neighbors(homes[pid]):

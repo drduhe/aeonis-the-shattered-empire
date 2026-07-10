@@ -237,7 +237,7 @@
         {
           "title": "Cassian — Merchant Prince",
           "path": "lords/Cassian.md",
-          "description": "Golden Consortium: trade tempo, Influence leverage, profit from politics.",
+          "description": "Golden Consortium: off-turn trade, binding vote contracts, Influence leverage.",
           "status": "playtest",
           "minutes": 6,
           "tags": ["lords", "economy", "politics"]
@@ -245,7 +245,7 @@
         {
           "title": "Elyndra — Warden of Groves",
           "path": "lords/Elyndra.md",
-          "description": "Verdant Covenant: population growth, defensive forests, attrition wars.",
+          "description": "Verdant Covenant: a private Forest network, defensive terrain, attrition wars.",
           "status": "playtest",
           "minutes": 6,
           "tags": ["lords", "defense", "growth"]
@@ -253,7 +253,7 @@
         {
           "title": "Seraphel — Lord of the Arcane",
           "path": "lords/Seraphel.md",
-          "description": "Arcanum Concord: mana advantage, information control, tempo bursts.",
+          "description": "Arcanum Concord: virtual sigils, paired Research actions, Arcane tempo.",
           "status": "playtest",
           "minutes": 7,
           "tags": ["lords", "magic", "tempo"]
@@ -261,7 +261,7 @@
         {
           "title": "Vharok — Lord of Steel",
           "path": "lords/Vharok.md",
-          "description": "Iron Dominion: durable fronts, fortress play, long sieges.",
+          "description": "Iron Dominion: every built hex becomes a bastion, durable fronts, long sieges.",
           "status": "playtest",
           "minutes": 6,
           "tags": ["lords", "defense", "siege"]
@@ -269,7 +269,7 @@
         {
           "title": "Rakhis — The Sandlord",
           "path": "lords/Rakhis.md",
-          "description": "Windsworn Horde: fast cavalry, desert mastery, hit-and-run raids.",
+          "description": "Windsworn Horde: ZOC-free movement, desert mastery, hit-and-run raids.",
           "status": "playtest",
           "minutes": 6,
           "tags": ["lords", "cavalry", "desert", "aggression"]
@@ -285,7 +285,7 @@
         {
           "title": "Auriel — Voice of the World Tree",
           "path": "lords/Auriel.md",
-          "description": "Radiant Accord: Renown accumulation, council dominance, defensive auras.",
+          "description": "Radiant Accord: sanctified motions, doubled votes, Renown, defensive auras.",
           "status": "playtest",
           "minutes": 6,
           "tags": ["lords", "renown", "council", "defense"]
@@ -367,6 +367,21 @@
           "status": "playtest",
           "minutes": 3,
           "tags": ["components"]
+        }
+      ]
+    },
+    {
+      "id": "design",
+      "label": "Design & Simulation",
+      "color": "purple",
+      "docs": [
+        {
+          "title": "Plan 5 / M4 Foundation Report",
+          "path": "docs/reports/2026-07-09-plan5-m4-foundation.md",
+          "description": "Core-Lord parity promotion, M4 stability results, and remaining full-M4 scope.",
+          "status": "internal",
+          "minutes": 5,
+          "tags": ["design", "simulation", "balance", "lords"]
         }
       ]
     }

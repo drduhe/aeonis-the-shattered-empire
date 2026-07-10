@@ -360,6 +360,21 @@ Use the Lord sheets in `lords/`. The game supports **3-8 players**; each player 
 - `lords/Auriel.md` -- Auriel, Voice of the World Tree (Luminari, The Radiant Accord): Renown, council dominance, defensive auras
 - `lords/Thalrik.md` -- Thal'rik, the Gatekeeper (Voidborn, The Threshold): Portal control, teleportation, map-wide presence
 
+### Launch-Lord signature rules
+
+These signature bends are active in the First Playable. The Lord sheets own their complete timing and limits.
+
+| Lord | One-sentence signature |
+| --- | --- |
+| Cassian | He inserts one 0-AP Trade into any Action turn and can bind one current-motion vote promise each round. |
+| Seraphel | He counts +1 sigil in every school for prerequisites and may Research twice in one turn each round. |
+| Vharok | Every controlled built hex can Hold the Walls with +1 defending Battle Line capacity. |
+| Elyndra | Once per round, any two controlled Forests are adjacent for one 1-AP group Move. |
+| Rakhis | His groups ignore ZOC surcharges, cross Deserts for 1 AP, and may withdraw before the first Pre-Strike. |
+| Nyxara | She draws 3 Whispers at Round Start and holds 8. |
+| Auriel | She doubles her votes on one sanctified motion and gains enhanced Renown if it passes. |
+| Thal'rik | He may Portal-travel to any Portal regardless of control or treaty. |
+
 ### Lord stat summary
 
 | Lord | Race | Attack | Defense | HP | Move | Identity |

@@ -27,6 +27,17 @@ This folder is the current "rulebook draft" for **Aeonis: The Shattered Empire**
 - **`Diplomacy.md`**: Which deals the rules enforce (immediate exchanges binding; promises not), the Accord system (formal alliances), and the NPC-factions decision (out of core).
 - **`Advanced_Units.md`**: Faction Elite/Advanced/Mythic units: unlock gates (Forge / Tier II / Legendary), recruit costs, on-map limits, upkeep, and the design contract. Full game only.
 
+## Lord design contract
+
+Every new or redesigned Lord must meet all four signature tests:
+
+1. **Bends one core system:** breaks or replaces a rule every other player follows, rather than only adding a numeric discount.
+2. **Visible most rounds:** an observer can identify the Lord from normal play patterns during rounds 2–4.
+3. **Creates a distinct victory lean:** the bend points toward a strategy and VP-source mix no other Lord executes in the same way.
+4. **Teachable in one sentence:** the signature can be stated without introducing an undefined resource or global keyword.
+
+Keep three abilities per sheet; redesigns replace weak abilities rather than inflating ability count. The teaching pair (Rakhis and Vharok) must remain setup-simple. Each signature must name its timing window, use existing system hooks, include counterplay or an opportunity cost, and be encoded in `sim/` when that system is in simulator scope.
+
 ## Design decisions (resolved)
 
 These items were previously "red flags" and have been addressed:
@@ -58,6 +69,7 @@ These items were previously "red flags" and have been addressed:
 - **`TBD.md` retired**: Its open items were folded into "Remaining design work" below.
 - **Plan 3 MVP — VP legibility (2026-07-03, sim-validated):** First Playable slice locked for sim and doc propagation: **shared public objective row** (6 cards; 2 revealed at setup, +1 per round from round 2); **Coronation Rite** replaces Imperial Seat +1/round drip (Lord on Seat hex → +1 VP/round; **third total** Rite → +2 VP once per player per game); **objective scoring at Cleanup & Checks** (AL-5); **VP permanence** for objectives and Rite; **population cap/pool** clarity (AL-1, AL-4). Lord capture stays **+1 VP**. Sim regression gates passed: Bracket A 4p (winner objective ~68%), mixed B/C 7–8p post persona-parity (winner objective ~71%, H7 persona parity). *Sim-only until human playtest.* See `../playtest/First_Playable_Packet.md`, `Victory.md`, `../docs/plans/2026-07-03-plan-vp-legibility-mvp.md`.
 - **Ambiguity Ledger closed for M1 sim (2026-07-03):** All AL-1–AL-20 entries resolved in `../playtest/Ambiguity_Ledger.md` — map desert placement between home pairs (AL-3), City production clarity (AL-13), contested Adjacency sim rule (AL-14), involuntary Population overflow (AL-15), Coronation milestone once per game (AL-18), plus combat/map fidelity from the M1 sprint.
+- **Plan 5 — Core Lords parity (2026-07-09, promoted):** Six launch signatures now bend core systems: Cassian's off-turn Trade/binding vote contract, Seraphel's Polymath research tempo, Elyndra's controlled-Forest network, Vharok's built-hex Bastions, Auriel's sanctified motion, and Rakhis's Sandstride. Nyxara's Whisper economy and Thal'rik's Portal topology remain unchanged anchors. The First Playable packet and derived rulebook carry signature reminders; the M4 simulator foundation encodes Lord identity, starting state/stats, rotating assignments, and deterministic signature hooks. See `../docs/plans/2026-07-02-plan-core-lords-parity.md`.
 
 - **Six improvement plans (2026-07-02, PROPOSED — not canon):** combat aggression tuning, AP economy flattening, VP legibility, 6–8 player scaling (incl. a future `Map_Construction.md` chapter), core-Lords parity pass, and bookkeeping reduction. See `../docs/plans/INDEX.md`. None of their changes apply until playtested and recorded under "Design decisions (resolved)" above.
 - **Lakes / water**: Core rules are defined (impassable, Bridge exception). Consider adding more water-related events or abilities.

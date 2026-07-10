@@ -63,10 +63,14 @@ Elyndra does not rule by decree—she rules by **roots**. Where others strip the
 
 ## Abilities
 
-### 1) Verdant Growth (Faction Mechanic)
+### 1) The Deep Roots (Faction Mechanic)
 
-**Effect:** At the end of **Production & Upkeep**, gain **+1 Population Pool** (up to cap).  
-**Theme:** Your realm replenishes itself faster than war can consume it.
+**Timing:** Once per round, when you take a Move action on your turn in the **Action Phase**.
+
+**Effect:** Choose one of your unit groups in a **Forest hex you control** and another **Forest hex you control**. For this Move, treat those hexes as adjacent; moving the group between them costs **1 AP**.
+
+**Limits:** The destination must be legal and the group must begin and end in the chosen Forests. This is not Portal travel and does not cross intervening hexes.
+**Theme:** Every grove is part of one living forest.
 
 ### 2) Rooted Defenses (Passive Ability)
 
@@ -151,7 +155,7 @@ Win a battle as the **defender** in a **Forest/Grove** hex, then end the round s
 
 ### Strengths
 
-- **Population advantage:** You replace losses quickly and can sustain longer conflicts.
+- **Private road network:** Controlled Forests become a one-AP strategic network across the map.
 - **Defensive consistency:** Rerolls and attack suppression make forest fights favorable.
 - **Archer value:** Forest defense tools amplify Pre-Strike and chip damage.
 
@@ -169,6 +173,6 @@ Win a battle as the **defender** in a **Forest/Grove** hex, then end the round s
 
 ## Notes for Playtesting
 
-- **Growth tuning:** Verdant Growth + Sacred Grove owner-only is intentionally generous—verify it doesn’t outpace other factions too early.
+- **Deep Roots reach:** Track whether unlimited controlled-Forest distance makes Elyndra uncatchable; if so, cap the moved group at 3 units.
 - **Entangling Roots feel:** Roll-modifying effects can be swingy; confirm -2 is impactful but not oppressive.
 - **Forest dominance:** Test map setups with fewer Forests to see if Elyndra remains viable without guaranteed terrain.

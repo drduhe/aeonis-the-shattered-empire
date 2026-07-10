@@ -34,5 +34,5 @@ Re-run via `seat_rewards` block on `bracket-m2-smoke.json` copy. AL-43.
 
 ## References
 
-- [Seat/rite analysis](2026-07-03-h7-calibration-sweep-conclusion.md) (condensed; full tables in git history)
+- [Seat/rite analysis](../reports/2026-07-03-h7-calibration-sweep-conclusion.md) (condensed; full tables in git history)
 - [Current baselines](../reports/2026-07-03-current-baselines.md)

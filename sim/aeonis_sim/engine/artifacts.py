@@ -347,6 +347,9 @@ def score_artifact_vp(state: GameState, pid: int) -> None:
 
 def attack_die(state: GameState, pid: int, unit) -> int:
     die = UNIT_STATS[unit.type].attack_die
+    if unit.type == UnitType.LORD:
+        from .lords import lord_attack_die
+        die = lord_attack_die(state, pid, die)
     if unit.type == UnitType.LORD and "blade_of_the_last_emperor" in state.player(pid).lord_equipment:
         die = _DIE_UP.get(die, die)
     return die
@@ -354,6 +357,9 @@ def attack_die(state: GameState, pid: int, unit) -> int:
 
 def defense_die(state: GameState, pid: int, unit, battle_target_coord) -> int:
     die = UNIT_STATS[unit.type].defense_die
+    if unit.type == UnitType.LORD:
+        from .lords import lord_defense_die
+        die = lord_defense_die(state, pid, die)
     tile = state.tiles[battle_target_coord]
     if (
         unit.owner == pid

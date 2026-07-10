@@ -10,13 +10,13 @@ All paths are relative to the repo root unless otherwise stated.
 
 ### `validate_manifest`
 
-Validates `new/content-manifest.json` and ensures all referenced docs exist.
+Validates `content-manifest.json` and ensures all referenced docs exist.
 
 **Input**
 
 ```json
 {
-  "manifestPath": "new/content-manifest.json"
+  "manifestPath": "content-manifest.json"
 }
 ```
 
@@ -28,8 +28,8 @@ Finds broken relative markdown links (optionally only in docs referenced by the 
 
 ```json
 {
-  "rootDir": "new",
-  "manifestPath": "new/content-manifest.json",
+  "rootDir": ".",
+  "manifestPath": "content-manifest.json",
   "manifestOnly": true
 }
 ```
@@ -42,7 +42,7 @@ Searches the Aeonis docs for a term and returns occurrences + file list.
 
 ```json
 {
-  "rootDir": "new",
+  "rootDir": ".",
   "query": "ZOC",
   "caseInsensitive": true,
   "maxMatchesPerFile": 20
@@ -57,7 +57,7 @@ Flags terminology drift (e.g., “IP” vs “Influence”) and reports occurren
 
 ```json
 {
-  "rootDir": "new",
+  "rootDir": ".",
   "rules": [
     { "id": "influence-vs-ip", "preferred": "Influence", "forbidden": ["IP", "Influence Points"] }
   ]
@@ -72,7 +72,7 @@ Heuristic lint: flags rule paragraphs that look like effects but don’t mention
 
 ```json
 {
-  "rootDir": "new",
+  "rootDir": "rules_and_systems",
   "windowPhrases": ["during", "at the start", "at cleanup", "on your turn", "in the action phase", "in the high council phase"],
   "maxFindings": 200
 }
@@ -86,8 +86,8 @@ Diffs two component lists (markdown) and reports added/removed items (normalized
 
 ```json
 {
-  "basePath": "new/components/Components.md",
-  "comparePath": "new/components/Components.md"
+  "basePath": "components/Components.md",
+  "comparePath": "components/Components.md"
 }
 ```
 

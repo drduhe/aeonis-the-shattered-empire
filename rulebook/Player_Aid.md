@@ -56,6 +56,19 @@
 | Auriel | Luminari | d6 | d10 | 3 | 2 | Faith tank |
 | Thal'rik | Voidborn | d8 | d8 | 3 | 2 | Portal master |
 
+### Launch-Lord signatures
+
+| Lord | Signature reminder |
+| --- | --- |
+| Cassian | One off-turn 0-AP Trade; one binding current-motion vote promise per round |
+| Seraphel | +1 virtual sigil in every school; second paid Research in the same turn once per round |
+| Vharok | Built hexes may Hold the Walls; +1 defending Battle Line slot there |
+| Elyndra | One 1-AP group Move between any two controlled Forests per round |
+| Rakhis | Deserts cost 1; ignores all ZOC surcharges; one pre-Pre-Strike retreat per battle |
+| Nyxara | Draw 3 Whispers at Round Start; hand limit 8 |
+| Auriel | Sanctify one motion per round: own votes ×2; +2 Renown if supported and passed |
+| Thal'rik | Portal travel to any Portal without permission |
+
 ---
 
 ## Terrain

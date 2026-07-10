@@ -64,10 +64,14 @@ Vharok rules from forge-lit bastions where every road is measured, every gate is
 **Effect:** When defending a hex that contains **one of your buildings**, your units gain **+1 Defense**. (Add +1 to their Defense rolls in that battle.)  
 **Theme:** Steel discipline behind walls and fortifications.
 
-### 2) Siegecraft (Passive Ability)
+### 2) Bastion Doctrine (Faction Mechanic)
 
-**Effect:** When you spend an **Attack** action against a hex that is currently a **Siege** (City holding the walls, or any Fortress), you may resolve **Press the Attack** by paying **0 AP** instead of +1 (still limited to once per Attack action).  
-**Theme:** Your war engines are built to sustain pressure without exhausting your command.
+**Timing:** When you become the defender in a battle at a hex you control that contains one of your buildings.
+
+**Effect:** You may **Hold the Walls** in that hex even if it is not a City or Fortress. Its Battle Line cap is **+1 for your defending side** for that battle.
+
+**Limits:** If you Hold the Walls, normal Siege rules and retreat restrictions apply. Losing control of the hex ends the exception.
+**Theme:** Every workshop, tower, and mine is a keep.
 
 ### 3) Lock the Line (Active Ability)
 
@@ -149,7 +153,7 @@ At **Cleanup & Checks**, control **2 or more** hexes that each contain **one of 
 ### Strengths
 
 - **Defensive scaling:** Buildings and towers compound into very high defense.
-- **Siege pacing:** Siegecraft lets you push multi-round fights without draining AP.
+- **Bastion network:** Every built hex can become a larger defensive line and a multi-turn Siege.
 - **Board control:** Lock the Line helps dictate casualty trades and protect key units.
 
 ### Weaknesses
@@ -167,5 +171,5 @@ At **Cleanup & Checks**, control **2 or more** hexes that each contain **one of 
 ## Notes for Playtesting
 
 - **Stacking defense:** Validate how Forged in Battle stacks with Tower/Fortress bonuses; watch for “no-damage” stalemates.
-- **Siegecraft economy:** Confirm that free Press the Attack during sieges doesn’t become the default best line every turn.
+- **Bastion Doctrine:** Track how often ordinary built hexes become Sieges and whether the +1 defending slot creates excessive stalemates.
 - **Lock the Line feel:** Ensure target reassignment is strong but not frustrating—especially with Archer Pre-Strike timing.

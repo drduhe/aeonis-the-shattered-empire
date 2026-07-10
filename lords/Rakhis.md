@@ -64,10 +64,14 @@ The Djinnborn are the descendants of imperial outriders who bound wind spirits i
 
 ## Abilities
 
-### 1) Windsworn Speed (Faction Mechanic)
+### 1) Sandstride (Faction Mechanic)
 
-**Effect:** All your units treat **Deserts** as costing **1 AP per hex** (instead of 2 AP). Other players still pay the normal 2 AP.
-**Theme:** The Djinnborn were born in the sand. What slows others is home to them.
+**Timing:** During your Move actions, and once per battle before the first **Pre-Strike** step resolves.
+
+**Effect:** Your groups treat **Deserts** as costing **1 AP per hex** and ignore enemy ZOC surcharges. Once per battle, before the first Pre-Strike step, you may retreat your committed group using the normal attacker or defender retreat destination rules.
+
+**Limits:** Sandstride does not permit a defender to retreat from a City, Fortress, or a hex where it chose to Hold the Walls.
+**Theme:** You cannot pin the wind.
 
 ### 2) Hit and Run (Passive Ability)
 
@@ -153,7 +157,7 @@ Win a battle as **attacker** and use **Hit and Run** to move your units afterwar
 
 ### Strengths
 
-- **Map mobility:** Movement Range 3 Lord + Windsworn Speed means Rakhis can be anywhere Deserts touch.
+- **Map mobility:** Movement Range 3 plus Sandstride makes Rakhis difficult to screen or trap.
 - **Desert dominance:** Desert Tempest makes contested deserts punishingly expensive for opponents.
 - **Aggressive tempo:** Hit and Run lets you win a fight and immediately reposition, denying counterattack.
 - **Cavalry start:** Beginning with Cavalry gives an early expansion advantage no other Lord has.
@@ -162,7 +166,7 @@ Win a battle as **attacker** and use **Hit and Run** to move your units afterwar
 
 - **Mana drought:** 1 starting Mana makes Desert Tempest and research expensive early.
 - **Fragile in sieges:** Speed doesn't help when assaulting fortified positions; the Horde is weakest when forced to stand still.
-- **Desert dependency:** If the map has few Deserts near your position, Windsworn Speed and Desert Tempest lose value.
+- **Desert dependency:** If the map has few Deserts near your position, Desert Tempest loses value, but Sandstride's ZOC exception remains useful.
 - **Thin defenses:** d6 Defense on Rakhis and most units means any sustained fight is risky.
 
 ---
@@ -173,7 +177,7 @@ Win a battle as **attacker** and use **Hit and Run** to move your units afterwar
 
 ## Notes for Playtesting
 
-- **Windsworn Speed:** Verify that free Desert movement doesn't let Rakhis dominate neutral ring Deserts too easily in early rounds.
+- **Sandstride:** Track battles abandoned before Pre-Strike and whether ignoring every ZOC surcharge makes counter-positioning irrelevant.
 - **Hit and Run:** Track how often the free move creates unreachable positions; ensure opponents have counterplay (ZOC from adjacent units should still work).
 - **Desert Tempest:** At 4 AP total for opponents, this can effectively lock a hex. Confirm 2 Mana is the right cost and that it doesn't stall the game.
 - **Cavalry start:** Validate that starting with Cavalry instead of an Archer isn't too strong for Round 1 aggression.

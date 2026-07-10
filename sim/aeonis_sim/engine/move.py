@@ -11,6 +11,7 @@ from .hexmap import neighbors
 from .artifacts import lord_move_bonus
 from .arcane import mark_waystones_used, waystones_move_discount
 from .types import BuildingType, Terrain, TERRAIN_COST, UNIT_STATS, UnitType
+from .lords import is_lord, lord_move, mark_round_used, round_unused
 
 
 def _enemy_zoc(state, pid) -> set:
@@ -40,7 +41,10 @@ def _portal_exits(state, pid, coord):
     t = state.tiles.get(coord)
     if t is None or t.terrain != Terrain.PORTAL:
         return []
-    hostile_ok = state.player(pid).whisper_flags.get("hostile_portal_ok")
+    hostile_ok = (
+        state.player(pid).whisper_flags.get("hostile_portal_ok")
+        or is_lord(state, pid, "thalrik")
+    )
     out = []
     for c2, t2 in state.tiles.items():
         if c2 == coord or t2.terrain != Terrain.PORTAL:
@@ -76,12 +80,18 @@ def _paths_from(state, pid, start, max_range, max_cost, has_cavalry,
             step = 0 if waive_terrain else TERRAIN_COST[state.tiles[nxt].terrain]
             if (
                 not waive_terrain
+                and is_lord(state, pid, "rakhis")
+                and state.tiles[nxt].terrain == Terrain.DESERT
+            ):
+                step = 1
+            if (
+                not waive_terrain
                 and state.open_roads
                 and state.tiles[nxt].terrain == Terrain.PLAINS
             ):
                 step = max(1, step - 1)
             f2 = flanked
-            if nxt in zoc:
+            if nxt in zoc and not is_lord(state, pid, "rakhis"):
                 if not flanked:
                     f2 = True  # cavalry flanking: first ZOC hex free
                 else:
@@ -114,7 +124,7 @@ def enumerate_moves(state, pid, *, waive_terrain: bool = False) -> list:
             for u in group:
                 m = UNIT_STATS[u.type].move
                 if u.type == UnitType.LORD:
-                    m += lord_move_bonus(state, pid)
+                    m = lord_move(state, pid, m) + lord_move_bonus(state, pid)
                 moves.append(m)
             max_range = min(moves)
             if p.whisper_flags.get("forced_march"):
@@ -134,6 +144,22 @@ def enumerate_moves(state, pid, *, waive_terrain: bool = False) -> list:
                     "cost": cost,
                     "portal": portaled,
                 })
+    if is_lord(state, pid, "elyndra") and round_unused(state, pid, "deep_roots") and p.ap >= 1:
+        forests = [t for t in state.controlled(pid) if t.terrain == Terrain.FOREST]
+        for origin in forests:
+            for group in _groups(origin, pid):
+                for dest in forests:
+                    if dest.coord == origin.coord or not _passable(state, pid, dest.coord):
+                        continue
+                    out.append({
+                        "type": "move",
+                        "from": list(origin.coord),
+                        "dest": list(dest.coord),
+                        "uids": sorted(u.uid for u in group),
+                        "cost": 1,
+                        "portal": False,
+                        "root_network": True,
+                    })
     return out
 
 
@@ -165,6 +191,8 @@ def apply_move(state, pid, choice) -> None:
     if discounted < cost:
         mark_waystones_used(state, pid)
     p.ap -= discounted
+    if choice.get("root_network"):
+        mark_round_used(state, pid, "deep_roots")
     if choice["portal"]:
         p.used_portal_travel = True
     # Tiles.md control method 3: neutral hex claimed immediately.

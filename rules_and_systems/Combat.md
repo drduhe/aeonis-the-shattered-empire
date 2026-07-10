@@ -134,7 +134,7 @@ After this battle round is complete, the battle ends for now. If both sides stil
 After resolving the battle round, the attacker may choose to **Press the Attack**:
 
 - **Cost**: pay **+1 AP** immediately.
-- **Effect**: resolve **one additional** battle round immediately using section 4.
+- **Effect**: During the current Attack action, resolve **one additional** battle round immediately using section 4.
 - **Limit**: at most once per Attack action (max 2 battle rounds per Attack).
 
 ### 4.1 Reinforce Battle Lines
@@ -173,6 +173,8 @@ Restriction:
 
 - **Defenders cannot retreat from Cities/Fortresses** unless a card, Ritual, or motion explicitly allows it.
 
+**Rakhis — Sandstride exception:** Once per battle, before the first Archer Pre-Strike step, Rakhis may retreat his committed group using the normal attacker or defender destination rules. A defender still cannot retreat from a City, Fortress, or any hex where they chose to Hold the Walls. Resolve the retreat before any dice are rolled.
+
 ---
 
 ## 5. Aftermath (control and occupation)
@@ -199,6 +201,8 @@ Cities and Fortresses are intended to be hard points that can create prolonged c
 If the target hex contains a **Fortress**, the battle is automatically a **Siege** (the defender is assumed to **Hold the Walls**).
 
 If the target hex contains a **City**, the defender may declare **Hold the Walls** when the attack is declared.
+
+**Vharok — Bastion Doctrine:** When Vharok defends a controlled hex containing one of his buildings, he may declare Hold the Walls even if that hex is not a City or Fortress. His defending Battle Line cap is +1 for that battle. If he declares it, the battle uses all normal Siege persistence and retreat restrictions. Vharok's separate Forged in Battle ability also grants his defenders +1 Defense in that built hex.
 
 - If declared, the battle becomes a **Siege**.
 - Place a **Siege marker** on the target hex.

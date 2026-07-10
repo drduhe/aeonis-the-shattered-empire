@@ -63,10 +63,14 @@ Seraphel’s court is a lattice of wards, lenses, and quiet bargains. Where othe
 
 ## Abilities
 
-### 1) Arcane Efficiency (Passive Ability)
+### 1) Polymath (Faction Mechanic)
 
-**Effect:** Once per round, when you **Press the Attack**, the +1 AP cost is reduced to **0 AP**.  
-**Theme:** You compress time—turning a single opening into a full exchange of blows.
+**Timing:** When checking a Discovery's prerequisites, and once per round after you resolve a Research action on your turn in the **Action Phase**.
+
+**Effect:** Count as having **one additional sigil in every Arcane school** when checking prerequisites. After you resolve a Research action, you may immediately take a second Research action in the same turn, paying its full AP and resource costs.
+
+**Limits:** The bonus sigils satisfy prerequisites only; they are not Discoveries and grant no printed effects. The second Research action is optional and usable once per round.
+**Theme:** You research as though the empire never fell.
 
 ### 2) Scry the Council (Passive Ability)
 
@@ -153,7 +157,7 @@ In a single round, resolve **Press the Attack** at least **twice** across your a
 
 ### Strengths
 
-- **AP conversion:** Free Press the Attack creates huge tempo swings in key fights.
+- **Research tempo:** Prerequisite flexibility and paired Research actions accelerate Arcane specialization.
 - **Information edge:** Scry the Council improves negotiation and counterplay in politics.
 - **Terrain flexibility:** Blink Step reduces the penalty of Mountains/Deserts for repositioning.
 
@@ -171,6 +175,6 @@ In a single round, resolve **Press the Attack** at least **twice** across your a
 
 ## Notes for Playtesting
 
-- **Arcane Efficiency:** Track how often “free Press” produces blowouts; tune once-per-round timing if needed.
+- **Polymath:** Track the round of Seraphel's second and third Discoveries and whether paired Research turns create an unrecoverable lead.
 - **Blink Step:** Verify it’s a meaningful mobility tool without trivializing terrain as a strategic feature.
 - **Mana Nexus scaling:** Confirm +1 Mana on all Mana-hexes doesn’t outpace other economies too early.

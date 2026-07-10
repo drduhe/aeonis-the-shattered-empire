@@ -13,6 +13,7 @@ from ..reports.hypotheses import evaluate_hypotheses, hypotheses_markdown
 from ..reports.html import generate_html
 from ..reports.summary import append_session_log, balance_summary
 from .play import play_game
+from ..engine.lords import LAUNCH_LORDS
 
 
 def _assign_personas(config: dict, game_index: int) -> list[str]:
@@ -55,6 +56,19 @@ def _assign_personas(config: dict, game_index: int) -> list[str]:
     raise ValueError(f"unknown matchmaking mode: {mode}")
 
 
+def _assign_lords(config: dict, game_index: int) -> list[str] | None:
+    """Rotate the launch roster so every Lord sees every seat across a bracket."""
+    block = config.get("lord_asymmetry", {})
+    if not block.get("enabled", False):
+        return None
+    players = int(config["players"])
+    roster = list(block.get("roster") or LAUNCH_LORDS)
+    if len(roster) < players:
+        raise ValueError("lord_asymmetry.roster is smaller than player count")
+    shift = game_index % len(roster)
+    return [roster[(shift + seat) % len(roster)] for seat in range(players)]
+
+
 def _play_tournament_game(config: dict, game_index: int) -> dict:
     """Run one tournament game (picklable worker entry point)."""
     seed_base = config.get("seed_base", 1)
@@ -71,6 +85,12 @@ def _play_tournament_game(config: dict, game_index: int) -> dict:
         game_config["seat_rewards"] = dict(config["seat_rewards"])
     if "economy" in config:
         game_config["economy"] = dict(config["economy"])
+    assigned_lords = _assign_lords(config, game_index)
+    if assigned_lords is not None:
+        game_config["lord_asymmetry"] = {
+            "enabled": True,
+            "lords": assigned_lords,
+        }
     game_config["personas"] = _assign_personas(config, game_index)
     seed = seed_base + game_index
     agents = agents_from_config(game_config, seed)

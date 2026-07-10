@@ -63,10 +63,14 @@ Cassian’s armies are never the largest, but they are always where the contract
 
 ## Abilities
 
-### 1) Favor Broker (Passive Ability)
+### 1) The Consortium's Ledger (Faction Mechanic)
 
-**Effect:** Once per round, when you **initiate a Trade**, reduce its AP cost by **1** (minimum 0).  
-**Theme:** Your deals happen between heartbeats.
+**Timing:** Once per round, during any player's turn in the **Action Phase**, before or after that player's action resolves.
+
+**Effect:** You may initiate one Trade at **0 AP**, even when it is not your turn. Resolve the Trade before play continues. In addition, once per round during the **High Council Phase**, when a deal you proposed is accepted, you may declare its one included promise about the current motion's vote **binding**. The promised player must vote as agreed when that motion resolves.
+
+**Limits:** The off-turn Trade and binding vote promise are each usable once per round. A Ledger deal cannot bind future resource production, movement, combat, or a later round.
+**Theme:** You do not visit the market. You are the market.
 
 ### 2) Council Patronage (Faction Mechanic)
 
@@ -151,7 +155,7 @@ At **Cleanup & Checks**, control **Caravan Bazaar** and have at least **one** **
 
 ### Strengths
 
-- **Economic tempo:** Converts Influence into Gold and discounts Trade actions.
+- **Economic tempo:** Inserts a free Trade into any Action turn and makes one Council bargain enforceable.
 - **Political leverage:** Lobbying becomes a consistent income stream.
 - **Soft power:** Incentivizes deals and makes opponents “pay you to play.”
 

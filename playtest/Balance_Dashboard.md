@@ -30,6 +30,8 @@ This is the living balance-tracking doc for playtesting. Every logged session (s
 
 Update cumulative rows after each session.
 
+**Parity baseline:** The six Plan 5 signature redesigns (Cassian, Seraphel, Vharok, Elyndra, Rakhis, Auriel) landed on 2026-07-09. Do not combine pre-redesign and post-redesign matchup results; record `plan5` in session notes. Nyxara and Thal'rik are unchanged comparison anchors.
+
 | Lord | Games | Wins | Avg VP | Avg finish position | Notes |
 | --- | --- | --- | --- | --- | --- |
 | Cassian | 0 | 0 | – | – | |

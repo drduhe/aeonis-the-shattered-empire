@@ -124,11 +124,12 @@ def tally_votes(
     yes = extra_yes
     no = extra_no
     for b in ballots:
+        multiplier = 2 if b.get("sanctify") else 1
         if not b.get("support"):
-            no += council_votes(state, b["pid"])
+            no += multiplier * council_votes(state, b["pid"])
             continue
         lobby = int(b.get("lobby", 0))
-        yes += council_votes(state, b["pid"]) + lobby // 2
+        yes += multiplier * (council_votes(state, b["pid"]) + lobby // 2)
     if yes > no:
         return True
     if no > yes:

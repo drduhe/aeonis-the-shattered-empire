@@ -2,7 +2,7 @@
 
 **Updated:** 2026-07-03 · Sim-only unless noted. Full tournament dumps are **regenerable** — conclusions live in the memos below.
 
-**Engine:** M3 card systems + Lever C brakes + S1 seat VP. **236 pytest** passing.
+**Engine:** M3 card systems + opt-in M4 Lord foundation + Lever C brakes + S1 seat VP. **245 pytest** passing.
 
 ---
 
@@ -17,6 +17,7 @@
 | [Economist viability memo](2026-07-03-memo-economist-viability.md) | Owner decision: stop bot tuning; packet levers |
 | [Persona parity diagnosis](2026-07-03-persona-parity-diagnosis.md) | Bot vs design-pressure methodology |
 | [Plan 1 combat ladder](2026-07-03-plan1-combat-ladder.md) | Edge/Pillage variants; Pre-Strike for human test |
+| [Plan 5 / M4 foundation](2026-07-09-plan5-m4-foundation.md) | Six signature redesigns promoted; 40/40 stability smoke; full M4 entry scope |
 
 ---
 

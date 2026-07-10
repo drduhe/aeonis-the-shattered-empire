@@ -82,5 +82,13 @@ architecture spec §5 owns milestone content.
 M2 tournament configs: `configs/bracket-m2-smoke.json`, `bracket-m2-4p.json`, `bracket-6p-mixed.json`, `bracket-8p-mixed.json`.
 Current baselines: `docs/reports/2026-07-03-current-baselines.md`.
 
+## M4 Lord-asymmetry foundation
+
+Plan 5's launch-Lord signatures are available behind the opt-in `lord_asymmetry` config block. The rotating smoke bracket is `configs/bracket-m4-foundation.json`:
+
+    cd sim && python scripts/regression_check.py --config configs/bracket-m4-foundation.json --workers 4
+
+This foundation encodes Lord identity, sheet-specific setup/stats, and deterministic signature hooks while leaving M1–M3 defaults and golden replays unchanged. Full M4 still includes every remaining passive/active, unique tile, faction discovery, and Legendary Building; see `docs/reports/2026-07-09-plan5-m4-foundation.md` and AL-49.
+
 Rules questions found while encoding the docs live in
 `playtest/Ambiguity_Ledger.md`.

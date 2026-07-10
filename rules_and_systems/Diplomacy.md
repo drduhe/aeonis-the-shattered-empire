@@ -15,6 +15,8 @@ A **deal** is any agreement between two or more players.
 - **Immediate exchanges are binding.** If components change hands as part of a deal (resources, artifacts per `Artifacts.md` trade rules, hex transfers via the Trade action), the exchange must be completed as agreed, at the moment of the deal.
 - **Promises about the future are non-binding.** "I'll vote for your motion," "I won't attack you next round," "I'll give you 2 Gold at Production" — none of these are enforced by the rules. Breaking them has social consequences, not mechanical ones (but see Accords, §2).
 
+**Cassian — Consortium's Ledger exception:** Once per round during the High Council Phase, when a deal Cassian proposed is accepted, he may make one included promise about the **current motion's vote** binding. The promised player must vote as agreed when that motion resolves. The exception cannot bind a later round, movement, combat, production, or a future resource transfer. During the Action Phase, Cassian may also initiate one Trade per round at 0 AP before or after any player's action; resolve it before play continues. See `../lords/Cassian.md`.
+
 ### 1.2 When you can deal
 
 - **Negotiation is always allowed** — any phase, any turn. Talk is free.

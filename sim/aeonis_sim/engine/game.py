@@ -105,6 +105,13 @@ from .strategy import (
 )
 from .types import (BASE_AP, BuildingType, DEFAULT_ROUND_CAP, Terrain,
                     UNIT_STATS, UnitType)
+from .lords import (
+    is_lord,
+    lord_hp,
+    mark_round_used,
+    round_unused,
+    whisper_hand_limit,
+)
 
 MAX_ACTIONS_PER_PLAYER_ROUND = 100
 
@@ -177,6 +184,7 @@ class Game:
         self._council_negotiation_queue: list[int] = []
         self._trade_used: dict[int, bool] = {}
         self._trade_initiator: Optional[int] = None
+        self._trade_consumes_turn = True
         self._exploration_pending: Optional[dict] = None
         self._artifact_followup: Optional[dict] = None
         self._research_followup: Optional[dict] = None
@@ -235,14 +243,16 @@ class Game:
         for t in s.tiles.values():
             for u in t.units:
                 if u.type == UnitType.LORD:
-                    u.hp = UNIT_STATS[UnitType.LORD].hp
+                    u.hp = lord_hp(s, u.owner, UNIT_STATS[UnitType.LORD].hp)
         for p in s.players:
+            p.lord_round = {}
             pending = p.pending_ap
             p.pending_ap = 0
             p.ap = BASE_AP + p.banked + self._ap_bonus(p.pid) + pending
             p.banked = 0
-            draw_whispers(s, p.pid, 2, self.rng)
-            self.whisper_stats["drawn"] += 2
+            whisper_draw = 3 if is_lord(s, p.pid, "nyxara") else 2
+            draw_whispers(s, p.pid, whisper_draw, self.rng)
+            self.whisper_stats["drawn"] += whisper_draw
             while p.pending_whisper_draws > 0:
                 draw_whispers(s, p.pid, 1, self.rng)
                 self.whisper_stats["drawn"] += 1
@@ -394,13 +404,24 @@ class Game:
                 self._council_vote_queue = initiative_order(self.state)
             motion = self._council_motions[self._council_vote_motion_idx]
             pid = self._council_vote_queue[0]
+            choices = enumerate_vote_choices(self.state, pid, motion["motion"])
+            binding = next((
+                pr for pr in self.promises_log
+                if pr.get("binding") and pr.get("kept") is None
+                and pr.get("from") == pid and pr.get("motion") == motion["motion"]
+            ), None)
+            if binding is not None:
+                expected = bool(binding.get("support", True))
+                choices = [c for c in choices if bool(c.get("support")) == expected]
+            if is_lord(self.state, pid, "auriel") and round_unused(
+                self.state, pid, "sanctify",
+            ):
+                choices += [{**c, "sanctify": True} for c in choices]
             return DecisionPoint(
                 kind="council_vote",
                 phase="council",
                 pid=pid,
-                choices=enumerate_vote_choices(
-                    self.state, pid, motion["motion"],
-                ),
+                choices=choices,
                 context={
                     "motion": motion["motion"],
                     "proposer": motion["proposer"],
@@ -425,12 +446,14 @@ class Game:
         if not choices:
             self._research_followup = None
             return None
+        if fu.get("seraphel_second"):
+            choices = choices + [{"type": "research_skip"}]
         return DecisionPoint(
             kind="research",
             phase="action",
             pid=pid,
             choices=choices,
-            context={"free": free},
+            context={"free": free, "seraphel_second": bool(fu.get("seraphel_second"))},
         )
 
     def _track_whisper_play(self, pid: int, card: str) -> None:
@@ -730,7 +753,9 @@ class Game:
         # Market (Buildings.md): the once-per-round trade initiation costs
         # 0 AP with an active Market; limit stays one trade per round (AL-27).
         if not self._trade_used.get(pid, False):
-            free = self._has_active_market(pid)
+            free = self._has_active_market(pid) or (
+                is_lord(s, pid, "cassian") and round_unused(s, pid, "ledger_trade")
+            )
             if free or s.player(pid).ap >= 1:
                 out.extend(self._enumerate_trade_starts(pid))
         out.extend(enumerate_cleanse(s, pid))
@@ -751,8 +776,10 @@ class Game:
 
     def _close_negotiation_session(self, window: str) -> None:
         if window == "trade" and self._trade_initiator is not None:
-            self._finish_action_turn(self._trade_initiator)
+            if self._trade_consumes_turn:
+                self._finish_action_turn(self._trade_initiator)
             self._trade_initiator = None
+            self._trade_consumes_turn = True
 
     def _submit_negotiation(self, dp: DecisionPoint, choice: dict) -> None:
         s = self.state
@@ -790,7 +817,8 @@ class Game:
                 ):
                     self._council_negotiation_queue.pop(0)
             return
-        window = self._negotiation_session.window
+        active_session = self._negotiation_session
+        window = active_session.window
         before_promises = len(self.promises_log)
         session, outcome = apply_session_choice(
             s,
@@ -801,6 +829,21 @@ class Game:
         )
         self._negotiation_session = session
         added = len(self.promises_log) - before_promises
+        if outcome == "accepted" and added:
+            actual_proposer = (
+                active_session.counter_proposer
+                if active_session.phase == "counter_review"
+                and active_session.counter_proposer is not None
+                else active_session.proposer
+            )
+            cassian = actual_proposer if (
+                is_lord(s, actual_proposer, "cassian")
+                and round_unused(s, actual_proposer, "binding_deal")
+            ) else None
+            if cassian is not None:
+                for pr in self.promises_log[before_promises:]:
+                    pr["binding"] = True
+                mark_round_used(s, cassian, "binding_deal")
         if added:
             self.negotiation_stats["promises_made"] += added
         if session is None:
@@ -815,7 +858,10 @@ class Game:
             phase="cleanup",
             pid=pid,
             choices=enumerate_whisper_discard(self.state, pid),
-            context={"over_limit": len(self.state.player(pid).whisper_hand) - 7},
+            context={
+                "over_limit": len(self.state.player(pid).whisper_hand)
+                - whisper_hand_limit(self.state, pid, 7),
+            },
         )
 
     def _ensure_objective_cap_followup(self) -> None:
@@ -1059,7 +1105,10 @@ class Game:
                 "pid": dp.pid,
                 "support": bool(choice.get("support")),
                 "lobby": lobby,
+                "sanctify": bool(choice.get("sanctify", False)),
             })
+            if choice.get("sanctify"):
+                mark_round_used(s, dp.pid, "sanctify")
             if choice.get("support"):
                 self.council_stats["votes_yes"] += 1
             else:
@@ -1090,6 +1139,14 @@ class Game:
                     )
                     if not veto[0]:
                         apply_motion(s, motion["motion"], motion["proposer"])
+                        for ballot in self._council_ballots:
+                            if (
+                                ballot.get("support")
+                                and is_lord(s, ballot["pid"], "auriel")
+                            ):
+                                s.player(ballot["pid"]).renown += (
+                                    2 if ballot.get("sanctify") else 1
+                                )
                         self.council_stats["motions_passed"] += 1
                     else:
                         self.council_stats["motions_failed"] += 1
@@ -1190,12 +1247,19 @@ class Game:
                 )
                 if err:
                     raise ValueError(err)
+                cassian_free = (
+                    is_lord(s, dp.pid, "cassian")
+                    and round_unused(s, dp.pid, "ledger_trade")
+                )
                 if self._has_active_market(dp.pid):
                     self.building_stats["market_trades"] += 1  # 0 AP (AL-27)
+                elif cassian_free:
+                    mark_round_used(s, dp.pid, "ledger_trade")
                 else:
                     s.player(dp.pid).ap -= 1
                 self._trade_used[dp.pid] = True
                 self._trade_initiator = dp.pid
+                self._trade_consumes_turn = not cassian_free
                 self._negotiation_session = start_session(
                     window="trade",
                     proposer=dp.pid,
@@ -1249,13 +1313,35 @@ class Game:
                     s, dp.pid, choice["discovery"],
                     free=choice.get("free", False),
                 )
-                self._finish_action_turn(dp.pid)
+                if (
+                    is_lord(s, dp.pid, "seraphel")
+                    and round_unused(s, dp.pid, "polymath_second")
+                    and enumerate_research(s, dp.pid)
+                ):
+                    self._research_followup = {
+                        "pid": dp.pid,
+                        "free": False,
+                        "seraphel_second": True,
+                    }
+                else:
+                    self._finish_action_turn(dp.pid)
         elif dp.kind == "research":
+            if choice["type"] == "research_skip":
+                self._research_followup = None
+                self._finish_action_turn(dp.pid)
+                check_invariants(s)
+                return
             apply_research(
                 s, dp.pid, choice["discovery"],
                 free=dp.context.get("free", False),
                 ap_waived=dp.context.get("ap_waived", False),
             )
+            if dp.context.get("seraphel_second"):
+                mark_round_used(s, dp.pid, "polymath_second")
+                self._research_followup = None
+                self._finish_action_turn(dp.pid)
+                check_invariants(s)
+                return
             sec_card = dp.context.get("card")
             if sec_card == "arcane_ascendancy":
                 self._research_followup = None

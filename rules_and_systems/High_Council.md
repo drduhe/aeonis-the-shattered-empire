@@ -64,6 +64,10 @@ When a motion is called to a vote, players may lobby:
 
 Note: This creates a sink for Influence without making every vote purely “wallet wins.”
 
+### 2.4 Auriel — The Tree's Assent
+
+Once per round during the High Council Phase, when Auriel casts her vote and before votes are tallied, she may sanctify that motion. Her Council Votes and Lobbying votes count double on that motion. Whenever a motion Auriel supported passes, she gains +1 Renown; if it was sanctified, she gains +2 Renown instead. Sanctify changes only Auriel's votes and does not multiply table-wide modifiers or votes supplied by another player.
+
 ---
 
 ## 3. High Council Phase Procedure
