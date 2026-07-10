@@ -33,7 +33,7 @@ from .arcane import (
     warding_charm_defense_bonus,
 )
 from .types import BuildingType, Terrain, UNIT_STATS, UnitType
-from .lords import is_lord
+from .lords import apply_rooted_defenses_reroll, extra_defense_bonus, is_lord
 
 ATTACK_AP = 2
 PRESS_AP = 1
@@ -267,12 +267,15 @@ def _defense_bonus(state, battle, side) -> int:
         bonus += 2
     if t.has(BuildingType.CASTLE) and not t.castle_suspended:
         bonus += 2
+    # Vharok Forged in Battle: +1 Defense on a controlled built hex (not doubled
+    # with Bastion Doctrine, which only raises the Battle Line cap).
     if (
         is_lord(state, battle.defender, "vharok")
         and t.controller == battle.defender
         and bool(t.buildings)
     ):
         bonus += 1
+    bonus += extra_defense_bonus(state, battle, side)
     return bonus
 
 
@@ -328,7 +331,10 @@ def _strike(state, battle, strikers, targets_line, rng, striker_side, *, pre_str
         if striker_side == "att" and striker.owner == battle.attacker:
             atk += battle_runes_attack_bonus(state, striker.owner, battle)
         dfn_die = defense_die(state, target.owner, target, battle.target)
-        dfn = rng.randint(1, dfn_die + combat_defense_mod(mods, target.uid))
+        die_max = dfn_die + combat_defense_mod(mods, target.uid)
+        dfn = rng.randint(1, die_max)
+        if striker_side == "att" and target.owner == battle.defender:
+            dfn = apply_rooted_defenses_reroll(state, battle, rng, dfn, die_max)
         if striker_side == "att" and target.owner == battle.defender:
             dfn += warding_charm_defense_bonus(state, battle.defender, battle)
         if striker_side == "att":

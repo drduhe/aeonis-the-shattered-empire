@@ -258,6 +258,7 @@ class PlayerState:
     whisper_hand: list = field(default_factory=list)
     whisper_flags: dict = field(default_factory=dict)
     pending_whisper_draws: int = 0
+    shadow_sight_tokens: int = 0  # AL-51: Nyxara Shadow Sight information tokens
 
     def add_vp(self, n: int, source: str) -> None:
         self.vp += n
@@ -300,6 +301,8 @@ class PlayerState:
             "whisper_flags": dict(self.whisper_flags),
             "pending_whisper_draws": self.pending_whisper_draws,
         }
+        if self.shadow_sight_tokens:
+            out["shadow_sight_tokens"] = self.shadow_sight_tokens
         # Keep pre-M4 records byte-stable when the opt-in layer is disabled.
         if self.lord_id:
             out["lord_id"] = self.lord_id
@@ -365,6 +368,7 @@ class PlayerState:
         p.whisper_hand = list(d.get("whisper_hand", []))
         p.whisper_flags = dict(d.get("whisper_flags", {}))
         p.pending_whisper_draws = int(d.get("pending_whisper_draws", 0))
+        p.shadow_sight_tokens = int(d.get("shadow_sight_tokens", 0))
         return p
 
 
@@ -590,6 +594,7 @@ class GameState:
                 whisper_hand=list(p.whisper_hand),
                 whisper_flags=dict(p.whisper_flags),
                 pending_whisper_draws=p.pending_whisper_draws,
+                shadow_sight_tokens=p.shadow_sight_tokens,
             )
             for p in self.players
         ]
