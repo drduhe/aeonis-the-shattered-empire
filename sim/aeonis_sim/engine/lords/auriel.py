@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 from ..types import UnitType
-from .specs import is_lord
+from .specs import is_lord, mark_round_used, round_unused
 
 
 def radiant_presence_bonus(state, battle) -> int:
@@ -13,3 +13,18 @@ def radiant_presence_bonus(state, battle) -> int:
     if any(u.type == UnitType.LORD and u.owner == battle.defender for u in units):
         return 1
     return 0
+
+
+def apply_exaltation(state, pid: int) -> bool:
+    """Action: spend 3 Influence for +2 Renown once/round."""
+    if not is_lord(state, pid, "auriel"):
+        return False
+    if not round_unused(state, pid, "exaltation"):
+        return False
+    p = state.player(pid)
+    if p.influence < 3:
+        return False
+    p.influence -= 3
+    p.renown += 2
+    mark_round_used(state, pid, "exaltation")
+    return True

@@ -137,6 +137,7 @@ def run_cleanup(state) -> None:
         p.passed = False
         p.public_scored_this_round = False
         p.arcane_round = {}
+    state.desert_tempest = None
     n = len(state.players)
     state.speaker = (state.speaker + 1) % n
     state.agenda_revealed = None

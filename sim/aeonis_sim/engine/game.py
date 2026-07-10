@@ -106,11 +106,24 @@ from .strategy import (
 from .types import (BASE_AP, BuildingType, DEFAULT_ROUND_CAP, Terrain,
                     UNIT_STATS, UnitType)
 from .lords import (
+    apply_council_patronage,
+    apply_desert_tempest,
+    apply_exaltation,
+    apply_hit_and_run,
+    apply_letters_of_credit,
+    apply_lock_the_line,
+    apply_sandstride_retreat,
+    apply_shadow_sight,
     controls_unique,
+    enumerate_desert_tempest,
+    enumerate_hit_and_run_moves,
+    enumerate_lock_the_line,
+    enumerate_sandstride_retreats,
     is_lord,
     lord_hp,
     mark_round_used,
     round_unused,
+    scry_top_agenda,
     whisper_hand_limit,
 )
 
@@ -135,7 +148,9 @@ class Game:
         self._actions_taken: dict = {}
         self._initiative_queue: list[int] = []
         self._battle: Optional[combat.Battle] = None
-        self._battle_stage: Optional[str] = None  # "defender_retreat" | "press"
+        self._battle_stage: Optional[str] = None  # lord_combat | defender_retreat | press | hit_and_run | done
+        self._battle_lord_substage: Optional[str] = None
+        self._scry_queue: list[int] = []
         self._round_hashes: list = []
         self._pending: Optional[DecisionPoint] = None
         self.combat_stats = {
@@ -300,12 +315,11 @@ class Game:
         by[card] = by.get(card, 0) + 1
 
     def _begin_council_phase(self) -> None:
-        reveal_agenda(self.state, self.rng)
-        auto_apply_council_whispers(
-            self.state,
-            "agenda_reveal",
-            motion_id=self.state.agenda_revealed or "",
-        )
+        self._scry_queue = [
+            p.pid for p in self.state.players if is_lord(self.state, p.pid, "seraphel")
+        ]
+        if not self._scry_queue:
+            self._reveal_council_agenda()
         self._council_proposal_queue = initiative_order(self.state)
         self._council_motions = []
         self._council_vote_motion_idx = 0
@@ -313,6 +327,22 @@ class Game:
         self._council_ballots = []
         self._council_extra_votes = {"for": 0, "against": 0}
         self._council_veto = False
+
+    def _reveal_council_agenda(self) -> None:
+        reveal_agenda(self.state, self.rng)
+        auto_apply_council_whispers(
+            self.state,
+            "agenda_reveal",
+            motion_id=self.state.agenda_revealed or "",
+        )
+
+    def _council_extra_choices(self, pid: int) -> list[dict]:
+        out = []
+        if is_lord(self.state, pid, "cassian") and round_unused(
+            self.state, pid, "letters_of_credit",
+        ) and self.state.player(pid).influence >= 1:
+            out.append({"type": "letters_of_credit"})
+        return out
 
     def _start_council_voting(self) -> None:
         if not self._council_motions:
@@ -344,6 +374,7 @@ class Game:
                     motion=session.motion or "",
                     session=session,
                 )
+                choices = self._council_extra_choices(pid) + choices
             else:
                 choices = enumerate_trade_negotiation(
                     self.state, pid, session=session,
@@ -371,7 +402,7 @@ class Game:
                 kind="negotiation",
                 phase="council",
                 pid=pid,
-                choices=enumerate_council_negotiation(
+                choices=self._council_extra_choices(pid) + enumerate_council_negotiation(
                     self.state, pid, motion=motion, session=None,
                 ),
                 context={"window": "council", "motion": motion},
@@ -394,7 +425,7 @@ class Game:
                 kind="council_propose",
                 phase="council",
                 pid=pid,
-                choices=enumerate_proposal_choices(self.state, pid),
+                choices=self._council_extra_choices(pid) + enumerate_proposal_choices(self.state, pid),
                 context={"agenda": self.state.agenda_revealed},
             )
         if (
@@ -409,6 +440,7 @@ class Game:
             motion = self._council_motions[self._council_vote_motion_idx]
             pid = self._council_vote_queue[0]
             choices = enumerate_vote_choices(self.state, pid, motion["motion"])
+            choices = self._council_extra_choices(pid) + choices
             binding = next((
                 pr for pr in self.promises_log
                 if pr.get("binding") and pr.get("kept") is None
@@ -462,6 +494,7 @@ class Game:
 
     def _track_whisper_play(self, pid: int, card: str) -> None:
         self.whisper_stats["played"] += 1
+        apply_shadow_sight(self.state, pid)
         if auto_apply_sabotage(self.state, pid, card):
             self.whisper_stats["sabotage"] += 1
 
@@ -769,6 +802,10 @@ class Game:
         out.extend(enumerate_discard_lord(s, pid))
         out.extend(enumerate_research(s, pid))
         out.extend(enumerate_action_whispers(s, pid))
+        out.extend(enumerate_desert_tempest(s, pid))
+        if is_lord(s, pid, "auriel") and round_unused(s, pid, "exaltation"):
+            if s.player(pid).influence >= 3:
+                out.append({"type": "exaltation"})
         return out
 
     def _has_active_market(self, pid: int) -> bool:
@@ -980,6 +1017,16 @@ class Game:
         if draft_dp is not None:
             self._pending = draft_dp
             return self._pending
+        if self._scry_queue:
+            pid = self._scry_queue[0]
+            self._pending = DecisionPoint(
+                kind="scry_ack",
+                phase="council",
+                pid=pid,
+                choices=[{"type": "scry_ack"}],
+                context={"top_agenda": scry_top_agenda(self.state)},
+            )
+            return self._pending
         council_dp = self._council_decision()
         if council_dp is not None:
             self._pending = council_dp
@@ -1001,18 +1048,100 @@ class Game:
         )
         return self._pending
 
+    def _lord_combat_decision(self) -> Optional[DecisionPoint]:
+        b = self._battle
+        assert b is not None
+        sub = self._battle_lord_substage
+        if sub == "sandstride":
+            choices = enumerate_sandstride_retreats(self.state, b)
+            actionable = [c for c in choices if c["type"] != "sandstride_skip"]
+            if actionable:
+                pid = (
+                    b.defender
+                    if is_lord(self.state, b.defender, "rakhis")
+                    else b.attacker
+                )
+                return DecisionPoint(
+                    kind="sandstride_retreat",
+                    phase="combat",
+                    pid=pid,
+                    choices=choices,
+                    context={"target": list(b.target)},
+                )
+            self._battle_lord_substage = "lock_line"
+            return self._lord_combat_decision()
+        if sub == "lock_line":
+            combat.declare_attacker_targets(b)
+            choices = enumerate_lock_the_line(self.state, b)
+            if choices:
+                return DecisionPoint(
+                    kind="lock_the_line",
+                    phase="combat",
+                    pid=b.defender,
+                    choices=choices,
+                    context={"target": list(b.target)},
+                )
+            self._battle_lord_substage = "execute"
+            return self._lord_combat_decision()
+        if sub == "execute":
+            combat.execute_battle_round(self.state, b, self.rng)
+            self._battle_stage = "defender_retreat"
+            self._battle_lord_substage = None
+            return self._battle_decision()
+        return None
+
+    def _lord_asymmetry_enabled(self) -> bool:
+        return bool(self.config.get("lord_asymmetry", {}).get("enabled"))
+
+    def _start_lord_combat_round(self) -> None:
+        combat.prepare_battle_round(self.state, self._battle)
+        if not self._lord_asymmetry_enabled():
+            combat.execute_battle_round(self.state, self._battle, self.rng)
+            self._battle_stage = "defender_retreat"
+            return
+        self._battle_stage = "lord_combat"
+        self._battle_lord_substage = "sandstride"
+
     def _battle_decision(self) -> Optional[DecisionPoint]:
         b = self._battle
         if b.winner is not None or self._battle_stage == "done":
+            if (
+                self._lord_asymmetry_enabled()
+                and b.winner == "attacker"
+                and is_lord(self.state, b.attacker, "rakhis")
+                and round_unused(self.state, b.attacker, "hit_and_run")
+            ):
+                moves = enumerate_hit_and_run_moves(self.state, b)
+                if moves:
+                    self._battle_stage = "hit_and_run"
+                    return DecisionPoint(
+                        kind="hit_and_run",
+                        phase="combat",
+                        pid=b.attacker,
+                        choices=moves + [{"type": "hit_and_run_skip"}],
+                        context={"target": list(b.target)},
+                    )
             combat.finish_battle(self.state, b)
             combat.record_battle_outcome(self.combat_stats, b)
             check_invariants(self.state)
             self._battle = None
             self._battle_stage = None
+            self._battle_lord_substage = None
             if self._deferred_followup is not None:
                 self._followup = self._deferred_followup
                 self._deferred_followup = None
             return None
+        if self._battle_stage == "lord_combat":
+            return self._lord_combat_decision()
+        if self._battle_stage == "hit_and_run":
+            moves = enumerate_hit_and_run_moves(self.state, b)
+            return DecisionPoint(
+                kind="hit_and_run",
+                phase="combat",
+                pid=b.attacker,
+                choices=moves + [{"type": "hit_and_run_skip"}],
+                context={"target": list(b.target)},
+            )
         if self._battle_stage == "defender_retreat":
             retreats = combat.enumerate_defender_retreats(self.state, b)
             if retreats:
@@ -1087,7 +1216,14 @@ class Game:
             if not self._draft_queue:
                 finish_undrafted_bounty(s)
                 self._begin_council_phase()
+        elif dp.kind == "scry_ack":
+            self._scry_queue.pop(0)
+            if not self._scry_queue:
+                self._reveal_council_agenda()
         elif dp.kind == "council_propose":
+            if choice["type"] == "letters_of_credit":
+                apply_letters_of_credit(s, dp.pid)
+                return
             self._council_proposal_queue.pop(0)
             if choice["type"] == "council_propose":
                 auto_apply_council_whispers(
@@ -1103,6 +1239,9 @@ class Game:
             if not self._council_proposal_queue:
                 self._start_council_voting()
         elif dp.kind == "council_vote":
+            if choice["type"] == "letters_of_credit":
+                apply_letters_of_credit(s, dp.pid)
+                return
             lobby = int(choice.get("lobby", 0))
             motion = self._council_motions[self._council_vote_motion_idx]["motion"]
             check_vote_promises(
@@ -1173,9 +1312,14 @@ class Game:
                         s.player(s.speaker).renown = max(
                             0, s.player(s.speaker).renown - 1,
                         )
+                for ballot in self._council_ballots:
+                    apply_council_patronage(s, ballot["pid"], int(ballot.get("lobby", 0)))
                 self._council_extra_votes = {"for": 0, "against": 0}
                 self._advance_council_vote_motion()
         elif dp.kind == "negotiation":
+            if choice["type"] == "letters_of_credit":
+                apply_letters_of_credit(s, dp.pid)
+                return
             self._submit_negotiation(dp, choice)
         elif dp.kind == "action":
             self._actions_taken[dp.pid] += 1
@@ -1295,8 +1439,13 @@ class Game:
                     target=tuple(choice["target"]),
                 )
                 self._battle = combat.start_battle(s, dp.pid, choice)
-                combat.resolve_round(s, self._battle, self.rng)
-                self._battle_stage = "defender_retreat"
+                self._start_lord_combat_round()
+                self._finish_action_turn(dp.pid)
+            elif t == "desert_tempest":
+                apply_desert_tempest(s, dp.pid, tuple(choice["coord"]))
+                self._finish_action_turn(dp.pid)
+            elif t == "exaltation":
+                apply_exaltation(s, dp.pid)
                 self._finish_action_turn(dp.pid)
             elif t == "cleanse":
                 apply_cleanse(s, dp.pid, tuple(choice["hex"]))
@@ -1424,8 +1573,7 @@ class Game:
                         self._start_secondary_window(pid, card)
             elif t == "attack":
                 self._battle = combat.start_battle(s, dp.pid, choice)
-                combat.resolve_round(s, self._battle, self.rng)
-                self._battle_stage = "defender_retreat"
+                self._start_lord_combat_round()
                 self._deferred_followup = {
                     "kind": "strategy_secondary",
                     "owner": pid,
@@ -1477,11 +1625,23 @@ class Game:
                     self._battle_stage = "done"
             else:
                 self._battle_stage = "press"
+        elif dp.kind == "sandstride_retreat":
+            apply_sandstride_retreat(s, self._battle, choice)
+            if self._battle.def_retreated or self._battle.att_retreated:
+                self._battle_stage = "done"
+            else:
+                self._battle_lord_substage = "lock_line"
+        elif dp.kind == "lock_the_line":
+            apply_lock_the_line(s, self._battle, choice)
+            self._battle_lord_substage = "execute"
+        elif dp.kind == "hit_and_run":
+            if choice["type"] != "hit_and_run_skip":
+                apply_hit_and_run(s, self._battle, choice)
+            self._battle_stage = "done"
         elif dp.kind == "press":
             if choice["type"] == "press":
                 s.player(self._battle.attacker).ap -= combat.PRESS_AP
-                combat.resolve_round(s, self._battle, self.rng)
-                self._battle_stage = "defender_retreat"
+                self._start_lord_combat_round()
             else:
                 self._battle_stage = "done"
         check_invariants(s)

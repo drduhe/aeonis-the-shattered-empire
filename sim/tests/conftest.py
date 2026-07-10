@@ -3,6 +3,7 @@ from __future__ import annotations
 
 _PHASE_SKIP = frozenset({
     "strategy_draft",
+    "scry_ack",
     "council_propose",
     "council_vote",
     "negotiation",

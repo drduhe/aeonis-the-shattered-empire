@@ -414,6 +414,7 @@ class GameState:
     pending_winds_draws: list = field(default_factory=list)
     whisper_deck: list = field(default_factory=list)
     whisper_discard: list = field(default_factory=list)
+    desert_tempest: Optional[dict] = None  # {coord, round, owner}
 
     def player(self, pid: int) -> PlayerState:
         return self.players[pid]
@@ -459,7 +460,7 @@ class GameState:
         return uid
 
     def to_dict(self) -> dict:
-        return {
+        out = {
             "players": [p.to_dict() for p in self.players],
             "tiles": {f"{c[0]},{c[1]}": t.to_dict() for c, t in self.tiles.items()},
             "round": self.round,
@@ -488,6 +489,9 @@ class GameState:
             "whisper_deck": list(self.whisper_deck),
             "whisper_discard": list(self.whisper_discard),
         }
+        if self.desert_tempest:
+            out["desert_tempest"] = dict(self.desert_tempest)
+        return out
 
     @staticmethod
     def from_dict(d: dict) -> "GameState":
@@ -523,6 +527,7 @@ class GameState:
             pending_winds_draws=list(d.get("pending_winds_draws", [])),
             whisper_deck=list(d.get("whisper_deck", [])),
             whisper_discard=list(d.get("whisper_discard", [])),
+            desert_tempest=dict(d["desert_tempest"]) if d.get("desert_tempest") else None,
         )
 
     def copy(self) -> "GameState":
@@ -636,4 +641,5 @@ class GameState:
             pending_winds_draws=list(self.pending_winds_draws),
             whisper_deck=list(self.whisper_deck),
             whisper_discard=list(self.whisper_discard),
+            desert_tempest=dict(self.desert_tempest) if self.desert_tempest else None,
         )

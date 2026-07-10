@@ -11,7 +11,20 @@ from .hexmap import neighbors
 from .artifacts import lord_move_bonus
 from .arcane import mark_waystones_used, waystones_move_discount
 from .types import BuildingType, Terrain, TERRAIN_COST, UNIT_STATS, UnitType
-from .lords import is_lord, lord_move, mark_round_used, round_unused, tile_is_portal
+from .lords import (
+    is_lord,
+    lord_move,
+    mark_round_used,
+    round_unused,
+    tile_is_portal,
+)
+from .lords.rakhis import desert_tempest_entry_surcharge
+from .lords.seraphel import (
+    apply_blink_step,
+    blink_step_available,
+    blink_terrain_cost,
+)
+from .lords.nyxara import apply_veil_of_shadows, veil_available
 
 
 def _enemy_zoc(state, pid) -> set:
@@ -25,7 +38,7 @@ def _enemy_zoc(state, pid) -> set:
     return zoc
 
 
-def _passable(state, pid, coord) -> bool:
+def _passable(state, pid, coord, *, veil: bool = False) -> bool:
     t = state.tiles.get(coord)
     if t is None:
         return False
@@ -54,8 +67,10 @@ def _portal_exits(state, pid, coord):
     return out
 
 
-def _paths_from(state, pid, start, max_range, max_cost, has_cavalry,
-                *, waive_terrain: bool = False):
+def _paths_from(
+    state, pid, start, max_range, max_cost, has_cavalry,
+    *, waive_terrain: bool = False, blink: bool = False, veil: bool = False,
+):
     """Dijkstra over (hex, flank_spent). Returns dest -> (cost, hexes_entered, used_portal)."""
     best = {}
     # (cost, hexes_entered, coord, flank_spent, used_portal)
@@ -75,15 +90,20 @@ def _paths_from(state, pid, start, max_range, max_cost, has_cavalry,
             continue
         zoc = _enemy_zoc(state, pid)
         for nxt in neighbors(coord):
-            if not _passable(state, pid, nxt):
+            if not _passable(state, pid, nxt, veil=veil):
                 continue
             step = 0 if waive_terrain else TERRAIN_COST[state.tiles[nxt].terrain]
+            if blink and not waive_terrain:
+                blink_cost = blink_terrain_cost(state.tiles[nxt].terrain)
+                if blink_cost is not None:
+                    step = blink_cost
             if (
                 not waive_terrain
                 and is_lord(state, pid, "rakhis")
                 and state.tiles[nxt].terrain == Terrain.DESERT
             ):
                 step = 1
+            step += desert_tempest_entry_surcharge(state, pid, nxt)
             if (
                 not waive_terrain
                 and state.open_roads
@@ -91,7 +111,8 @@ def _paths_from(state, pid, start, max_range, max_cost, has_cavalry,
             ):
                 step = max(1, step - 1)
             f2 = flanked
-            if nxt in zoc and not is_lord(state, pid, "rakhis"):
+            ignore_zoc = is_lord(state, pid, "rakhis") or veil
+            if nxt in zoc and not ignore_zoc:
                 if not flanked:
                     f2 = True  # cavalry flanking: first ZOC hex free
                 else:
@@ -99,9 +120,73 @@ def _paths_from(state, pid, start, max_range, max_cost, has_cavalry,
             if cost + step <= max_cost:
                 heapq.heappush(heap, (cost + step, steps + 1, nxt, f2, portaled))
         for nxt in _portal_exits(state, pid, coord):
-            if _passable(state, pid, nxt) and cost <= max_cost:
+            if _passable(state, pid, nxt, veil=veil) and cost <= max_cost:
                 heapq.heappush(heap, (cost, steps + 1, nxt, flanked, True))
     return best
+
+
+def _append_move_variants(
+    state, pid, tile, group, uids, moves, p, *, waive_terrain: bool = False,
+) -> list:
+    out = []
+    has_cav = any(u.type == UnitType.CAVALRY for u in group)
+    max_range = min(moves)
+    if p.whisper_flags.get("forced_march"):
+        max_range += 1
+    for dest, (cost, _steps, portaled) in _paths_from(
+            state, pid, tile.coord, max_range, p.ap, has_cav,
+            waive_terrain=waive_terrain).items():
+        out.append(_make_move_choice(
+            state, pid, tile, uids, dest, cost, portaled,
+        ))
+    if not waive_terrain and blink_step_available(state, pid, group):
+        for dest, (cost, _steps, portaled) in _paths_from(
+                state, pid, tile.coord, max_range, p.ap, has_cav,
+                blink=True).items():
+            choice = _make_move_choice(
+                state, pid, tile, uids, dest, cost, portaled,
+            )
+            choice["blink_step"] = True
+            out.append(choice)
+    if not waive_terrain and veil_available(state, pid, group):
+        for dest, (cost, _steps, portaled) in _paths_from(
+                state, pid, tile.coord, max_range, p.ap, has_cav,
+                veil=True).items():
+            tile_dest = state.tiles[dest]
+            if any(u.owner != pid for u in tile_dest.units):
+                continue
+            choice = _make_move_choice(
+                state, pid, tile, uids, dest, cost, portaled,
+            )
+            choice["veil"] = True
+            out.append(choice)
+    return out
+
+
+def _make_move_choice(state, pid, tile, uids, dest, cost, portaled) -> dict:
+    p = state.player(pid)
+    if portaled and p.portal_instability_free:
+        cost = 0
+    rift_free = (
+        portaled
+        and tile.unique_tile_id == "rift_anchor"
+        and tile.controller == pid
+        and round_unused(state, pid, "rift_anchor_portal")
+    )
+    if rift_free:
+        cost = 0
+    cost = waystones_move_discount(state, pid, cost)
+    move = {
+        "type": "move",
+        "from": list(tile.coord),
+        "dest": list(dest),
+        "uids": uids,
+        "cost": cost,
+        "portal": portaled,
+    }
+    if rift_free:
+        move["rift_anchor_free"] = True
+    return move
 
 
 def _groups(tile, pid):
@@ -126,35 +211,10 @@ def enumerate_moves(state, pid, *, waive_terrain: bool = False) -> list:
                 if u.type == UnitType.LORD:
                     m = lord_move(state, pid, m) + lord_move_bonus(state, pid)
                 moves.append(m)
-            max_range = min(moves)
-            if p.whisper_flags.get("forced_march"):
-                max_range += 1
-            has_cav = any(u.type == UnitType.CAVALRY for u in group)
-            for dest, (cost, _steps, portaled) in _paths_from(
-                    state, pid, tile.coord, max_range, p.ap, has_cav,
-                    waive_terrain=waive_terrain).items():
-                if portaled and p.portal_instability_free:
-                    cost = 0
-                rift_free = (
-                    portaled
-                    and tile.unique_tile_id == "rift_anchor"
-                    and tile.controller == pid
-                    and round_unused(state, pid, "rift_anchor_portal")
-                )
-                if rift_free:
-                    cost = 0
-                cost = waystones_move_discount(state, pid, cost)
-                move = {
-                    "type": "move",
-                    "from": list(tile.coord),
-                    "dest": list(dest),
-                    "uids": uids,
-                    "cost": cost,
-                    "portal": portaled,
-                }
-                if rift_free:
-                    move["rift_anchor_free"] = True
-                out.append(move)
+            out.extend(_append_move_variants(
+                state, pid, tile, group, uids, moves, p,
+                waive_terrain=waive_terrain,
+            ))
     if is_lord(state, pid, "elyndra") and round_unused(state, pid, "deep_roots") and p.ap >= 1:
         forests = [t for t in state.controlled(pid) if t.terrain == Terrain.FOREST]
         for origin in forests:
@@ -202,6 +262,10 @@ def apply_move(state, pid, choice) -> None:
     if discounted < cost:
         mark_waystones_used(state, pid)
     p.ap -= discounted
+    if choice.get("blink_step"):
+        apply_blink_step(state, pid)
+    if choice.get("veil"):
+        apply_veil_of_shadows(state, pid)
     if choice.get("root_network"):
         mark_round_used(state, pid, "deep_roots")
     if choice["portal"]:

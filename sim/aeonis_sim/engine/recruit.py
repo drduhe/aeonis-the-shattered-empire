@@ -4,7 +4,7 @@ from itertools import combinations_with_replacement
 
 from .types import BuildingType, Terrain, Unit, UNIT_STATS, UnitType
 from .artifacts import recruit_gold_discount
-from .lords import controls_unique, mark_round_used, round_unused
+from .lords import controls_unique, is_lord, mark_round_used, round_unused, tile_is_portal
 
 RECRUITABLE = [UnitType.INFANTRY, UnitType.CAVALRY, UnitType.ARCHER]
 
@@ -38,14 +38,22 @@ def _affordable(p, unit_types, *, forge: bool, eternal: bool, discount: int = 0)
     return p.gold >= gold and p.mana >= mana and p.pop_pool >= pop
 
 
+def _recruit_sites(state, pid):
+    sites = []
+    for tile in state.controlled(pid):
+        if tile.terrain == Terrain.CITY:
+            sites.append(tile)
+        elif is_lord(state, pid, "thalrik") and tile_is_portal(state, tile.coord):
+            sites.append(tile)
+    return sites
+
+
 def enumerate_recruits(state, pid, *, ignore_city_limit: bool = False) -> list:
     p = state.player(pid)
     if p.ap < 1 and not ignore_city_limit:
         return []
     out = []
-    for tile in state.controlled(pid):
-        if tile.terrain != Terrain.CITY:
-            continue
+    for tile in _recruit_sites(state, pid):
         if not ignore_city_limit and tile.coord in p.recruited_cities:
             continue  # Actions.md: each City at most once per round
         # Forge (active): +1 unit beyond the 2-unit limit at this City.
@@ -57,11 +65,14 @@ def enumerate_recruits(state, pid, *, ignore_city_limit: bool = False) -> list:
         for combo in combos:
             discount = _oasis_cavalry_discount(state, pid, combo)
             if _affordable(p, combo, forge=forge, eternal=eternal, discount=discount):
-                out.append({
+                choice = {
                     "type": "recruit",
                     "city": list(tile.coord),
                     "units": sorted(u.value for u in combo),
-                })
+                }
+                if tile_is_portal(state, tile.coord):
+                    choice["portal"] = True
+                out.append(choice)
     return out
 
 

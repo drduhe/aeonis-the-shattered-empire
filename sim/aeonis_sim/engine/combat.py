@@ -33,7 +33,13 @@ from .arcane import (
     warding_charm_defense_bonus,
 )
 from .types import BuildingType, Terrain, UNIT_STATS, UnitType
-from .lords import apply_rooted_defenses_reroll, extra_defense_bonus, is_lord
+from .lords import (
+    apply_rooted_defenses_reroll,
+    entangling_roots_available,
+    entangling_roots_penalty,
+    extra_defense_bonus,
+    is_lord,
+)
 
 ATTACK_AP = 2
 PRESS_AP = 1
@@ -130,10 +136,14 @@ class Battle:
     rounds: int = 0
     winner: Optional[str] = None
     def_retreated: bool = False
+    att_retreated: bool = False
     init_att_dice: int = 0
     init_def_dice: int = 0
     uncontested: bool = False
     whisper_mods: BattleWhisperMods = field(default_factory=BattleWhisperMods)
+    att_targets: dict = field(default_factory=dict)    # striker_uid -> target_uid
+    battle_flags: dict = field(default_factory=dict)
+    pending_entangling: Optional[dict] = None
 
 
 def _defender_of(state, target) -> Optional[int]:
@@ -185,7 +195,7 @@ def empty_stratified_stats() -> dict:
 def record_battle_outcome(stats: dict, battle: Battle) -> None:
     """Update combat_stats after a battle ends (retreat, capture, or decisive fight)."""
     strat = stats.setdefault("stratified", empty_stratified_stats())
-    if battle.def_retreated:
+    if battle.def_retreated or getattr(battle, "att_retreated", False):
         strat["retreats"] += 1
         return
     if battle.winner is None:
@@ -254,6 +264,25 @@ def _pick_target(line) -> Optional[object]:
     return min(alive, key=lambda u: (u.hp, UNIT_STATS[u.type].defense_die, u.uid))
 
 
+def _target_by_uid(line, uid: int):
+    for u in line:
+        if u.uid == uid and u.hp > 0:
+            return u
+    return None
+
+
+def declare_attacker_targets(battle) -> None:
+    battle.att_targets = {}
+    for striker in [u for u in battle.att_line if u.type == UnitType.ARCHER and u.hp > 0]:
+        target = _pick_target(battle.def_line)
+        if target is not None:
+            battle.att_targets[striker.uid] = target.uid
+    for striker in [u for u in battle.att_line if u.type != UnitType.ARCHER and u.hp > 0]:
+        target = _pick_target(battle.def_line)
+        if target is not None:
+            battle.att_targets[striker.uid] = target.uid
+
+
 def _defense_bonus(state, battle, side) -> int:
     if side != "def":
         return 0
@@ -315,13 +344,26 @@ def _hits(striker_side: str, atk: int, dfn: int, edge_mode: str, *, pre_strike: 
     return atk > dfn
 
 
-def _strike(state, battle, strikers, targets_line, rng, striker_side, *, pre_strike: bool) -> None:
+def _strike(
+    state,
+    battle,
+    strikers,
+    targets_line,
+    rng,
+    striker_side,
+    *,
+    pre_strike: bool,
+    entangling_penalty_uid: int | None = None,
+) -> None:
     mods = battle.whisper_mods
     def_side = "def" if striker_side == "att" else "att"
     for striker in sorted(strikers, key=lambda u: u.uid):
         if striker.hp <= 0:
             continue
-        target = _pick_target(targets_line)
+        if striker_side == "att" and striker.uid in battle.att_targets:
+            target = _target_by_uid(targets_line, battle.att_targets[striker.uid])
+        else:
+            target = _pick_target(targets_line)
         if target is None:
             return
         atk_die = combat_attack_die(mods, striker)
@@ -339,6 +381,12 @@ def _strike(state, battle, strikers, targets_line, rng, striker_side, *, pre_str
             dfn += warding_charm_defense_bonus(state, battle.defender, battle)
         if striker_side == "att":
             atk = max(1, atk - battle_augury_attack_penalty(state, battle.defender, battle))
+        if (
+            entangling_penalty_uid is not None
+            and striker_side == "att"
+            and striker.uid == entangling_penalty_uid
+        ):
+            atk = max(1, atk - entangling_roots_penalty(atk))
         dfn += _defense_bonus(state, battle, def_side)
         if _hits(striker_side, atk, dfn, state.aggressors_edge_mode, pre_strike=pre_strike):
             dmg = 1
@@ -352,7 +400,7 @@ def _strike(state, battle, strikers, targets_line, rng, striker_side, *, pre_str
                     _kill(state, battle, target)
 
 
-def resolve_round(state, battle, rng) -> None:
+def prepare_battle_round(state, battle, *, declare_targets: bool = False) -> None:
     mods = battle.whisper_mods
     auto_apply_combat_whispers(state, battle, "reinforce", mods)
     if battle.siege and battle.rounds > 0:
@@ -362,6 +410,18 @@ def resolve_round(state, battle, rng) -> None:
     def_cap = battle.cap + mods.def_cap_bonus
     _form_line(battle.att_committed, att_cap, battle.att_line)
     _form_line(battle.def_committed, def_cap, battle.def_line)
+    if declare_targets:
+        declare_attacker_targets(battle)
+
+
+def execute_battle_round(
+    state,
+    battle,
+    rng,
+    *,
+    entangling_penalty_uid: int | None = None,
+) -> None:
+    mods = battle.whisper_mods
 
     def archers(line):
         return [u for u in line if u.type == UnitType.ARCHER]
@@ -374,7 +434,10 @@ def resolve_round(state, battle, rng) -> None:
     _strike(state, battle, archers(battle.def_line), battle.att_line, rng, "def", pre_strike=True)
     auto_apply_combat_whispers(state, battle, "pre_roll", mods)
     auto_apply_combat_whispers(state, battle, "strike", mods)
-    _strike(state, battle, others(battle.att_line), battle.def_line, rng, "att", pre_strike=False)
+    _strike(
+        state, battle, others(battle.att_line), battle.def_line, rng, "att",
+        pre_strike=False, entangling_penalty_uid=entangling_penalty_uid,
+    )
     auto_apply_combat_whispers(state, battle, "counterstrike", mods)
     _strike(state, battle, others(battle.def_line), battle.att_line, rng, "def", pre_strike=False)
 
@@ -382,6 +445,13 @@ def resolve_round(state, battle, rng) -> None:
         battle.winner = "attacker"
     elif not battle.att_committed:
         battle.winner = "defender"
+
+
+def resolve_round(state, battle, rng, *, entangling_penalty_uid: int | None = None) -> None:
+    prepare_battle_round(state, battle)
+    execute_battle_round(
+        state, battle, rng, entangling_penalty_uid=entangling_penalty_uid,
+    )
 
 
 def enumerate_defender_retreats(state, battle) -> list:
