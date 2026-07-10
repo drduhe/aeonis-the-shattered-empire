@@ -11,7 +11,7 @@ from .hexmap import neighbors
 from .artifacts import lord_move_bonus
 from .arcane import mark_waystones_used, waystones_move_discount
 from .types import BuildingType, Terrain, TERRAIN_COST, UNIT_STATS, UnitType
-from .lords import is_lord, lord_move, mark_round_used, round_unused
+from .lords import is_lord, lord_move, mark_round_used, round_unused, tile_is_portal
 
 
 def _enemy_zoc(state, pid) -> set:
@@ -39,7 +39,7 @@ def _passable(state, pid, coord) -> bool:
 def _portal_exits(state, pid, coord):
     """Portal-to-portal edges at 0 AP (AL-19: no ZOC surcharge on portal hops)."""
     t = state.tiles.get(coord)
-    if t is None or t.terrain != Terrain.PORTAL:
+    if t is None or not tile_is_portal(state, coord):
         return []
     hostile_ok = (
         state.player(pid).whisper_flags.get("hostile_portal_ok")
@@ -47,7 +47,7 @@ def _portal_exits(state, pid, coord):
     )
     out = []
     for c2, t2 in state.tiles.items():
-        if c2 == coord or t2.terrain != Terrain.PORTAL:
+        if c2 == coord or not tile_is_portal(state, c2):
             continue
         if t2.controller in (None, pid) or hostile_ok:
             out.append(c2)
@@ -135,15 +135,26 @@ def enumerate_moves(state, pid, *, waive_terrain: bool = False) -> list:
                     waive_terrain=waive_terrain).items():
                 if portaled and p.portal_instability_free:
                     cost = 0
+                rift_free = (
+                    portaled
+                    and tile.unique_tile_id == "rift_anchor"
+                    and tile.controller == pid
+                    and round_unused(state, pid, "rift_anchor_portal")
+                )
+                if rift_free:
+                    cost = 0
                 cost = waystones_move_discount(state, pid, cost)
-                out.append({
+                move = {
                     "type": "move",
                     "from": list(tile.coord),
                     "dest": list(dest),
                     "uids": uids,
                     "cost": cost,
                     "portal": portaled,
-                })
+                }
+                if rift_free:
+                    move["rift_anchor_free"] = True
+                out.append(move)
     if is_lord(state, pid, "elyndra") and round_unused(state, pid, "deep_roots") and p.ap >= 1:
         forests = [t for t in state.controlled(pid) if t.terrain == Terrain.FOREST]
         for origin in forests:
@@ -195,6 +206,8 @@ def apply_move(state, pid, choice) -> None:
         mark_round_used(state, pid, "deep_roots")
     if choice["portal"]:
         p.used_portal_travel = True
+        if choice.get("rift_anchor_free"):
+            mark_round_used(state, pid, "rift_anchor_portal")
     # Tiles.md control method 3: neutral hex claimed immediately.
     if dst.controller is None:
         dst.controller = pid

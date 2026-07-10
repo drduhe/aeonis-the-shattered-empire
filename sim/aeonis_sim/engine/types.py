@@ -188,7 +188,7 @@ class Tile:
             "explored": self.explored,
             "cursed": self.cursed,
             "building_relic": self.building_relic,
-            "unique_tile_id": self.unique_tile_id,
+            "unique_tile_id": self.unique_tile_id or None,
         }
 
     @staticmethod
@@ -209,7 +209,7 @@ class Tile:
             explored=bool(d.get("explored", True)),
             cursed=bool(d.get("cursed", False)),
             building_relic=d.get("building_relic"),
-            unique_tile_id=str(d.get("unique_tile_id", "")),
+            unique_tile_id=str(d.get("unique_tile_id") or ""),
         )
 
 

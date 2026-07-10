@@ -106,6 +106,7 @@ from .strategy import (
 from .types import (BASE_AP, BuildingType, DEFAULT_ROUND_CAP, Terrain,
                     UNIT_STATS, UnitType)
 from .lords import (
+    controls_unique,
     is_lord,
     lord_hp,
     mark_round_used,
@@ -253,6 +254,9 @@ class Game:
             whisper_draw = 3 if is_lord(s, p.pid, "nyxara") else 2
             draw_whispers(s, p.pid, whisper_draw, self.rng)
             self.whisper_stats["drawn"] += whisper_draw
+            if controls_unique(s, p.pid, "obsidian_spire"):
+                draw_whispers(s, p.pid, 1, self.rng)
+                self.whisper_stats["drawn"] += 1
             while p.pending_whisper_draws > 0:
                 draw_whispers(s, p.pid, 1, self.rng)
                 self.whisper_stats["drawn"] += 1
@@ -771,6 +775,16 @@ class Game:
         return any(t.active(BuildingType.MARKET)
                    for t in self.state.controlled(pid))
 
+    def _grant_bazaar_trade_gold(self, state) -> None:
+        for t in state.tiles.values():
+            if t.unique_tile_id != "caravan_bazaar" or t.controller is None:
+                continue
+            pid = t.controller
+            if round_unused(state, pid, "bazaar_trade_gold"):
+                state.player(pid).gold += 1
+                mark_round_used(state, pid, "bazaar_trade_gold")
+            break
+
     def _enumerate_trade_starts(self, pid: int) -> list[dict]:
         return enumerate_trade_starts(self.state, pid)
 
@@ -1251,10 +1265,13 @@ class Game:
                     is_lord(s, dp.pid, "cassian")
                     and round_unused(s, dp.pid, "ledger_trade")
                 )
-                if self._has_active_market(dp.pid):
-                    self.building_stats["market_trades"] += 1  # 0 AP (AL-27)
-                elif cassian_free:
-                    mark_round_used(s, dp.pid, "ledger_trade")
+                zero_ap_trade = self._has_active_market(dp.pid) or cassian_free
+                if zero_ap_trade:
+                    if self._has_active_market(dp.pid):
+                        self.building_stats["market_trades"] += 1  # 0 AP (AL-27)
+                    elif cassian_free:
+                        mark_round_used(s, dp.pid, "ledger_trade")
+                    self._grant_bazaar_trade_gold(s)
                 else:
                     s.player(dp.pid).ap -= 1
                 self._trade_used[dp.pid] = True

@@ -6,6 +6,7 @@ from .artifacts import score_artifact_vp
 from .objectives import PUBLIC_OBJECTIVES, public_objective_vp, score_cleanup_secrets
 from .whispers import expire_whisper_flags, hand_over_limit
 from .types import BuildingType, Terrain, Unit, UNIT_STATS, UnitType
+from .lords import controls_unique
 
 
 def _influence_range(state, pid):
@@ -125,6 +126,8 @@ def run_cleanup(state) -> None:
         _score_coronation(state, p.pid)
         _score_objectives(state, p.pid)
         score_artifact_vp(state, p.pid)
+        if controls_unique(state, p.pid, "hallowed_grove"):
+            p.renown += 1
 
     if any(p.vp >= state.vp_threshold for p in state.players):
         state.final_round = True

@@ -12,6 +12,8 @@ from .types import BuildingType
 if TYPE_CHECKING:
     from .types import GameState
 
+from .lords import controls_unique, mark_round_used, round_unused
+
 TIER_I_AP = 1
 TIER_I_REMNANTS = 1
 
@@ -85,6 +87,12 @@ def research_resource_cost(
     mana, gold, inf = spec.mana, spec.gold, spec.influence
     if has_academy_discount(state, pid):
         mana = max(0, mana - 1)
+    if (
+        controls_unique(state, pid, "arcane_nexus")
+        and round_unused(state, pid, "nexus_discount")
+        and mana > 0
+    ):
+        mana = max(0, mana - 1)
     return mana, gold, inf
 
 
@@ -154,6 +162,13 @@ def apply_research(
         raise ValueError("cannot afford research")
     if not free and has_academy_discount(state, pid):
         p.arcane_round["academy_discount"] = True
+    if (
+        not free
+        and controls_unique(state, pid, "arcane_nexus")
+        and round_unused(state, pid, "nexus_discount")
+        and spec.mana > 0
+    ):
+        mark_round_used(state, pid, "nexus_discount")
     p.mana -= mana
     p.gold -= gold
     p.influence -= inf
@@ -161,7 +176,14 @@ def apply_research(
     p.remnants += TIER_I_REMNANTS
 
 
-def build_gold_cost(state: GameState, pid: int, btype: BuildingType, base: int) -> int:
+def build_gold_cost(
+    state: GameState,
+    pid: int,
+    btype: BuildingType,
+    base: int,
+    *,
+    tile=None,
+) -> int:
     p = state.player(pid)
     gold = base
     if (
@@ -176,6 +198,20 @@ def build_gold_cost(state: GameState, pid: int, btype: BuildingType, base: int) 
         and btype in STONEBUILD
     ):
         gold = max(0, gold - 1)
+    if tile is not None:
+        if (
+            btype == BuildingType.MINE
+            and tile.unique_tile_id == "ironworks_ridge"
+            and controls_unique(state, pid, "ironworks_ridge")
+        ):
+            gold = max(0, gold - 1)
+        if (
+            btype == BuildingType.FORTRESS
+            and tile.unique_tile_id == "ironworks_ridge"
+            and controls_unique(state, pid, "ironworks_ridge")
+            and round_unused(state, pid, "ironworks_fortress")
+        ):
+            gold = max(0, gold - 1)
     return gold
 
 

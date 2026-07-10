@@ -8,6 +8,7 @@ from .artifacts import (
     production_wellspring,
 )
 from .arcane import production_golden_alchemy
+from .lords import apply_unique_tile_production, controls_unique, unique_spec_by_id
 
 # Tiles.md: base production, upgraded by the matching production building.
 _PLAIN = {Terrain.MOUNTAIN: ("gold", 1), Terrain.FOREST: ("mana", 1),
@@ -25,11 +26,20 @@ def tile_printed_production(tile) -> dict[str, int]:
         if b in _UPGRADED:
             res, amt = _UPGRADED[b]
             out[res] = out.get(res, 0) + amt
-    if not out:
+    if not out and not tile.unique_tile_id:
         plain = _PLAIN.get(tile.terrain)
         if plain:
             res, amt = plain
             out[res] = amt
+    elif not out and tile.unique_tile_id:
+        spec = unique_spec_by_id(tile.unique_tile_id)
+        if spec:
+            if spec.gold:
+                out["gold"] = spec.gold
+            if spec.mana:
+                out["mana"] = spec.mana
+            if spec.influence:
+                out["influence"] = spec.influence
     return out
 
 
@@ -91,7 +101,7 @@ def run_production(state) -> dict:
             for b in t.buildings:
                 if b in _UPGRADED:
                     produced = _UPGRADED[b]
-            if produced is None:
+            if produced is None and not t.unique_tile_id:
                 produced = _PLAIN.get(t.terrain)
             if produced:
                 res, amt = produced
@@ -101,6 +111,21 @@ def run_production(state) -> dict:
                 setattr(p, res, getattr(p, res) + (amt + (extra if res == "mana" else 0)) * mult)
                 if extra and res != "mana":
                     p.mana += extra * mult
+            if t.unique_tile_id:
+                before = (p.gold, p.mana, p.influence, p.pop_pool)
+                apply_unique_tile_production(state, t)
+                if mult > 1:
+                    dg = p.gold - before[0]
+                    dm = p.mana - before[1]
+                    di = p.influence - before[2]
+                    dp = p.pop_pool - before[3]
+                    p.gold += dg * (mult - 1)
+                    p.mana += dm * (mult - 1)
+                    p.influence += di * (mult - 1)
+                    p.pop_pool += dp * (mult - 1)
+        if controls_unique(state, p.pid, "sacred_grove"):
+            room = state.pop_cap(p.pid) - state.pop_used(p.pid) - p.pop_pool
+            p.pop_pool += min(1, max(0, room))
         # 2. Population growth
         growth = 1  # Population.md base growth
         for t in state.controlled(p.pid):
