@@ -9,12 +9,15 @@ from aeonis_sim.engine.combat import (
     resolve_round,
     start_battle,
 )
+from aeonis_sim.engine.game import Game
 from aeonis_sim.engine.lords import (
     apply_council_patronage,
     apply_letters_of_credit,
     apply_exaltation,
     apply_shadow_sight,
+    apply_entangling_roots,
     entangling_roots_penalty,
+    enumerate_entangling_roots,
     extra_defense_bonus,
     scry_top_agenda,
 )
@@ -276,6 +279,86 @@ def test_vharok_lock_the_line_enumerates_reassignments():
     assert state.player(0).mana == 1
 
 
+from .conftest import advance_to_action_phase
+
+
+def test_elyndra_entangling_roots_enumerates_from_game_combat_flow():
+    g = Game(
+        {
+            "players": 3,
+            "lord_asymmetry": {
+                "enabled": True,
+                "lords": ["vharok", "elyndra", "cassian"],
+            },
+        },
+        seed=41,
+    )
+    state = strip_map(g.state)
+    forest, origin = (1, 0), (2, 0)
+    state.tiles[forest].terrain = Terrain.FOREST
+    state.tiles[forest].controller = 1
+    state.tiles[origin].terrain = Terrain.PLAINS
+    state.tiles[origin].controller = 0
+    put(state, forest, 1, UnitType.INFANTRY)
+    put(state, forest, 1, UnitType.LORD)
+    put(state, origin, 0, UnitType.INFANTRY)
+    state.player(0).ap = 5
+    state.player(1).mana = 2
+
+    advance_to_action_phase(g)
+    g._initiative_queue = [0, 1, 2]
+    g._pending = None
+
+    dp = g.next_decision()
+    attack = next(c for c in dp.choices if c["type"] == "attack")
+    g.submit(attack)
+
+    dp = g.next_decision()
+    while dp is not None and dp.kind != "entangling_roots":
+        if dp.kind == "sandstride_retreat":
+            g.submit({"type": "sandstride_skip"})
+        elif dp.kind == "lock_the_line":
+            g.submit({"type": "lock_the_line_skip"})
+        else:
+            raise AssertionError(f"unexpected decision before entangling_roots: {dp.kind}")
+        dp = g.next_decision()
+
+    assert dp is not None
+    assert dp.kind == "entangling_roots"
+    assert {"type": "entangling_roots_skip"} in dp.choices
+    apply_choice = next(c for c in dp.choices if c["type"] == "entangling_roots")
+    mana_before = g.state.player(1).mana
+    g.submit(apply_choice)
+    assert g.state.player(1).mana == mana_before - 1
+    assert g._battle.pending_entangling == {
+        "striker_uid": apply_choice["striker_uid"],
+    }
+    assert g._battle_lord_substage == "execute"
+
+
+def test_elyndra_entangling_roots_enumerates_strikers():
+    state = strip_map(m4_state(["elyndra", "vharok", "cassian"]))
+    forest = (1, 0)
+    state.tiles[forest].terrain = Terrain.FOREST
+    state.tiles[forest].controller = 0
+    put(state, forest, 0, UnitType.INFANTRY)
+    put(state, forest, 0, UnitType.LORD)
+    put(state, (2, 0), 1, UnitType.INFANTRY)
+    state.tiles[(2, 0)].controller = 1
+    state.player(1).ap = 5
+    state.player(0).mana = 2
+    battle = start_battle(
+        state, 1, {"type": "attack", "target": list(forest), "cost": 2},
+    )
+    prepare_battle_round(state, battle, declare_targets=True)
+    choices = enumerate_entangling_roots(state, battle)
+    assert {"type": "entangling_roots_skip"} in choices
+    apply_choice = next(c for c in choices if c["type"] == "entangling_roots")
+    apply_entangling_roots(state, battle, apply_choice)
+    assert state.player(0).mana == 1
+    assert battle.pending_entangling == {"striker_uid": apply_choice["striker_uid"]}
+
+
 def test_elyndra_entangling_roots_penalty_floors_at_one():
     assert entangling_roots_penalty(5) == 2
     assert entangling_roots_penalty(2) == 1
@@ -292,16 +375,19 @@ def test_elyndra_entangling_roots_changes_attack_outcome():
     put(state, (2, 0), 1, UnitType.INFANTRY)
     state.tiles[(2, 0)].controller = 1
     state.player(1).ap = 5
+    state.player(0).mana = 2
     battle = start_battle(
         state, 1, {"type": "attack", "target": list(forest), "cost": 2},
     )
-    prepare_battle_round(state, battle)
+    prepare_battle_round(state, battle, declare_targets=True)
     striker = next(u for u in battle.att_line if u.type != UnitType.ARCHER)
-    combat.execute_battle_round(
-        state, battle, ScriptRng([4, 1, 1, 6]),
-        entangling_penalty_uid=striker.uid,
+    apply_entangling_roots(
+        state, battle,
+        {"type": "entangling_roots", "striker_uid": striker.uid},
     )
+    combat.execute_battle_round(state, battle, ScriptRng([4, 1, 1, 6]))
     assert battle.winner is None
+    assert battle.pending_entangling is None
 
 
 def test_rakhis_sandstride_retreat_enumerates_before_pre_strike():

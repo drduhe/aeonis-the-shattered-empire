@@ -193,6 +193,10 @@ def _combat_features(state, pid: int, choice: dict) -> dict[str, float]:
         return {"combat": -0.3}
     if t == "retreat":
         return {"combat": -0.5}
+    if t == "entangling_roots_skip":
+        return {"combat": 0.0}
+    if t == "entangling_roots":
+        return {"combat": 1.2 if choice.get("worthwhile") else -0.15}
     return {"combat": 0.0}
 
 

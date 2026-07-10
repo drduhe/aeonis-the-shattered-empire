@@ -112,12 +112,14 @@ from .lords import (
     apply_hit_and_run,
     apply_letters_of_credit,
     apply_lock_the_line,
+    apply_entangling_roots,
     apply_sandstride_retreat,
     apply_shadow_sight,
     controls_unique,
     enumerate_desert_tempest,
     enumerate_hit_and_run_moves,
     enumerate_lock_the_line,
+    enumerate_entangling_roots,
     enumerate_sandstride_retreats,
     is_lord,
     lord_hp,
@@ -1081,6 +1083,18 @@ class Game:
                     choices=choices,
                     context={"target": list(b.target)},
                 )
+            self._battle_lord_substage = "entangling_roots"
+            return self._lord_combat_decision()
+        if sub == "entangling_roots":
+            choices = enumerate_entangling_roots(self.state, b)
+            if choices:
+                return DecisionPoint(
+                    kind="entangling_roots",
+                    phase="combat",
+                    pid=b.defender,
+                    choices=choices,
+                    context={"target": list(b.target)},
+                )
             self._battle_lord_substage = "execute"
             return self._lord_combat_decision()
         if sub == "execute":
@@ -1633,6 +1647,9 @@ class Game:
                 self._battle_lord_substage = "lock_line"
         elif dp.kind == "lock_the_line":
             apply_lock_the_line(s, self._battle, choice)
+            self._battle_lord_substage = "entangling_roots"
+        elif dp.kind == "entangling_roots":
+            apply_entangling_roots(s, self._battle, choice)
             self._battle_lord_substage = "execute"
         elif dp.kind == "hit_and_run":
             if choice["type"] != "hit_and_run_skip":

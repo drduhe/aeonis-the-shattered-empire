@@ -422,6 +422,11 @@ def execute_battle_round(
     entangling_penalty_uid: int | None = None,
 ) -> None:
     mods = battle.whisper_mods
+    # AL-48: Entangling Roots target is chosen once per round before strikes; penalty
+    # applies to that striker's main-strike Attack roll (not per-roll interrupt).
+    penalty_uid = entangling_penalty_uid
+    if penalty_uid is None and battle.pending_entangling:
+        penalty_uid = battle.pending_entangling.get("striker_uid")
 
     def archers(line):
         return [u for u in line if u.type == UnitType.ARCHER]
@@ -436,10 +441,12 @@ def execute_battle_round(
     auto_apply_combat_whispers(state, battle, "strike", mods)
     _strike(
         state, battle, others(battle.att_line), battle.def_line, rng, "att",
-        pre_strike=False, entangling_penalty_uid=entangling_penalty_uid,
+        pre_strike=False, entangling_penalty_uid=penalty_uid,
     )
     auto_apply_combat_whispers(state, battle, "counterstrike", mods)
     _strike(state, battle, others(battle.def_line), battle.att_line, rng, "def", pre_strike=False)
+
+    battle.pending_entangling = None
 
     if not battle.def_committed:
         battle.winner = "attacker"
