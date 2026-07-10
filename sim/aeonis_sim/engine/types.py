@@ -158,6 +158,7 @@ class Tile:
     explored: bool = False
     cursed: bool = False
     building_relic: Optional[str] = None  # artifact id attached to a building here
+    unique_tile_id: str = ""  # M4 launch-Lord starting tile id
 
     def has(self, b: BuildingType) -> bool:
         return b in self.buildings
@@ -187,6 +188,7 @@ class Tile:
             "explored": self.explored,
             "cursed": self.cursed,
             "building_relic": self.building_relic,
+            "unique_tile_id": self.unique_tile_id,
         }
 
     @staticmethod
@@ -207,6 +209,7 @@ class Tile:
             explored=bool(d.get("explored", True)),
             cursed=bool(d.get("cursed", False)),
             building_relic=d.get("building_relic"),
+            unique_tile_id=str(d.get("unique_tile_id", "")),
         )
 
 
@@ -538,6 +541,7 @@ class GameState:
                 explored=tile.explored,
                 cursed=tile.cursed,
                 building_relic=tile.building_relic,
+                unique_tile_id=tile.unique_tile_id,
             )
             for coord, tile in self.tiles.items()
         }

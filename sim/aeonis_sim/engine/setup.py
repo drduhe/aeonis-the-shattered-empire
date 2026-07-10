@@ -15,7 +15,7 @@ from .whispers import draw_whispers, init_whisper_deck
 from .council import init_agenda_deck
 from .events import init_event_deck
 from .types import BASE_AP, GameState, PlayerState, Unit, UNIT_STATS, UnitType
-from .lords import LORD_SPECS, configured_roster
+from .lords import LORD_SPECS, configured_roster, place_unique_tiles
 
 
 def build_initial_state(config: dict, rng: random.Random) -> GameState:
@@ -110,6 +110,8 @@ def build_initial_state(config: dict, rng: random.Random) -> GameState:
             if t is not None and t.controller is None and not t.imperial_seat \
                     and t.terrain.value in ("plains", "forest", "mountain"):
                 t.controller = pid
+
+    place_unique_tiles(state)
 
     for p in state.players:
         p.pop_pool = state.pop_cap(p.pid) - state.pop_used(p.pid)
