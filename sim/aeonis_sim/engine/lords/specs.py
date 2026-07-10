@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from .types import UnitType
+from ..types import UnitType
 
 
 @dataclass(frozen=True)
@@ -107,4 +107,3 @@ def lord_move(state, pid: int, fallback: int) -> int:
 
 def whisper_hand_limit(state, pid: int, fallback: int) -> int:
     return 8 if is_lord(state, pid, "nyxara") else fallback
-
