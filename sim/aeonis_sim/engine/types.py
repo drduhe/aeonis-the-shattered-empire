@@ -172,7 +172,7 @@ class Tile:
         return b.value not in self.suspended
 
     def to_dict(self) -> dict:
-        return {
+        out = {
             "coord": list(self.coord),
             "terrain": self.terrain.value,
             "imperial_seat": self.imperial_seat,
@@ -188,8 +188,10 @@ class Tile:
             "explored": self.explored,
             "cursed": self.cursed,
             "building_relic": self.building_relic,
-            "unique_tile_id": self.unique_tile_id or None,
         }
+        if self.unique_tile_id:
+            out["unique_tile_id"] = self.unique_tile_id
+        return out
 
     @staticmethod
     def from_dict(d: dict) -> "Tile":

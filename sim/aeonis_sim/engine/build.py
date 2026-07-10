@@ -61,8 +61,6 @@ def enumerate_builds(state, pid) -> list:
     for btype, spec in BUILDING_SPECS.items():
         if p.ap < build_ap_cost(state, btype):
             continue
-        if not _can_afford(p, spec, state, pid, btype, None):
-            continue
         if btype == BuildingType.BRIDGE:
             for coord, tile in state.tiles.items():
                 if tile.terrain != Terrain.LAKE or tile.has(BuildingType.BRIDGE):

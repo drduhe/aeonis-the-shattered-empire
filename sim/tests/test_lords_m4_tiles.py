@@ -141,3 +141,137 @@ def test_ironworks_allows_fortress_build():
     assert any(
         b["building"] == "fortress" and b["hex"] == list(ridge.coord) for b in builds
     )
+
+
+def test_arcane_nexus_research_mana_discount():
+    from aeonis_sim.engine.arcane import (
+        apply_research,
+        enumerate_research,
+        research_resource_cost,
+        DISCOVERIES,
+    )
+    state = build_initial_state(
+        {
+            "players": 3,
+            "lord_asymmetry": {"enabled": True, "lords": ["seraphel", "cassian", "vharok"]},
+        },
+        random.Random(3),
+    )
+    p = state.player(0)
+    p.ap, p.mana = 1, 1
+    spec = DISCOVERIES["battle_runes"]
+    assert research_resource_cost(state, 0, spec, free=False) == (1, 0, 0)
+    assert any(c["discovery"] == "battle_runes" for c in enumerate_research(state, 0))
+    apply_research(state, 0, "battle_runes")
+    assert p.mana == 0
+    assert "battle_runes" in p.discoveries
+    assert not any(c["discovery"] == "sigiled_masonry" for c in enumerate_research(state, 0))
+
+
+def test_ironworks_mine_and_fortress_gold_discount():
+    from aeonis_sim.engine.build import apply_build, enumerate_builds
+    state = build_initial_state(
+        {
+            "players": 3,
+            "lord_asymmetry": {"enabled": True, "lords": ["vharok", "cassian", "seraphel"]},
+        },
+        random.Random(17),
+    )
+    p = state.player(0)
+    ridge = next(t for t in state.tiles.values() if t.unique_tile_id == "ironworks_ridge")
+    p.ap, p.mana, p.influence, p.pop_pool = 10, 10, 10, 10
+    p.gold = 2
+    builds = enumerate_builds(state, 0)
+    assert any(
+        b["building"] == "mine" and b["hex"] == list(ridge.coord) for b in builds
+    )
+    p.gold = 4
+    builds = enumerate_builds(state, 0)
+    assert any(
+        b["building"] == "fortress" and b["hex"] == list(ridge.coord) for b in builds
+    )
+    p.gold = 4
+    apply_build(state, 0, {"hex": list(ridge.coord), "building": "fortress"})
+    assert p.gold == 0
+
+
+def test_cassian_bazaar_trade_grants_gold_once():
+    from aeonis_sim.engine.game import Game
+    from aeonis_sim.engine.lords import round_unused
+    from tests.conftest import advance_to_action_phase
+    g = Game(
+        {
+            "players": 3,
+            "lord_asymmetry": {
+                "enabled": True,
+                "lords": ["cassian", "seraphel", "vharok"],
+            },
+        },
+        seed=37,
+    )
+    advance_to_action_phase(g)
+    g._initiative_queue = [0, 1, 2]
+    g._pending = None
+    g.state.player(0).gold = 5
+    g.state.player(1).mana = 5
+    dp = g.next_decision()
+    trade = next(c for c in dp.choices if c["type"] == "trade")
+    before = g.state.player(0).gold
+    g.submit(trade)
+    assert g.state.player(0).gold == before + 1
+    assert not round_unused(g.state, 0, "bazaar_trade_gold")
+    g._grant_bazaar_trade_gold(g.state)
+    assert g.state.player(0).gold == before + 1
+
+
+def test_oasis_wellspring_cavalry_recruit_discount():
+    from aeonis_sim.engine.recruit import apply_recruit, enumerate_recruits
+    state = build_initial_state(
+        {
+            "players": 3,
+            "lord_asymmetry": {"enabled": True, "lords": ["rakhis", "cassian", "vharok"]},
+        },
+        random.Random(21),
+    )
+    p = state.player(0)
+    city = next(t for t in state.controlled(0) if t.terrain == Terrain.CITY)
+    p.ap, p.gold, p.mana, p.pop_pool = 5, 1, 5, 5
+    recs = enumerate_recruits(state, 0)
+    cav = next(r for r in recs if r["units"] == ["cavalry"])
+    assert cav["city"] == list(city.coord)
+    apply_recruit(state, 0, cav)
+    assert p.gold == 0
+    p.gold = 1
+    assert not any(r["units"] == ["cavalry"] for r in enumerate_recruits(state, 0))
+
+
+def test_rift_anchor_free_portal_move_once_per_round():
+    from aeonis_sim.engine.move import apply_move, enumerate_moves
+    from aeonis_sim.engine.types import Unit, UnitType, UNIT_STATS
+    state = build_initial_state(
+        {
+            "players": 3,
+            "lord_asymmetry": {"enabled": True, "lords": ["thalrik", "cassian", "vharok"]},
+        },
+        random.Random(7),
+    )
+    anchor = next(t for t in state.tiles.values() if t.unique_tile_id == "rift_anchor")
+    portal_dest = next(
+        c for c, t in state.tiles.items()
+        if t.terrain == Terrain.PORTAL and c != anchor.coord
+    )
+    unit = Unit(
+        uid=state.new_uid(), owner=0, type=UnitType.INFANTRY,
+        hp=UNIT_STATS[UnitType.INFANTRY].hp,
+    )
+    anchor.units.append(unit)
+    state.player(0).ap = 5
+    moves = enumerate_moves(state, 0)
+    free = next(
+        m for m in moves
+        if tuple(m["dest"]) == portal_dest and m.get("rift_anchor_free")
+    )
+    assert free["cost"] == 0
+    apply_move(state, 0, free)
+    moves2 = enumerate_moves(state, 0)
+    assert not any(m.get("rift_anchor_free") for m in moves2)
