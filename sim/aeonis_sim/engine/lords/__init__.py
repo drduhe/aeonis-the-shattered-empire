@@ -52,6 +52,16 @@ from .tiles import (
 
 )
 
+from .discoveries import (
+
+    FACTION_DISCOVERIES,
+
+    FACTION_DISCOVERY_IDS,
+
+    FactionDiscoverySpec,
+
+)
+
 from .auriel import apply_exaltation, radiant_presence_bonus
 
 from .cassian import apply_council_patronage, apply_letters_of_credit
@@ -135,6 +145,8 @@ __all__ = [
     "controls_unique", "place_unique_tiles", "tile_is_portal",
 
     "unique_spec_by_id", "unique_spec_for_lord",
+
+    "FACTION_DISCOVERIES", "FACTION_DISCOVERY_IDS", "FactionDiscoverySpec",
 
     "extra_defense_bonus", "radiant_presence_bonus", "threshold_ward_bonus",
 

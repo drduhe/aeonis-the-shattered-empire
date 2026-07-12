@@ -13,6 +13,12 @@ if TYPE_CHECKING:
     from .types import GameState
 
 from .lords import controls_unique, mark_round_used, round_unused
+from .lords.discoveries import (
+    FACTION_DISCOVERIES,
+    FACTION_DISCOVERY_IDS,
+    apply_faction_research,
+    can_afford_faction_research,
+)
 
 TIER_I_AP = 1
 TIER_I_REMNANTS = 1
@@ -147,6 +153,18 @@ def enumerate_research(
             "free": free,
             "cost": ap,
         })
+    for did in FACTION_DISCOVERY_IDS:
+        if not can_afford_faction_research(
+            state, pid, did, free=free, ap_waived=ap_waived,
+        ):
+            continue
+        ap = 0 if (free or ap_waived) else TIER_I_AP
+        out.append({
+            "type": "research",
+            "discovery": did,
+            "free": free,
+            "cost": ap,
+        })
     return out
 
 
@@ -158,6 +176,11 @@ def apply_research(
     free: bool = False,
     ap_waived: bool = False,
 ) -> None:
+    if discovery_id in FACTION_DISCOVERIES:
+        apply_faction_research(
+            state, pid, discovery_id, free=free, ap_waived=ap_waived,
+        )
+        return
     if discovery_id not in DISCOVERIES:
         raise ValueError(f"unknown discovery: {discovery_id}")
     p = state.player(pid)
