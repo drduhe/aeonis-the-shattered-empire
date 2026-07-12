@@ -61,6 +61,12 @@ def _pay_upkeep(state, p) -> None:
                     t.castle_suspended = False
                 else:
                     t.castle_suspended = True
+            elif spec.upkeep_gold:
+                # Iron Citadel and any future gold-upkeep buildings.
+                if p.gold >= spec.upkeep_gold:
+                    p.gold -= spec.upkeep_gold
+                else:
+                    t.suspended.append(b.value)
             elif spec.upkeep_mana:
                 if p.mana >= spec.upkeep_mana:
                     p.mana -= spec.upkeep_mana

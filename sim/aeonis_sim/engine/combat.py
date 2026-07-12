@@ -521,6 +521,7 @@ def finish_battle(state, battle) -> None:
         _clear_siege_committed(t)
         captor = state.player(battle.attacker)
         captor.battle_wins += 1
+        captor.attacker_battle_wins += 1
         record_battle_win_at(state, battle.attacker, battle.target)
         if state.pillage:
             apply_tile_production(captor, t)

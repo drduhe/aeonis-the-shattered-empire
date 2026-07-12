@@ -1427,7 +1427,7 @@ class Game:
                 )
                 self._finish_action_turn(dp.pid)
             elif t == "build":
-                apply_build(s, dp.pid, choice)
+                apply_build(s, dp.pid, choice, rng=self.rng)
                 self._finish_action_turn(dp.pid)
             elif t == "trade":
                 target = int(choice["target"])

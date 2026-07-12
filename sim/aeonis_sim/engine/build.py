@@ -8,8 +8,10 @@ from .arcane import (
     mark_waystones_used,
     waystones_move_discount,
 )
-from .types import BUILDING_SPECS, BuildingType, DEFAULT_BUILD_AP, Terrain
+from .types import BUILDING_SPECS, BuildingType, DEFAULT_BUILD_AP, LEGENDARY_BUILDINGS, Terrain
 from .lords import controls_unique, mark_round_used, round_unused, unique_spec_by_id
+from .lords.legendaries import LEGENDARY_AP, can_build_legendary
+
 
 TIER1_PRODUCTION = frozenset({
     BuildingType.FARM,
@@ -22,6 +24,8 @@ BUILD_AP = DEFAULT_BUILD_AP  # legacy alias for tests/docs
 
 
 def build_ap_cost(state, btype: BuildingType) -> int:
+    if btype in LEGENDARY_BUILDINGS:
+        return LEGENDARY_AP
     if btype in TIER1_PRODUCTION:
         return state.tier1_production_build_ap
     return DEFAULT_BUILD_AP
@@ -59,6 +63,8 @@ def enumerate_builds(state, pid) -> list:
     p = state.player(pid)
     out = []
     for btype, spec in BUILDING_SPECS.items():
+        if btype in LEGENDARY_BUILDINGS and not can_build_legendary(state, pid, btype):
+            continue
         if p.ap < build_ap_cost(state, btype):
             continue
         if btype == BuildingType.BRIDGE:
@@ -88,7 +94,7 @@ def enumerate_builds(state, pid) -> list:
     return out
 
 
-def apply_build(state, pid, choice) -> None:
+def apply_build(state, pid, choice, rng=None) -> None:
     p = state.player(pid)
     tile = state.tiles[tuple(choice["hex"])]
     btype = BuildingType(choice["building"])
@@ -112,3 +118,6 @@ def apply_build(state, pid, choice) -> None:
         record_fortress_built(state, pid, tile.coord)
     if btype == BuildingType.BRIDGE and tile.controller is None:
         tile.controller = pid  # AL-6
+    if btype in LEGENDARY_BUILDINGS:
+        from .lords.discoveries import bump_renown
+        bump_renown(state, pid, 2, rng)

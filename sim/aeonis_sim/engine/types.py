@@ -88,6 +88,26 @@ class BuildingType(str, Enum):
     BANK = "bank"
     MARKET = "market"
     CASTLE = "castle"
+    GRAND_EXCHANGE = "grand_exchange"
+    ARCANE_SANCTUM = "arcane_sanctum"
+    IRON_CITADEL = "iron_citadel"
+    HEARTWOOD_SANCTUM = "heartwood_sanctum"
+    WINDSWORN_WARCAMP = "windsworn_warcamp"
+    HALL_OF_WHISPERS = "hall_of_whispers"
+    CATHEDRAL_OF_RADIANCE = "cathedral_of_radiance"
+    DIMENSIONAL_NEXUS = "dimensional_nexus"
+
+
+LEGENDARY_BUILDINGS = frozenset({
+    BuildingType.GRAND_EXCHANGE,
+    BuildingType.ARCANE_SANCTUM,
+    BuildingType.IRON_CITADEL,
+    BuildingType.HEARTWOOD_SANCTUM,
+    BuildingType.WINDSWORN_WARCAMP,
+    BuildingType.HALL_OF_WHISPERS,
+    BuildingType.CATHEDRAL_OF_RADIANCE,
+    BuildingType.DIMENSIONAL_NEXUS,
+})
 
 
 @dataclass(frozen=True)
@@ -119,6 +139,22 @@ BUILDING_SPECS = {
     BuildingType.BANK: BuildingSpec(Terrain.CITY, gold=5, pop=1),
     BuildingType.MARKET: BuildingSpec(Terrain.CITY, gold=2, influence=2, pop=1),
     BuildingType.CASTLE: BuildingSpec(Terrain.CITY, gold=6, pop=2, upkeep_gold=2),
+    BuildingType.GRAND_EXCHANGE: BuildingSpec(Terrain.CITY, gold=6, influence=3, pop=3),
+    BuildingType.ARCANE_SANCTUM: BuildingSpec(Terrain.CITY, gold=4, mana=6, pop=3),
+    BuildingType.IRON_CITADEL: BuildingSpec(
+        Terrain.CITY, gold=8, mana=2, pop=3, upkeep_gold=2,
+    ),
+    BuildingType.HEARTWOOD_SANCTUM: BuildingSpec(
+        Terrain.CITY, gold=3, mana=4, influence=2, pop=3,
+    ),
+    BuildingType.WINDSWORN_WARCAMP: BuildingSpec(Terrain.CITY, gold=5, influence=3, pop=3),
+    BuildingType.HALL_OF_WHISPERS: BuildingSpec(
+        Terrain.CITY, gold=4, mana=4, influence=2, pop=3,
+    ),
+    BuildingType.CATHEDRAL_OF_RADIANCE: BuildingSpec(
+        Terrain.CITY, gold=4, mana=3, influence=3, pop=3,
+    ),
+    BuildingType.DIMENSIONAL_NEXUS: BuildingSpec(Terrain.CITY, gold=5, mana=5, pop=3),
 }
 
 
@@ -265,6 +301,8 @@ class PlayerState:
     shadow_sight_tokens: int = 0  # AL-51: Nyxara Shadow Sight information tokens
     sacred_rite_5: bool = False
     sacred_rite_10: bool = False
+    attacker_battle_wins: int = 0  # M4 Warcamp prereq
+    whispers_played: int = 0  # M4 Hall of Whispers prereq
 
     def add_vp(self, n: int, source: str) -> None:
         self.vp += n
@@ -317,6 +355,10 @@ class PlayerState:
         if self.lord_id:
             out["lord_id"] = self.lord_id
             out["lord_round"] = dict(self.lord_round)
+            if self.attacker_battle_wins:
+                out["attacker_battle_wins"] = self.attacker_battle_wins
+            if self.whispers_played:
+                out["whispers_played"] = self.whispers_played
         return out
 
     @staticmethod
@@ -381,6 +423,8 @@ class PlayerState:
         p.shadow_sight_tokens = int(d.get("shadow_sight_tokens", 0))
         p.sacred_rite_5 = bool(d.get("sacred_rite_5", False))
         p.sacred_rite_10 = bool(d.get("sacred_rite_10", False))
+        p.attacker_battle_wins = int(d.get("attacker_battle_wins", 0))
+        p.whispers_played = int(d.get("whispers_played", 0))
         return p
 
 
@@ -615,6 +659,8 @@ class GameState:
                 shadow_sight_tokens=p.shadow_sight_tokens,
                 sacred_rite_5=p.sacred_rite_5,
                 sacred_rite_10=p.sacred_rite_10,
+                attacker_battle_wins=p.attacker_battle_wins,
+                whispers_played=p.whispers_played,
             )
             for p in self.players
         ]

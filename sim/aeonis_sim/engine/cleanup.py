@@ -127,6 +127,8 @@ def run_cleanup(state, rng=None) -> None:
         _score_coronation(state, p.pid)
         _score_objectives(state, p.pid)
         score_artifact_vp(state, p.pid)
+        from .lords.legendaries import score_legendary_vp
+        score_legendary_vp(state, p.pid)
         if controls_unique(state, p.pid, "hallowed_grove"):
             bump_renown(state, p.pid, 1, rng)
 

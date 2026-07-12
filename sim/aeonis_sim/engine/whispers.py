@@ -299,6 +299,7 @@ def apply_action_whisper(state: GameState, pid: int, choice: dict) -> None:
     cid = choice["card"]
     p = state.player(pid)
     discard_whisper(state, pid, cid)
+    p.whispers_played += 1
     if cid == "hidden_cache":
         if choice.get("choice") == "mana":
             p.mana += 3
@@ -366,6 +367,7 @@ def apply_when_whisper(state: GameState, pid: int, choice: dict, rng=None) -> No
     cid = choice["card"]
     p = state.player(pid)
     discard_whisper(state, pid, cid)
+    p.whispers_played += 1
     if cid == "war_profiteer":
         p.gold += 2
     elif cid == "rallying_cry":
@@ -405,6 +407,7 @@ def apply_council_whisper(state: GameState, pid: int, choice: dict) -> dict:
     """Returns vote modifiers: {for: n, against: n} or {veto: True}."""
     cid = choice["card"]
     discard_whisper(state, pid, cid)
+    state.player(pid).whispers_played += 1
     if cid == "backroom_deal":
         side = choice.get("side", "for")
         return {side: 2}

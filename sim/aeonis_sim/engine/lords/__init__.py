@@ -62,6 +62,18 @@ from .discoveries import (
 
 )
 
+from .legendaries import (
+
+    LEGENDARY_BUILDINGS,
+
+    can_build_legendary,
+
+    legendary_for_lord,
+
+    score_legendary_vp,
+
+)
+
 from .auriel import apply_exaltation, radiant_presence_bonus
 
 from .cassian import apply_council_patronage, apply_letters_of_credit
@@ -147,6 +159,10 @@ __all__ = [
     "unique_spec_by_id", "unique_spec_for_lord",
 
     "FACTION_DISCOVERIES", "FACTION_DISCOVERY_IDS", "FactionDiscoverySpec",
+
+    "LEGENDARY_BUILDINGS", "can_build_legendary", "legendary_for_lord",
+
+    "score_legendary_vp",
 
     "extra_defense_bonus", "radiant_presence_bonus", "threshold_ward_bonus",
 
