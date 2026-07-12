@@ -333,6 +333,8 @@ def luminous_bulwark_bonus(state: GameState, pid: int, tile) -> int:
 def bump_renown(state: GameState, pid: int, amount: int, rng: Optional[random.Random] = None) -> int:
     """Adjust renown and fire Sacred Rite milestones when applicable."""
     p = state.player(pid)
+    if amount > 0 and "sacred_rite" in p.discoveries and rng is None:
+        raise ValueError("bump_renown requires rng when sacred_rite is owned")
     old = p.renown
     p.renown += amount
     if rng is not None:

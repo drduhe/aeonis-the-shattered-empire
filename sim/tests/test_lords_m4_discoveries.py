@@ -263,6 +263,25 @@ def test_spellweave_doctrine_after_lobby():
     g.submit(vote)
     assert p.mana == before + 1
     assert p.influence == 3
+    # Once/round: second lobby same round does not grant again.
+    after = p.mana
+    vote2 = {
+        "type": "council_vote",
+        "motion": "magister_of_mana",
+        "support": True,
+        "lobby": 2,
+    }
+    p.influence = 5
+    g._pending = DecisionPoint(
+        kind="council_vote",
+        phase="council",
+        pid=0,
+        choices=[vote2],
+    )
+    g._council_vote_queue = [0, 1]
+    g.submit(vote2)
+    assert p.mana == after
+    assert p.influence == 3
 
 
 def test_reinforced_fortifications_tower_defense():
@@ -276,6 +295,24 @@ def test_reinforced_fortifications_tower_defense():
     assert reinforced_fortifications_bonus(state, 0, state.tiles[hex_]) == 1
     battle = SimpleNamespace(defender=0, target=hex_)
     assert combat._defense_bonus(state, battle, "def") >= 2  # tower + discovery
+    # Attacker-side defense rolls must not receive discovery defense bonuses.
+    assert combat._defense_bonus(state, battle, "att") == 0
+
+
+def test_discovery_defense_bonuses_defender_side_only():
+    """reinforced_fortifications / luminous_bulwark apply only when side == def."""
+    state = _strip(_m4(["vharok", "auriel"], seed=27))
+    state.player(0).discoveries.append("reinforced_fortifications")
+    state.player(0).discoveries.append("luminous_bulwark")
+    hex_ = (1, 0)
+    state.tiles[hex_].terrain = Terrain.PLAINS
+    state.tiles[hex_].controller = 0
+    state.tiles[hex_].buildings = [BuildingType.TOWER]
+    battle = SimpleNamespace(defender=0, attacker=1, target=hex_)
+    def_bonus = combat._defense_bonus(state, battle, "def")
+    # Tower (+1) + reinforced (+1) + luminous (+1) + Vharok forged (+1) = 4
+    assert def_bonus == 4
+    assert combat._defense_bonus(state, battle, "att") == 0
 
 
 def test_siege_logistics_after_city_attack():
@@ -411,6 +448,18 @@ def test_shadow_network_free_action():
     g.submit(choice)
     assert p.gold == before + 2
     assert "hidden_cache" not in p.whisper_hand
+    # Once/round: not enumerable again; apply fails.
+    from aeonis_sim.engine.lords.discoveries import (
+        apply_shadow_network,
+        enumerate_shadow_network,
+    )
+    p.whisper_hand = ["contraband"]
+    assert enumerate_shadow_network(g.state, 0) == []
+    with pytest.raises(ValueError, match="already used"):
+        apply_shadow_network(
+            g.state, 0,
+            {"type": "shadow_network", "card": "contraband", "reward": "gold"},
+        )
 
 
 def test_luminous_bulwark_on_built_hex():

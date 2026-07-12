@@ -314,7 +314,8 @@ def _defense_bonus(state, battle, side) -> int:
         and bool(t.buildings)
     ):
         bonus += 1
-    if battle.defender is not None:
+    # Faction discovery defense: defending Tower / defending built hex only.
+    if side == "def" and battle.defender is not None:
         bonus += reinforced_fortifications_bonus(state, battle.defender, t)
         bonus += luminous_bulwark_bonus(state, battle.defender, t)
     bonus += extra_defense_bonus(state, battle, side)
