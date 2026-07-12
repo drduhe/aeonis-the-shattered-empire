@@ -471,6 +471,7 @@ class GameState:
     whisper_deck: list = field(default_factory=list)
     whisper_discard: list = field(default_factory=list)
     desert_tempest: Optional[dict] = None  # {coord, round, owner}
+    trades_this_round: int = 0  # M4 Grand Exchange production tracker
 
     def player(self, pid: int) -> PlayerState:
         return self.players[pid]
@@ -584,6 +585,7 @@ class GameState:
             whisper_deck=list(d.get("whisper_deck", [])),
             whisper_discard=list(d.get("whisper_discard", [])),
             desert_tempest=dict(d["desert_tempest"]) if d.get("desert_tempest") else None,
+            trades_this_round=int(d.get("trades_this_round", 0)),
         )
 
     def copy(self) -> "GameState":
@@ -703,4 +705,5 @@ class GameState:
             whisper_deck=list(self.whisper_deck),
             whisper_discard=list(self.whisper_discard),
             desert_tempest=dict(self.desert_tempest) if self.desert_tempest else None,
+            trades_this_round=self.trades_this_round,
         )

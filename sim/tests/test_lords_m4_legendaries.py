@@ -274,3 +274,102 @@ def test_whisper_play_increments_counter():
         state, 0, {"type": "whisper_play", "card": "hidden_cache", "choice": "gold"},
     )
     assert p.whispers_played == 1
+
+def test_grand_exchange_production_from_trades():
+    from aeonis_sim.engine.lords.legendaries import apply_grand_exchange_production
+    state = m4_state(['cassian', 'seraphel', 'vharok'])
+    home = _clear_city_for_legendary(state, 0)
+    home.buildings = [BuildingType.GRAND_EXCHANGE]
+    state.trades_this_round = 3
+    before = state.player(0).gold
+    apply_grand_exchange_production(state, 0)
+    assert state.player(0).gold == before + 3
+
+
+def test_arcane_sanctum_production_and_lord_die():
+    from aeonis_sim.engine.artifacts import attack_die
+    from aeonis_sim.engine.lords.legendaries import apply_arcane_sanctum_production
+    from aeonis_sim.engine.types import Unit, UnitType, UNIT_STATS
+    state = m4_state(['seraphel', 'cassian', 'vharok'])
+    home = _clear_city_for_legendary(state, 0)
+    home.buildings = [BuildingType.ARCANE_SANCTUM]
+    before = state.player(0).mana
+    apply_arcane_sanctum_production(state, 0)
+    assert state.player(0).mana == before + 2
+    lord = Unit(uid=state.new_uid(), owner=0, type=UnitType.LORD, hp=UNIT_STATS[UnitType.LORD].hp)
+    home.units.append(lord)
+    die = attack_die(state, 0, lord)
+    assert die >= 6  # base lord die bumped at least one step
+
+
+def test_iron_citadel_siege_and_defense():
+    from aeonis_sim.engine import combat
+    from aeonis_sim.engine.lords.legendaries import legendary_defense_bonus
+    state = m4_state(['vharok', 'cassian', 'seraphel'])
+    home = _clear_city_for_legendary(state, 0)
+    home.buildings = [BuildingType.IRON_CITADEL]
+    home.controller = 0
+    b = combat.Battle(attacker=1, defender=0, target=home.coord)
+    assert legendary_defense_bonus(state, b, 'def') == 3
+    assert legendary_defense_bonus(state, b, 'att') == 0
+    choice = {'target': list(home.coord), 'cost': 0}
+    state.player(1).ap = 5
+    battle = combat.start_battle(state, 1, choice)
+    assert battle.siege is True
+    assert battle.cap == 5
+
+
+def test_heartwood_production_and_hp():
+    from aeonis_sim.engine.lords.legendaries import (
+        apply_heartwood_production, apply_heartwood_round_start_hp,
+    )
+    from aeonis_sim.engine.types import Unit, UnitType, UNIT_STATS
+    state = m4_state(['elyndra', 'cassian', 'vharok'])
+    home = _clear_city_for_legendary(state, 0)
+    home.buildings = [BuildingType.HEARTWOOD_SANCTUM]
+    p = state.player(0)
+    p.pop_pool = 0
+    apply_heartwood_production(state, 0)
+    assert p.pop_pool >= 3
+    u = Unit(uid=state.new_uid(), owner=0, type=UnitType.INFANTRY, hp=1)
+    home.units.append(u)
+    apply_heartwood_round_start_hp(state)
+    assert u.hp == 2
+
+
+def test_cathedral_defense_bonus():
+    from aeonis_sim.engine.lords.legendaries import legendary_defense_bonus
+    from aeonis_sim.engine import combat
+    state = m4_state(['auriel', 'cassian', 'vharok'])
+    home = _clear_city_for_legendary(state, 0)
+    home.buildings = [BuildingType.CATHEDRAL_OF_RADIANCE]
+    b = combat.Battle(attacker=1, defender=0, target=home.coord)
+    assert legendary_defense_bonus(state, b, 'def') == 2
+
+
+def test_dimensional_nexus_counts_as_portal():
+    from aeonis_sim.engine.lords import tile_is_portal
+    state = m4_state(['thalrik', 'cassian', 'seraphel'])
+    home = _clear_city_for_legendary(state, 0)
+    home.buildings = [BuildingType.DIMENSIONAL_NEXUS]
+    assert tile_is_portal(state, home.coord, 0)
+
+
+def test_warcamp_cavalry_enumerate():
+    from aeonis_sim.engine.lords.legendaries import enumerate_warcamp_cavalry_move
+    from aeonis_sim.engine.types import Unit, UnitType, UNIT_STATS
+    state = m4_state(['rakhis', 'cassian', 'vharok'])
+    home = _clear_city_for_legendary(state, 0)
+    home.buildings = [BuildingType.WINDSWORN_WARCAMP]
+    home.units.append(Unit(uid=state.new_uid(), owner=0, type=UnitType.CAVALRY,
+                           hp=UNIT_STATS[UnitType.CAVALRY].hp))
+    choices = enumerate_warcamp_cavalry_move(state, 0)
+    assert choices
+
+
+def test_hall_any_timing_flag():
+    from aeonis_sim.engine.lords.legendaries import hall_any_timing_available
+    state = m4_state(['nyxara', 'cassian', 'seraphel'])
+    home = _clear_city_for_legendary(state, 0)
+    home.buildings = [BuildingType.HALL_OF_WHISPERS]
+    assert hall_any_timing_available(state, 0) is True

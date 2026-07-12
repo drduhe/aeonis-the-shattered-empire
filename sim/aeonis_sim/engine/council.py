@@ -119,8 +119,12 @@ def tally_votes(
     *,
     extra_yes: int = 0,
     extra_no: int = 0,
+    proposer: int | None = None,
 ) -> bool:
     """Majority of votes cast passes; Speaker breaks ties."""
+    from .lords.legendaries import controls_legendary
+    from .types import BuildingType
+
     yes = extra_yes
     no = extra_no
     for b in ballots:
@@ -129,7 +133,14 @@ def tally_votes(
             no += multiplier * council_votes(state, b["pid"])
             continue
         lobby = int(b.get("lobby", 0))
-        yes += multiplier * (council_votes(state, b["pid"]) + lobby // 2)
+        lobby_votes = lobby // 2
+        if (
+            proposer is not None
+            and b["pid"] == proposer
+            and controls_legendary(state, proposer, BuildingType.CATHEDRAL_OF_RADIANCE)
+        ):
+            lobby_votes = lobby  # double influence on motions you initiated
+        yes += multiplier * (council_votes(state, b["pid"]) + lobby_votes)
     if yes > no:
         return True
     if no > yes:
@@ -208,7 +219,7 @@ def run_emergency_council(state: GameState, proposer: int, rng: random.Random) -
     for pid in range(len(state.players)):
         support = pid == proposer or rng.random() < 0.35
         ballots.append({"pid": pid, "support": support, "lobby": 0})
-    if tally_votes(state, motion, ballots):
+    if tally_votes(state, motion, ballots, proposer=proposer):
         apply_motion(state, motion, proposer, rng)
         return True
     return False

@@ -272,6 +272,9 @@ class Game:
             for u in t.units:
                 if u.type == UnitType.LORD:
                     u.hp = lord_hp(s, u.owner, UNIT_STATS[UnitType.LORD].hp)
+        from .lords.legendaries import apply_heartwood_round_start_hp, hall_of_whispers_extra_draw
+        apply_heartwood_round_start_hp(s)
+        s.trades_this_round = 0
         for p in s.players:
             p.lord_round = {}
             pending = p.pending_ap
@@ -282,6 +285,9 @@ class Game:
             draw_whispers(s, p.pid, whisper_draw, self.rng)
             self.whisper_stats["drawn"] += whisper_draw
             if controls_unique(s, p.pid, "obsidian_spire"):
+                draw_whispers(s, p.pid, 1, self.rng)
+                self.whisper_stats["drawn"] += 1
+            if hall_of_whispers_extra_draw(s, p.pid):
                 draw_whispers(s, p.pid, 1, self.rng)
                 self.whisper_stats["drawn"] += 1
             while p.pending_whisper_draws > 0:
@@ -766,7 +772,7 @@ class Game:
 
     def _advance_phases(self) -> None:
         """All players have passed: Production, Cleanup, next round or end."""
-        prod_stats = run_production(self.state)
+        prod_stats = run_production(self.state, rng=self.rng)
         self.building_stats["bank_conversions"] += len(
             prod_stats.get("bank_conversions", {})
         )
@@ -802,10 +808,20 @@ class Game:
         out.extend(combat.enumerate_attacks(s, pid))
         # Market (Buildings.md): the once-per-round trade initiation costs
         # 0 AP with an active Market; limit stays one trade per round (AL-27).
-        if not self._trade_used.get(pid, False):
+        # Grand Exchange: one extra 0-AP trade once/round.
+        from .lords.legendaries import (
+            controls_legendary,
+            enumerate_nexus_teleport,
+            enumerate_warcamp_cavalry_move,
+        )
+        ge_extra = (
+            controls_legendary(s, pid, BuildingType.GRAND_EXCHANGE)
+            and round_unused(s, pid, "ge_extra_trade")
+        )
+        if not self._trade_used.get(pid, False) or ge_extra:
             free = self._has_active_market(pid) or (
                 is_lord(s, pid, "cassian") and round_unused(s, pid, "ledger_trade")
-            )
+            ) or ge_extra
             if free or s.player(pid).ap >= 1:
                 out.extend(self._enumerate_trade_starts(pid))
         out.extend(enumerate_cleanse(s, pid))
@@ -813,11 +829,20 @@ class Game:
         out.extend(enumerate_site_claims(s, pid))
         out.extend(enumerate_attach_choices(s, pid))
         out.extend(enumerate_discard_lord(s, pid))
-        out.extend(enumerate_research(s, pid))
+        # Arcane Sanctum: free Tier I research once/round
+        if (
+            controls_legendary(s, pid, BuildingType.ARCANE_SANCTUM)
+            and round_unused(s, pid, "sanctum_free_research")
+        ):
+            out.extend(enumerate_research(s, pid, free=True, ap_waived=True))
+        else:
+            out.extend(enumerate_research(s, pid))
         out.extend(enumerate_action_whispers(s, pid))
         out.extend(enumerate_desert_tempest(s, pid))
         out.extend(enumerate_shadow_network(s, pid))
         out.extend(enumerate_void_anchor(s, pid))
+        out.extend(enumerate_nexus_teleport(s, pid))
+        out.extend(enumerate_warcamp_cavalry_move(s, pid))
         if is_lord(s, pid, "auriel") and round_unused(s, pid, "exaltation"):
             if s.player(pid).influence >= 3:
                 out.append({"type": "exaltation"})
@@ -1309,6 +1334,7 @@ class Game:
                     self._council_ballots,
                     extra_yes=self._council_extra_votes.get("for", 0),
                     extra_no=self._council_extra_votes.get("against", 0),
+                    proposer=motion["proposer"],
                 )
                 if passed:
                     veto = [False]
@@ -1437,13 +1463,23 @@ class Game:
                 )
                 if err:
                     raise ValueError(err)
+                from .lords.legendaries import controls_legendary
+                ge_extra = (
+                    self._trade_used.get(dp.pid, False)
+                    and controls_legendary(s, dp.pid, BuildingType.GRAND_EXCHANGE)
+                    and round_unused(s, dp.pid, "ge_extra_trade")
+                )
                 cassian_free = (
                     is_lord(s, dp.pid, "cassian")
                     and round_unused(s, dp.pid, "ledger_trade")
                 )
-                zero_ap_trade = self._has_active_market(dp.pid) or cassian_free
+                zero_ap_trade = (
+                    self._has_active_market(dp.pid) or cassian_free or ge_extra
+                )
                 if zero_ap_trade:
-                    if self._has_active_market(dp.pid):
+                    if ge_extra:
+                        mark_round_used(s, dp.pid, "ge_extra_trade")
+                    elif self._has_active_market(dp.pid):
                         self.building_stats["market_trades"] += 1  # 0 AP (AL-27)
                         apply_guild_contracts_trade_influence(
                             s, dp.pid, zero_ap_market=True,
@@ -1453,10 +1489,14 @@ class Game:
                     self._grant_bazaar_trade_gold(s)
                 else:
                     s.player(dp.pid).ap -= 1
-                self._trade_used[dp.pid] = True
+                if self._trade_used.get(dp.pid, False):
+                    pass  # second (GE) trade
+                else:
+                    self._trade_used[dp.pid] = True
+                s.trades_this_round += 1
                 apply_diplomatic_tariffs(s, dp.pid)
                 self._trade_initiator = dp.pid
-                self._trade_consumes_turn = not cassian_free
+                self._trade_consumes_turn = not cassian_free and not ge_extra
                 self._negotiation_session = start_session(
                     window="trade",
                     proposer=dp.pid,
@@ -1490,6 +1530,14 @@ class Game:
             elif t == "void_anchor":
                 apply_void_anchor(s, dp.pid, tuple(choice["hex"]))
                 self._finish_action_turn(dp.pid)
+            elif t == "nexus_teleport":
+                from .lords.legendaries import apply_nexus_teleport
+                apply_nexus_teleport(s, dp.pid, choice)
+                self._finish_action_turn(dp.pid)
+            elif t == "warcamp_cavalry_move":
+                from .lords.legendaries import apply_warcamp_cavalry_move
+                apply_warcamp_cavalry_move(s, dp.pid, choice)
+                self._finish_action_turn(dp.pid)
             elif t == "cleanse":
                 apply_cleanse(s, dp.pid, tuple(choice["hex"]))
                 self._finish_action_turn(dp.pid)
@@ -1521,7 +1569,12 @@ class Game:
                 apply_research(
                     s, dp.pid, choice["discovery"],
                     free=choice.get("free", False),
+                    ap_waived=choice.get("free", False),
                 )
+                if choice.get("free"):
+                    from .lords.legendaries import controls_legendary
+                    if controls_legendary(s, dp.pid, BuildingType.ARCANE_SANCTUM):
+                        mark_round_used(s, dp.pid, "sanctum_free_research")
                 if (
                     is_lord(s, dp.pid, "seraphel")
                     and round_unused(s, dp.pid, "polymath_second")

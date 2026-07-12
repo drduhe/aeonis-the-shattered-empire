@@ -352,6 +352,8 @@ def attack_die(state: GameState, pid: int, unit) -> int:
         die = lord_attack_die(state, pid, die)
     if unit.type == UnitType.LORD and "blade_of_the_last_emperor" in state.player(pid).lord_equipment:
         die = _DIE_UP.get(die, die)
+    from .lords.legendaries import arcane_sanctum_lord_attack_die
+    die = arcane_sanctum_lord_attack_die(state, pid, unit, die)
     return die
 
 

@@ -94,7 +94,7 @@ def _bank_conversion(state, p) -> str | None:
     return None
 
 
-def run_production(state) -> dict:
+def run_production(state, rng=None) -> dict:
     """Round_Structure.md §6: production, growth, upkeep. Returns stats."""
     stats: dict = {"bank_conversions": {}}
     for p in state.players:
@@ -133,6 +133,15 @@ def run_production(state) -> dict:
                     headroom = state.pop_cap(p.pid) - state.pop_used(p.pid)
                     p.pop_pool = min(p.pop_pool, max(0, headroom))
         p.mana += mana_nexus_bonus(state, p.pid)
+        from .lords.legendaries import (
+            apply_arcane_sanctum_production,
+            apply_cathedral_speaker_renown,
+            apply_grand_exchange_production,
+            apply_heartwood_production,
+        )
+        apply_grand_exchange_production(state, p.pid)
+        apply_arcane_sanctum_production(state, p.pid)
+        apply_heartwood_production(state, p.pid)
         if controls_unique(state, p.pid, "sacred_grove"):
             room = state.pop_cap(p.pid) - state.pop_used(p.pid) - p.pop_pool
             p.pop_pool += min(1, max(0, room))
@@ -154,6 +163,7 @@ def run_production(state) -> dict:
             stats["bank_conversions"][p.pid] = conv
         production_wellspring(state, p.pid)
         production_golden_alchemy(state, p.pid)
+        apply_cathedral_speaker_renown(state, p.pid, rng)
         # 5. Remnants from controlled Ruins
         for t in state.controlled(p.pid):
             if t.terrain == Terrain.RUINS:

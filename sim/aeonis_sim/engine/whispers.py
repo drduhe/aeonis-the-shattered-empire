@@ -147,16 +147,20 @@ def enumerate_whisper_discard(state: GameState, pid: int) -> list[dict]:
 
 def cards_for_timing(hand: list[str], timing: str, **ctx) -> list[str]:
     out = []
+    hall_any = bool(ctx.get("hall_any_timing"))
     for cid in hand:
         spec = WHISPER_SPECS.get(cid)
-        if spec is None or spec.timing != timing:
+        if spec is None:
             continue
-        if timing == "combat" and spec.combat_step != ctx.get("step"):
+        if not hall_any and spec.timing != timing:
             continue
-        if timing == "when" and spec.when_trigger != ctx.get("trigger"):
-            continue
-        if timing == "council" and spec.when_trigger != ctx.get("council_window"):
-            continue
+        if not hall_any:
+            if timing == "combat" and spec.combat_step != ctx.get("step"):
+                continue
+            if timing == "when" and spec.when_trigger != ctx.get("trigger"):
+                continue
+            if timing == "council" and spec.when_trigger != ctx.get("council_window"):
+                continue
         if not _requirements_met(cid, ctx):
             continue
         out.append(cid)
@@ -228,6 +232,16 @@ def enumerate_action_whispers(state: GameState, pid: int) -> list[dict]:
                     })
         else:
             out.append({"type": "whisper_play", "card": cid})
+    # Hall of Whispers: once/round play any timing as an Action play.
+    from .lords.legendaries import hall_any_timing_available
+    if hall_any_timing_available(state, pid):
+        action_ids = {c["card"] for c in out}
+        for cid in cards_for_timing(
+            p.whisper_hand, "action", hall_any_timing=True, state=state, pid=pid,
+        ):
+            if cid in action_ids:
+                continue
+            out.append({"type": "whisper_play", "card": cid, "hall_any_timing": True})
     return out
 
 
@@ -300,6 +314,9 @@ def apply_action_whisper(state: GameState, pid: int, choice: dict) -> None:
     p = state.player(pid)
     discard_whisper(state, pid, cid)
     p.whispers_played += 1
+    if choice.get("hall_any_timing"):
+        from .lords.legendaries import mark_hall_any_timing_used
+        mark_hall_any_timing_used(state, pid)
     if cid == "hidden_cache":
         if choice.get("choice") == "mana":
             p.mana += 3

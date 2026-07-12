@@ -241,11 +241,18 @@ def start_battle(state, pid, choice, rng=None) -> Battle:
         and t.controller == defender
         and bool(t.buildings)
     )
-    b.cap = 5 if t.terrain == Terrain.CITY or t.has(BuildingType.FORTRESS) else 3
+    from .lords.legendaries import iron_citadel_is_fortress
+    citadel = iron_citadel_is_fortress(t)
+    b.cap = 5 if t.terrain == Terrain.CITY or t.has(BuildingType.FORTRESS) or citadel else 3
     if bastion:
         b.whisper_mods.def_cap_bonus += 1
     # AL-7: Fortress -> siege (canon); City -> defender auto-declares Hold the Walls.
-    b.siege = t.terrain == Terrain.CITY or t.has(BuildingType.FORTRESS) or bastion
+    b.siege = (
+        t.terrain == Terrain.CITY
+        or t.has(BuildingType.FORTRESS)
+        or citadel
+        or bastion
+    )
     state.player(pid).ap -= choice["cost"]
     apply_siege_logistics(state, pid, target)
 
@@ -318,6 +325,8 @@ def _defense_bonus(state, battle, side) -> int:
     if side == "def" and battle.defender is not None:
         bonus += reinforced_fortifications_bonus(state, battle.defender, t)
         bonus += luminous_bulwark_bonus(state, battle.defender, t)
+    from .lords.legendaries import legendary_defense_bonus
+    bonus += legendary_defense_bonus(state, battle, side)
     bonus += extra_defense_bonus(state, battle, side)
     return bonus
 
