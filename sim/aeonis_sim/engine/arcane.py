@@ -18,6 +18,8 @@ from .lords.discoveries import (
     FACTION_DISCOVERY_IDS,
     apply_faction_research,
     can_afford_faction_research,
+    guild_contracts_market_discount,
+    mark_guild_contracts_market_used,
 )
 
 TIER_I_AP = 1
@@ -236,6 +238,7 @@ def build_gold_cost(
         and btype in STONEBUILD
     ):
         gold = max(0, gold - 1)
+    gold = guild_contracts_market_discount(state, pid, btype, gold)
     if tile is not None:
         if (
             btype == BuildingType.MINE
@@ -267,6 +270,7 @@ def mark_build_discount_used(state: GameState, pid: int, btype: BuildingType, ba
         and build_gold_cost(state, pid, btype, base) < base
     ):
         p.arcane_round["stonewright"] = True
+    mark_guild_contracts_market_used(state, pid, btype)
 
 
 def waystones_move_discount(state: GameState, pid: int, cost: int) -> int:

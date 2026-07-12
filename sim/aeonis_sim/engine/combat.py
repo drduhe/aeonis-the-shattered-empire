@@ -40,6 +40,14 @@ from .lords import (
     extra_defense_bonus,
     is_lord,
 )
+from .lords.discoveries import (
+    apply_seedbound_resilience,
+    apply_siege_logistics,
+    luminous_bulwark_bonus,
+    mirage_riders_attack_bonus,
+    reinforced_fortifications_bonus,
+    thornwatch_bonus,
+)
 
 ATTACK_AP = 2
 PRESS_AP = 1
@@ -238,6 +246,7 @@ def start_battle(state, pid, choice) -> Battle:
     # AL-7: Fortress -> siege (canon); City -> defender auto-declares Hold the Walls.
     b.siege = t.terrain == Terrain.CITY or t.has(BuildingType.FORTRESS) or bastion
     state.player(pid).ap -= choice["cost"]
+    apply_siege_logistics(state, pid, target)
 
     if b.siege and t.siege and (t.siege_att_uids or t.siege_def_uids):
         _commit_from_uids(state, b, t.siege_att_uids, "att")
@@ -304,6 +313,9 @@ def _defense_bonus(state, battle, side) -> int:
         and bool(t.buildings)
     ):
         bonus += 1
+    if battle.defender is not None:
+        bonus += reinforced_fortifications_bonus(state, battle.defender, t)
+        bonus += luminous_bulwark_bonus(state, battle.defender, t)
     bonus += extra_defense_bonus(state, battle, side)
     return bonus
 
@@ -372,6 +384,11 @@ def _strike(
         atk = rng.randint(1, atk_die)
         if striker_side == "att" and striker.owner == battle.attacker:
             atk += battle_runes_attack_bonus(state, striker.owner, battle)
+            origin = next(
+                (o for o, u in battle.att_committed if u is striker),
+                battle.target,
+            )
+            atk += mirage_riders_attack_bonus(state, striker.owner, striker, origin)
         dfn_die = defense_die(state, target.owner, target, battle.target)
         die_max = dfn_die + combat_defense_mod(mods, target.uid)
         dfn = rng.randint(1, die_max)
@@ -379,6 +396,7 @@ def _strike(
             dfn = apply_rooted_defenses_reroll(state, battle, rng, dfn, die_max)
         if striker_side == "att" and target.owner == battle.defender:
             dfn += warding_charm_defense_bonus(state, battle.defender, battle)
+            dfn += thornwatch_bonus(state, battle, target)
         if striker_side == "att":
             atk = max(1, atk - battle_augury_attack_penalty(state, battle.defender, battle))
         if (
@@ -531,3 +549,6 @@ def finish_battle(state, battle) -> None:
             _save_siege_committed(t, battle)
         else:
             _clear_siege_committed(t)
+    # Seedbound: once/round after battle in a hex the owner controls.
+    if t.controller is not None:
+        apply_seedbound_resilience(state, t.controller, battle)

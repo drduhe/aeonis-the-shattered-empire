@@ -9,6 +9,7 @@ from .artifacts import (
 )
 from .arcane import production_golden_alchemy
 from .lords import apply_unique_tile_production, controls_unique, unique_spec_by_id
+from .lords.discoveries import mana_nexus_bonus
 
 # Tiles.md: base production, upgraded by the matching production building.
 _PLAIN = {Terrain.MOUNTAIN: ("gold", 1), Terrain.FOREST: ("mana", 1),
@@ -125,6 +126,7 @@ def run_production(state) -> dict:
                     p.pop_pool += dp * (mult - 1)
                     headroom = state.pop_cap(p.pid) - state.pop_used(p.pid)
                     p.pop_pool = min(p.pop_pool, max(0, headroom))
+        p.mana += mana_nexus_bonus(state, p.pid)
         if controls_unique(state, p.pid, "sacred_grove"):
             room = state.pop_cap(p.pid) - state.pop_used(p.pid) - p.pop_pool
             p.pop_pool += min(1, max(0, room))

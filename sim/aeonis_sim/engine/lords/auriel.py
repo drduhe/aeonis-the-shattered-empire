@@ -15,7 +15,7 @@ def radiant_presence_bonus(state, battle) -> int:
     return 0
 
 
-def apply_exaltation(state, pid: int) -> bool:
+def apply_exaltation(state, pid: int, rng=None) -> bool:
     """Action: spend 3 Influence for +2 Renown once/round."""
     if not is_lord(state, pid, "auriel"):
         return False
@@ -25,6 +25,7 @@ def apply_exaltation(state, pid: int) -> bool:
     if p.influence < 3:
         return False
     p.influence -= 3
-    p.renown += 2
+    from .discoveries import bump_renown
+    bump_renown(state, pid, 2, rng)
     mark_round_used(state, pid, "exaltation")
     return True

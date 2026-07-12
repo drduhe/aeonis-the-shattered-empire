@@ -18,6 +18,7 @@ from .lords import (
     round_unused,
     tile_is_portal,
 )
+from .lords.discoveries import apply_planar_echo, apply_sandsworn_pact
 from .lords.rakhis import desert_tempest_entry_surcharge
 from .lords.seraphel import (
     apply_blink_step,
@@ -52,7 +53,7 @@ def _passable(state, pid, coord, *, veil: bool = False) -> bool:
 def _portal_exits(state, pid, coord):
     """Portal-to-portal edges at 0 AP (AL-19: no ZOC surcharge on portal hops)."""
     t = state.tiles.get(coord)
-    if t is None or not tile_is_portal(state, coord):
+    if t is None or not tile_is_portal(state, coord, pid):
         return []
     hostile_ok = (
         state.player(pid).whisper_flags.get("hostile_portal_ok")
@@ -60,7 +61,7 @@ def _portal_exits(state, pid, coord):
     )
     out = []
     for c2, t2 in state.tiles.items():
-        if c2 == coord or not tile_is_portal(state, c2):
+        if c2 == coord or not tile_is_portal(state, c2, pid):
             continue
         if t2.controller in (None, pid) or hostile_ok:
             out.append(c2)
@@ -272,6 +273,9 @@ def apply_move(state, pid, choice) -> None:
         p.used_portal_travel = True
         if choice.get("rift_anchor_free"):
             mark_round_used(state, pid, "rift_anchor_portal")
+        apply_planar_echo(state, pid, used_portal=True)
     # Tiles.md control method 3: neutral hex claimed immediately.
-    if dst.controller is None:
+    claimed_neutral = dst.controller is None
+    if claimed_neutral:
         dst.controller = pid
+        apply_sandsworn_pact(state, pid, claimed_neutral=True)

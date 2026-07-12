@@ -162,15 +162,25 @@ def apply_diplomatic_tariffs(state: GameState, trader_pid: int) -> None:
         mark_round_used(state, pid, "diplomatic_tariffs")
 
 
+def _hex_produces_mana(tile) -> bool:
+    """Align with production.py mana producers (Forest / Grove / unique mana)."""
+    if tile.has(BuildingType.GROVE):
+        return True
+    if tile.unique_tile_id:
+        from .tiles import unique_spec_by_id
+        spec = unique_spec_by_id(tile.unique_tile_id)
+        return bool(spec and spec.mana > 0)
+    return tile.terrain == Terrain.FOREST
+
+
 def mana_nexus_bonus(state: GameState, pid: int) -> int:
     p = state.player(pid)
     if "mana_nexus" not in p.discoveries:
         return 0
-    bonus = 0
-    for t in state.controlled(pid):
-        if t.terrain == Terrain.FOREST or t.has(BuildingType.GROVE):
-            bonus += 1
-    return bonus
+    return sum(
+        1 for t in state.controlled(pid)
+        if not t.cursed and _hex_produces_mana(t)
+    )
 
 
 def apply_spellweave_doctrine(state: GameState, pid: int, lobby_spent: int) -> bool:
@@ -213,7 +223,8 @@ def thornwatch_bonus(state: GameState, battle, defender_unit) -> int:
     if "thornwatch" not in p.discoveries:
         return 0
     tile = state.tiles[battle.target]
-    if tile.terrain != Terrain.FOREST:
+    # Forest terrain or Grove building hex (design §5.1).
+    if tile.terrain != Terrain.FOREST and not tile.has(BuildingType.GROVE):
         return 0
     if defender_unit.type != UnitType.ARCHER:
         return 0
@@ -223,10 +234,12 @@ def thornwatch_bonus(state: GameState, battle, defender_unit) -> int:
 
 
 def apply_seedbound_resilience(state: GameState, pid: int, battle) -> bool:
+    """Once/round after battle in a hex controlled by the discovery owner."""
     p = state.player(pid)
     if "seedbound_resilience" not in p.discoveries:
         return False
-    if battle.defender != pid:
+    tile = state.tiles[battle.target]
+    if tile.controller != pid:
         return False
     if not round_unused(state, pid, "seedbound_resilience"):
         return False

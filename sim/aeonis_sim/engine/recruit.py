@@ -43,7 +43,7 @@ def _recruit_sites(state, pid):
     for tile in state.controlled(pid):
         if tile.terrain == Terrain.CITY:
             sites.append(tile)
-        elif is_lord(state, pid, "thalrik") and tile_is_portal(state, tile.coord):
+        elif is_lord(state, pid, "thalrik") and tile_is_portal(state, tile.coord, pid):
             sites.append(tile)
     return sites
 
@@ -70,7 +70,7 @@ def enumerate_recruits(state, pid, *, ignore_city_limit: bool = False) -> list:
                     "city": list(tile.coord),
                     "units": sorted(u.value for u in combo),
                 }
-                if tile_is_portal(state, tile.coord):
+                if tile_is_portal(state, tile.coord, pid):
                     choice["portal"] = True
                 out.append(choice)
     return out

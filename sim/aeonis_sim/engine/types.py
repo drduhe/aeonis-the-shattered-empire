@@ -159,6 +159,7 @@ class Tile:
     cursed: bool = False
     building_relic: Optional[str] = None  # artifact id attached to a building here
     unique_tile_id: str = ""  # M4 launch-Lord starting tile id
+    void_anchor_until_round: int = 0  # Thal'rik Void Anchor: owner-only portal this round
 
     def has(self, b: BuildingType) -> bool:
         return b in self.buildings
@@ -191,6 +192,8 @@ class Tile:
         }
         if self.unique_tile_id:
             out["unique_tile_id"] = self.unique_tile_id
+        if self.void_anchor_until_round:
+            out["void_anchor_until_round"] = self.void_anchor_until_round
         return out
 
     @staticmethod
@@ -212,6 +215,7 @@ class Tile:
             cursed=bool(d.get("cursed", False)),
             building_relic=d.get("building_relic"),
             unique_tile_id=str(d.get("unique_tile_id") or ""),
+            void_anchor_until_round=int(d.get("void_anchor_until_round") or 0),
         )
 
 
@@ -259,6 +263,8 @@ class PlayerState:
     whisper_flags: dict = field(default_factory=dict)
     pending_whisper_draws: int = 0
     shadow_sight_tokens: int = 0  # AL-51: Nyxara Shadow Sight information tokens
+    sacred_rite_5: bool = False
+    sacred_rite_10: bool = False
 
     def add_vp(self, n: int, source: str) -> None:
         self.vp += n
@@ -303,6 +309,10 @@ class PlayerState:
         }
         if self.shadow_sight_tokens:
             out["shadow_sight_tokens"] = self.shadow_sight_tokens
+        if self.sacred_rite_5:
+            out["sacred_rite_5"] = self.sacred_rite_5
+        if self.sacred_rite_10:
+            out["sacred_rite_10"] = self.sacred_rite_10
         # Keep pre-M4 records byte-stable when the opt-in layer is disabled.
         if self.lord_id:
             out["lord_id"] = self.lord_id
@@ -369,6 +379,8 @@ class PlayerState:
         p.whisper_flags = dict(d.get("whisper_flags", {}))
         p.pending_whisper_draws = int(d.get("pending_whisper_draws", 0))
         p.shadow_sight_tokens = int(d.get("shadow_sight_tokens", 0))
+        p.sacred_rite_5 = bool(d.get("sacred_rite_5", False))
+        p.sacred_rite_10 = bool(d.get("sacred_rite_10", False))
         return p
 
 
@@ -553,6 +565,7 @@ class GameState:
                 cursed=tile.cursed,
                 building_relic=tile.building_relic,
                 unique_tile_id=tile.unique_tile_id,
+                void_anchor_until_round=tile.void_anchor_until_round,
             )
             for coord, tile in self.tiles.items()
         }
@@ -600,6 +613,8 @@ class GameState:
                 whisper_flags=dict(p.whisper_flags),
                 pending_whisper_draws=p.pending_whisper_draws,
                 shadow_sight_tokens=p.shadow_sight_tokens,
+                sacred_rite_5=p.sacred_rite_5,
+                sacred_rite_10=p.sacred_rite_10,
             )
             for p in self.players
         ]

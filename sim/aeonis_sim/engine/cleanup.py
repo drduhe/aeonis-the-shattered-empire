@@ -7,6 +7,7 @@ from .objectives import PUBLIC_OBJECTIVES, public_objective_vp, score_cleanup_se
 from .whispers import expire_whisper_flags, hand_over_limit
 from .types import BuildingType, Terrain, Unit, UNIT_STATS, UnitType
 from .lords import controls_unique
+from .lords.discoveries import bump_renown, clear_void_anchors
 
 
 def _influence_range(state, pid):
@@ -115,7 +116,7 @@ def _score_objectives(state, pid: int) -> None:
     score_cleanup_secrets(state, pid)
 
 
-def run_cleanup(state) -> None:
+def run_cleanup(state, rng=None) -> None:
     for p in state.players:
         apply_boundary_stones(state, p.pid)
     expire_whisper_flags(state)
@@ -127,7 +128,7 @@ def run_cleanup(state) -> None:
         _score_objectives(state, p.pid)
         score_artifact_vp(state, p.pid)
         if controls_unique(state, p.pid, "hallowed_grove"):
-            p.renown += 1
+            bump_renown(state, p.pid, 1, rng)
 
     if any(p.vp >= state.vp_threshold for p in state.players):
         state.final_round = True
@@ -138,6 +139,7 @@ def run_cleanup(state) -> None:
         p.public_scored_this_round = False
         p.arcane_round = {}
     state.desert_tempest = None
+    clear_void_anchors(state)
     n = len(state.players)
     state.speaker = (state.speaker + 1) % n
     state.agenda_revealed = None

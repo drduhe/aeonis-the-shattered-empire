@@ -136,9 +136,15 @@ def place_unique_tiles(state) -> None:
         tile.controller = p.pid
 
 
-def tile_is_portal(state, coord) -> bool:
+def tile_is_portal(state, coord, pid: int | None = None) -> bool:
     t = state.tiles[coord]
     if t.terrain == Terrain.PORTAL:
         return True
     spec = unique_spec_by_id(t.unique_tile_id)
-    return spec is not None and spec.portal
+    if spec is not None and spec.portal:
+        return True
+    if pid is not None:
+        from .discoveries import void_anchor_is_portal
+        if void_anchor_is_portal(state, coord, pid):
+            return True
+    return False

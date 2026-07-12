@@ -362,7 +362,7 @@ def apply_combat_whisper(
         mods.tactical_withdrawal = True
 
 
-def apply_when_whisper(state: GameState, pid: int, choice: dict) -> None:
+def apply_when_whisper(state: GameState, pid: int, choice: dict, rng=None) -> None:
     cid = choice["card"]
     p = state.player(pid)
     discard_whisper(state, pid, cid)
@@ -396,6 +396,9 @@ def apply_when_whisper(state: GameState, pid: int, choice: dict) -> None:
         p.whisper_flags["hostile_portal_ok"] = True
     elif cid == "relic_hunter":
         p.remnants += 1
+    if rng is not None:
+        from .lords.discoveries import apply_stolen_secrets
+        apply_stolen_secrets(state, pid, rng)
 
 
 def apply_council_whisper(state: GameState, pid: int, choice: dict) -> dict:
@@ -565,6 +568,7 @@ def auto_apply_sabotage(
 def auto_apply_when_whispers(state: GameState, trigger: str, **ctx) -> None:
     """Auto-play obvious WHEN whispers (sim heuristic, AL-40)."""
     skip = ctx.get("skip")
+    rng = ctx.get("rng")
     for pid, p in enumerate(state.players):
         if skip is not None and pid == skip:
             continue
@@ -587,7 +591,7 @@ def auto_apply_when_whispers(state: GameState, trigger: str, **ctx) -> None:
             if pick is None:
                 continue
             choice["uid"] = pick
-        apply_when_whisper(state, pid, choice)
+        apply_when_whisper(state, pid, choice, rng=rng)
 
 
 def expire_whisper_flags(state: GameState) -> None:

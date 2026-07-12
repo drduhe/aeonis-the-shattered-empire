@@ -128,6 +128,16 @@ from .lords import (
     scry_top_agenda,
     whisper_hand_limit,
 )
+from .lords.discoveries import (
+    apply_diplomatic_tariffs,
+    apply_guild_contracts_trade_influence,
+    apply_shadow_network,
+    apply_spellweave_doctrine,
+    apply_void_anchor,
+    bump_renown,
+    enumerate_shadow_network,
+    enumerate_void_anchor,
+)
 
 MAX_ACTIONS_PER_PLAYER_ROUND = 100
 
@@ -508,6 +518,7 @@ class Game:
             "artifact_claim",
             claimer=pid,
             skip=pid,
+            rng=self.rng,
         )
         if pending == "discard_lord":
             self._artifact_followup = {"kind": "discard_lord", "pid": pid}
@@ -761,7 +772,7 @@ class Game:
         )
         for p in self.state.players:
             try_immediate_secrets(self.state, p.pid)
-        run_cleanup(self.state)
+        run_cleanup(self.state, self.rng)
         check_invariants(self.state)
         self._whisper_discard_queue = [
             p.pid for p in self.state.players if hand_over_limit(self.state, p.pid)
@@ -805,6 +816,8 @@ class Game:
         out.extend(enumerate_research(s, pid))
         out.extend(enumerate_action_whispers(s, pid))
         out.extend(enumerate_desert_tempest(s, pid))
+        out.extend(enumerate_shadow_network(s, pid))
+        out.extend(enumerate_void_anchor(s, pid))
         if is_lord(s, pid, "auriel") and round_unused(s, pid, "exaltation"):
             if s.player(pid).influence >= 3:
                 out.append({"type": "exaltation"})
@@ -1268,6 +1281,7 @@ class Game:
             if lobby:
                 s.player(dp.pid).influence -= lobby
                 self.council_stats["influence_spent"] += lobby
+                apply_spellweave_doctrine(s, dp.pid, lobby)
             self._council_ballots.append({
                 "pid": dp.pid,
                 "support": bool(choice.get("support")),
@@ -1311,8 +1325,11 @@ class Game:
                                 ballot.get("support")
                                 and is_lord(s, ballot["pid"], "auriel")
                             ):
-                                s.player(ballot["pid"]).renown += (
-                                    2 if ballot.get("sanctify") else 1
+                                bump_renown(
+                                    s,
+                                    ballot["pid"],
+                                    2 if ballot.get("sanctify") else 1,
+                                    self.rng,
                                 )
                         self.council_stats["motions_passed"] += 1
                     else:
@@ -1395,6 +1412,7 @@ class Game:
                     "before_move",
                     uid=choice.get("uid"),
                     skip=dp.pid,
+                    rng=self.rng,
                 )
                 apply_move(s, dp.pid, choice)
                 if not self._after_unit_entry(dp.pid, tuple(choice["dest"])):
@@ -1405,7 +1423,7 @@ class Game:
                 apply_recruit(s, dp.pid, choice)
                 city = choice.get("city")
                 auto_apply_when_whispers(
-                    s, "recruit_done", city=city, recruiter=dp.pid,
+                    s, "recruit_done", city=city, recruiter=dp.pid, rng=self.rng,
                 )
                 self._finish_action_turn(dp.pid)
             elif t == "build":
@@ -1427,12 +1445,16 @@ class Game:
                 if zero_ap_trade:
                     if self._has_active_market(dp.pid):
                         self.building_stats["market_trades"] += 1  # 0 AP (AL-27)
+                        apply_guild_contracts_trade_influence(
+                            s, dp.pid, zero_ap_market=True,
+                        )
                     elif cassian_free:
                         mark_round_used(s, dp.pid, "ledger_trade")
                     self._grant_bazaar_trade_gold(s)
                 else:
                     s.player(dp.pid).ap -= 1
                 self._trade_used[dp.pid] = True
+                apply_diplomatic_tariffs(s, dp.pid)
                 self._trade_initiator = dp.pid
                 self._trade_consumes_turn = not cassian_free
                 self._negotiation_session = start_session(
@@ -1451,6 +1473,7 @@ class Game:
                     "enemy_attack",
                     attacker=dp.pid,
                     target=tuple(choice["target"]),
+                    rng=self.rng,
                 )
                 self._battle = combat.start_battle(s, dp.pid, choice)
                 self._start_lord_combat_round()
@@ -1459,7 +1482,13 @@ class Game:
                 apply_desert_tempest(s, dp.pid, tuple(choice["coord"]))
                 self._finish_action_turn(dp.pid)
             elif t == "exaltation":
-                apply_exaltation(s, dp.pid)
+                apply_exaltation(s, dp.pid, self.rng)
+                self._finish_action_turn(dp.pid)
+            elif t == "shadow_network":
+                apply_shadow_network(s, dp.pid, choice)
+                self._finish_action_turn(dp.pid)
+            elif t == "void_anchor":
+                apply_void_anchor(s, dp.pid, tuple(choice["hex"]))
                 self._finish_action_turn(dp.pid)
             elif t == "cleanse":
                 apply_cleanse(s, dp.pid, tuple(choice["hex"]))
