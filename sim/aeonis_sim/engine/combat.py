@@ -43,6 +43,7 @@ from .lords import (
 from .lords.discoveries import (
     apply_seedbound_resilience,
     apply_siege_logistics,
+    bump_renown,
     luminous_bulwark_bonus,
     mirage_riders_attack_bonus,
     reinforced_fortifications_bonus,
@@ -230,7 +231,7 @@ def record_battle_outcome(stats: dict, battle: Battle) -> None:
         strat[f"{bucket}_def_wins"] += 1
 
 
-def start_battle(state, pid, choice) -> Battle:
+def start_battle(state, pid, choice, rng=None) -> Battle:
     target = tuple(choice["target"])
     t = state.tiles[target]
     defender = _defender_of(state, target)
@@ -255,7 +256,7 @@ def start_battle(state, pid, choice) -> Battle:
     else:
         _full_commit(state, b)
     snapshot_initiation(b)
-    searing_salvo_damage(state, pid, b)
+    searing_salvo_damage(state, pid, b, rng=rng)
     return b
 
 
@@ -320,7 +321,7 @@ def _defense_bonus(state, battle, side) -> int:
     return bonus
 
 
-def _kill(state, battle, unit) -> None:
+def _kill(state, battle, unit, rng=None) -> None:
     for lst in (battle.att_line, battle.def_line):
         if unit in lst:
             lst.remove(unit)
@@ -336,7 +337,7 @@ def _kill(state, battle, unit) -> None:
         captor_pid = battle.attacker if unit.owner == battle.defender else battle.defender
         captor = state.player(captor_pid)
         captor.add_vp(1, "lord_capture")     # Combat.md 2.1.4
-        captor.renown += 2
+        bump_renown(state, captor_pid, 2, rng)
         pending = transfer_lord_equipment(state, unit.owner, captor_pid)
         # Caller (finish_battle path) cannot queue DPs here; captor trims via
         # enumerate_discard_lord on next action if over carry limit.
@@ -415,7 +416,7 @@ def _strike(
                 if combat_iron_resolve(mods, target):
                     target.hp = 1
                 else:
-                    _kill(state, battle, target)
+                    _kill(state, battle, target, rng)
 
 
 def prepare_battle_round(state, battle, *, declare_targets: bool = False) -> None:

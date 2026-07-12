@@ -321,7 +321,7 @@ class Game:
         card = draw_event(self.state, self.rng)
         if not card:
             return
-        resolve_event(self.state, card)
+        resolve_event(self.state, card, self.rng)
         self.event_stats["resolved"] += 1
         by = self.event_stats["by_card"]
         by[card] = by.get(card, 0) + 1
@@ -1319,7 +1319,7 @@ class Game:
                         veto_flag=veto,
                     )
                     if not veto[0]:
-                        apply_motion(s, motion["motion"], motion["proposer"])
+                        apply_motion(s, motion["motion"], motion["proposer"], self.rng)
                         for ballot in self._council_ballots:
                             if (
                                 ballot.get("support")
@@ -1475,7 +1475,7 @@ class Game:
                     target=tuple(choice["target"]),
                     rng=self.rng,
                 )
-                self._battle = combat.start_battle(s, dp.pid, choice)
+                self._battle = combat.start_battle(s, dp.pid, choice, rng=self.rng)
                 self._start_lord_combat_round()
                 self._finish_action_turn(dp.pid)
             elif t == "desert_tempest":
@@ -1615,7 +1615,7 @@ class Game:
                     else:
                         self._start_secondary_window(pid, card)
             elif t == "attack":
-                self._battle = combat.start_battle(s, dp.pid, choice)
+                self._battle = combat.start_battle(s, dp.pid, choice, rng=self.rng)
                 self._start_lord_combat_round()
                 self._deferred_followup = {
                     "kind": "strategy_secondary",

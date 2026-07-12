@@ -170,7 +170,7 @@ def _claim_influence_hex(state: "GameState", proposer: int) -> None:
     record_influence_hex_gain(state, proposer, coord)
 
 
-def apply_motion(state: GameState, motion_id: str, proposer: int) -> None:
+def apply_motion(state: GameState, motion_id: str, proposer: int, rng=None) -> None:
     p = state.player(proposer)
     if motion_id == "road_networks":
         if motion_id not in state.active_laws:
@@ -186,7 +186,8 @@ def apply_motion(state: GameState, motion_id: str, proposer: int) -> None:
         p.influence += 2
         _claim_influence_hex(state, proposer)
     elif motion_id == "hero_of_the_realm":
-        p.renown += 1
+        from .lords.discoveries import bump_renown
+        bump_renown(state, proposer, 1, rng)
         p.influence += 1
     elif motion_id == "magister_of_mana":
         p.mana += 2
@@ -208,7 +209,7 @@ def run_emergency_council(state: GameState, proposer: int, rng: random.Random) -
         support = pid == proposer or rng.random() < 0.35
         ballots.append({"pid": pid, "support": support, "lobby": 0})
     if tally_votes(state, motion, ballots):
-        apply_motion(state, motion, proposer)
+        apply_motion(state, motion, proposer, rng)
         return True
     return False
 

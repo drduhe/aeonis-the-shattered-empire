@@ -120,20 +120,11 @@ def apply_faction_research(
 
 
 def guild_contracts_market_discount(state: GameState, pid: int, btype: BuildingType, gold: int) -> int:
-    p = state.player(pid)
-    if (
-        "guild_contracts" in p.discoveries
-        and btype == BuildingType.MARKET
-        and not p.arcane_round.get("guild_contracts_market")
-    ):
-        return max(0, gold - 1)
-    return gold
-
-
-def mark_guild_contracts_market_used(state: GameState, pid: int, btype: BuildingType) -> None:
+    """Market −1 Gold while owned (always-on; not once/round)."""
     p = state.player(pid)
     if "guild_contracts" in p.discoveries and btype == BuildingType.MARKET:
-        p.arcane_round["guild_contracts_market"] = True
+        return max(0, gold - 1)
+    return gold
 
 
 def apply_guild_contracts_trade_influence(state: GameState, pid: int, *, zero_ap_market: bool) -> bool:

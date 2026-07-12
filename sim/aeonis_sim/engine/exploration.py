@@ -83,11 +83,13 @@ def _lose_one_unit(state: GameState, pid: int, coord) -> bool:
 
 
 def resolve_auto(state: GameState, pid: int, coord, card_id: str, rng: random.Random) -> None:
+    from .lords.discoveries import bump_renown
+
     p = state.player(pid)
     tile = state.tiles[coord]
     if card_id == "speaking_stone_echo":
         p.influence += 1
-        p.renown += 1
+        bump_renown(state, pid, 1, rng)
     elif card_id == "lost_cartographer":
         # AL-28: no fog in sim — +1 AP this round only.
         p.ap += 1
@@ -134,11 +136,13 @@ def apply_exploration_choice(
     choice: str,
     rng: random.Random,
 ) -> str | None:
+    from .lords.discoveries import bump_renown
+
     p = state.player(pid)
     tile = state.tiles[coord]
     if card_id == "ancient_ruins":
         if choice == "leave":
-            p.renown += 1
+            bump_renown(state, pid, 1, rng)
             return None
         roll = rng.randint(1, 6)
         if roll >= 4:

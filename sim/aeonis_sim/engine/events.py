@@ -105,9 +105,11 @@ def _resolve_mana_surge(state: GameState) -> None:
         p.mana += 2
 
 
-def _resolve_border_skirmishes(state: GameState) -> None:
+def _resolve_border_skirmishes(state: GameState, rng=None) -> None:
+    from .lords.discoveries import bump_renown
+
     for pid in _players_with_most(state, _hex_count):
-        state.player(pid).renown += 1
+        bump_renown(state, pid, 1, rng)
 
 
 def _resolve_supply_disruption(state: GameState) -> None:
@@ -151,7 +153,7 @@ def _resolve_echo_of_the_old_empire(state: GameState) -> None:
         p.remnants += 1
 
 
-_EVENT_HANDLERS: dict[str, Callable[[GameState], None]] = {
+_EVENT_HANDLERS: dict[str, Callable] = {
     "harsh_winter": _resolve_harsh_winter,
     "festival": _resolve_festival,
     "migration_wave": _resolve_migration_wave,
@@ -167,9 +169,12 @@ _EVENT_HANDLERS: dict[str, Callable[[GameState], None]] = {
 }
 
 
-def resolve_event(state: GameState, card_id: str) -> None:
+def resolve_event(state: GameState, card_id: str, rng=None) -> None:
     handler = _EVENT_HANDLERS.get(card_id)
     if handler is None:
         raise ValueError(f"unknown event: {card_id}")
-    handler(state)
+    if card_id == "border_skirmishes":
+        handler(state, rng)
+    else:
+        handler(state)
     state.event_discard.append(card_id)

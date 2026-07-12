@@ -19,7 +19,6 @@ from .lords.discoveries import (
     apply_faction_research,
     can_afford_faction_research,
     guild_contracts_market_discount,
-    mark_guild_contracts_market_used,
 )
 
 TIER_I_AP = 1
@@ -270,7 +269,6 @@ def mark_build_discount_used(state: GameState, pid: int, btype: BuildingType, ba
         and build_gold_cost(state, pid, btype, base) < base
     ):
         p.arcane_round["stonewright"] = True
-    mark_guild_contracts_market_used(state, pid, btype)
 
 
 def waystones_move_discount(state: GameState, pid: int, cost: int) -> int:
@@ -334,7 +332,7 @@ def apply_boundary_stones(state: GameState, pid: int) -> bool:
 
 # --- Combat ritual heuristics (AL-36: auto-resolve in sim) ---
 
-def searing_salvo_damage(state: GameState, attacker: int, battle) -> None:
+def searing_salvo_damage(state: GameState, attacker: int, battle, rng=None) -> None:
     p = state.player(attacker)
     if "searing_salvo" not in p.discoveries or p.arcane_round.get("searing_salvo"):
         return
@@ -351,7 +349,7 @@ def searing_salvo_damage(state: GameState, attacker: int, battle) -> None:
     target.hp -= 1
     if target.hp <= 0:
         from . import combat
-        combat._kill(state, battle, target)
+        combat._kill(state, battle, target, rng)
 
 
 def battle_runes_attack_bonus(state: GameState, pid: int, battle) -> int:

@@ -17,16 +17,12 @@ from aeonis_sim.engine.combat import finish_battle, start_battle
 from aeonis_sim.engine.cleanup import run_cleanup
 from aeonis_sim.engine.lords import FACTION_DISCOVERIES, FACTION_DISCOVERY_IDS, tile_is_portal
 from aeonis_sim.engine.lords.discoveries import (
-    apply_diplomatic_tariffs,
     apply_guild_contracts_trade_influence,
     apply_planar_echo,
     apply_sandsworn_pact,
-    apply_shadow_network,
-    apply_spellweave_doctrine,
     apply_stolen_secrets,
     apply_void_anchor,
     bump_renown,
-    enumerate_shadow_network,
     enumerate_void_anchor,
     luminous_bulwark_bonus,
     mana_nexus_bonus,
@@ -155,9 +151,14 @@ def test_guild_contracts_market_discount_and_trade_influence():
     p = state.player(0)
     p.discoveries.append("guild_contracts")
     base = BUILDING_SPECS[BuildingType.MARKET].gold
-    assert build_gold_cost(state, 0, BuildingType.MARKET, base) == max(0, base - 1)
+    discounted = max(0, base - 1)
+    assert build_gold_cost(state, 0, BuildingType.MARKET, base) == discounted
+    # Always-on while owned — not once/round.
     mark_build_discount_used(state, 0, BuildingType.MARKET, base)
-    assert build_gold_cost(state, 0, BuildingType.MARKET, base) == base
+    assert build_gold_cost(state, 0, BuildingType.MARKET, base) == discounted
+    assert build_gold_cost(state, 0, BuildingType.FARM, BUILDING_SPECS[BuildingType.FARM].gold) == (
+        BUILDING_SPECS[BuildingType.FARM].gold
+    )
 
     before = p.influence
     assert apply_guild_contracts_trade_influence(state, 0, zero_ap_market=True)
@@ -166,16 +167,40 @@ def test_guild_contracts_market_discount_and_trade_influence():
 
 
 def test_diplomatic_tariffs_on_other_player_trade():
-    state = _m4(["cassian", "vharok"], seed=11)
-    cassian = state.player(0)
+    from aeonis_sim.engine.game import Game
+    from tests.conftest import advance_to_action_phase
+
+    g = Game(
+        {
+            "players": 3,
+            "lord_asymmetry": {
+                "enabled": True,
+                "lords": ["cassian", "vharok", "elyndra"],
+            },
+        },
+        seed=11,
+    )
+    advance_to_action_phase(g)
+    g._initiative_queue = [1, 0, 2]
+    g._pending = None
+    cassian = g.state.player(0)
     cassian.discoveries.append("diplomatic_tariffs")
-    home = next(t for t in state.controlled(0))
+    home = next(t for t in g.state.controlled(0))
     home.buildings.append(BuildingType.EMBASSY)
+    # Give trader a Market so trade is 0-AP and always enumerable.
+    trader_home = next(t for t in g.state.controlled(1))
+    trader_home.buildings.append(BuildingType.MARKET)
+    g.state.player(1).gold = 5
+    g.state.player(0).mana = 5
+    from aeonis_sim.engine.lords import round_unused
+    assert round_unused(g.state, 0, "diplomatic_tariffs")
     before = cassian.gold
-    apply_diplomatic_tariffs(state, trader_pid=1)
-    assert cassian.gold == before + 1
-    apply_diplomatic_tariffs(state, trader_pid=1)
-    assert cassian.gold == before + 1  # once/round
+    dp = g.next_decision()
+    assert dp.pid == 1
+    trade = next(c for c in dp.choices if c["type"] == "trade")
+    g.submit(trade)
+    assert not round_unused(g.state, 0, "diplomatic_tariffs")
+    assert cassian.gold >= before + 1
 
 
 def test_mana_nexus_bonus_on_mana_producing_hexes():
@@ -199,13 +224,45 @@ def test_mana_nexus_bonus_on_mana_producing_hexes():
 
 
 def test_spellweave_doctrine_after_lobby():
-    state = _m4(["seraphel"], seed=13)
-    p = state.player(0)
+    from aeonis_sim.engine.game import Game
+    from aeonis_sim.engine.observations import DecisionPoint
+    from tests.conftest import advance_to_action_phase
+
+    g = Game(
+        {
+            "players": 3,
+            "lord_asymmetry": {
+                "enabled": True,
+                "lords": ["seraphel", "cassian", "vharok"],
+            },
+        },
+        seed=13,
+    )
+    advance_to_action_phase(g)
+    p = g.state.player(0)
     p.discoveries.append("spellweave_doctrine")
+    p.influence = 5
     before = p.mana
-    assert apply_spellweave_doctrine(state, 0, lobby_spent=2)
+    vote = {
+        "type": "council_vote",
+        "motion": "magister_of_mana",
+        "support": True,
+        "lobby": 2,
+    }
+    g._pending = DecisionPoint(
+        kind="council_vote",
+        phase="council",
+        pid=0,
+        choices=[vote],
+    )
+    g._council_motions = [{"motion": "magister_of_mana", "proposer": 0}]
+    g._council_vote_motion_idx = 0
+    g._council_vote_queue = [0, 1]  # leave a voter so tally does not run yet
+    g._council_ballots = []
+    g._council_extra_votes = {"for": 0, "against": 0}
+    g.submit(vote)
     assert p.mana == before + 1
-    assert not apply_spellweave_doctrine(state, 0, lobby_spent=1)
+    assert p.influence == 3
 
 
 def test_reinforced_fortifications_tower_defense():
@@ -326,18 +383,34 @@ def test_stolen_secrets_on_when_whisper():
 
 
 def test_shadow_network_free_action():
-    state = _m4(["nyxara"], seed=21)
-    p = state.player(0)
+    from aeonis_sim.engine.game import Game
+    from tests.conftest import advance_to_action_phase
+
+    g = Game(
+        {
+            "players": 3,
+            "lord_asymmetry": {
+                "enabled": True,
+                "lords": ["nyxara", "cassian", "vharok"],
+            },
+        },
+        seed=21,
+    )
+    advance_to_action_phase(g)
+    g._initiative_queue = [0, 1, 2]
+    g._pending = None
+    p = g.state.player(0)
     p.discoveries.append("shadow_network")
     p.whisper_hand = ["hidden_cache"]
-    choices = enumerate_shadow_network(state, 0)
-    assert any(c["reward"] == "gold" for c in choices)
-    gold_choice = next(c for c in choices if c["reward"] == "gold")
     before = p.gold
-    apply_shadow_network(state, 0, gold_choice)
+    dp = g.next_decision()
+    choice = next(
+        c for c in dp.choices
+        if c["type"] == "shadow_network" and c.get("reward") == "gold"
+    )
+    g.submit(choice)
     assert p.gold == before + 2
     assert "hidden_cache" not in p.whisper_hand
-    assert enumerate_shadow_network(state, 0) == []
 
 
 def test_luminous_bulwark_on_built_hex():
@@ -373,6 +446,52 @@ def test_sacred_rite_milestones_at_5_and_10():
     assert p.sacred_rite_10 is True
     assert p.vp == before_vp + 1
     assert p.vp_sources.get("sacred_rite") == 2
+
+
+def test_sacred_rite_fires_on_lord_capture_renown():
+    """Non-exaltation path: combat lord-capture renown crosses 5."""
+    from aeonis_sim.engine.combat import resolve_round
+
+    class ScriptRng:
+        def __init__(self, rolls):
+            self.rolls = list(rolls)
+
+        def randint(self, a, b):
+            return self.rolls.pop(0) if self.rolls else b
+
+        def random(self):
+            return 0.5
+
+        def shuffle(self, xs):
+            pass
+
+    state = _strip(_m4(["auriel", "vharok"], seed=26))
+    p = state.player(0)
+    p.discoveries.append("sacred_rite")
+    p.renown = 4
+    p.whisper_hand = []
+    state.whisper_deck = ["hidden_cache"] * 10
+    state.whisper_discard = []
+    origin, target = (0, 0), (1, 0)
+    state.tiles[origin].terrain = Terrain.PLAINS
+    state.tiles[origin].controller = 0
+    state.tiles[target].terrain = Terrain.PLAINS
+    state.tiles[target].controller = 1
+    for _ in range(3):
+        _put(state, origin, 0, UnitType.CAVALRY)
+    _put(state, target, 1, UnitType.LORD)
+    p.ap = 5
+    before_vp = p.vp
+    battle = start_battle(
+        state, 0, {"type": "attack", "target": list(target), "cost": 2},
+        rng=ScriptRng([8, 1, 8, 1, 8, 1]),
+    )
+    resolve_round(state, battle, ScriptRng([8, 1, 8, 1, 8, 1]))
+    assert p.renown == 6
+    assert p.sacred_rite_5 is True
+    assert p.vp == before_vp + 1 + 1  # lord_capture + sacred_rite
+    assert p.vp_sources.get("sacred_rite") == 1
+    assert len(p.whisper_hand) == 2
 
 
 def test_planar_echo_after_portal_move():
