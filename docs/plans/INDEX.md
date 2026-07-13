@@ -25,7 +25,7 @@
 - **Economist viability / objective tempo** — Lever B **decided 2026-07-03**: **Merchant Lord** (public, 8+ Gold) landed PROPOSED in the First Playable row. **E1/E2/E3/E5 killed 2026-07-03**. **Post-M4 (2026-07-12):** economist **6.5% / 5.2%** at mixed 6p/8p (H8 pass) with full Lord asymmetry — see [rebaseline](../reports/2026-07-12-m4-rebaseline.md). **Lever A pacing decided 2026-07-12:** design for **6–8 mean rounds** (accept current ~6.8 pace; do not stretch toward the old 8–10 aspirational band). Registered in `rules_and_systems/INDEX.md`.
 - **Attacker win rate** — contested ~58% at M4-on mixed 4p (inside Plan 1 band); 6–8p still hot (~68–71%).
 - **Council pass rate** — ~29% after motion-aware voting; acceptable band TBD (40–60% suggested).
-- **M4 default-on** — deferred: [Lord×persona sweep](../reports/2026-07-12-m4-lord-persona-sweep.md) shows Rakhis sheet spike (solo 51%) plus Vharok/Elyndra floors; pacing no longer blocks.
+- **M4 default-on** — deferred: Rakhis ladder stopped at **Dial 3** (no Sandstride ZOC ignore; solo ~43% / mixed 4p ~27.5%); Dial 3b reverted — see [Dial 3](../reports/2026-07-12-rakhis-ladder-dial3.md) / [3b](../reports/2026-07-12-rakhis-ladder-dial3b.md).
 
 ## Sim track
 

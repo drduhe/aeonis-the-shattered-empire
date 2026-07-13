@@ -81,7 +81,20 @@ def test_elyndra_deep_roots_is_one_ap_and_once_per_round():
     assert not any(m.get("root_network") for m in enumerate_moves(state, 3))
 
 
-def test_rakhis_ignores_zoc_and_desert_cost():
+def test_rakhis_desert_costs_one_without_zoc():
+    """Sandstride Dial 3 keeps Desert = 1 AP; ZOC is normal."""
+    state = strip_map(m4_state(5))
+    origin, dest = (0, 0), (1, 0)
+    state.tiles[origin].terrain = Terrain.PLAINS
+    state.tiles[dest].terrain = Terrain.DESERT
+    put(state, origin, 4, UnitType.INFANTRY)
+    state.player(4).ap = 5
+    move = next(m for m in enumerate_moves(state, 4) if tuple(m["dest"]) == dest)
+    assert move["cost"] == 1
+
+
+def test_rakhis_pays_normal_zoc_surcharge():
+    """Dial 3 (2026-07-12): Sandstride no longer ignores enemy ZOC surcharges."""
     state = strip_map(m4_state(5))
     origin, dest, enemy = (0, 0), (1, 0), (2, -1)
     state.tiles[origin].terrain = Terrain.PLAINS
@@ -91,7 +104,8 @@ def test_rakhis_ignores_zoc_and_desert_cost():
     put(state, enemy, 0, UnitType.INFANTRY)
     state.player(4).ap = 5
     move = next(m for m in enumerate_moves(state, 4) if tuple(m["dest"]) == dest)
-    assert move["cost"] == 1
+    # Desert 1 + infantry ZOC surcharge 1
+    assert move["cost"] == 2
 
 
 def test_thalrik_can_use_enemy_controlled_portal():

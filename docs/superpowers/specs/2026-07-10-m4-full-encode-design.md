@@ -77,7 +77,7 @@ At setup, after map generation and home assignment, for each player with a `lord
 | Seraphel | Arcane Nexus | Forest | +2 Mana | Tower yes; Grove no | Owner: once/round −1 Mana on one Research (min 0) |
 | Vharok | Ironworks Ridge | Mountain | +2 Gold | Fortress allowed; Mine −1 Gold cost | Owner: once/round Fortress build −1 Gold (min 0) |
 | Elyndra | Sacred Grove | Forest | +1 Mana, +1 Population | Tower yes; Grove no | Owner: end of Production & Upkeep +1 Population Pool (up to cap) |
-| Rakhis | Oasis Wellspring | Plains | +1 Population, +1 Gold | Farm yes; Tower no | Owner: once/round Recruit 1 Cavalry at −1 Gold (min 0) |
+| Rakhis | Oasis Wellspring | Plains | +1 Population, +1 Gold | Farm yes; Tower no | *(none — Cavalry −1 Gold recruit removed 2026-07-12 Dial 1)* |
 | Nyxara | Obsidian Spire | Mountain | +1 Gold, +1 Mana | Mine yes; Tower no | Owner: Round Start +1 Whisper draw |
 | Auriel | Hallowed Grove | Forest | +1 Mana, +1 Influence | Grove yes; Tower no | Owner: Cleanup & Checks +1 Renown while controlled |
 | Thal’rik | Rift Anchor | Forest + Portal | +1 Mana | Tower yes; Grove no | Owner: once/round Portal travel from this tile enter+exit AP = 0 |
@@ -108,7 +108,7 @@ Foundation already encodes the Plan 5 signatures listed in the foundation report
 | Seraphel | Scry the Council; Blink Step; Polymath virtual sigils | Peek top agenda; Move Mountains/Deserts as 1 AP for 2 Mana; virtual sigils → AL-50 |
 | Vharok | Forged in Battle; Lock the Line | +1 Def on building hex (may overlap Bastion); retarget up to 2 attacker targets for 1 Mana |
 | Elyndra | Rooted Defenses; Entangling Roots | Forest defense reroll; −2 to one Attack roll for 1 Mana |
-| Rakhis | Sandstride pre-Pre-Strike retreat; Hit and Run; Desert Tempest | Completes AL-49 combat pieces; Desert +2 AP for others |
+| Rakhis | Sandstride: Desert 1 AP + pre-Pre-Strike retreat (**no** ZOC ignore as of Dial 3; Dial 3b retreat cut reverted); Hit and Run (**once/game** Dial 2); Desert Tempest | Completes AL-49 combat pieces; Desert +2 AP for others |
 | Nyxara | Shadow Sight; Veil of Shadows | Private-hand peek → AL-51; Move ignore ZOC + pass through enemy hexes |
 | Auriel | Radiant Presence; Exaltation | +1 Def while Auriel committed; 0-AP turn for 3 Inf→+2 Renown |
 | Thal’rik | Threshold Ward; Rift Summon | +1 Def on Portal hex; Recruit into controlled Portals |

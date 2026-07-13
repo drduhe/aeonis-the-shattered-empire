@@ -371,7 +371,7 @@ These signature bends are active in the First Playable. The Lord sheets own thei
 | Seraphel | He counts +1 sigil in every school for prerequisites and may Research twice in one turn each round. |
 | Vharok | Every controlled built hex can Hold the Walls with +1 defending Battle Line capacity. |
 | Elyndra | Once per round, any two controlled Forests are adjacent for one 1-AP group Move. |
-| Rakhis | His groups ignore ZOC surcharges, cross Deserts for 1 AP, and may withdraw before the first Pre-Strike. |
+| Rakhis | His groups cross Deserts for 1 AP and may withdraw before the first Pre-Strike (normal ZOC rules apply). |
 | Nyxara | She draws 3 Whispers at Round Start and holds 8. |
 | Auriel | She doubles her votes on one sanctified motion and gains enhanced Renown if it passes. |
 | Thal'rik | He may Portal-travel to any Portal regardless of control or treaty. |

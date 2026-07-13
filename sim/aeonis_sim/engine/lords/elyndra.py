@@ -60,14 +60,18 @@ def entangling_worthwhile(state, battle, striker_uid: int) -> bool:
     if atk_die == UNIT_STATS[striker.type].attack_die:
         atk_die = attack_die(state, striker.owner, striker)
     rune_bonus = (
-        battle_runes_attack_bonus(state, striker.owner, battle)
+        battle_runes_attack_bonus(state, striker.owner, battle, commit=False)
         if striker.owner == battle.attacker
         else 0
     )
-    augury_pen = battle_augury_attack_penalty(state, battle.defender, battle)
+    augury_pen = battle_augury_attack_penalty(
+        state, battle.defender, battle, commit=False,
+    )
     dfn_die = defense_die(state, target.owner, target, battle.target)
     die_max = dfn_die + combat_defense_mod(mods, target.uid)
-    ward_bonus = warding_charm_defense_bonus(state, battle.defender, battle)
+    ward_bonus = warding_charm_defense_bonus(
+        state, battle.defender, battle, commit=False,
+    )
     def_bonus = 0
     if state.tiles[battle.target].terrain == Terrain.FOREST:
         def_bonus += 1
@@ -116,6 +120,9 @@ def would_entangling_prevent_hit(
 def apply_entangling_roots(state, battle, choice: dict) -> None:
     key = f"entangling_r{battle.rounds}"
     if choice["type"] == "entangling_roots_skip":
+        state.player(battle.defender).lord_round[key] = True
+        return
+    if state.player(battle.defender).mana < 1:
         state.player(battle.defender).lord_round[key] = True
         return
     state.player(battle.defender).mana -= 1

@@ -125,6 +125,7 @@ from .lords import (
     lord_hp,
     mark_round_used,
     round_unused,
+    game_unused,
     scry_top_agenda,
     whisper_hand_limit,
 )
@@ -1161,7 +1162,7 @@ class Game:
                 self._lord_asymmetry_enabled()
                 and b.winner == "attacker"
                 and is_lord(self.state, b.attacker, "rakhis")
-                and round_unused(self.state, b.attacker, "hit_and_run")
+                and game_unused(self.state, b.attacker, "hit_and_run")
             ):
                 moves = enumerate_hit_and_run_moves(self.state, b)
                 if moves:

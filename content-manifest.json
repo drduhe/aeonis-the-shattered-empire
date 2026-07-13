@@ -406,6 +406,38 @@
           "status": "internal",
           "minutes": 8,
           "tags": ["design", "simulation", "balance", "lords"]
+        },
+        {
+          "title": "Rakhis Ladder Dial 1",
+          "path": "docs/reports/2026-07-12-rakhis-ladder-dial1.md",
+          "description": "Removed Oasis Cavalry −1 Gold; weak lever (~51%→49.5% solo); recommend Hit and Run next.",
+          "status": "internal",
+          "minutes": 5,
+          "tags": ["design", "simulation", "balance", "lords"]
+        },
+        {
+          "title": "Rakhis Ladder Dial 2",
+          "path": "docs/reports/2026-07-12-rakhis-ladder-dial2.md",
+          "description": "Hit and Run once/game; solo ~48.5%; warmonger eased; recommend Sandstride Dial 3.",
+          "status": "internal",
+          "minutes": 5,
+          "tags": ["design", "simulation", "balance", "lords"]
+        },
+        {
+          "title": "Rakhis Ladder Dial 3",
+          "path": "docs/reports/2026-07-12-rakhis-ladder-dial3.md",
+          "description": "Sandstride ZOC ignore removed; solo ~43%; mixed 4p ~27.5%; first material lever.",
+          "status": "internal",
+          "minutes": 5,
+          "tags": ["design", "simulation", "balance", "lords"]
+        },
+        {
+          "title": "Rakhis Ladder Dial 3b",
+          "path": "docs/reports/2026-07-12-rakhis-ladder-dial3b.md",
+          "description": "Pre-Pre-Strike retreat cut tried and reverted (regressed vs Dial 3).",
+          "status": "internal",
+          "minutes": 4,
+          "tags": ["design", "simulation", "balance", "lords"]
         }
       ]
     }

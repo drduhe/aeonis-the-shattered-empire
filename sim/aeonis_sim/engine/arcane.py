@@ -352,37 +352,46 @@ def searing_salvo_damage(state: GameState, attacker: int, battle, rng=None) -> N
         combat._kill(state, battle, target, rng)
 
 
-def battle_runes_attack_bonus(state: GameState, pid: int, battle) -> int:
+def battle_runes_attack_bonus(
+    state: GameState, pid: int, battle, *, commit: bool = True,
+) -> int:
     p = state.player(pid)
     key = f"battle_runes_r{battle.rounds}"
     if "battle_runes" not in p.discoveries or p.arcane_round.get(key):
         return 0
     if p.mana < 1:
         return 0
-    p.mana -= 1
-    p.arcane_round[key] = True
+    if commit:
+        p.mana -= 1
+        p.arcane_round[key] = True
     return 1
 
 
-def warding_charm_defense_bonus(state: GameState, pid: int, battle) -> int:
+def warding_charm_defense_bonus(
+    state: GameState, pid: int, battle, *, commit: bool = True,
+) -> int:
     p = state.player(pid)
     key = f"warding_charm_r{battle.rounds}"
     if "warding_charm" not in p.discoveries or p.arcane_round.get(key):
         return 0
     if p.mana < 1:
         return 0
-    p.mana -= 1
-    p.arcane_round[key] = True
+    if commit:
+        p.mana -= 1
+        p.arcane_round[key] = True
     return 1
 
 
-def battle_augury_attack_penalty(state: GameState, pid: int, battle) -> int:
+def battle_augury_attack_penalty(
+    state: GameState, pid: int, battle, *, commit: bool = True,
+) -> int:
     p = state.player(pid)
     key = f"battle_augury_r{battle.rounds}"
     if "battle_augury" not in p.discoveries or p.arcane_round.get(key):
         return 0
     if p.influence < 1:
         return 0
-    p.influence -= 1
-    p.arcane_round[key] = True
+    if commit:
+        p.influence -= 1
+        p.arcane_round[key] = True
     return 1

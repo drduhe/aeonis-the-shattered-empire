@@ -58,7 +58,6 @@ The Djinnborn are the descendants of imperial outriders who bound wind spirits i
 
 - **Production:** +1 Population and +1 Gold
 - **Building permissions:** You may build a **Farm** here, but you may **not** build a **Tower** here.
-- **Owner-only benefit (only while you control it):** Once per round, when you take a Recruit action, you may recruit 1 Cavalry at a discount of -1 Gold (minimum 0).
 
 ---
 
@@ -68,14 +67,14 @@ The Djinnborn are the descendants of imperial outriders who bound wind spirits i
 
 **Timing:** During your Move actions, and once per battle before the first **Pre-Strike** step resolves.
 
-**Effect:** Your groups treat **Deserts** as costing **1 AP per hex** and ignore enemy ZOC surcharges. Once per battle, before the first Pre-Strike step, you may retreat your committed group using the normal attacker or defender retreat destination rules.
+**Effect:** Your groups treat **Deserts** as costing **1 AP per hex**. Once per battle, before the first Pre-Strike step, you may retreat your committed group using the normal attacker or defender retreat destination rules.
 
-**Limits:** Sandstride does not permit a defender to retreat from a City, Fortress, or a hex where it chose to Hold the Walls.
+**Limits:** Sandstride does not permit a defender to retreat from a City, Fortress, or a hex where it chose to Hold the Walls. Sandstride does **not** ignore enemy ZOC surcharges (removed 2026-07-12 — balance ladder Dial 3); Cavalry still use the normal first-ZOC flanking exemption. (Dial 3b retreat removal was tried and **reverted** the same day — metrics regressed.)
 **Theme:** You cannot pin the wind.
 
 ### 2) Hit and Run (Passive Ability)
 
-**Effect:** Once per round, when you **win a battle as the attacker**, your surviving committed units may immediately move **1 hex** to any adjacent hex you control or any adjacent neutral hex. This movement does not cost AP and does not count as a Move action.
+**Effect:** **Once per game**, when you **win a battle as the attacker**, your surviving committed units may immediately move **1 hex** to any adjacent hex you control or any adjacent neutral hex. This movement does not cost AP and does not count as a Move action.
 **Theme:** The Horde strikes and vanishes before the dust settles.
 
 ### 3) Desert Tempest (Active Ability)
@@ -157,17 +156,18 @@ Win a battle as **attacker** and use **Hit and Run** to move your units afterwar
 
 ### Strengths
 
-- **Map mobility:** Movement Range 3 plus Sandstride makes Rakhis difficult to screen or trap.
+- **Map mobility:** Movement Range 3 plus Desert 1 AP keeps him fast on sand; ZOC screens now work normally against him.
 - **Desert dominance:** Desert Tempest makes contested deserts punishingly expensive for opponents.
-- **Aggressive tempo:** Hit and Run lets you win a fight and immediately reposition, denying counterattack.
+- **Aggressive tempo:** Hit and Run (once per game) lets you win a fight and immediately reposition, denying counterattack.
 - **Cavalry start:** Beginning with Cavalry gives an early expansion advantage no other Lord has.
 
 ### Weaknesses
 
 - **Mana drought:** 1 starting Mana makes Desert Tempest and research expensive early.
 - **Fragile in sieges:** Speed doesn't help when assaulting fortified positions; the Horde is weakest when forced to stand still.
-- **Desert dependency:** If the map has few Deserts near your position, Desert Tempest loses value, but Sandstride's ZOC exception remains useful.
+- **Desert dependency:** If the map has few Deserts near your position, Desert Tempest and the Desert 1 AP path lose value.
 - **Thin defenses:** d6 Defense on Rakhis and most units means any sustained fight is risky.
+- **Screenable:** Without blanket ZOC immunity, infantry screens can tax his approach.
 
 ---
 
@@ -177,7 +177,8 @@ Win a battle as **attacker** and use **Hit and Run** to move your units afterwar
 
 ## Notes for Playtesting
 
-- **Sandstride:** Track battles abandoned before Pre-Strike and whether ignoring every ZOC surcharge makes counter-positioning irrelevant.
-- **Hit and Run:** Track how often the free move creates unreachable positions; ensure opponents have counterplay (ZOC from adjacent units should still work).
+- **Sandstride:** Desert 1 AP + pre-Pre-Strike retreat; full ZOC ignore removed 2026-07-12 (Dial 3). Dial 3b (drop retreat) was tried and reverted.
+- **Hit and Run:** Once per game as of 2026-07-12 (ladder Dial 2); track whether single-use reposition still enables Lightning Raid without raid stickiness.
+- **Oasis Wellspring:** Cavalry −1 Gold recruit discount removed 2026-07-12 (ladder Dial 1); watch whether early cavalry tempo still spikes without it.
 - **Desert Tempest:** At 4 AP total for opponents, this can effectively lock a hex. Confirm 2 Mana is the right cost and that it doesn't stall the game.
 - **Cavalry start:** Validate that starting with Cavalry instead of an Archer isn't too strong for Round 1 aggression.

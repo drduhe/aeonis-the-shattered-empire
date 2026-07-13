@@ -4,19 +4,9 @@ from itertools import combinations_with_replacement
 
 from .types import BuildingType, Terrain, Unit, UNIT_STATS, UnitType
 from .artifacts import recruit_gold_discount
-from .lords import controls_unique, is_lord, mark_round_used, round_unused, tile_is_portal
+from .lords import is_lord, tile_is_portal
 
 RECRUITABLE = [UnitType.INFANTRY, UnitType.CAVALRY, UnitType.ARCHER]
-
-
-def _oasis_cavalry_discount(state, pid, unit_types) -> int:
-    if len(unit_types) != 1 or unit_types[0] != UnitType.CAVALRY:
-        return 0
-    if not controls_unique(state, pid, "oasis_wellspring"):
-        return 0
-    if not round_unused(state, pid, "oasis_cavalry"):
-        return 0
-    return 1
 
 
 def _unit_gold(ut: UnitType, *, forge: bool, eternal: bool, discount: int = 0) -> int:
@@ -63,8 +53,7 @@ def enumerate_recruits(state, pid, *, ignore_city_limit: bool = False) -> list:
         combos = [list(c) for n in sizes
                   for c in combinations_with_replacement(RECRUITABLE, n)]
         for combo in combos:
-            discount = _oasis_cavalry_discount(state, pid, combo)
-            if _affordable(p, combo, forge=forge, eternal=eternal, discount=discount):
+            if _affordable(p, combo, forge=forge, eternal=eternal):
                 choice = {
                     "type": "recruit",
                     "city": list(tile.coord),
@@ -82,7 +71,6 @@ def apply_recruit(state, pid, choice, *, free: bool = False, ignore_city_limit: 
     forge = tile.active(BuildingType.FORGE)
     eternal = recruit_gold_discount(state, pid, tile.coord) > 0
     units = [UnitType(name) for name in choice["units"]]
-    discount = _oasis_cavalry_discount(state, pid, units)
     if not free:
         p.ap -= 1
     if not ignore_city_limit:
@@ -90,12 +78,7 @@ def apply_recruit(state, pid, choice, *, free: bool = False, ignore_city_limit: 
     for ut in units:
         st = UNIT_STATS[ut]
         if not free:
-            p.gold -= _unit_gold(
-                ut, forge=forge, eternal=eternal,
-                discount=discount if ut == UnitType.CAVALRY else 0,
-            )
+            p.gold -= _unit_gold(ut, forge=forge, eternal=eternal)
             p.mana -= st.mana
         p.pop_pool -= st.pop
         tile.units.append(Unit(uid=state.new_uid(), owner=pid, type=ut, hp=st.hp))
-    if discount:
-        mark_round_used(state, pid, "oasis_cavalry")

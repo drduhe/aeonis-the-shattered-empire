@@ -336,6 +336,33 @@ def test_elyndra_entangling_roots_enumerates_from_game_combat_flow():
     assert g._battle_lord_substage == "execute"
 
 
+def test_elyndra_entangling_worthwhile_does_not_spend_warding_charm_mana():
+    """Regression: heuristic must peek rituals (commit=False), not pay during enum."""
+    from aeonis_sim.engine.lords.elyndra import entangling_worthwhile
+
+    state = strip_map(m4_state(["elyndra", "vharok", "cassian"]))
+    forest = (1, 0)
+    state.tiles[forest].terrain = Terrain.FOREST
+    state.tiles[forest].controller = 0
+    put(state, forest, 0, UnitType.INFANTRY)
+    put(state, forest, 0, UnitType.LORD)
+    put(state, (2, 0), 1, UnitType.INFANTRY)
+    state.tiles[(2, 0)].controller = 1
+    state.player(1).ap = 5
+    state.player(0).mana = 1
+    state.player(0).discoveries = ["warding_charm"]
+    battle = start_battle(
+        state, 1, {"type": "attack", "target": list(forest), "cost": 2},
+    )
+    prepare_battle_round(state, battle, declare_targets=True)
+    striker = next(u for u in battle.att_line if u.hp > 0)
+    entangling_worthwhile(state, battle, striker.uid)
+    assert state.player(0).mana == 1
+    choices = enumerate_entangling_roots(state, battle)
+    assert any(c["type"] == "entangling_roots" for c in choices)
+    assert state.player(0).mana == 1
+
+
 def test_elyndra_entangling_roots_enumerates_strikers():
     state = strip_map(m4_state(["elyndra", "vharok", "cassian"]))
     forest = (1, 0)
@@ -391,6 +418,7 @@ def test_elyndra_entangling_roots_changes_attack_outcome():
 
 
 def test_rakhis_sandstride_retreat_enumerates_before_pre_strike():
+    """Dial 3b reverted: pre-Pre-Strike retreat restored (Dial 3 ZOC change kept)."""
     state = strip_map(m4_state(["rakhis", "vharok", "cassian"]))
     target, retreat = (1, 0), (0, 1)
     state.tiles[target].terrain = Terrain.PLAINS
@@ -421,6 +449,33 @@ def test_rakhis_hit_and_run_enumerates_adjacent_moves():
     battle.att_committed = [(origin, unit)]
     moves = enumerate_hit_and_run_moves(state, battle)
     assert any(tuple(m["dest"]) == dest_hex for m in moves)
+
+
+def test_rakhis_hit_and_run_once_per_game():
+    """Dial 2 (2026-07-12): Hit and Run is once per game, not once per round."""
+    from aeonis_sim.engine.lords.rakhis import apply_hit_and_run
+
+    state = strip_map(m4_state(["rakhis", "vharok", "cassian"]))
+    origin, dest_hex = (2, 0), (2, 1)
+    state.tiles[origin].terrain = Terrain.PLAINS
+    state.tiles[dest_hex].terrain = Terrain.PLAINS
+    state.tiles[origin].controller = 0
+    state.tiles[dest_hex].controller = 0
+    unit = put(state, origin, 0, UnitType.CAVALRY)
+    battle = combat.Battle(attacker=0, defender=1, target=(1, 0), winner="attacker")
+    battle.att_committed = [(origin, unit)]
+    moves = enumerate_hit_and_run_moves(state, battle)
+    assert moves
+    apply_hit_and_run(state, battle, moves[0])
+    # Same round: exhausted.
+    unit2 = put(state, origin, 0, UnitType.CAVALRY)
+    battle2 = combat.Battle(attacker=0, defender=1, target=(1, 0), winner="attacker")
+    battle2.att_committed = [(origin, unit2)]
+    assert enumerate_hit_and_run_moves(state, battle2) == []
+    # Next round: still exhausted (once per game).
+    state.player(0).lord_round = {}
+    state.round += 1
+    assert enumerate_hit_and_run_moves(state, battle2) == []
 
 
 def test_rakhis_desert_tempest_adds_ap_for_other_players():

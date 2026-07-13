@@ -82,7 +82,7 @@ Every round follows the same 7 phases, in this order (`../rules_and_systems/Roun
 6. Production & Upkeep
 7. Cleanup & Checks
 
-To see how they fit together, follow one example round at a four-player table. Our leads: **Rakhis, the Sandlord** (fast cavalry raider; 2 VP, 1 Renown) and **Vharok, Lord of Steel** (fortress tank; 3 VP, 5 Renown). Rakhis's **Sandstride** ignores enemy ZOC surcharges; Vharok's **Bastion Doctrine** lets any controlled built hex Hold the Walls with +1 defending Battle Line capacity. Cassian and Elyndra fill the other seats. It is Round 3; Cassian holds the Speaker token.
+To see how they fit together, follow one example round at a four-player table. Our leads: **Rakhis, the Sandlord** (fast cavalry raider; 2 VP, 1 Renown) and **Vharok, Lord of Steel** (fortress tank; 3 VP, 5 Renown). Rakhis's **Sandstride** treats Deserts as 1 AP and allows a once-per-battle pre-Pre-Strike retreat; Vharok's **Bastion Doctrine** lets any controlled built hex Hold the Walls with +1 defending Battle Line capacity. Cassian and Elyndra fill the other seats. It is Round 3; Cassian holds the Speaker token.
 
 ### Phase 1: Round Start
 
@@ -167,7 +167,7 @@ Pick **one group** (any number of your units stacked in one hex) and pay the tot
 
 **Zone of Control (ZOC):** every hex adjacent to enemy military units is in that enemy's ZOC. Entering a ZOC hex costs **+1 AP** on top of terrain. **Cavalry flanking:** Cavalry ignore the surcharge on the *first* ZOC hex entered each Move action. You cannot enter an enemy-**controlled** hex unless you pay the ZOC surcharge (if in ZOC), a treaty or motion allows it, or you are attacking it — but enemy hexes with *no units nearby* aren't in ZOC and can simply be walked into.
 
-> **Example:** Rakhis moves a Cavalry group 2 hexes toward Vharok's line. Both Plains hexes are adjacent to Vharok's Infantry, but **Sandstride** ignores both ZOC surcharges. Total: **2 AP**. Another Lord's Cavalry would ignore only the first surcharge and pay 3 AP total.
+> **Example:** Rakhis moves a Cavalry group 2 hexes toward Vharok's line. Both Plains hexes are adjacent to Vharok's Infantry. **Cavalry flanking** waives the first ZOC surcharge; the second costs +1 AP. Total: **3 AP** (same as any other Lord's Cavalry). Sandstride no longer ignores ZOC — it is Desert 1 AP and the pre-Pre-Strike retreat.
 
 ### Attack
 

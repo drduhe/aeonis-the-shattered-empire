@@ -70,6 +70,14 @@ def mark_round_used(state, pid: int, key: str) -> None:
     state.player(pid).lord_round[key] = True
 
 
+def game_unused(state, pid: int, key: str) -> bool:
+    return not bool(state.player(pid).lord_game.get(key))
+
+
+def mark_game_used(state, pid: int, key: str) -> None:
+    state.player(pid).lord_game[key] = True
+
+
 def configured_roster(config: dict, players: int) -> list[str]:
     block = config.get("lord_asymmetry", {})
     if not block.get("enabled", False):

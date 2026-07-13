@@ -261,6 +261,7 @@ class PlayerState:
     home: Coord
     lord_id: str = ""
     lord_round: dict = field(default_factory=dict)
+    lord_game: dict = field(default_factory=dict)  # once-per-game Lord ability flags
     ap: int = 0
     banked: int = 0
     gold: int = 0
@@ -355,6 +356,8 @@ class PlayerState:
         if self.lord_id:
             out["lord_id"] = self.lord_id
             out["lord_round"] = dict(self.lord_round)
+            if self.lord_game:
+                out["lord_game"] = dict(self.lord_game)
             if self.attacker_battle_wins:
                 out["attacker_battle_wins"] = self.attacker_battle_wins
             if self.whispers_played:
@@ -366,6 +369,7 @@ class PlayerState:
         p = PlayerState(pid=d["pid"], home=tuple(d["home"]))
         p.lord_id = str(d.get("lord_id", ""))
         p.lord_round = dict(d.get("lord_round", {}))
+        p.lord_game = dict(d.get("lord_game", {}))
         if "secret_objectives" in d:
             for k in ("ap", "banked", "gold", "mana", "influence", "renown", "vp", "pop_pool",
                       "passed", "public_scored_this_round",
@@ -621,6 +625,7 @@ class GameState:
                 home=p.home,
                 lord_id=p.lord_id,
                 lord_round=dict(p.lord_round),
+                lord_game=dict(p.lord_game),
                 ap=p.ap,
                 banked=p.banked,
                 gold=p.gold,

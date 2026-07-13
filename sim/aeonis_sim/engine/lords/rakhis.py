@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from ..hexmap import distance, neighbors
 from ..types import BuildingType, Terrain, UnitType
-from .specs import is_lord, mark_round_used, round_unused
+from .specs import is_lord, mark_game_used, game_unused, mark_round_used, round_unused
 
 
 def _rakhis_side(state, battle) -> int | None:
@@ -15,7 +15,7 @@ def _rakhis_side(state, battle) -> int | None:
 
 
 def sandstride_retreat_available(state, battle) -> bool:
-    """Once per battle before first Pre-Strike of round 1."""
+    """Once per battle before first Pre-Strike of round 1 (Dial 3b reverted)."""
     if battle.rounds != 1 or battle.battle_flags.get("sandstride_used"):
         return False
     pid = _rakhis_side(state, battle)
@@ -83,7 +83,7 @@ def enumerate_hit_and_run_moves(state, battle) -> list:
         return []
     if battle.winner != "attacker":
         return []
-    if not round_unused(state, battle.attacker, "hit_and_run"):
+    if not game_unused(state, battle.attacker, "hit_and_run"):
         return []
     out = []
     for origin, u in battle.att_committed:
@@ -117,7 +117,7 @@ def apply_hit_and_run(state, battle, choice: dict) -> None:
         if u.uid == uid:
             battle.att_committed[i] = (tuple(choice["dest"]), u)
             break
-    mark_round_used(state, battle.attacker, "hit_and_run")
+    mark_game_used(state, battle.attacker, "hit_and_run")
 
 
 def enumerate_desert_tempest(state, pid: int) -> list:

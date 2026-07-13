@@ -173,7 +173,7 @@ Restriction:
 
 - **Defenders cannot retreat from Cities/Fortresses** unless a card, Ritual, or motion explicitly allows it.
 
-**Rakhis — Sandstride exception:** Once per battle, before the first Archer Pre-Strike step, Rakhis may retreat his committed group using the normal attacker or defender destination rules. A defender still cannot retreat from a City, Fortress, or any hex where they chose to Hold the Walls. Resolve the retreat before any dice are rolled.
+**Rakhis — Sandstride exception:** Once per battle, before the first Archer Pre-Strike step, Rakhis may retreat his committed group using the normal attacker or defender destination rules. A defender still cannot retreat from a City, Fortress, or any hex where they chose to Hold the Walls. Resolve the retreat before any dice are rolled. (Dial 3b briefly removed this; **reverted** 2026-07-12.)
 
 ---
 

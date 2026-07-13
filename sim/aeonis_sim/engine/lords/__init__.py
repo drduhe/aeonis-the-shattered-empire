@@ -24,7 +24,11 @@ from .specs import (
 
     mark_round_used,
 
+    mark_game_used,
+
     round_unused,
+
+    game_unused,
 
     spec_for,
 
@@ -149,7 +153,7 @@ __all__ = [
     "is_lord", "lord_attack_die", "lord_defense_die", "lord_hp",
 
     "lord_id", "lord_move", "mark_round_used", "round_unused",
-
+    "mark_game_used", "game_unused",
     "spec_for", "whisper_hand_limit",
 
     "UNIQUE_TILES", "UniqueTileSpec", "apply_unique_tile_production",

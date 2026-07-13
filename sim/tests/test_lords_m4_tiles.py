@@ -257,7 +257,8 @@ def test_cassian_bazaar_trade_grants_gold_once():
     assert g.state.player(0).gold == before + 1
 
 
-def test_oasis_wellspring_cavalry_recruit_discount():
+def test_oasis_wellspring_has_no_cavalry_recruit_discount():
+    """Rakhis ladder Dial 1 (2026-07-12): Oasis keeps production; no -1 Cavalry Gold."""
     from aeonis_sim.engine.recruit import apply_recruit, enumerate_recruits
     state = build_initial_state(
         {
@@ -268,14 +269,14 @@ def test_oasis_wellspring_cavalry_recruit_discount():
     )
     p = state.player(0)
     city = next(t for t in state.controlled(0) if t.terrain == Terrain.CITY)
+    assert any(t.unique_tile_id == "oasis_wellspring" for t in state.tiles.values())
     p.ap, p.gold, p.mana, p.pop_pool = 5, 1, 5, 5
-    recs = enumerate_recruits(state, 0)
-    cav = next(r for r in recs if r["units"] == ["cavalry"])
+    assert not any(r["units"] == ["cavalry"] for r in enumerate_recruits(state, 0))
+    p.gold = 2
+    cav = next(r for r in enumerate_recruits(state, 0) if r["units"] == ["cavalry"])
     assert cav["city"] == list(city.coord)
     apply_recruit(state, 0, cav)
     assert p.gold == 0
-    p.gold = 1
-    assert not any(r["units"] == ["cavalry"] for r in enumerate_recruits(state, 0))
 
 
 def test_rift_anchor_free_portal_move_once_per_round():

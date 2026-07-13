@@ -112,7 +112,7 @@ def _paths_from(
             ):
                 step = max(1, step - 1)
             f2 = flanked
-            ignore_zoc = is_lord(state, pid, "rakhis") or veil
+            ignore_zoc = veil
             if nxt in zoc and not ignore_zoc:
                 if not flanked:
                     f2 = True  # cavalry flanking: first ZOC hex free
