@@ -22,6 +22,12 @@ Counts assume **8 players max**, 8 launch factions. Quantities marked ~ need pla
 | Unique starting tiles | 8 | 1 per Lord (Arcane Nexus, Ironworks Ridge, Caravan Bazaar, Sacred Grove, Oasis Wellspring, Obsidian Spire, Hallowed Grove, Rift Anchor) |
 | **Total hex tiles** | **81** | |
 
+Geometry targets and slice inventory for 3–8p: see draft `../rules_and_systems/Map_Construction.md` (Plan 4). Re-quote tile counts when that table freezes.
+
+## 1b. Player boards (1 per player, ×8)
+
+Printed ledger: Gold / Mana / Influence tracks, Population well, Renown 0–10 with milestone boxes, AP wells, production reminder strip. See `Components.md`.
+
 ## 2. Standees (acrylic, with colored bases per player)
 
 | Piece | Per player | ×8 | Notes |

@@ -1,0 +1,20 @@
+{
+  "name": "plan1-baseline-mixed-6p",
+  "players": 6,
+  "games": 40,
+  "seed_base": 97100,
+  "personas": ["balanced", "expander", "warmonger", "economist", "diplomat"],
+  "matchmaking": "mixed",
+  "seat_rewards": {"seat_of_empire_vp": 1},
+  "combat": {
+    "aggressors_edge_mode": "off",
+    "pillage": false
+  },
+  "lord_asymmetry": {
+    "enabled": true,
+    "roster": [
+      "cassian", "seraphel", "vharok", "elyndra",
+      "rakhis", "nyxara", "auriel", "thalrik"
+    ]
+  }
+}

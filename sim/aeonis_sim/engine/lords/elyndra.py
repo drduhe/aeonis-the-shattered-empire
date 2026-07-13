@@ -78,6 +78,7 @@ def entangling_worthwhile(state, battle, striker_uid: int) -> bool:
     from . import extra_defense_bonus
     def_bonus += extra_defense_bonus(state, battle, "def")
 
+    # Main-strike EV only: pre_strike Edge does not apply here (combat._hits).
     edge = state.aggressors_edge_mode == "full"
     for atk_roll in range(1, atk_die + 1):
         atk_eff = max(1, atk_roll + rune_bonus - augury_pen)

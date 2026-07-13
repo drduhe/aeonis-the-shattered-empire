@@ -16,7 +16,8 @@ This folder is the current "rulebook draft" for **Aeonis: The Shattered Empire**
 - **`Combat.md`**: Canon combat (battle line + reserves, one battle round per Attack, sieges as the multi-turn exception); softened Lord capture (+1 VP, ability lockout).
 - **`Arcane.md`**: Arcane discovery "tech tree" (schools, tiers, AP + resources), including Lord-specific paths.
 - **`Population.md`**: Population pool + cap + growth; unit/building population costs; events and synergy notes.
-- **`Trade_Taxes.md`**: Player-initiated trade (AP cost) + upkeep/taxes and consequences of non-payment.
+- **`Trade_Taxes.md`**: Player-initiated Trade (AP cost); Population not tradeable. Building/unit upkeep owned elsewhere.
+- **`Map_Construction.md`**: DRAFT/PROPOSED slice geometry for 3–8p (Plan 4); First Playable presets still in the playtest packet.
 - **`Events.md`**: Exploration/global/local/milestone events; triggers, examples, and catch-up events (Populist Uprising, Winds of Fortune).
 - **`Renown.md`**: Renown gains/uses/threshold bonuses; optional decay.
 - **`Victory.md`**: VP sources (objectives, council titles, artifacts/buildings, throne, combat captures, events); 10 VP threshold; 8 VP short-game variant.

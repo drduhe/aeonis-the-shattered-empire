@@ -108,6 +108,14 @@
           "tags": ["rules", "map"]
         },
         {
+          "title": "Map Construction",
+          "path": "rules_and_systems/Map_Construction.md",
+          "description": "PROPOSED slice geometry and setup modes for 3–8 players (Plan 4 draft).",
+          "status": "draft",
+          "minutes": 10,
+          "tags": ["rules", "map", "proposed"]
+        },
+        {
           "title": "Combat",
           "path": "rules_and_systems/Combat.md",
           "description": "Battle line + reserves, sieges, and anti-doomstack constraints.",
@@ -140,11 +148,11 @@
           "tags": ["rules", "economy"]
         },
         {
-          "title": "Trade & Taxes",
+          "title": "Trade",
           "path": "rules_and_systems/Trade_Taxes.md",
-          "description": "Player-initiated trade, upkeep pressure, and consequences.",
+          "description": "Player-initiated Trade (AP); Population not tradeable. Upkeep owned elsewhere.",
           "status": "draft",
-          "minutes": 10,
+          "minutes": 8,
           "tags": ["rules", "economy"]
         },
         {
@@ -438,6 +446,14 @@
           "status": "internal",
           "minutes": 4,
           "tags": ["design", "simulation", "balance", "lords"]
+        },
+        {
+          "title": "Plan 1 Pre-Strike Mixed Ladder",
+          "path": "docs/reports/2026-07-13-plan1-prestrike-mixed.md",
+          "description": "M4-on mixed 4/6/8p baseline vs pre_strike; do not promote (6–8p still hot).",
+          "status": "internal",
+          "minutes": 5,
+          "tags": ["design", "simulation", "combat", "plan1"]
         }
       ]
     }

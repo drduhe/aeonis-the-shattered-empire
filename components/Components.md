@@ -34,6 +34,8 @@ This is the minimal component list needed to run the **First Playable** packet. 
   - Portals: 1 per 3 players, round up, minimum 2 (up to **3x**).
   - Lakes: 1 per 3 players, round up, minimum 2 (up to **3x**).
 
+- **Player board** (1 per player — Plan 6 ledger hygiene): tracks Gold / Mana / Influence, Population pool, Renown 0–10 (milestone boxes at 5/10), AP, and a printed production reminder. Recurring effects must be markable.
+
 - **Player units** (per player, for 3-8 players):
   - 1x Lord / Leader token
   - 10x Infantry tokens

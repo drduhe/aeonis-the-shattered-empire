@@ -16,12 +16,23 @@ Whisper Cards are a shared deck of one-time tactical effects that players draw i
 
 ### 2. Drawing Whispers
 
-- At **Round Start**, each player draws **2 Whisper Cards** from the deck.
+- At **Round Start**, each player draws Whisper Cards from the shared deck (see rate table below).
 - Additional draws may be granted by:
   - **Scoring VP**: whenever you score VP from any source, draw 1 Whisper.
   - **Strategy Card effects**: some Strategy Card secondaries may grant draws.
   - **Lord abilities**: if a Lord sheet grants Whisper draws, it will say so.
   - **Events**: certain events may grant draws.
+
+**Canon (current):** Round Start draw is **2** for all player counts.
+
+**PROPOSED draw-rate table (Plan 4 — not canon until playtested):**
+
+| Players | Round Start draw | Design intent |
+|---|---|---|
+| 3–5 | **2** each | Current feel |
+| 6–8 | **1** each | Keep shared-deck cycle ≥ ~4 rounds; VP-score draws unchanged |
+
+Hand limit stays **7**. Fallback if 6–8p feels starved: shuffle a second copy of the full Whisper deck at 7–8p (component note in `Production_Manifest.md`). See `../docs/plans/2026-07-02-plan-high-player-count.md`.
 
 ### 3. Hand Limit
 

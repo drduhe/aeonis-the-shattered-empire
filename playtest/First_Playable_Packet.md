@@ -41,7 +41,7 @@ First Playable restrictions are listed below where needed.
 
 ### 3.1 Map layout
 
-Build a map scaled to player count:
+Build a map scaled to player count. **Authoritative First Playable presets** stay in this section; the draft geometry / slice system lives in `../rules_and_systems/Map_Construction.md` (PROPOSED — Plan 4).
 
 **For 3-4 players:**
 

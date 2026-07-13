@@ -93,6 +93,20 @@ Hard limit:
 - Maximum **one motion proposed per player per round**.
 - The agenda may contain at most **(#players)** motions (because of the limit above).
 
+### 3.2b The Docket (PROPOSED — Plan 4; not canon)
+
+> **Status:** PROPOSED. Current §3.2 / §3.2a remain in force until this is playtested and registered under Design decisions in `INDEX.md`. See `../docs/plans/2026-07-02-plan-high-player-count.md`.
+
+Replace open proposal with a fixed-size **docket** so council length stays roughly constant from 3–8 players:
+
+1. **Agenda-deck reveal (always on the docket).** The Speaker reveals the top agenda card; it is **always voted on** this phase (no longer optional to propose). Free-propose effects become **docket-jump** effects: “add your motion to the docket without bidding.”
+2. **Player motion slot(s).** During the proposal window, each player may **bid Influence** (secret simultaneous bid, or open ascending — both allowed pending playtest) to place a motion on the docket. Highest bid pays and proposes; ties broken by the Speaker. Losing bids are returned.
+   - **3–5 players:** docket may hold **two** player motions (bid winner and runner-up, each paying their own bid).
+   - **6–8 players:** docket holds **one** player motion (bid winner only).
+3. **Deleted:** the flat **1 Influence** proposal cost (the bid replaces it).
+
+Phase target: High Council ≤ **15 minutes** at 8 players.
+
 ### 3.2a Agenda deck (canonical rules)
 
 The **agenda deck** gives the council drawn content in addition to player-authored motions.

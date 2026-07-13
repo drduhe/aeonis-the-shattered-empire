@@ -331,13 +331,15 @@ def luminous_bulwark_bonus(state: GameState, pid: int, tile) -> int:
 
 
 def bump_renown(state: GameState, pid: int, amount: int, rng: Optional[random.Random] = None) -> int:
-    """Adjust renown and fire Sacred Rite milestones when applicable."""
+    """Adjust renown and fire Sacred Rite milestones when applicable.
+
+    When ``rng`` is None (e.g. persona lookahead), renown still changes but
+    Sacred Rite milestones are skipped so peeks stay side-effect-light.
+    """
     p = state.player(pid)
-    if amount > 0 and "sacred_rite" in p.discoveries and rng is None:
-        raise ValueError("bump_renown requires rng when sacred_rite is owned")
     old = p.renown
     p.renown += amount
-    if rng is not None:
+    if amount > 0 and rng is not None and "sacred_rite" in p.discoveries:
         apply_sacred_rite_milestones(state, pid, old, rng)
     return p.renown
 
