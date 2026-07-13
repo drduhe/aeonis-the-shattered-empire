@@ -69,7 +69,7 @@ def test_resource_surge_secondary_once_per_player_per_round():
 
 
 def test_resource_surge_primary_in_action_choices():
-    g = Game({"players": 3}, seed=77)
+    g = Game({"players": 3, "lord_asymmetry": {"enabled": False}}, seed=77)
     _force_cards(g, 0, "resource_surge")
     dp = g.next_decision()
     assert dp.kind == "action"
@@ -81,7 +81,7 @@ def test_resource_surge_primary_in_action_choices():
 
 
 def test_secondary_window_after_resource_surge_primary():
-    g = Game({"players": 3}, seed=88)
+    g = Game({"players": 3, "lord_asymmetry": {"enabled": False}}, seed=88)
     _force_cards(g, 0, "resource_surge")
     g.state.player(1).ap = 2
     dp = g.next_decision()

@@ -5,7 +5,10 @@ from aeonis_sim.engine.setup import build_initial_state
 
 
 def make_state():
-    return build_initial_state({"players": 3}, random.Random(5))
+    return build_initial_state(
+        {"players": 3, "lord_asymmetry": {"enabled": False}},
+        random.Random(5),
+    )
 
 
 def test_enumerates_affordable_combos_at_home_city():

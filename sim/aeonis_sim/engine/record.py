@@ -83,7 +83,14 @@ def replay(record: dict):
     """Re-run a recorded game; returns the reconstructed Game. Raises if any
     recorded choice is no longer legal (i.e., engine behavior changed)."""
     from .game import Game
-    g = Game(record["config"], record["seed"])
+    config = dict(record["config"])
+    if "lord_asymmetry" not in config:
+        final_players = record.get("final_state", {}).get("players", [])
+        if final_players and not any(p.get("lord_id") for p in final_players):
+            # Records created before the M4 default omitted the flag because
+            # neutral Lords were implicit. Preserve their historical ruleset.
+            config["lord_asymmetry"] = {"enabled": False}
+    g = Game(config, record["seed"])
     for choice in record["choices"]:
         dp = g.next_decision()
         while dp is None and not g.over:

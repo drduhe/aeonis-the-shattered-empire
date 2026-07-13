@@ -59,7 +59,7 @@ def _assign_personas(config: dict, game_index: int) -> list[str]:
 def _assign_lords(config: dict, game_index: int) -> list[str] | None:
     """Rotate the launch roster so every Lord sees every seat across a bracket."""
     block = config.get("lord_asymmetry", {})
-    if not block.get("enabled", False):
+    if not block.get("enabled", True):
         return None
     players = int(config["players"])
     roster = list(block.get("roster") or LAUNCH_LORDS)

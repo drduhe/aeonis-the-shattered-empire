@@ -2,7 +2,7 @@
 
 **Updated:** 2026-07-13 · Sim-only unless noted. Full tournament dumps are **regenerable** — conclusions live in the memos below.
 
-**Engine:** M3 card systems + full M4 Lord asymmetry (opt-in) + audited objectives + validated map geometry + Lever C brakes + S1 seat VP. **346 pytest** passing.
+**Engine:** M3 card systems + full M4 Lord asymmetry (default-on) + audited objectives + validated map geometry + Lever C brakes + S1 seat VP. **349 pytest** passing.
 
 ---
 
@@ -24,7 +24,8 @@
 | [Plan 5 / M4 foundation](2026-07-09-plan5-m4-foundation.md) | Six signature redesigns promoted; 40/40 stability smoke; full M4 entry scope |
 | [M4 full encode gate](2026-07-12-m4-gate.md) | 100/100 completed; unique tiles, abilities, discoveries, Legendaries; AL-49 closed |
 | [Post-M4 rebaseline + pacing](2026-07-12-m4-rebaseline.md) | M4-on 4/6/8p mixed; economist H8 pass at 6–8p; Lever A → design for **6–8 rounds** (accepted) |
-| [M4 Lord × persona sweep](2026-07-12-m4-lord-persona-sweep.md) | Solo+mixed; Rakhis sheet spike; Cassian fit-sensitive; Vharok/Elyndra floors; default-on still deferred |
+| [M4 Lord × persona sweep](2026-07-12-m4-lord-persona-sweep.md) | Historical pre-Dial-3 sheet/persona signals; superseded default decision, retained tuning context |
+| [M4 default-on review](2026-07-13-m4-default-on-review.md) | 520/520 matched canonical-stack games; promote M4 default-on; preserve explicit neutral regression path |
 | [Rakhis ladder Dial 1](2026-07-12-rakhis-ladder-dial1.md) | Oasis Cavalry −1 Gold removed; solo ~51%→49.5% — weak lever; Dial 2 = Hit and Run |
 | [Rakhis ladder Dial 2](2026-07-12-rakhis-ladder-dial2.md) | Hit and Run once/game; solo ~48.5%; warmonger 85%→60%; Dial 3 = Sandstride |
 | [Rakhis ladder Dial 3](2026-07-12-rakhis-ladder-dial3.md) | Sandstride ZOC ignore removed; solo 43%; mixed 4p 27.5%; first real lever |

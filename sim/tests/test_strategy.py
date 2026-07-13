@@ -90,7 +90,7 @@ def test_initiative_order_uses_lowest_held_card():
 
 
 def test_4p_players_receive_two_cards_each():
-    g = Game({"players": 4}, seed=77)
+    g = Game({"players": 4, "lord_asymmetry": {"enabled": False}}, seed=77)
     picks: dict[int, list[str]] = {i: [] for i in range(4)}
     for _ in range(8):
         dp = g.next_decision()

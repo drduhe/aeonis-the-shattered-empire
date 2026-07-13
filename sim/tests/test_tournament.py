@@ -4,7 +4,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from aeonis_sim.runner.tournament import _assign_personas, run_tournament
+from aeonis_sim.runner.tournament import _assign_lords, _assign_personas, run_tournament
 
 
 def test_run_tournament_small(tmp_path):
@@ -73,6 +73,18 @@ def test_mixed_matchmaking_covers_full_roster_at_8p():
     seats = _assign_personas(config, 0)
     assert len(seats) == 8
     assert set(config["personas"]).issubset(set(seats))
+
+
+def test_tournament_lords_default_on_and_rotate():
+    config = {"players": 4}
+    first = _assign_lords(config, 0)
+    second = _assign_lords(config, 1)
+
+    assert first == ["cassian", "seraphel", "vharok", "elyndra"]
+    assert second == ["seraphel", "vharok", "elyndra", "rakhis"]
+    assert _assign_lords(
+        {"players": 4, "lord_asymmetry": {"enabled": False}}, 0
+    ) is None
 
 
 def test_combat_config_forwarded_in_tournament():

@@ -136,7 +136,10 @@ def test_guild_contracts_charges_costs_ap_gold_influence():
 
 
 def test_m4_off_excludes_faction_discoveries():
-    state = build_initial_state({"players": 3}, random.Random(7))
+    state = build_initial_state(
+        {"players": 3, "lord_asymmetry": {"enabled": False}},
+        random.Random(7),
+    )
     p = state.player(0)
     p.ap, p.gold, p.mana, p.influence = 5, 10, 10, 10
     choices = enumerate_research(state, 0)

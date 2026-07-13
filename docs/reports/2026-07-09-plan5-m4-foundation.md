@@ -4,6 +4,8 @@
 
 Plan 5's six launch-Lord signature redesigns are promoted to canon. Nyxara and Thal'rik remain unchanged anchors. This report validates the opt-in M4 simulator foundation; it does **not** claim full Lord balance because unique tiles, remaining abilities, faction discoveries, and Legendary Buildings still belong to the full M4 milestone.
 
+> **2026-07-13 update:** full M4 subsequently passed its architecture gate and a 520-game default review, and is now simulator-default. See `2026-07-13-m4-default-on-review.md`; this memo remains the historical foundation record.
+
 ## Encoded foundation
 
 - Lord identity, sheet-specific starting resources, starting unit mixes, and Lord combat/movement stats.

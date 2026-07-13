@@ -117,6 +117,7 @@ from .lords import (
     apply_entangling_roots,
     apply_sandstride_retreat,
     apply_shadow_sight,
+    configured_roster,
     controls_unique,
     enumerate_desert_tempest,
     enumerate_hit_and_run_moves,
@@ -154,7 +155,13 @@ class Game:
         self.config = dict(config)
         self.seed = seed
         self.rng = random.Random(seed)
-        self.state = build_initial_state(config, self.rng)
+        roster = configured_roster(self.config, int(self.config["players"]))
+        if any(roster):
+            lord_config = dict(self.config.get("lord_asymmetry", {}))
+            lord_config["enabled"] = True
+            lord_config["lords"] = roster
+            self.config["lord_asymmetry"] = lord_config
+        self.state = build_initial_state(self.config, self.rng)
         self.over = False
         self.verdict: Optional[str] = None
         self.choices_log: list = []
@@ -1170,7 +1177,7 @@ class Game:
         return None
 
     def _lord_asymmetry_enabled(self) -> bool:
-        return bool(self.config.get("lord_asymmetry", {}).get("enabled"))
+        return bool(self.config.get("lord_asymmetry", {}).get("enabled", True))
 
     def _start_lord_combat_round(self) -> None:
         combat.prepare_battle_round(self.state, self._battle)

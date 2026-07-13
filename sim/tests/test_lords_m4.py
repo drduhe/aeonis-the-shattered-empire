@@ -36,6 +36,19 @@ def m4_state(players: int = 8):
     )
 
 
+def test_m4_is_default_on_with_explicit_neutral_escape_hatch():
+    game = Game({"players": 3}, seed=21)
+    default = game.state
+    neutral = build_initial_state(
+        {"players": 3, "lord_asymmetry": {"enabled": False}},
+        random.Random(21),
+    )
+
+    assert [p.lord_id for p in default.players] == ROSTER[:3]
+    assert game.config["lord_asymmetry"]["lords"] == ROSTER[:3]
+    assert [p.lord_id for p in neutral.players] == ["", "", ""]
+
+
 def strip_map(state):
     for tile in state.tiles.values():
         tile.units = []

@@ -4,6 +4,8 @@
 
 Separates **sheet strength** (solo: all seats same persona, Lords rotate) from **mixed-seat fit** (personas + Lords both vary). Focus watch from [post-M4 rebaseline](2026-07-12-m4-rebaseline.md): Rakhis, Thal'rik, Vharok, Cassian.
 
+> **2026-07-13 update:** after Dial 3 and the canonical no-upkeep/full-objective rebaseline, M4 was promoted to simulator default-on. The sheet signals below remain tuning history; see `2026-07-13-m4-default-on-review.md` for the decision.
+
 ## Configs
 
 | Config | Mode | Games | Seed |

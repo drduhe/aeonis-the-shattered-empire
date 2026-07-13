@@ -45,6 +45,8 @@ Update cumulative rows after each session.
 
 **Red flags:** any Lord above ~2x or below ~0.5x expected win rate after 8+ games; any Lord nobody voluntarily picks.
 
+**2026-07-13 sim watch:** M4 is now simulator-default after a 520/520 matched review. In the default-on arm, Auriel won 51.1% when seated at 4p and 23.9% at 8p; warmonger won 44.4% at 4p. At 6p, all Lords stayed between 10.5% and 23.2%. Treat Auriel/warmonger 4p as the first balance watch; do not fold it into the default-fidelity decision.
+
 ## 3. VP source distribution
 
 Tally the winner's VP by source each game. Healthy state: no single source dominating across games.

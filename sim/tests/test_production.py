@@ -6,7 +6,10 @@ from aeonis_sim.engine.types import BuildingType, Terrain
 
 
 def make_state():
-    return build_initial_state({"players": 3}, random.Random(5))
+    return build_initial_state(
+        {"players": 3, "lord_asymmetry": {"enabled": False}},
+        random.Random(5),
+    )
 
 
 def test_terrain_and_building_production():

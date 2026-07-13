@@ -20,7 +20,7 @@ from .conftest import advance_to_action_phase, complete_strategy_draft
 
 
 def test_council_follows_strategy_draft():
-    g = Game({"players": 4}, seed=99)
+    g = Game({"players": 4, "lord_asymmetry": {"enabled": False}}, seed=99)
     complete_strategy_draft(g)
     dp = g.next_decision()
     assert dp.kind == "council_propose"

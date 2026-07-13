@@ -410,10 +410,18 @@
         {
           "title": "M4 Lord × Persona Sweep",
           "path": "docs/reports/2026-07-12-m4-lord-persona-sweep.md",
-          "description": "Solo+mixed M4 brackets; Rakhis sheet spike vs Cassian fit; Vharok/Elyndra floors; default-on deferred.",
+          "description": "Historical pre-Dial-3 Lord/persona sweep retained as tuning context for the later default-on decision.",
           "status": "internal",
           "minutes": 8,
           "tags": ["design", "simulation", "balance", "lords"]
+        },
+        {
+          "title": "M4 Default-On Review",
+          "path": "docs/reports/2026-07-13-m4-default-on-review.md",
+          "description": "520-game matched canonical-stack review; promotes full Lord asymmetry to the simulator default.",
+          "status": "internal",
+          "minutes": 7,
+          "tags": ["design", "simulation", "balance", "lords", "m4"]
         },
         {
           "title": "Rakhis Ladder Dial 1",

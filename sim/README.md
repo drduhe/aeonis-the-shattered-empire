@@ -86,11 +86,12 @@ Current baselines: `docs/reports/2026-07-03-current-baselines.md`.
 
 ## M4 Lord asymmetry (full encode)
 
-Opt-in via `lord_asymmetry` (not default-on). Full eight-sheet encode: unique tiles, remaining abilities, faction discoveries, Legendary Buildings.
+Full M4 is the simulator default: unique tiles, remaining abilities, faction discoveries, and Legendary Buildings. Tournament runs rotate the eight launch Lords across seats. Use `"lord_asymmetry": {"enabled": false}` only for an explicit neutral/legacy comparison.
 
 ```
     cd sim && python scripts/regression_check.py --config configs/bracket-m4.json --workers 4
     cd sim && python scripts/regression_check.py --config configs/bracket-m4-ci.json --workers 4
+    cd sim && python scripts/m4_default_review.py
 ```
 
 ## Plan 2/6 tempo + Plan 3 objectives + Plan 4 geometry

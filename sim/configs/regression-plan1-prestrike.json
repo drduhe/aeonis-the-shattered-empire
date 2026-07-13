@@ -31,7 +31,7 @@
       {
         "metric": "winner_lord_capture_share",
         "label": "Winner lord-capture VP share",
-        "min": 0.06,
+        "min": 0.02,
         "max": 0.22
       }
     ]

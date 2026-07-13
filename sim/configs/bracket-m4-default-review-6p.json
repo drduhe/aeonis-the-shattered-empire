@@ -1,0 +1,14 @@
+{
+  "name": "m4-default-review-6p",
+  "players": 6,
+  "games": 80,
+  "seed_base": 152000,
+  "personas": ["warmonger", "economist", "expander", "diplomat", "balanced"],
+  "matchmaking": "mixed",
+  "combat": {"aggressors_edge_mode": "off", "pillage": false},
+  "objectives": {
+    "full_public_deck": true,
+    "exclude_public_ids": ["archmage"]
+  },
+  "seat_rewards": {"seat_of_empire_vp": 1}
+}

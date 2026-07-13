@@ -88,3 +88,7 @@ Each brief replaces or upgrades the *weakest existing ability* — sheets keep t
 ## 8. Sequencing
 
 Executed independently of Plan 1 by expressing Rakhis through existing ZOC and retreat windows. M4 Lord-asymmetry implementation may now proceed without a sheet-redesign blocker.
+
+## 9. Default-on execution record (2026-07-13)
+
+The canonical-stack matched review completed 520/520 games at 4p/6p/8p and promoted full M4 Lord asymmetry to the simulator default. All counts remained inside the accepted pacing, objective-share, and combat bands. Neutral M1–M3 behavior remains available only through explicit `lord_asymmetry.enabled: false`. Auriel/warmonger at 4p and the 8p economist floor remain balance watches; they do not block modeling canonical Lord rules by default. See `../reports/2026-07-13-m4-default-on-review.md`.

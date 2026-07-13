@@ -21,7 +21,7 @@ def test_event_resolves_before_strategy_draft():
 
 
 def test_council_follows_strategy_before_action():
-    g = Game({"players": 4}, seed=102)
+    g = Game({"players": 4, "lord_asymmetry": {"enabled": False}}, seed=102)
     complete_strategy_draft(g)
     dp = g.next_decision()
     assert dp.kind == "council_propose"

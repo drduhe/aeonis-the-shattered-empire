@@ -8,7 +8,10 @@ from aeonis_sim.engine.types import BuildingType, Terrain, Unit, UNIT_STATS, Uni
 
 def test_pop_used_may_exceed_cap_without_invariant_failure():
     """AL-15: involuntary overflow is legal; pool gates voluntary recruit."""
-    s = build_initial_state({"players": 3}, random.Random(2))
+    s = build_initial_state(
+        {"players": 3, "lord_asymmetry": {"enabled": False}},
+        random.Random(2),
+    )
     p = s.players[0]
     # Simulate post-conquest board: many units/buildings without paying the pool.
     for tile in s.controlled(0):

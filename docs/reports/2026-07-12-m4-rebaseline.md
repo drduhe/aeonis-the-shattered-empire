@@ -4,6 +4,8 @@
 
 First multi-count baseline with **full** Lord asymmetry enabled (unique tiles, abilities, discoveries, Legendaries). Compare to M3-off headlines in `2026-07-03-current-baselines.md`.
 
+> **2026-07-13 update:** the matched canonical-stack default review promoted M4 to simulator default-on. See `2026-07-13-m4-default-on-review.md`; the recommendation below is retained as historical context.
+
 ## Configs
 
 | Config | Games | Seed |

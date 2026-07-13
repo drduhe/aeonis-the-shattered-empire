@@ -12,7 +12,10 @@ from aeonis_sim.engine.types import BuildingType, UnitType
 
 
 def make_state(players=4, seed=1):
-    return build_initial_state({"players": players}, random.Random(seed))
+    return build_initial_state(
+        {"players": players, "lord_asymmetry": {"enabled": False}},
+        random.Random(seed),
+    )
 
 
 def test_starting_resources_and_tracks():

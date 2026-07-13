@@ -2,8 +2,8 @@
 
 The module is deliberately data-first: setup/stat differences and small
 cross-system predicates live here, while each owning engine module applies
-the relevant rule.  M4 is opt-in through config["lord_asymmetry"] so legacy
-M1-M3 replays and experiment baselines remain stable.
+the relevant rule. Full M4 is the canonical default; neutral M1-M3 behavior
+remains available through config["lord_asymmetry"]["enabled"] = false.
 """
 from __future__ import annotations
 
@@ -80,7 +80,7 @@ def mark_game_used(state, pid: int, key: str) -> None:
 
 def configured_roster(config: dict, players: int) -> list[str]:
     block = config.get("lord_asymmetry", {})
-    if not block.get("enabled", False):
+    if not block.get("enabled", True):
         return [""] * players
     roster = list(block.get("lords") or LAUNCH_LORDS[:players])
     if len(roster) != players:
