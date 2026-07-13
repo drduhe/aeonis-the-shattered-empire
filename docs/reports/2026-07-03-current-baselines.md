@@ -50,7 +50,7 @@ Mean **6.75** rounds · economist **5.2%** (H8 pass) · balanced **23.0%**
 
 - **Pacing** — **6–8 mean rounds** is the design band (Lever A accepted 2026-07-12). Current M4-on means (~6.75–6.96) are in band.
 - **Default-on M4** deferred pending Lord×persona sweep — see rebaseline recommendation.
-- **Lord outliers** (Rakhis 4p; Thal'rik high-count; Vharok/Cassian floors) → Lord×persona sweep before sheet tuning.
+- **Lord outliers** (Rakhis sheet spike; Thal'rik high; Vharok/Elyndra floors; Cassian fit-sensitive) — see [Lord×persona sweep](2026-07-12-m4-lord-persona-sweep.md). Default-on still deferred.
 
 ---
 

@@ -118,9 +118,10 @@ Pacing is **no longer** a blocker (6–8 band accepted). Flip default-on after L
 
 ## Next actions (ordered)
 
-1. **Lord×persona sweep** — solo/rotate brackets with M4 on to separate sheet strength from persona fit (Rakhis / Thal'rik / Vharok / Cassian).
-2. **Revisit default-on** after (1).
-3. ~~Owner: Lever A pacing~~ — **done 2026-07-12** (design for 6–8 rounds).
+1. **Lord×persona sweep** — ~~solo/rotate brackets with M4 on~~ **done 2026-07-12** — see [sweep report](2026-07-12-m4-lord-persona-sweep.md).
+2. **Owner: Rakhis sheet ladder** (or accept-as-is) before default-on; secondary: Elyndra/Vharok floors.
+3. **Revisit default-on** after (2).
+4. ~~Owner: Lever A pacing~~ — **done 2026-07-12** (design for 6–8 rounds).
 
 ---
 

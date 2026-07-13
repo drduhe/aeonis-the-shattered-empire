@@ -1,0 +1,16 @@
+{
+  "name": "m4-lord-persona-mixed-6p",
+  "players": 6,
+  "games": 150,
+  "seed_base": 97200,
+  "personas": ["warmonger", "economist", "expander", "diplomat", "balanced"],
+  "matchmaking": "mixed",
+  "seat_rewards": {"seat_of_empire_vp": 1},
+  "lord_asymmetry": {
+    "enabled": true,
+    "roster": [
+      "cassian", "seraphel", "vharok", "elyndra",
+      "rakhis", "nyxara", "auriel", "thalrik"
+    ]
+  }
+}

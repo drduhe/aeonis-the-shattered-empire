@@ -398,6 +398,14 @@
           "status": "internal",
           "minutes": 8,
           "tags": ["design", "simulation", "balance", "lords"]
+        },
+        {
+          "title": "M4 Lord × Persona Sweep",
+          "path": "docs/reports/2026-07-12-m4-lord-persona-sweep.md",
+          "description": "Solo+mixed M4 brackets; Rakhis sheet spike vs Cassian fit; Vharok/Elyndra floors; default-on deferred.",
+          "status": "internal",
+          "minutes": 8,
+          "tags": ["design", "simulation", "balance", "lords"]
         }
       ]
     }

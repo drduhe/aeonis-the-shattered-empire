@@ -1,0 +1,16 @@
+{
+  "name": "m4-lord-persona-solo-4p",
+  "players": 4,
+  "games": 200,
+  "seed_base": 97000,
+  "personas": ["warmonger", "economist", "expander", "diplomat", "balanced"],
+  "matchmaking": "solo",
+  "seat_rewards": {"seat_of_empire_vp": 1},
+  "lord_asymmetry": {
+    "enabled": true,
+    "roster": [
+      "cassian", "seraphel", "vharok", "elyndra",
+      "rakhis", "nyxara", "auriel", "thalrik"
+    ]
+  }
+}
