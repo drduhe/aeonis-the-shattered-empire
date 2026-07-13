@@ -209,7 +209,7 @@ Use these as templates; tune numbers during playtests.
 - **Hero of the Realm (Title)**:
   - Eligibility: 5+ Renown.
   - Benefit: +1 Influence per round while held.
-  - VP: 2 VP when first claimed (or 1 VP per round held—pick one scoring model).
+  - VP: 2 VP when first claimed.
 
 - **Magister of Mana (Title)**:
   - Eligibility: Control 3 Mana-producing hexes (Forests/Groves) at Cleanup.

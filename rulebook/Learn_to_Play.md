@@ -307,7 +307,7 @@ Almost everything scores at **Cleanup & Checks**:
 - **Objectives** are verified there, in initiative order, before the victory-threshold check. If the condition holds at that moment, reveal (if secret) and score **2 VP** — meeting a condition mid-round and losing it by Cleanup scores nothing. Exception: objectives marked **Immediate** (like Golden Hoard) score the moment the condition is true. Each card scores once, then is discarded. And **every time you score VP, draw 1 Whisper Card.**
 - **Imperial Seat:** control it at Cleanup for **+1 VP** that round.
 - **Titles** are checked at Cleanup: keep the eligibility or lose the Title (the 2 VP from first claiming it are yours forever).
-- **Legendary Buildings** (2 VP) and **VP-bearing artifacts** (1 VP each) count while you control them — lose the City or the artifact and the VP go with it.
+- **Legendary Buildings** score **2 VP once on construction**; capturing that City scores the captor **1 VP once**. **VP-bearing artifacts** score **1 VP once** when gained (at most two players per artifact). Lost control does not refund VP.
 - **Lord captures** (+1 VP) score immediately when they happen.
 
 You start with 1 public + 1 secret objective; a second secret arrives at Round 3, and effects like Imperial Mandate can draw more (max **3 unscored secrets**).

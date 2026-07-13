@@ -476,6 +476,12 @@ class GameState:
     whisper_discard: list = field(default_factory=list)
     desert_tempest: Optional[dict] = None  # {coord, round, owner}
     trades_this_round: int = 0  # M4 Grand Exchange production tracker
+    # Plan 3 score-once: card_id -> pids who already scored that VP artifact (cap 2).
+    artifact_vp_awarded: dict = field(default_factory=dict)
+    # Legendary building type value -> scored construction VP.
+    legendary_build_vp_awarded: set = field(default_factory=set)
+    # "building_type:pid" -> scored capture VP.
+    legendary_capture_vp_awarded: set = field(default_factory=set)
 
     def player(self, pid: int) -> PlayerState:
         return self.players[pid]
@@ -549,6 +555,11 @@ class GameState:
             "pending_winds_draws": list(self.pending_winds_draws),
             "whisper_deck": list(self.whisper_deck),
             "whisper_discard": list(self.whisper_discard),
+            "artifact_vp_awarded": {
+                k: list(v) for k, v in self.artifact_vp_awarded.items()
+            },
+            "legendary_build_vp_awarded": sorted(self.legendary_build_vp_awarded),
+            "legendary_capture_vp_awarded": sorted(self.legendary_capture_vp_awarded),
         }
         if self.desert_tempest:
             out["desert_tempest"] = dict(self.desert_tempest)
@@ -590,6 +601,11 @@ class GameState:
             whisper_discard=list(d.get("whisper_discard", [])),
             desert_tempest=dict(d["desert_tempest"]) if d.get("desert_tempest") else None,
             trades_this_round=int(d.get("trades_this_round", 0)),
+            artifact_vp_awarded={
+                k: list(v) for k, v in dict(d.get("artifact_vp_awarded", {})).items()
+            },
+            legendary_build_vp_awarded=set(d.get("legendary_build_vp_awarded", [])),
+            legendary_capture_vp_awarded=set(d.get("legendary_capture_vp_awarded", [])),
         )
 
     def copy(self) -> "GameState":
@@ -711,4 +727,9 @@ class GameState:
             whisper_discard=list(self.whisper_discard),
             desert_tempest=dict(self.desert_tempest) if self.desert_tempest else None,
             trades_this_round=self.trades_this_round,
+            artifact_vp_awarded={
+                k: list(v) for k, v in self.artifact_vp_awarded.items()
+            },
+            legendary_build_vp_awarded=set(self.legendary_build_vp_awarded),
+            legendary_capture_vp_awarded=set(self.legendary_capture_vp_awarded),
         )

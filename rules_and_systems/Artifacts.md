@@ -90,7 +90,7 @@ If the Artifact Deck is empty, you may not purge Remnants to draw.
 
 ## VP-Bearing Artifacts
 
-Only these 4 artifacts award VP (**1 VP** each, checked at Cleanup & Checks):
+Only these 4 artifacts award VP (**1 VP once** when first gained; a given artifact awards VP to at most **2 players** per game):
 
 1. **Crown of Aeonis** (Lord Equipment)
 2. **Eternal Forge** (Building Relic)
@@ -120,7 +120,7 @@ All other artifacts provide mechanical effects but no VP. See [Victory](Victory.
 
 **2. Crown of Aeonis**
 - **Category:** Lord Equipment
-- **Effect:** **1 VP** (checked at Cleanup & Checks). You gain +2 Influence during High Council voting. If your Lord is captured, the captor gains this artifact and the VP.
+- **Effect:** Score **1 VP once** when you gain this artifact (2-player cap; see above). You gain +2 Influence during High Council voting. If your Lord is captured, the captor gains this artifact (and may score if under the cap).
 - **Type:** VP-Bearing
 
 **3. Voidwalker's Cloak**
@@ -165,7 +165,7 @@ All other artifacts provide mechanical effects but no VP. See [Victory](Victory.
 **10. Eternal Forge**
 - **Category:** Building Relic
 - **Eligible Buildings:** Forge
-- **Effect:** **1 VP** (checked at Cleanup & Checks). **PRODUCTION:** You may recruit 1 unit at this hex for −1 Gold cost (minimum 1).
+- **Effect:** Score **1 VP once** when you gain this artifact (2-player cap; see above). **PRODUCTION:** You may recruit 1 unit at this hex for −1 Gold cost (minimum 1).
 - **Type:** VP-Bearing
 
 **11. Verdant Hearthstone**
@@ -190,7 +190,7 @@ All other artifacts provide mechanical effects but no VP. See [Victory](Victory.
 
 **14. Shard of the Throne**
 - **Category:** Utility
-- **Effect:** **1 VP** (checked at Cleanup & Checks). **WHEN** you lose a battle where your Lord was present: The winner may take this artifact from you. This artifact may be freely traded between players during a Trade action.
+- **Effect:** Score **1 VP once** when you gain this artifact (2-player cap; see above). **WHEN** you lose a battle where your Lord was present: The winner may take this artifact from you. This artifact may be freely traded between players during a Trade action.
 - **Type:** VP-Bearing
 
 **15. Cartographer's Glass**
@@ -220,7 +220,7 @@ All other artifacts provide mechanical effects but no VP. See [Victory](Victory.
 
 **20. Imperial Seal**
 - **Category:** Utility
-- **Effect:** **1 VP** (checked at Cleanup & Checks). **COUNCIL:** Your proposals cannot be vetoed. **WHEN** a Law or Decree you support would be repealed: You may purge this artifact to prevent the repeal.
+- **Effect:** Score **1 VP once** when you gain this artifact (2-player cap; see above). **COUNCIL:** Your proposals cannot be vetoed. **WHEN** a Law or Decree you support would be repealed: You may purge this artifact to prevent the repeal.
 - **Type:** VP-Bearing + Reactive
 
 **21. Echo of the World Tree**

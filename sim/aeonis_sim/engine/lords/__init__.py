@@ -70,6 +70,10 @@ from .legendaries import (
 
     LEGENDARY_BUILDINGS,
 
+    award_legendary_build_vp,
+
+    award_legendary_capture_vp,
+
     can_build_legendary,
 
     legendary_for_lord,
@@ -164,7 +168,7 @@ __all__ = [
 
     "FACTION_DISCOVERIES", "FACTION_DISCOVERY_IDS", "FactionDiscoverySpec",
 
-    "LEGENDARY_BUILDINGS", "can_build_legendary", "legendary_for_lord",
+    "LEGENDARY_BUILDINGS", "award_legendary_build_vp", "award_legendary_capture_vp", "can_build_legendary", "legendary_for_lord",
 
     "score_legendary_vp",
 

@@ -25,7 +25,15 @@ from .whispers import (
     combat_pre_strike_bonus,
 )
 from .production import apply_tile_production
-from .artifacts import attack_die, defense_die, maybe_transfer_shard, transfer_lord_equipment
+from .artifacts import (
+    attack_die,
+    defense_die,
+    maybe_transfer_shard,
+    transfer_building_relics_on_capture,
+    transfer_lord_equipment,
+)
+from .types import LEGENDARY_BUILDINGS
+from .lords.legendaries import award_legendary_capture_vp
 from .arcane import (
     battle_augury_attack_penalty,
     battle_runes_attack_bonus,
@@ -541,6 +549,10 @@ def finish_battle(state, battle) -> None:
         for origin, u in movers:
             state.tiles[origin].units.remove(u)
             t.units.append(u)
+        transfer_building_relics_on_capture(state, battle.target, battle.attacker)
+        for b in t.buildings:
+            if b in LEGENDARY_BUILDINGS:
+                award_legendary_capture_vp(state, battle.attacker, b)
     elif battle.winner == "defender":
         t.siege = False
         _clear_siege_committed(t)

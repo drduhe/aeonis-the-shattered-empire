@@ -93,13 +93,33 @@ def can_build_legendary(state: GameState, pid: int, btype: BuildingType) -> bool
     return True
 
 
+def award_legendary_build_vp(state: GameState, pid: int, btype: BuildingType) -> bool:
+    """Score 2 VP once when a Legendary is constructed."""
+    if btype not in LEGENDARY_BUILDINGS:
+        return False
+    key = btype.value
+    if key in state.legendary_build_vp_awarded:
+        return False
+    state.legendary_build_vp_awarded.add(key)
+    state.player(pid).add_vp(2, "legendary")
+    return True
+
+
+def award_legendary_capture_vp(state: GameState, pid: int, btype: BuildingType) -> bool:
+    """Score 1 VP once when capturing a City with a Legendary (per building, per capturer)."""
+    if btype not in LEGENDARY_BUILDINGS:
+        return False
+    key = f"{btype.value}:{pid}"
+    if key in state.legendary_capture_vp_awarded:
+        return False
+    state.legendary_capture_vp_awarded.add(key)
+    state.player(pid).add_vp(1, "legendary")
+    return True
+
+
 def score_legendary_vp(state: GameState, pid: int) -> None:
-    """+2 VP per controlled Legendary at Cleanup (artifact-style source key)."""
-    p = state.player(pid)
-    for t in state.controlled(pid):
-        for b in t.buildings:
-            if b in LEGENDARY_BUILDINGS:
-                p.add_vp(2, "legendary")
+    """No-op: Legendaries score on build/capture (Plan 3), not each Cleanup."""
+    _ = (state, pid)
 
 
 # --- Effect helpers (Task 8) ---

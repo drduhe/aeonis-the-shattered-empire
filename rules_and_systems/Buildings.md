@@ -112,7 +112,7 @@ Each Lord has exactly **1 Legendary Building** unique to them. No other Lord may
 - Building a Legendary costs **4 AP** (not the standard 3 AP) plus the building's listed resource cost.
 - Each Legendary has a **faction prerequisite** that must be met before construction.
 - Legendary Buildings occupy **3 Population**.
-- A Legendary Building is worth **2 VP** (checked at Cleanup & Checks). If the City is captured, the captor gains control of the Legendary and its VP.
+- Constructing a Legendary Building scores **2 VP once**. If the City is captured, the captor gains control of the Legendary's effects and scores **1 VP once** (per building, per capturer, per game). VP already scored are permanent (see `Victory.md`).
 - Constructing a Legendary Building grants **+2 Renown** immediately (see `Renown.md`).
 - A Lord may only build **one copy** of their Legendary Building.
 - Cities have a 2-building limit (3 with research). The Legendary counts as one of those slots.

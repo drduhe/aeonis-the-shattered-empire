@@ -190,19 +190,71 @@ def test_legendary_prereq_fails(lord, btype, setup):
     )
 
 
-def test_cleanup_awards_two_vp_while_controlled():
+def test_legendary_scores_two_vp_once_on_build_not_cleanup():
     state = m4_state(["cassian", "seraphel", "vharok"])
     p = state.player(0)
-    home = _clear_city_for_legendary(state, 0)
-    home.buildings = [BuildingType.GRAND_EXCHANGE]
+    p.secret_objectives = []
+    state.shared_public_revealed = []
+    _clear_city_for_legendary(state, 0)
+    _place_markets(state, 0, 2)
+    _stock_for_build(p, gold=20, influence=10, pop=10)
+    ge = [c for c in enumerate_builds(state, 0) if c["building"] == "grand_exchange"]
+    assert ge
     before = p.vp
+    apply_build(state, 0, ge[0], rng=random.Random(1))
+    assert p.vp == before + 2
+    assert p.vp_sources.get("legendary") == 2
     run_cleanup(state, rng=random.Random(2))
     assert p.vp == before + 2
     assert p.vp_sources.get("legendary") == 2
-    # Second cleanup awards again while still controlled (artifact-style).
-    before2 = p.vp
     run_cleanup(state, rng=random.Random(3))
-    assert p.vp == before2 + 2
+    assert p.vp == before + 2
+    assert p.vp_sources.get("legendary") == 2
+
+
+def test_legendary_capture_awards_one_vp_once():
+    from aeonis_sim.engine.combat import finish_battle
+
+    state = m4_state(["cassian", "seraphel", "vharok"])
+    home = _clear_city_for_legendary(state, 0)
+    home.buildings = [BuildingType.GRAND_EXCHANGE]
+    # Simulate prior build award already taken by builder.
+    state.legendary_build_vp_awarded = {BuildingType.GRAND_EXCHANGE.value}
+    state.player(0).add_vp(2, "legendary")
+
+    class Battle:
+        target = home.coord
+        winner = "attacker"
+        attacker = 1
+        defender = 0
+        siege = False
+        cap = 1
+        att_committed = []
+        def_line = []
+        att_line = []
+
+    before = state.player(1).vp
+    finish_battle(state, Battle())
+    assert home.controller == 1
+    assert state.player(1).vp == before + 1
+    assert state.player(1).vp_sources.get("legendary") == 1
+    # Recapture by same player does not re-award.
+    home.controller = 0
+
+    class Battle2:
+        target = home.coord
+        winner = "attacker"
+        attacker = 1
+        defender = 0
+        siege = False
+        cap = 1
+        att_committed = []
+        def_line = []
+        att_line = []
+
+    before2 = state.player(1).vp
+    finish_battle(state, Battle2())
+    assert state.player(1).vp == before2
 
 
 def test_iron_citadel_upkeep_charged():

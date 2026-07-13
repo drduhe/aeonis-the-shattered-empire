@@ -58,15 +58,17 @@ Players earn **Victory Points (VP)** throughout the game by achieving key object
 
 ### 4. Artifacts and Legendary Buildings
 
-- **Artifact VP:** Only specific named artifacts award VP. Each VP-bearing artifact is worth **1 VP** while you control it (checked at Cleanup & Checks). VP-bearing artifacts:
+**VP are permanent.** Once scored, VP are never removed, even if the source (hex, artifact, building, title) is later lost.
+
+- **Artifact VP:** Only specific named artifacts award VP. Score **1 VP once** when you first gain control of that artifact. Stealing or capturing it scores the new holder **1 VP once**. Cap: a given artifact awards VP to at most **2 players** per game. VP-bearing artifacts:
   - **Crown of Aeonis** (Lord Equipment) — transfers when your Lord is captured.
-  - **Eternal Forge** (Building Relic) — transfers when the attached hex changes control.
+  - **Eternal Forge** (Building Relic) — stays on the hex; new controller may score if under the 2-player cap.
   - **Shard of the Throne** (Utility) — transfers to the combat winner when you lose a battle where your Lord was present. May also be freely traded.
   - **Imperial Seal** (Utility) — may be purged to prevent a Law or Decree from being repealed.
-  - **Legendary Buildings:** Each Lord has one unique Legendary Building (faction capstone). Each is worth **2 VP** (checked at Cleanup & Checks). If the City containing a Legendary Building is captured, the captor gains control and its VP. Constructing a Legendary Building also grants **+2 Renown** immediately. See `Buildings.md`.
+- **Legendary Buildings:** Each Lord has one unique Legendary Building (faction capstone). Score **2 VP once on construction**. If the City containing a Legendary Building is captured, the captor scores **1 VP once** (per building, per capturer, per game) and gains control of the building's effects. Constructing a Legendary Building also grants **+2 Renown** immediately. See `Buildings.md`.
 - See `Artifacts.md` for the full artifact system.
 
-*Why It Works:* VP-bearing artifacts are high-value targets that drive conflict and negotiation. Most artifacts provide power, not points, preventing snowball scoring.
+*Why It Works:* Score-once awards keep conflict over artifacts and Legendaries without Cleanup drip bookkeeping or VP transfer refunds.
 
 ---
 
@@ -109,11 +111,9 @@ Players earn **Victory Points (VP)** throughout the game by achieving key object
 
 ## Innovative Mechanics to Enhance Victory Points
 
-### 1. Purchased Points (Market for Influence)
+### 1. Purchased Points — removed
 
-- Players can spend **resources** to buy VP in specific scenarios:
-  - **Example:** Use 5 Influence in the High Council to purchase **1 VP** via a motion.
-  - **Example:** Use 10 Gold to fund a major event and gain **1 VP**.
+Players may **not** spend Influence or Gold to buy VP as a general action. Council motions and events may still award VP as printed effects (politics and drama, not a purchase market).
 
 ### 2. Secret Endgame Scoring
 

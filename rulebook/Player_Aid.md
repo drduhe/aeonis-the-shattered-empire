@@ -105,7 +105,7 @@
 | Bank | City | 5 Gold | 1 | Once per round at Production: convert 2 Mana→3 Gold, 2 Gold→3 Mana, or 2 Gold→3 Influence |
 | Castle | City | 6 Gold (upkeep 2 Gold) | 2 | +3 Population Cap; +2 Defense in this City |
 | Market | City | 2 Gold, 2 Influence | 1 | Once per round: initiate one Trade at 0 AP |
-| Legendary | Your City | Per Lord sheet | 3 | Unique per Lord; prerequisite required; **2 VP**; +2 Renown on build |
+| Legendary | Your City | Per Lord sheet | 3 | Unique per Lord; prerequisite; **2 VP once on build** (+ **1 VP once** to City captor); +2 Renown on build |
 
 Slots: 1 building per basic terrain tile; 2 per City (3 with research).
 

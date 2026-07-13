@@ -145,7 +145,7 @@ All buildings from `Buildings.md` are available:
 
 **Advanced:** Guild Hall, Forge, Academy, Bank, Market, Castle
 
-**Legendary (faction capstones):** Each Lord has 1 unique Legendary Building. See `Buildings.md` for prerequisites, costs, and effects. Legendary Buildings cost **4 AP** to construct, occupy **3 Population**, and are worth **2 VP**.
+**Legendary (faction capstones):** Each Lord has 1 unique Legendary Building. See `Buildings.md` for prerequisites, costs, and effects. Legendary Buildings cost **4 AP** to construct, occupy **3 Population**, score **2 VP once on construction**, and award the City's captor **1 VP once**.
 
 **Build action cost: 3 AP** for standard buildings, **4 AP** for Legendary Buildings (see `Actions.md`).
 
@@ -287,7 +287,7 @@ Use `rules_and_systems/Artifacts.md` as written. The Artifact system is fully en
 
 **Remnants:** Earned from exploration, Ruins hex control (1/round at Production & Upkeep), Arcane research, Whisper Cards, and Events. Purge 3 at any time on your turn to draw an artifact (free action, 0 AP).
 
-**VP:** Only 4 specific artifacts award VP (1 VP each, checked at Cleanup & Checks): Crown of Aeonis, Eternal Forge, Shard of the Throne, Imperial Seal.
+**VP:** Only 4 specific artifacts award VP (**1 VP once** when gained; at most 2 players per artifact): Crown of Aeonis, Eternal Forge, Shard of the Throne, Imperial Seal.
 
 **Card summary by category:**
 - **Lord Equipment (7):** Blade of the Last Emperor, Crown of Aeonis, Voidwalker's Cloak, Emberstone Gauntlet, Warden's Aegis, Whisperer's Mask, Scepter of Command

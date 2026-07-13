@@ -137,7 +137,7 @@ Every card below is worth **2 VP** and uses the **default scoring window (Cleanu
 
 - **Category:** Territory
 - **Condition:** Control the Imperial Seat at Cleanup & Checks.
-- **Clarifications:** This is separate from, and in addition to, the Imperial Seat's own +1 VP per round (see `Victory.md` and `First_Playable_Packet.md` §3.2).
+- **Clarifications:** This is separate from, and in addition to, the Imperial Seat's **Coronation Rite** (see `Victory.md` and `First_Playable_Packet.md` §3.2).
 
 #### Twin Cities
 
@@ -193,13 +193,13 @@ Every card below is worth **2 VP** and uses the **default scoring window (Cleanu
 
 - **Category:** Economy
 - **Condition:** Have your Legendary Building in play, in a City you control.
-- **Clarifications:** "Your" Legendary Building is the faction capstone on your Lord Sheet (see `Buildings.md`). If the City containing it has been captured, you do not meet this condition (the captor gains the building's own 2 VP, but cannot score this card — it is not their Legendary Building).
+- **Clarifications:** "Your" Legendary Building is the faction capstone on your Lord Sheet (see `Buildings.md`). If the City containing it has been captured, you do not meet this condition (the captor may have scored **1 VP once** for the capture, but cannot score this card — it is not their Legendary Building).
 
 #### Heir of Aeonis
 
 - **Category:** Territory
 - **Condition:** Control the Imperial Seat at 2 consecutive Cleanup & Checks.
-- **Clarifications:** Separate from the Imperial Seat's +1 VP per round and from the 3-consecutive-round +2 VP bonus in `Victory.md`; all may apply.
+- **Clarifications:** Separate from the Imperial Seat's **Coronation Rite** and its third-Rite +2 VP bonus in `Victory.md`; all may apply.
 - **Tracking:** Place a progress marker on this card at the first Cleanup & Checks at which you control the Imperial Seat. If you do not control it at a later Cleanup & Checks, remove the marker. Score at the second consecutive check.
 
 #### Archmage

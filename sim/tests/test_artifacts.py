@@ -74,17 +74,32 @@ def test_building_relic_attach():
     assert city.building_relic == "eternal_forge"
 
 
-def test_vp_artifact_scoring_at_cleanup():
+def test_vp_artifact_scores_once_on_gain_not_cleanup():
     state = build_initial_state({"players": 3}, random.Random(5))
     p = state.player(0)
     p.secret_objectives = []
     state.shared_public_revealed = []
-    p.lord_equipment.append("crown_of_aeonis")
-    run_cleanup(state)
+    gain_artifact(state, 0, "crown_of_aeonis")
     assert p.vp == 1
     assert p.vp_sources.get("artifact") == 1
     run_cleanup(state)
-    assert p.vp == 2
+    assert p.vp == 1
+    run_cleanup(state)
+    assert p.vp == 1
+
+
+def test_vp_artifact_steal_awards_thief_once_cap_two_players():
+    state = build_initial_state({"players": 3}, random.Random(6))
+    gain_artifact(state, 0, "crown_of_aeonis")
+    assert state.player(0).vp_sources.get("artifact") == 1
+    pending = transfer_lord_equipment(state, 0, 1)
+    assert pending is None
+    assert state.player(1).vp_sources.get("artifact") == 1
+    assert state.player(0).vp == 1  # permanence: no refund
+    # Third holder does not score (cap 2 players per artifact).
+    transfer_lord_equipment(state, 1, 2)
+    assert state.player(2).vp_sources.get("artifact") is None
+    assert "crown_of_aeonis" in state.player(2).lord_equipment
 
 
 def test_lord_capture_transfers_equipment():

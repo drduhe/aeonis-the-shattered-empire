@@ -122,4 +122,6 @@ def apply_build(state, pid, choice, rng=None) -> None:
         tile.controller = pid  # AL-6
     if btype in LEGENDARY_BUILDINGS:
         from .lords.discoveries import bump_renown
+        from .lords.legendaries import award_legendary_build_vp
         bump_renown(state, pid, 2, rng)
+        award_legendary_build_vp(state, pid, btype)

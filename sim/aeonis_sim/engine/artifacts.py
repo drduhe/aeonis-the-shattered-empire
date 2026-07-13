@@ -184,6 +184,18 @@ def _bump_lord_hp(state: GameState, pid: int, delta: int) -> None:
             u.hp = max(1, u.hp + delta)
 
 
+def maybe_award_artifact_vp(state: GameState, pid: int, card_id: str) -> bool:
+    """Score 1 VP once when first gaining a VP artifact (cap 2 players per card)."""
+    if card_id not in VP_ARTIFACTS:
+        return False
+    awarded = state.artifact_vp_awarded.setdefault(card_id, [])
+    if pid in awarded or len(awarded) >= 2:
+        return False
+    awarded.append(pid)
+    state.player(pid).add_vp(1, "artifact")
+    return True
+
+
 def gain_artifact(state: GameState, pid: int, card_id: str) -> str | None:
     """Assign artifact to player. Returns pending kind or None.
 
@@ -194,20 +206,25 @@ def gain_artifact(state: GameState, pid: int, card_id: str) -> str | None:
         p.lord_equipment.append(card_id)
         if card_id == "wardens_aegis":
             _bump_lord_hp(state, pid, 1)
+        maybe_award_artifact_vp(state, pid, card_id)
         if len(p.lord_equipment) > 2:
             return "discard_lord"
     elif card_id in BUILDING_RELICS:
         hexes = eligible_attach_hexes(state, pid, card_id)
         if not hexes:
             p.pending_building_relic = card_id
+            maybe_award_artifact_vp(state, pid, card_id)
             return "attach_building"
         if len(hexes) == 1:
             attach_building_relic(state, pid, card_id, hexes[0])
         else:
             p.pending_building_relic = card_id
+            maybe_award_artifact_vp(state, pid, card_id)
             return "attach_building"
+        maybe_award_artifact_vp(state, pid, card_id)
     else:
         p.utilities.append(card_id)
+        maybe_award_artifact_vp(state, pid, card_id)
     return None
 
 
@@ -230,18 +247,18 @@ def transfer_lord_equipment(state: GameState, from_pid: int, to_pid: int) -> str
     pending = None
     for card_id in cards:
         dst.lord_equipment.append(card_id)
+        maybe_award_artifact_vp(state, to_pid, card_id)
         if len(dst.lord_equipment) > 2:
             pending = "discard_lord"
     return pending
 
 
 def transfer_building_relics_on_capture(state: GameState, coord, new_pid: int) -> None:
-    """Building relic stays on hex; new controller benefits (Artifacts.md)."""
+    """Building relic stays on hex; new controller may score VP once (Artifacts.md)."""
     tile = state.tiles[coord]
     if tile.building_relic is None:
         return
-    # No player-area field — relic remains attached to the building.
-    _ = new_pid
+    maybe_award_artifact_vp(state, new_pid, tile.building_relic)
 
 
 def maybe_transfer_shard(state: GameState, loser_pid: int, winner_pid: int, lord_present: bool) -> None:
@@ -252,6 +269,7 @@ def maybe_transfer_shard(state: GameState, loser_pid: int, winner_pid: int, lord
         return
     p.utilities.remove("shard_of_the_throne")
     state.player(winner_pid).utilities.append("shard_of_the_throne")
+    maybe_award_artifact_vp(state, winner_pid, "shard_of_the_throne")
 
 
 def enumerate_purge_draw(state: GameState, pid: int) -> list[dict]:
@@ -332,17 +350,8 @@ def enumerate_discard_lord(state: GameState, pid: int) -> list[dict]:
 
 
 def score_artifact_vp(state: GameState, pid: int) -> None:
-    """+1 VP per VP-bearing artifact held (Cleanup & Checks)."""
-    p = state.player(pid)
-    for card_id in p.lord_equipment:
-        if card_id in VP_ARTIFACTS:
-            p.add_vp(1, "artifact")
-    for card_id in p.utilities:
-        if card_id in VP_ARTIFACTS:
-            p.add_vp(1, "artifact")
-    for t in state.controlled(pid):
-        if t.building_relic in VP_ARTIFACTS:
-            p.add_vp(1, "artifact")
+    """No-op: VP artifacts score once on gain (Plan 3), not each Cleanup."""
+    _ = (state, pid)
 
 
 def attack_die(state: GameState, pid: int, unit) -> int:

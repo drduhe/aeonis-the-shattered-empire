@@ -166,6 +166,14 @@ These entries show the long-form card text for a few events. The canonical deck 
 
 ## Full Deck Lists (Full Game)
 
+### Event VP budget (Plan 3 D5)
+
+Event-driven VP stays in the design (dramatic moments), but:
+
+- **No single event awards more than 1 VP** to one player.
+- Across both full decks, expect **at most ~2 VP** from events to one player per game in typical play.
+- Prefer tempo, Remnants, Renown, and Influence over raw VP on event cards.
+
 ### Deck usage
 
 - **First Playable:** use only the cards marked **(FP)** below — 12 Global Events and 9 Exploration Events. The printing list for playtests stays in `../playtest/First_Playable_Packet.md`, section 4.5; that packet remains the reference for what is "on" in playtests.
@@ -210,7 +218,7 @@ These entries show the long-form card text for a few events. The canonical deck 
 - **Ley Line Flux** (persistent): **This round and the next round**: each **Forest** hex produces +1 Mana during Production & Upkeep, and entering or exiting a **Portal** hex costs **0 AP** (instead of 1; Portal-to-Portal travel is unchanged, see `Movement.md`). **Duration:** 2 rounds. **Expiry:** discard this card at the second Cleanup & Checks after it resolves.
 - **The Shattering Storm** (crisis, persistent): The wound that broke the empire tears open above the old capital.
   - Place a **Storm marker** on the **Imperial Seat** hex and on each hex adjacent to it.
-  - While a hex has a Storm marker: it produces **nothing** during Production & Upkeep; entering it costs **+1 AP**; and the Imperial Seat's **+1 VP at Cleanup & Checks is suspended** while its marker remains (see `Victory.md`).
+  - While a hex has a Storm marker: it produces **nothing** during Production & Upkeep; entering it costs **+1 AP**; and the Imperial Seat's **Coronation Rite** (see `Victory.md`) **cannot be scored** while its marker remains.
   - **Cleansing:** On your turn in the Action Phase, if you have a unit on a Storm hex, you may spend **2 AP** to remove that hex's Storm marker (this is your action for the turn). You gain **+1 Renown** for each marker you remove.
   - **Duration:** persistent. **Expiry:** at the second Cleanup & Checks after this event resolves, remove all remaining Storm markers and discard this card.
   - **Setup note:** shuffle this card into the bottom half of the global deck. *(A shared threat with no NPC units: the storm punishes whoever holds the center — usually the leader — and pays Renown to whoever does the cleanup work.)*
