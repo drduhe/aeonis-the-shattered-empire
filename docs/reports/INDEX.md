@@ -18,6 +18,7 @@
 | [Persona parity diagnosis](2026-07-03-persona-parity-diagnosis.md) | Bot vs design-pressure methodology |
 | [Plan 1 combat ladder](2026-07-03-plan1-combat-ladder.md) | Edge/Pillage variants; Pre-Strike for human test |
 | [Plan 5 / M4 foundation](2026-07-09-plan5-m4-foundation.md) | Six signature redesigns promoted; 40/40 stability smoke; full M4 entry scope |
+| [M4 full encode gate](2026-07-12-m4-gate.md) | 100/100 completed; unique tiles, abilities, discoveries, Legendaries; AL-49 closed |
 
 ---
 

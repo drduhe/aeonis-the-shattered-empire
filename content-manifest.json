@@ -382,6 +382,14 @@
           "status": "internal",
           "minutes": 5,
           "tags": ["design", "simulation", "balance", "lords"]
+        },
+        {
+          "title": "M4 Full Encode Gate",
+          "path": "docs/reports/2026-07-12-m4-gate.md",
+          "description": "100-game M4 Lord-asymmetry gate: unique tiles, abilities, discoveries, Legendary Buildings.",
+          "status": "internal",
+          "minutes": 5,
+          "tags": ["design", "simulation", "balance", "lords"]
         }
       ]
     }
