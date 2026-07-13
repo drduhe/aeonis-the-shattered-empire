@@ -22,9 +22,10 @@
 
 ## Open design questions (sim-flagged, owner decision needed)
 
-- **Economist viability / objective tempo** — Lever B **decided 2026-07-03**: **Merchant Lord** (public, 8+ Gold) landed PROPOSED in the First Playable row; first sim read lifted economist 2.5% → 6.4% mixed 4p (memo §6). **E1/E2/E3/E5 killed 2026-07-03** — single-knob economy easing and staged row reveal do not lift 6p economist; see [sweep conclusion](../reports/2026-07-03-early-economy-sweep-conclusion.md). Still open: **Lever A pacing** — mean rounds drifted 6.4 → 6.1 (target 8–10); H12 confirmation at M3 gate.
-- **Attacker win rate** — contested 64.3% post-Merchant-Lord, now inside Plan 1's 55–65% band; keep watching, sim-only signal.
+- **Economist viability / objective tempo** — Lever B **decided 2026-07-03**: **Merchant Lord** (public, 8+ Gold) landed PROPOSED in the First Playable row. **E1/E2/E3/E5 killed 2026-07-03**. **Post-M4 (2026-07-12):** economist **6.5% / 5.2%** at mixed 6p/8p (H8 pass) with full Lord asymmetry — see [rebaseline](../reports/2026-07-12-m4-rebaseline.md). Still open: **Lever A pacing** — mean rounds **6.75–6.96** with M4 on (target 8–10).
+- **Attacker win rate** — contested ~58% at M4-on mixed 4p (inside Plan 1 band); 6–8p still hot (~68–71%).
 - **Council pass rate** — ~29% after motion-aware voting; acceptable band TBD (40–60% suggested).
+- **M4 default-on** — deferred pending pacing call and/or Lord×persona sweep (Rakhis / Thal'rik / floors).
 
 ## Sim track
 

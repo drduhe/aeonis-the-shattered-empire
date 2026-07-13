@@ -1,0 +1,16 @@
+{
+  "name": "m4-baseline-8p-mixed",
+  "players": 8,
+  "games": 200,
+  "seed_base": 96200,
+  "personas": ["balanced", "expander", "warmonger", "economist", "diplomat"],
+  "matchmaking": "mixed",
+  "seat_rewards": {"seat_of_empire_vp": 1},
+  "lord_asymmetry": {
+    "enabled": true,
+    "roster": [
+      "cassian", "seraphel", "vharok", "elyndra",
+      "rakhis", "nyxara", "auriel", "thalrik"
+    ]
+  }
+}

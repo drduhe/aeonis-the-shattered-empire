@@ -1,8 +1,10 @@
-# Current sim baselines (M3)
+# Current sim baselines (M4-on)
 
-**Updated:** 2026-07-03 · Regenerate tournament reports to `/tmp` or a dated file — stored snapshots are optional.
+**Updated:** 2026-07-12 · Regenerate tournament reports as needed — stored snapshots are optional.
 
-**Default stack:** M3 engine + Lever C expander brakes + S1 `seat_of_empire_vp: 1`.
+**Default stack for CI / M3 gates:** M3 engine + Lever C expander brakes + S1 `seat_of_empire_vp: 1` (**`lord_asymmetry` still opt-in**).
+
+**Balance read stack:** same + full M4 asymmetry — see [post-M4 rebaseline](2026-07-12-m4-rebaseline.md).
 
 ---
 
@@ -10,46 +12,45 @@
 
 | Config | Use |
 | --- | --- |
-| `bracket-m2-smoke.json` | Mixed 4p smoke (100 games) — primary balance bracket |
-| `bracket-m2-4p.json` | Solo 4p ladder (200 games) |
-| `bracket-6p-mixed.json` / `bracket-8p-mixed.json` | High-count mixed |
-| `bracket-m2-ci.json` / `bracket-m3-ci.json` | CI gates (20 games) |
+| `bracket-m2-smoke.json` | Mixed 4p smoke (100) — M3-off primary CI-adjacent balance |
+| `bracket-m2-4p.json` | Solo 4p ladder (200) |
+| `bracket-6p-mixed.json` / `bracket-8p-mixed.json` | High-count mixed (M3-off) |
+| `bracket-m4-baseline-4p.json` / `-6p` / `-8p` | **M4-on** mixed baselines |
+| `bracket-m4.json` / `bracket-m4-ci.json` | M4 completeness gates |
+| `bracket-m2-ci.json` / `bracket-m3-ci.json` / `bracket-m4-ci.json` | CI gates |
 | `regression-plan{1,2}-*.json` | Plan 1/2 metric gates (CI) |
 
 ---
 
-## Headlines (last run 2026-07-03)
+## Headlines — M4-on (2026-07-12)
 
-### Mixed 4p (`bracket-m2-smoke.json`, 100 games)
+### Mixed 4p (`bracket-m4-baseline-4p.json`, 100)
 
-Mean **6.2** rounds · economist **10.7%** · expander **23.3%** · max persona balanced **33.8%**
+Mean **6.84** rounds · economist **10.0%** · warmonger **36.4%** · expander **13.3%**
 
-### Mixed 6p (`bracket-6p-mixed.json`, 200 games)
+### Mixed 6p (`bracket-m4-baseline-6p.json`, 200)
 
-Mean **6.4** rounds · economist **3.6%** (H8 fail) · warmonger **27.2%**
+Mean **6.96** rounds · economist **6.5%** (H8 pass) · balanced **25.7%**
 
-### Mixed 8p (`bracket-8p-mixed.json`, 200 games)
+### Mixed 8p (`bracket-m4-baseline-8p.json`, 200)
 
-Mean **6.2** rounds · economist **2.0%** (H8 fail) · max persona **22.6%**
+Mean **6.75** rounds · economist **5.2%** (H8 pass) · balanced **23.0%**
 
-### Solo 4p (`bracket-m2-4p.json`, 200 games)
+### Prior M3-off (2026-07-03) for comparison
 
-~**25%** each persona (parity sanity)
+| Bracket | Mean rounds | Economist |
+| --- | ---: | ---: |
+| 4p | 6.2 | 10.7% |
+| 6p | 6.4 | 3.6% |
+| 8p | 6.2 | 2.0% |
 
 ---
 
-## Hypothesis scoreboard (mixed 4p)
+## Open
 
-| ID | Status | Read |
-| --- | --- | --- |
-| H1 | killed | Seat+streak 6.5% of VP |
-| H2 | killed | Avg margin 3.1 VP |
-| H3 | killed | Winner objective share 79.5% |
-| H7 | 4p inconclusive | Expander 23.3%; max 33.8% |
-| H8 | 4p met, 6–8p not | 10.7% / 3.6% / 2.0% |
-| H12 | killed | Economist 10.7% at 4p |
-
-Full H1–H12 table lives in tournament `--report` output when you regenerate.
+- **Pacing** still short of 8–10 mean rounds (Lever A).
+- **Default-on M4** deferred — see rebaseline recommendation.
+- **Lord outliers** (Rakhis 4p; Thal'rik high-count; Vharok/Cassian floors) → Lord×persona sweep before sheet tuning.
 
 ---
 
@@ -57,10 +58,7 @@ Full H1–H12 table lives in tournament `--report` output when you regenerate.
 
 ```bash
 cd sim
-py -3.11 -m aeonis_sim.runner.tournament --config configs/bracket-m2-smoke.json --report /tmp/baseline-4p.md --workers 4
-py -3.11 -m aeonis_sim.runner.tournament --config configs/bracket-6p-mixed.json --report /tmp/baseline-6p.md --workers 4
-py -3.11 -m aeonis_sim.runner.tournament --config configs/bracket-8p-mixed.json --report /tmp/baseline-8p.md --workers 4
-py -3.11 -m aeonis_sim.runner.tournament --config configs/bracket-m2-4p.json --report /tmp/baseline-solo-4p.md --workers 4
+python -m aeonis_sim.runner.tournament --config configs/bracket-m4-baseline-4p.json --workers 4
+python -m aeonis_sim.runner.tournament --config configs/bracket-m4-baseline-6p.json --workers 4
+python -m aeonis_sim.runner.tournament --config configs/bracket-m4-baseline-8p.json --workers 4
 ```
-
-After engine changes, update headlines in this file or `docs/reports/INDEX.md`.

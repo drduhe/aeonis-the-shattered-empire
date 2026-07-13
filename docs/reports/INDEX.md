@@ -1,8 +1,8 @@
 # Sim reports — index
 
-**Updated:** 2026-07-03 · Sim-only unless noted. Full tournament dumps are **regenerable** — conclusions live in the memos below.
+**Updated:** 2026-07-12 · Sim-only unless noted. Full tournament dumps are **regenerable** — conclusions live in the memos below.
 
-**Engine:** M3 card systems + opt-in M4 Lord foundation + Lever C brakes + S1 seat VP. **245 pytest** passing.
+**Engine:** M3 card systems + full M4 Lord asymmetry (opt-in) + Lever C brakes + S1 seat VP. **332+ pytest** passing.
 
 ---
 
@@ -19,6 +19,7 @@
 | [Plan 1 combat ladder](2026-07-03-plan1-combat-ladder.md) | Edge/Pillage variants; Pre-Strike for human test |
 | [Plan 5 / M4 foundation](2026-07-09-plan5-m4-foundation.md) | Six signature redesigns promoted; 40/40 stability smoke; full M4 entry scope |
 | [M4 full encode gate](2026-07-12-m4-gate.md) | 100/100 completed; unique tiles, abilities, discoveries, Legendaries; AL-49 closed |
+| [Post-M4 rebaseline + pacing](2026-07-12-m4-rebaseline.md) | M4-on 4/6/8p mixed; economist H8 pass at 6–8p; pacing still short; default-on deferred |
 
 ---
 
