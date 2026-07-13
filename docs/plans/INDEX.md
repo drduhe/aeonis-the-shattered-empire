@@ -15,7 +15,7 @@
 | 3 | [VP legibility (full)](2026-07-02-plan-vp-legibility.md) | PARTIAL — MVP promoted | MVP encoded (shared row, Coronation Rite, VP permanence) | Remaining: D4 purchased-VP cut, D5 event audit, artifact/building score-once, 24-card audit |
 | 3b | [VP legibility MVP](2026-07-03-plan-vp-legibility-mvp.md) | **PROMOTED** (sim-validated 2026-07-03, `rules_and_systems/INDEX.md`) | Fully encoded | Human confirmation when playtests resume |
 | 4 | [High player count](2026-07-02-plan-high-player-count.md) | PROPOSED | Not encoded (Docket, Whisper scaling, map construction) | Docket text + `Map_Construction.md` authoring can start anytime; 6p/8p tables gate promotion |
-| 5 | [Core Lords parity](2026-07-02-plan-core-lords-parity.md) | **PROMOTED 2026-07-09** | M4 foundation live: identities, starting states/stats, signature hooks, rotating Lord brackets | Full M4 encode: unique tiles, remaining abilities, faction discoveries, Legendary Buildings |
+| 5 | [Core Lords parity](2026-07-02-plan-core-lords-parity.md) | **PROMOTED 2026-07-09** | **M4 full encode DONE** (2026-07-12): unique tiles, remaining abilities, faction discoveries, Legendary Buildings; gate `bracket-m4.json` 100/100 | Optional balance watch from [M4 gate report](../reports/2026-07-12-m4-gate.md); keep `lord_asymmetry` opt-in |
 | 6 | [Bookkeeping](2026-07-02-plan-bookkeeping.md) | PROPOSED | Not encoded | `Trade_Taxes.md` rewrite + Renown milestone track are no-gate hygiene; start anytime |
 | 7 | [Seat reward sweep](2026-07-03-plan-seat-reward-sweep.md) | **S1 adopted** (sim default) | `seat_rewards.seat_of_empire_vp` live | S2+ if revisited — see [H7 conclusion](../reports/2026-07-03-h7-calibration-sweep-conclusion.md) |
 | 8 | [Early economy impact](2026-07-03-plan-early-economy-impact.md) | **E1/E2/E3/E5 killed** | `economy.*` + `objectives.staged_economy_opening` toggles live | Next: **E6** (City gold) or **E4/E7** if revisited |
@@ -33,7 +33,7 @@
 - **Persona bots + tournaments — DONE:** 5 personas, solo/rotate/random/mixed matchmaking, balance reports, hypothesis evaluators (H1–H9), regression gates.
 - **M2 politics layer — DONE** (2026-07-03): Event phase, Strategy draft + initiative, High Council (propose/vote/lobby), structured negotiation (binding trades, tracked promises), M2 gate green (CI `bracket-m2-ci.json`, smoke 100/100).
 - **M3 card systems — DONE** (2026-07-03): [2026-07-03-agent-playtest-sim-implementation-plan-m3.md](2026-07-03-agent-playtest-sim-implementation-plan-m3.md) — buildings, Remnants/exploration, Artifacts/Sites, Arcane Tier I, secrets, Whispers (26), strategy primaries, H10–H12; gate green (CI `bracket-m3-ci.json`, smoke 100/100, solo 200/200, 236 pytest). Merchant Lord H12 killed at 5.3% economist mixed 4p.
-- **M4 Lord asymmetry — UNBLOCKED:** Plan 5 redesigns and the opt-in simulator foundation are live. Remaining M4 scope is the full eight-sheet encode (all passives/actives, unique tiles, faction discoveries, Legendary Buildings) and its 100-game gate.
+- **M4 Lord asymmetry — DONE** (2026-07-12): full eight-sheet encode behind opt-in `lord_asymmetry` (unique tiles, remaining abilities, faction discoveries, Legendary Buildings). Gate green: CI `bracket-m4-ci.json`, local `bracket-m4.json` 100/100. See [M4 gate report](../reports/2026-07-12-m4-gate.md). AL-49 closed; AL-50–52 resolved.
 
 ## Strategic context
 

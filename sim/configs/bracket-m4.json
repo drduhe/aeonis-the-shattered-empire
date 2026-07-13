@@ -1,0 +1,26 @@
+{
+  "name": "m4-gate-4p-mixed",
+  "players": 4,
+  "games": 100,
+  "seed_base": 95000,
+  "personas": ["warmonger", "economist", "expander", "diplomat", "balanced"],
+  "matchmaking": "mixed",
+  "seat_rewards": {"seat_of_empire_vp": 1},
+  "lord_asymmetry": {
+    "enabled": true,
+    "roster": [
+      "cassian", "seraphel", "vharok", "elyndra",
+      "rakhis", "nyxara", "auriel", "thalrik"
+    ]
+  },
+  "regression": {
+    "plan": "m4",
+    "step": "gate",
+    "gates": [
+      {"metric": "crash_rate", "label": "Crash rate", "max": 0.0},
+      {"metric": "timeout_rate", "label": "Timeout rate", "max": 0.0},
+      {"metric": "degenerate_rate", "label": "Degenerate rate", "max": 0.0},
+      {"metric": "completed_rate", "label": "Completed rate", "min": 1.0}
+    ]
+  }
+}
