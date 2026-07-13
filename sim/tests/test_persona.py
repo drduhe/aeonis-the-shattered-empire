@@ -5,6 +5,7 @@ import json
 
 from aeonis_sim.agents.factory import agents_from_config, make_agents, parse_persona_list
 from aeonis_sim.agents.features import (
+    _build_features,
     _move_features,
     evaluate_state,
     score_action,
@@ -92,6 +93,21 @@ def test_build_raises_economy_feature():
     feats = score_action(state, pid, farm, DecisionPoint(kind="action", pid=pid, choices=[]))
     assert feats.get("economy_delta", 0) > 0
     assert feats.get("next_economy", before) >= before
+
+
+def test_builder_delta_only_when_builder_is_open():
+    state = build_initial_state({"players": 3}, random.Random(31))
+    state.shared_public_revealed = ["frontier_lord"]
+
+    unavailable = _build_features(state, 0, {"building": "farm"})
+    state.shared_public_revealed.append("builder")
+    available = _build_features(state, 0, {"building": "farm"})
+    state.player(0).shared_scored.append("builder")
+    scored = _build_features(state, 0, {"building": "farm"})
+
+    assert unavailable["builder_delta"] == 0.0
+    assert available["builder_delta"] > 0.0
+    assert scored["builder_delta"] == 0.0
 
 
 def test_record_includes_personas():

@@ -1,0 +1,10 @@
+{
+  "name": "economist-diagnosis-8p",
+  "players": 8,
+  "games": 160,
+  "seed_base": 154000,
+  "personas": ["warmonger", "economist", "expander", "diplomat", "balanced"],
+  "matchmaking": "mixed",
+  "combat": {"aggressors_edge_mode": "off", "pillage": false},
+  "seat_rewards": {"seat_of_empire_vp": 1}
+}

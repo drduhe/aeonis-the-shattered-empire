@@ -424,6 +424,14 @@
           "tags": ["design", "simulation", "balance", "lords", "m4"]
         },
         {
+          "title": "8-Player Economist Diagnosis",
+          "path": "docs/reports/2026-07-13-economist-8p-diagnosis.md",
+          "description": "Full audited deck vs six-card row; objective access is primary, Lord fit amplifies, and no economy knob is promoted.",
+          "status": "internal",
+          "minutes": 7,
+          "tags": ["design", "simulation", "balance", "objectives", "economy"]
+        },
+        {
           "title": "Rakhis Ladder Dial 1",
           "path": "docs/reports/2026-07-12-rakhis-ladder-dial1.md",
           "description": "Removed Oasis Cavalry −1 Gold; weak lever (~51%→49.5% solo); recommend Hit and Run next.",

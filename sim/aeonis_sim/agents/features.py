@@ -16,6 +16,14 @@ from ..engine.types import (
 )
 
 
+def _builder_objective_open(state: GameState, pid: int) -> bool:
+    player = state.player(pid)
+    return (
+        "builder" in state.shared_public_revealed
+        and "builder" not in player.shared_scored
+    )
+
+
 def _clone(state: GameState) -> GameState:
     return state.copy()
 
@@ -83,12 +91,16 @@ def evaluate_state(state, pid: int) -> dict[str, float]:
     territory_sat = max(0.0, min((n_ctrl - 3) / 5.0, 1.0))
     building_count = sum(len(t.buildings) for t in controlled)
     b_need = state.builder_min_buildings
-    builder_track = min(building_count, b_need) / float(b_need)
+    builder_track = (
+        min(building_count, b_need) / float(b_need)
+        if _builder_objective_open(state, pid)
+        else 0.0
+    )
     gold_track = min(p.gold, 10) / 10.0
     catch_up = max(0, max_opp_vp - p.vp) / threshold
     built = sum(len(t.buildings) for t in controlled)
     builder_push = 0.0
-    if "builder" in state.shared_public_revealed and "builder" not in p.shared_scored:
+    if _builder_objective_open(state, pid):
         builder_push = max(0.0, (b_need - min(built, b_need)) / float(b_need))
 
     return {
@@ -329,7 +341,12 @@ def _build_features(state, pid: int, choice: dict) -> dict[str, float]:
     before = sum(len(t.buildings) for t in state.controlled(pid))
     after = before + 1
     need = state.builder_min_buildings
-    builder_delta = max(0.0, min(after, need) / float(need) - min(before, need) / float(need))
+    builder_delta = 0.0
+    if _builder_objective_open(state, pid):
+        builder_delta = max(
+            0.0,
+            min(after, need) / float(need) - min(before, need) / float(need),
+        )
     production_bonus = 0.4 if b in (
         BuildingType.MINE, BuildingType.GROVE, BuildingType.FARM, BuildingType.EMBASSY,
     ) else 0.0

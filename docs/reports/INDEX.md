@@ -2,7 +2,7 @@
 
 **Updated:** 2026-07-13 · Sim-only unless noted. Full tournament dumps are **regenerable** — conclusions live in the memos below.
 
-**Engine:** M3 card systems + full M4 Lord asymmetry (default-on) + audited objectives + validated map geometry + Lever C brakes + S1 seat VP. **349 pytest** passing.
+**Engine:** M3 card systems + full M4 Lord asymmetry (default-on) + audited objectives + validated map geometry + Lever C brakes + S1 seat VP. **350 pytest** passing.
 
 ---
 
@@ -15,6 +15,7 @@
 | [Early economy sweep](2026-07-03-early-economy-sweep-conclusion.md) | E1/E2/E3/E5 killed — single-knob easing fails |
 | [12 VP pacing memo](2026-07-03-vp12-pacing-memo.md) | VP threshold 12 stretches rounds but kills economist lift |
 | [Economist viability memo](2026-07-03-memo-economist-viability.md) | Owner decision: stop bot tuning; packet levers |
+| [8p economist diagnosis](2026-07-13-economist-8p-diagnosis.md) | Full audited deck vs six-card row; objective access is primary, Thal'rik fit amplifies; no economy knob promoted |
 | [Persona parity diagnosis](2026-07-03-persona-parity-diagnosis.md) | Bot vs design-pressure methodology |
 | [Plan 1 combat ladder](2026-07-03-plan1-combat-ladder.md) | Edge/Pillage variants; Pre-Strike for human test |
 | [Plan 1 Pre-Strike mixed (M4)](2026-07-13-plan1-prestrike-mixed.md) | Mixed 4/6/8p baseline vs pre_strike; **do not promote**; 4p near band, 6–8p still hot |

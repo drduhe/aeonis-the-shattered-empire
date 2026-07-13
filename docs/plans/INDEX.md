@@ -22,10 +22,10 @@
 
 ## Open design questions (sim-flagged, owner decision needed)
 
-- **Economist viability / objective tempo** — Lever B **decided 2026-07-03**: **Merchant Lord** (public, 8+ Gold) landed PROPOSED in the First Playable row. **E1/E2/E3/E5 killed 2026-07-03**. In the canonical M4 default review, economist was **5.4% / 0.8%** at mixed 6p/8p: 6p passes H8, 8p does not, and the matched M4-off 8p arm was likewise 0.8%. Treat this as persona/objective-fit work before another economy knob. **Lever A pacing:** retain the accepted **6–8 mean rounds**. See [default-on review](../reports/2026-07-13-m4-default-on-review.md).
+- **Economist viability / objective tempo** — 8p diagnosis complete 2026-07-13: the audited full deck remained **1.2%** after a narrow objective-awareness fix, while the complete six-card First Playable row reached **6.4%**; Thal'rik supplied 10 of 16 wins. Objective access is primary and Lord fit amplifies it. No economy knob or weight pass is promoted; **E1/E2/E3/E5 stay killed**. If continued, test random 8p public-reveal throughput without guaranteed cards or changed card text. **Lever A pacing:** retain the accepted **6–8 mean rounds**. See [diagnosis](../reports/2026-07-13-economist-8p-diagnosis.md).
 - **Attacker win rate** — corrected angular home spacing and exact four-tile starts resolve the high-count heat: the canonical no-upkeep mixed M4 Edge-off rebaseline is **66.7% / 64.2% / 62.3%** at 4p/6p/8p. 4p is a narrow watch; Pre-Strike worsens all counts and stays off. See [geometry/spacing report](../reports/2026-07-13-plan4-geometry-spacing.md).
 - **M4 default-on — resolved 2026-07-13.** Canonical Lord asymmetry is now the simulator default after a 520/520 matched review. This preserves the 2026-07-12 tuning pause; default fidelity and sheet balance are separate decisions. See [default-on review](../reports/2026-07-13-m4-default-on-review.md).
-- **Next sim/design focus** — return to **economist viability**, beginning with the 8p floor and persona/objective fit before another economy knob. Carry Auriel/warmonger at 4p as a paired regression watch. Docket/Whisper throughput and slice-draft feel still await humans.
+- **Next sim/design focus** — if economist work continues, run one dial on **random public-objective throughput at 8p** (not killed E3), with 4p persona parity and Lord-by-persona spread as regression gates. Auriel cooled in the diagnostic guard but warmonger remained 43.3%; Rakhis/Thal'rik also remain 4p Lord watches. Docket/Whisper throughput and slice-draft feel still await humans.
 
 ## Sim track
 
