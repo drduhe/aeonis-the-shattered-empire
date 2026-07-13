@@ -26,6 +26,7 @@ from .lords.seraphel import (
     blink_terrain_cost,
 )
 from .lords.nyxara import apply_veil_of_shadows, veil_available
+from .objectives import record_public_progress
 
 
 def _enemy_zoc(state, pid) -> set:
@@ -271,6 +272,7 @@ def apply_move(state, pid, choice) -> None:
         mark_round_used(state, pid, "deep_roots")
     if choice["portal"]:
         p.used_portal_travel = True
+        record_public_progress(state, pid, "portal_mastery")
         if choice.get("rift_anchor_free"):
             mark_round_used(state, pid, "rift_anchor_portal")
         apply_planar_echo(state, pid, used_portal=True)

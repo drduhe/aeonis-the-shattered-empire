@@ -15,7 +15,7 @@ from dataclasses import dataclass, field
 from typing import Optional
 
 from .hexmap import neighbors, distance
-from .objectives import record_battle_win_at
+from .objectives import record_battle_win_at, record_public_progress
 from .whispers import (
     BattleWhisperMods,
     auto_apply_combat_whispers,
@@ -540,6 +540,10 @@ def finish_battle(state, battle) -> None:
         captor.battle_wins += 1
         captor.attacker_battle_wins += 1
         record_battle_win_at(state, battle.attacker, battle.target)
+        record_public_progress(state, battle.attacker, "warlord")
+        record_public_progress(state, battle.attacker, "conqueror")
+        if battle.siege:
+            record_public_progress(state, battle.attacker, "breaker_of_walls")
         if state.pillage:
             apply_tile_production(captor, t)
         # Occupation: move up to cap surviving committed units in (auto-pick
@@ -558,6 +562,9 @@ def finish_battle(state, battle) -> None:
         _clear_siege_committed(t)
         state.player(battle.defender).battle_wins += 1  # AL-10
         record_battle_win_at(state, battle.defender, battle.target)
+        record_public_progress(state, battle.defender, "warlord")
+        record_public_progress(state, battle.defender, "conqueror")
+        record_public_progress(state, battle.defender, "hold_the_line")
         att_lord = any(
             u.owner == battle.attacker and u.type == UnitType.LORD
             for u in t.units

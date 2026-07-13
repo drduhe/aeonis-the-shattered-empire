@@ -147,7 +147,7 @@ Battle Line Cap: **3** (standard hex) / **5** (City or Fortress). Committed unit
 | --- | --- |
 | Public objective (each) | 2 |
 | Secret objective (each) | 2 |
-| Imperial Seat at Cleanup & Checks | +1 per round |
+| Coronation Rite (control Seat + Lord present) | +1 per Cleanup; third total Rite +2 once |
 | Capture an enemy Lord | +1 (plus +2 Renown) |
 | Your Legendary Building in play | 2 |
 | VP artifact (Crown of Aeonis, Eternal Forge, Shard of the Throne, Imperial Seal) | 1 each |
@@ -178,6 +178,7 @@ Max **1 Whisper per timing window per occurrence**. Sabotage cancels a Whisper a
 - **Recruit:** once per City per round; up to 2 units per Recruit action
 - **AP banking:** max 2 AP carried over when you pass
 - **Secret objectives:** max 3 unscored in hand
+- **Public objectives:** shared row; score at most 1 per Cleanup, each card once per player. Cumulative progress begins when the card is revealed.
 - **Lord Equipment artifacts:** max 2 per Lord
 - **City AP bonus:** max +2 from Cities
 - **Trade:** initiate once per round

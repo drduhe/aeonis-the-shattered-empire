@@ -1,7 +1,9 @@
 import random
 
 from aeonis_sim.engine.hexmap import neighbors, distance, disk, generate_map
-from aeonis_sim.engine.types import Terrain, BuildingType
+from aeonis_sim.engine.production import tile_printed_production
+from aeonis_sim.engine.setup import build_initial_state
+from aeonis_sim.engine.types import Terrain
 
 
 def test_axial_geometry():
@@ -82,3 +84,31 @@ def test_generate_map_6p_and_8p_structure():
                 assert distance(a, b) > 1
         for home in homes:
             assert tiles[home].terrain == Terrain.CITY
+
+
+def test_plan4_geometry_gates_across_player_counts_and_seeds():
+    for n in range(3, 9):
+        home_floor = 3 if n == 8 else 4
+        for seed in range(10):
+            tiles, homes = generate_map(n, random.Random(seed))
+            pair_min = min(
+                distance(a, b)
+                for i, a in enumerate(homes)
+                for b in homes[i + 1:]
+            )
+            assert pair_min >= home_floor
+            for home in homes:
+                assert any(
+                    t.terrain in (Terrain.RUINS, Terrain.PORTAL)
+                    and distance(home, t.coord) <= 2
+                    for t in tiles.values()
+                )
+            state = build_initial_state({"players": n}, random.Random(seed))
+            production = [
+                sum(
+                    sum(tile_printed_production(t).values())
+                    for t in state.controlled(pid)
+                )
+                for pid in range(n)
+            ]
+            assert max(production) - min(production) <= 1

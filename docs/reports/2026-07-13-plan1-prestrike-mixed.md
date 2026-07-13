@@ -1,5 +1,7 @@
 # Plan 1 — Pre-Strike Edge mixed ladder (M4-on)
 
+> **Superseded baseline:** This ladder exposed high-count heat on the old clustered-home generator. The corrected angular-spacing rebaseline in `2026-07-13-plan4-geometry-spacing.md` moves 6p/8p into band and confirms Pre-Strike remains off.
+
 **Date:** 2026-07-13 · **Sim-only** · Mixed personas + full Lord asymmetry  
 **Configs:** `bracket-plan1-baseline-mixed-{4,6,8}p.json` vs `bracket-plan1-prestrike-mixed-{4,6,8}p.json`  
 **Games:** 50 (4p) / 40 (6p) / 40 (8p) · matched seed bases · script `sim/scripts/plan1_prestrike_mixed_ladder.py`

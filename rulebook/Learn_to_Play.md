@@ -57,13 +57,13 @@ From `../components/Components.md`:
 
 ## 4. Setup, step by step
 
-1. **Build the map.** Place the **Imperial Seat** tile in the center (a City with a bonus: its controller gains **+1 VP** at Cleanup & Checks). **3–4 players:** each player gets a **home cluster** of 4 tiles touching the central ring — 1 City (your Home City), 1 Plains, 1 Forest, 1 Mountain. In the neutral ring, place 1 Desert between each pair of home clusters, 2 Ruins, 2 Portals (not adjacent to each other), and 2 Lakes forming at least one choke point. **5–8 players:** add roughly +3 neutral tiles per player beyond 4; scale Deserts to 1 per pair of adjacent clusters, Ruins to 1 per 2 players (round up), Portals and Lakes to 1 per 3 players each (round up, minimum 2).
+1. **Build the map.** Place the **Imperial Seat** tile in the center. Its **Coronation Rite** scores 1 VP at Cleanup & Checks only when you control it and your Lord is in its hex; your third total Rite also scores a one-time 2 VP milestone. **3–4 players:** each player gets a **home cluster** of 4 tiles touching the central ring — 1 City (your Home City), 1 Plains, 1 Forest, 1 Mountain. In the neutral ring, place 1 Desert between each pair of home clusters, 2 Ruins, 2 Portals (not adjacent to each other), and 2 Lakes forming at least one choke point. **5–8 players:** add roughly +3 neutral tiles per player beyond 4; scale Deserts to 1 per pair of adjacent clusters, Ruins to 1 per 2 players (round up), Portals and Lakes to 1 per 3 players each (round up, minimum 2).
 2. **Pick Lords.** Each player takes a different Lord sheet, standees, and control tokens. If your sheet lists a **Unique Starting Tile**, swap it in for the specified home-cluster tile (it still counts as its listed terrain type).
 3. **Place starting units.** Put the units listed on your Lord sheet in your Home City, with your Lord standee. (Default: 3 Infantry + 1 Archer. Lords differ — Rakhis starts with 2 Infantry + 1 Cavalry.)
 4. **Mark starting control.** You control your 4-tile home cluster; everything else starts neutral.
 5. **Set your trackers.** **5 AP**, **0 Renown**, **0 VP**, **Population Cap 10**, **Population Pool 10** (full). Take the starting Gold/Mana/Influence on your Lord sheet (default: 2 Gold, 2 Mana, 1 Influence).
 6. **Prepare the decks.** Lay out the 8 **Strategy Cards**. Shuffle the **agenda deck** (8), **Whisper deck** (26), **Artifact Deck** (24, face down), and the **Global** and **Exploration Event** decks. Set out the Remnant supply and Artifact Site markers. No one starts with artifacts or Remnants.
-7. **Draw objectives.** Each player draws **1 public objective** (reveal it) and **1 secret objective** (keep hidden). Each is worth 2 VP when scored.
+7. **Prepare objectives.** Reveal **2 Stage I public objectives** in one shared row. Each player draws **1 secret objective** and keeps it hidden. Each objective is worth 2 VP when scored.
 8. **Draw Whispers.** Each player draws **2 Whisper Cards** into a private hand.
 9. **Choose the first Speaker at random**; give them the Speaker token.
 10. **Begin Round 1.** Reminder: at the start of **Round 3**, each player draws 1 additional secret objective.
@@ -133,10 +133,10 @@ All players resolve, in initiative order (or simultaneously if the table prefers
 1. Discard round-limited effects and reset "once per round" markers.
 2. **Release captured Lords** — they return to their owner's Home City at full HP.
 3. **Whisper hand limit:** anyone holding more than **7** Whisper Cards discards down to 7.
-4. **Victory checks:** score objectives whose conditions hold right now (in initiative order), check Imperial Seat VP, Titles, Legendary Buildings, and VP artifacts — then check whether anyone has reached 10 VP.
+4. **Victory checks:** in initiative order, each player resolves the Coronation Rite, may score at most 1 revealed public objective and any eligible secret objectives, then checks Titles and score-once assets. After everyone finishes, check whether anyone has reached 10 VP.
 5. Advance the round marker and **pass the Speaker token clockwise**.
 
-> **Example:** Rakhis scores his public objective **Warlord** (win 2 battles) for 2 VP — and draws 1 Whisper, because scoring VP always draws a Whisper. Cassian controls the Imperial Seat: +1 VP. Nobody is at 10 VP, so the Speaker token passes clockwise and Round 4 begins.
+> **Example:** Rakhis scores the revealed public objective **Warlord** after winning 2 battles since it entered the row, gaining 2 VP and drawing 1 Whisper. Cassian controls the Imperial Seat and has his Lord in its hex, so he performs the Coronation Rite for 1 VP. Nobody is at 10 VP, so the Speaker token passes clockwise and Round 4 begins.
 
 ---
 

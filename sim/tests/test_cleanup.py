@@ -78,7 +78,7 @@ def test_shared_objective_scored_once_per_player():
     s = make_state()
     p = s.players[0]
     s.shared_public_revealed = ["warlord"]
-    p.battle_wins = 2
+    p.public_objective_progress["warlord"] = 2
     run_cleanup(s)
     assert p.vp == 2 and "warlord" in p.shared_scored
     run_cleanup(s)
@@ -90,7 +90,7 @@ def test_one_public_objective_per_round():
     p = s.players[0]
     p.secret_objectives = []
     s.shared_public_revealed = ["warlord", "frontier_lord"]
-    p.battle_wins = 2
+    p.public_objective_progress["warlord"] = 2
     while len(s.controlled(0)) < 7:
         for t in s.tiles.values():
             if t.controller is None and not t.imperial_seat:

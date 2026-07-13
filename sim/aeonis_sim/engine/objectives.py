@@ -6,17 +6,14 @@ from itertools import combinations
 from typing import TYPE_CHECKING, Optional
 
 from .hexmap import distance
-from .types import BuildingType, Terrain, PUBLIC_OBJECTIVE_VP
+from .types import BuildingType, Terrain, UnitType, PUBLIC_OBJECTIVE_VP
 
 if TYPE_CHECKING:
     from .types import GameState
 
 # --- Public shared row ---
-# Council Power stays deferred (full-deck audit). merchant_lord is the
-# PROPOSED economy experiment filling the sixth slot (2026-07-03, economist
-# memo Lever B; Objectives.md §4.4).
 
-PUBLIC_OBJECTIVE_IDS = (
+FIRST_PLAYABLE_PUBLIC_OBJECTIVE_IDS = (
     "frontier_lord",
     "builder",
     "merchant_lord",
@@ -24,6 +21,38 @@ PUBLIC_OBJECTIVE_IDS = (
     "warlord",
     "seat_of_empire",
 )
+
+STAGE_I_PUBLIC_OBJECTIVE_IDS = (
+    "frontier_lord",
+    "builder",
+    "council_power",
+    "portal_mastery",
+    "warlord",
+    "seat_of_empire",
+    "twin_cities",
+    "adept_of_the_schools",
+    "voice_of_the_realm",
+    "relic_seeker",
+    "merchant_lord",
+    "standing_army",
+)
+
+STAGE_II_PUBLIC_OBJECTIVE_IDS = (
+    "dominion",
+    "prosperous_realm",
+    "living_legend",
+    "crossroads_of_empire",
+    "archmage",
+    "breaker_of_walls",
+    "conqueror",
+    "hold_the_line",
+    "lawgiver",
+    "beacon_of_renown",
+    "imperial_treasury",
+    "reliquary",
+)
+
+PUBLIC_OBJECTIVE_IDS = STAGE_I_PUBLIC_OBJECTIVE_IDS + STAGE_II_PUBLIC_OBJECTIVE_IDS
 
 # E3 staged row: economy cards fixed in opening 2 (First Playable PROPOSED experiment).
 STAGED_ECONOMY_OPENING = ("builder", "merchant_lord")
@@ -44,21 +73,29 @@ IMMEDIATE_SECRETS = frozenset({"golden_hoard", "mana_flood"})
 def setup_shared_public_row(
     rng: random.Random,
     objectives_config: dict | None = None,
-) -> tuple[list[str], list[str]]:
-    """Deal opening shared row + remaining deck (First Playable §4.4).
+) -> tuple[list[str], list[str], list[str]]:
+    """Deal opening shared row, Stage I remainder, and staged Stage II deck.
 
-    Default: shuffle all 6, reveal 2 at random.
-    E3: ``staged_economy_opening`` or ``opening_public_ids`` fixes opening cards.
+    Default is the six-card First Playable row. ``full_public_deck`` enables
+    the audited 24-card deck; ``exclude_public_ids`` removes modules that are
+    outside a sim scope (notably Archmage while Tier II is disabled).
     """
     objectives_config = objectives_config or {}
     opening = objectives_config.get("opening_public_ids")
     if opening is None and objectives_config.get("staged_economy_opening"):
         opening = list(STAGED_ECONOMY_OPENING)
-    public_deck = list(PUBLIC_OBJECTIVE_IDS)
+    if objectives_config.get("full_public_deck"):
+        excluded = {str(x) for x in objectives_config.get("exclude_public_ids", [])}
+        stage_one = [x for x in STAGE_I_PUBLIC_OBJECTIVE_IDS if x not in excluded]
+        stage_two = [x for x in STAGE_II_PUBLIC_OBJECTIVE_IDS if x not in excluded]
+    else:
+        stage_one = list(FIRST_PLAYABLE_PUBLIC_OBJECTIVE_IDS)
+        stage_two = []
+    public_deck = list(stage_one)
     if opening is not None:
         opening = [str(x) for x in opening]
         for oid in opening:
-            if oid not in PUBLIC_OBJECTIVE_IDS:
+            if oid not in public_deck:
                 raise ValueError(f"unknown opening public objective: {oid}")
         if len(opening) > 2:
             raise ValueError("opening_public_ids exceeds First Playable opening size (2)")
@@ -68,9 +105,11 @@ def setup_shared_public_row(
         revealed = list(opening)
         while len(revealed) < 2:
             revealed.append(public_deck.pop())
-        return revealed, public_deck
+        rng.shuffle(stage_two)
+        return revealed, public_deck, stage_two
     rng.shuffle(public_deck)
-    return [public_deck.pop(), public_deck.pop()], public_deck
+    rng.shuffle(stage_two)
+    return [public_deck.pop(), public_deck.pop()], public_deck, stage_two
 
 
 def _frontier_lord(state, pid) -> bool:
@@ -85,26 +124,161 @@ def _merchant_lord(state, pid) -> bool:
     return state.player(pid).gold >= state.merchant_lord_min_gold
 
 
+def _progress(state, pid: int, obj_id: str) -> int:
+    return int(state.player(pid).public_objective_progress.get(obj_id, 0))
+
+
+def record_public_progress(state, pid: int, obj_id: str, amount: int = 1) -> None:
+    """Track a cumulative public objective only after it is revealed."""
+    p = state.player(pid)
+    if obj_id not in state.shared_public_revealed or obj_id in p.shared_scored:
+        return
+    p.public_objective_progress[obj_id] = _progress(state, pid, obj_id) + amount
+
+
 def _portal_mastery(state, pid) -> bool:
     controls_portal = any(t.terrain == Terrain.PORTAL for t in state.controlled(pid))
-    return controls_portal and state.player(pid).used_portal_travel
+    return controls_portal and _progress(state, pid, "portal_mastery") >= 1
 
 
 def _warlord(state, pid) -> bool:
-    return state.player(pid).battle_wins >= 2
+    return _progress(state, pid, "warlord") >= 2
 
 
 def _seat_of_empire(state, pid) -> bool:
     return any(t.imperial_seat for t in state.controlled(pid))
 
 
+def _council_power(state, pid) -> bool:
+    return _progress(state, pid, "council_power") >= 4
+
+
+def _city_count(state, pid: int) -> int:
+    return sum(1 for t in state.controlled(pid) if t.imperial_seat or t.terrain == Terrain.CITY)
+
+
+def _twin_cities(state, pid) -> bool:
+    return _city_count(state, pid) >= 2
+
+
+def _adept_of_the_schools(state, pid) -> bool:
+    return len(state.player(pid).discoveries) >= 2
+
+
+def _voice_of_the_realm(state, pid) -> bool:
+    return state.player(pid).renown >= 5
+
+
+def _artifact_count(state, pid: int) -> int:
+    p = state.player(pid)
+    attached = sum(1 for t in state.controlled(pid) if t.building_relic)
+    return len(p.lord_equipment) + len(p.utilities) + attached + (1 if p.pending_building_relic else 0)
+
+
+def _relic_seeker(state, pid) -> bool:
+    return _artifact_count(state, pid) >= 1
+
+
+def _realm_of_plenty(state, pid) -> bool:
+    standard = {Terrain.PLAINS, Terrain.FOREST, Terrain.MOUNTAIN, Terrain.DESERT}
+    return len({t.terrain for t in state.controlled(pid) if t.terrain in standard}) >= 3
+
+
+def _standing_army(state, pid) -> bool:
+    return sum(1 for _, u in state.units_of(pid) if u.type != UnitType.LORD) >= 8
+
+
+def _dominion(state, pid) -> bool:
+    return len(state.controlled(pid)) >= 12
+
+
+def _master_of_cities(state, pid) -> bool:
+    return _city_count(state, pid) >= 3
+
+
+def _prosperous_realm(state, pid) -> bool:
+    buildings = sum(len(t.buildings) for t in state.controlled(pid))
+    return buildings >= 5 and state.pop_cap(pid) >= 12
+
+
+def _living_legend(state, pid) -> bool:
+    from .lords.legendaries import LEGENDARY_BUILDINGS, legendary_for_lord
+    expected = legendary_for_lord(state.player(pid).lord_id)
+    return expected in LEGENDARY_BUILDINGS and any(
+        expected in t.buildings for t in state.controlled(pid)
+    )
+
+
+def _crossroads_of_empire(state, pid) -> bool:
+    special = {Terrain.CITY, Terrain.RUINS, Terrain.PORTAL}
+    return sum(
+        1 for t in state.controlled(pid)
+        if t.imperial_seat or t.terrain in special
+    ) >= 4
+
+
+def _archmage(state, pid) -> bool:
+    # Tier II is outside the First Playable simulator; audit configs exclude
+    # this card. Keep the predicate false instead of encoding a false proxy.
+    return False
+
+
+def _breaker_of_walls(state, pid) -> bool:
+    return _progress(state, pid, "breaker_of_walls") >= 1
+
+
+def _conqueror(state, pid) -> bool:
+    return _progress(state, pid, "conqueror") >= 5
+
+
+def _hold_the_line(state, pid) -> bool:
+    return _progress(state, pid, "hold_the_line") >= 2
+
+
+def _lawgiver(state, pid) -> bool:
+    return _progress(state, pid, "lawgiver") >= 2
+
+
+def _beacon_of_renown(state, pid) -> bool:
+    return state.player(pid).renown >= 10
+
+
+def _imperial_treasury(state, pid) -> bool:
+    p = state.player(pid)
+    return p.gold + p.mana + p.influence >= 20
+
+
+def _reliquary(state, pid) -> bool:
+    return _artifact_count(state, pid) >= 3
+
+
 PUBLIC_OBJECTIVES = {
     "frontier_lord": _frontier_lord,
     "builder": _builder,
     "merchant_lord": _merchant_lord,
+    "council_power": _council_power,
     "portal_mastery": _portal_mastery,
     "warlord": _warlord,
     "seat_of_empire": _seat_of_empire,
+    "twin_cities": _twin_cities,
+    "adept_of_the_schools": _adept_of_the_schools,
+    "voice_of_the_realm": _voice_of_the_realm,
+    "relic_seeker": _relic_seeker,
+    "realm_of_plenty": _realm_of_plenty,
+    "standing_army": _standing_army,
+    "dominion": _dominion,
+    "master_of_cities": _master_of_cities,
+    "prosperous_realm": _prosperous_realm,
+    "living_legend": _living_legend,
+    "crossroads_of_empire": _crossroads_of_empire,
+    "archmage": _archmage,
+    "breaker_of_walls": _breaker_of_walls,
+    "conqueror": _conqueror,
+    "hold_the_line": _hold_the_line,
+    "lawgiver": _lawgiver,
+    "beacon_of_renown": _beacon_of_renown,
+    "imperial_treasury": _imperial_treasury,
+    "reliquary": _reliquary,
 }
 
 
@@ -185,11 +359,26 @@ def discard_secret_card(state: GameState, card_id: str) -> None:
     state.secret_objective_discard.append(card_id)
 
 
-def draw_public_to_row(state: GameState) -> bool:
-    """Reveal one public objective to the shared row if possible."""
+def _merge_stage_two(state: GameState, rng: random.Random) -> None:
+    if not state.shared_public_stage_two:
+        return
+    state.shared_public_deck.extend(state.shared_public_stage_two)
+    state.shared_public_stage_two = []
+    rng.shuffle(state.shared_public_deck)
+
+
+def draw_public_to_row(
+    state: GameState,
+    rng: random.Random,
+    *,
+    round_start: bool = False,
+) -> bool:
+    """Reveal one shared objective, respecting Stage II timing."""
+    if state.shared_public_stage_two and (
+        (round_start and state.round >= 4) or not state.shared_public_deck
+    ):
+        _merge_stage_two(state, rng)
     if not state.shared_public_deck:
-        return False
-    if len(state.shared_public_revealed) >= len(PUBLIC_OBJECTIVE_IDS):
         return False
     state.shared_public_revealed.append(state.shared_public_deck.pop())
     return True
@@ -268,7 +457,7 @@ def deal_round3_secrets(state: GameState, rng: random.Random) -> list[dict]:
 
 def winds_draw_choices(state: GameState, pid: int) -> list[dict]:
     choices = [{"type": "obj_draw_secret"}]
-    if state.shared_public_deck and len(state.shared_public_revealed) < len(PUBLIC_OBJECTIVE_IDS):
+    if state.shared_public_deck or state.shared_public_stage_two:
         choices.append({"type": "obj_draw_public"})
     return choices
 

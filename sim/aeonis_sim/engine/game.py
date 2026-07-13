@@ -13,6 +13,7 @@ from . import combat
 from .build import apply_build, enumerate_builds
 from .cleanup import run_cleanup
 from .council import (
+    AGENDA_CARDS,
     apply_motion,
     enumerate_proposal_choices,
     enumerate_vote_choices,
@@ -57,6 +58,7 @@ from .objectives import (
     deal_secret_draw,
     deal_round3_secrets,
     draw_public_to_row,
+    record_public_progress,
     secret_cap_discard_choices,
     secret_cap_keep_choices,
     try_immediate_secrets,
@@ -319,8 +321,9 @@ class Game:
         self._run_event_phase()
         self._objective_draw_queue.extend(s.pending_winds_draws)
         s.pending_winds_draws.clear()
-        if s.round >= 2 and s.shared_public_deck:
-            s.shared_public_revealed.append(s.shared_public_deck.pop())
+        if s.round >= 2:
+            from .objectives import draw_public_to_row
+            draw_public_to_row(s, self.rng, round_start=True)
         begin_strategy_selection(s)
         self._draft_queue = build_draft_queue(s, s.speaker)
 
@@ -1257,7 +1260,7 @@ class Game:
             elif dp.context.get("source") == "winds":
                 self._objective_draw_queue.pop(0)
                 if choice["type"] == "obj_draw_public":
-                    draw_public_to_row(s)
+                    draw_public_to_row(s, self.rng)
                 else:
                     cap = deal_secret_draw(s, dp.pid, self.rng)
                     if cap:
@@ -1348,6 +1351,16 @@ class Game:
                     if not veto[0]:
                         apply_motion(s, motion["motion"], motion["proposer"], self.rng)
                         for ballot in self._council_ballots:
+                            if ballot.get("support") and int(ballot.get("lobby", 0)):
+                                record_public_progress(
+                                    s,
+                                    ballot["pid"],
+                                    "council_power",
+                                    int(ballot.get("lobby", 0)),
+                                )
+                            card = AGENDA_CARDS.get(motion["motion"])
+                            if ballot.get("support") and card and card.kind == "law":
+                                record_public_progress(s, ballot["pid"], "lawgiver")
                             if (
                                 ballot.get("support")
                                 and is_lord(s, ballot["pid"], "auriel")

@@ -124,7 +124,7 @@ def test_cleanup_scores_secret():
 def test_winds_public_draw():
     s = make_state()
     n_before = len(s.shared_public_revealed)
-    assert draw_public_to_row(s)
+    assert draw_public_to_row(s, random.Random(12))
     assert len(s.shared_public_revealed) == n_before + 1
 
 

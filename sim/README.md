@@ -91,6 +91,19 @@ Opt-in via `lord_asymmetry` (not default-on). Full eight-sheet encode: unique ti
     cd sim && python scripts/regression_check.py --config configs/bracket-m4-ci.json --workers 4
 ```
 
+## Plan 3 objectives + Plan 4 geometry
+
+The full-deck objective audit and geometry/spacing gates are reproducible:
+
+```bash
+cd sim
+python scripts/plan3_objective_audit_ladder.py
+python scripts/plan4_geometry_audit.py
+python scripts/plan1_prestrike_mixed_ladder.py
+```
+
+The objective ladder compares the reduced First Playable row with the audited full deck at 4p/6p/8p. The geometry audit checks 200 seeds per count for home spacing, Ruins/Portal access, starting-production parity, and tile inventory. The Plan 1 ladder is the combat rebaseline after geometry changes.
+
 Foundation smoke remains at `configs/bracket-m4-foundation.json`. Gate report: `docs/reports/2026-07-12-m4-gate.md`. AL-49 closed; AL-50–52 resolved.
 
 Rules questions found while encoding the docs live in

@@ -6,10 +6,6 @@ import random
 from .types import Terrain, Tile
 
 DIRS = [(1, 0), (1, -1), (0, -1), (-1, 0), (-1, 1), (0, 1)]
-# Corners of ring 3 — home-city anchor positions for 3-4 players.
-CORNERS = [(3, 0), (3, -3), (0, -3), (-3, 0), (-3, 3), (0, 3)]
-
-
 def neighbors(c):
     return [(c[0] + dq, c[1] + dr) for dq, dr in DIRS]
 
@@ -40,13 +36,11 @@ def _map_radius(num_players: int) -> int:
 def _outer_ring(radius: int) -> list:
     return sorted(
         [c for c in disk(radius) if distance(c, (0, 0)) == radius],
-        key=lambda c: (c[1], c[0]),
+        key=_hex_angle,
     )
 
 
 def _home_anchors(num_players: int, radius: int) -> list:
-    if num_players <= 4:
-        return [CORNERS[int(i * 6 / num_players)] for i in range(num_players)]
     ring = _outer_ring(radius)
     return [ring[int(i * len(ring) / num_players)] for i in range(num_players)]
 
@@ -132,15 +126,33 @@ def generate_map(num_players: int, rng: random.Random):
         if placed < n:
             raise RuntimeError(f"could not place {n}x {terrain}")
 
-    place(Terrain.RUINS, counts["ruins"])
-    place(Terrain.PORTAL, 1)
-    while sum(1 for t in tiles.values() if t.terrain == Terrain.PORTAL) < counts["portals"]:
-        existing = tuple(c for c, t in tiles.items() if t.terrain == Terrain.PORTAL)
-        place(
-            Terrain.PORTAL,
-            1,
-            constraint=lambda c, ps=existing: all(distance(c, p) > 1 for p in ps),
-        )
+    special_covered: set = set()
+
+    def place_special(terrain, n, *, separated=False):
+        for _ in range(n):
+            existing = tuple(c for c, t in tiles.items() if t.terrain == terrain)
+            cands = [
+                c for c in remaining
+                if not separated or all(distance(c, p) > 1 for p in existing)
+            ]
+            if not cands:
+                raise RuntimeError(f"could not place {n}x {terrain}")
+            coord = max(
+                cands,
+                key=lambda c: (
+                    sum(1 for i, h in enumerate(homes) if i not in special_covered and distance(c, h) <= 2),
+                    sum(1 for h in homes if distance(c, h) <= 2),
+                    -distance(c, (0, 0)),
+                ),
+            )
+            remaining.remove(coord)
+            tiles[coord] = Tile(coord, terrain)
+            special_covered.update(
+                i for i, h in enumerate(homes) if distance(coord, h) <= 2
+            )
+
+    place_special(Terrain.PORTAL, counts["portals"], separated=True)
+    place_special(Terrain.RUINS, counts["ruins"])
     place(Terrain.LAKE, counts["lakes"])
     for c in _place_deserts_between_homes(homes, remaining):
         tiles[c] = Tile(c, Terrain.DESERT)

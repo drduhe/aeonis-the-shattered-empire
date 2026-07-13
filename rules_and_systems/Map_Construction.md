@@ -1,6 +1,6 @@
 # Aeonis: Map Construction
 
-> **Status:** DRAFT / PROPOSED (Plan 4). Not canon until playtested and registered in `INDEX.md`. First Playable setup in `../playtest/First_Playable_Packet.md` §3 remains authoritative for current tables. See `../docs/plans/2026-07-02-plan-high-player-count.md`.
+> **Status:** Geometry **SIM-VALIDATED 2026-07-13** and promoted for First Playable presets; slice drafting, Docket, and high-count Whisper changes remain PROPOSED pending humans. See `../docs/reports/2026-07-13-plan4-geometry-spacing.md`.
 
 ---
 
@@ -12,7 +12,7 @@ Define reproducible map setup for **3–8 players**: home slices, shared core, g
 
 ## 2. Slice system
 
-Each player receives a **home slice**:
+Each player receives a **home cluster** in the validated preset and a six-slot **home slice** in the experienced slice-draft variant:
 
 | Slot | Contents |
 |---|---|
@@ -37,29 +37,40 @@ All slices attach around a **shared core**:
 
 ## 4. Per-count geometry (draft targets)
 
-Constraints at every count:
+Validated constraints:
 
-- Every Home City is **≥ 4 hexes** from any other Home City.
+- Home Cities are placed in angular order around the outer ring, never by coordinate-row order.
+- Every Home City is **≥ 4 hexes** from any other Home City at 3–7 players. At 8 players, the radius-5 perimeter supports a validated minimum of **3**; requiring 4 would require a larger/sparse radius-6 design and substantially more tiles.
 - Every Home City is **≤ 4 hexes** from the Imperial Seat's contested ring.
 - Each slice's total printed primary production is within **±1** of every other slice.
 - Every slice touches at least one Ruins or Portal within **2 hexes** of home.
 
-| Players | Map radius (approx.) | Home slices | Contested-ring tiles (target) | Notes |
-|---|---|---|---|---|
-| 3 | 3 | 3 | 8–10 | Compact; 1 Desert between each adjacent pair |
-| 4 | 3–4 | 4 | 10–12 | First Playable default geometry |
-| 5 | 4 | 5 | 12–14 | +~3 neutrals vs 4p |
-| 6 | 4 | 6 | 14–16 | Stress-test Docket + Whisper draw |
-| 7 | 4–5 | 7 | 16–18 | Possible second Whisper deck fallback |
-| 8 | 5 | 8 | 18–20 | Manufacturing gate for 7–8 SKU |
+| Players | Radius | Total hexes | Min home distance | Contested tiles | Hexes/player |
+|---:|---:|---:|---:|---:|---:|
+| 3 | 3 | 37 | 5 | 9 | 12.33 |
+| 4 | 3 | 37 | 4 | 10 | 9.25 |
+| 5 | 4 | 61 | 4 | 12 | 12.20 |
+| 6 | 4 | 61 | 4 | 13 | 10.17 |
+| 7 | 5 | 91 | 4 | 17 | 13.00 |
+| 8 | 5 | 91 | 3 | 18 | 11.38 |
 
-Exact tile IDs and diagrams land when physical counts are frozen; First Playable keeps the verbal presets in the packet until then.
+**Contested tiles** are Deserts, Ruins, Portals, and Lakes. Across 200 generated presets per count, every home met Ruins/Portal access, every starting-production spread stayed within ±1, and every Seat-ring distance stayed within 4.
+
+### 4.1 Reproducible preset procedure
+
+1. Tile a complete axial hex disk at the radius in the table; place the Imperial Seat at `(0, 0)`.
+2. Sort outer-ring coordinates by geometric angle and place Home Cities at evenly spaced indices. This angular sort is mandatory; sorting by row clusters homes at high counts.
+3. In Speaker order, place each three-tile starting cluster inward from its Home City: 1 Plains, 1 Forest, and 1 Mountain. Apply Unique Starting Tile substitutions afterward.
+4. Place Portals non-adjacent, then Ruins, prioritizing uncovered homes until every home has one of those special tiles within distance 2.
+5. Place one Desert in the neutral gap between each adjacent home pair; add Lakes per the count table; fill remaining hexes evenly with Plains, Forest, and Mountain.
+
+The simulator's `hexmap.py` is the executable reference for this preset algorithm. Axial anchor coordinates are deterministic by player count; neutral placement may vary by seed while preserving all gates.
 
 ---
 
 ## 5. Setup modes
 
-1. **Preset layouts (default for First Playable / teaching):** Follow `First_Playable_Packet.md` §3 (3–4p fully specified; 5–8p scaled from the same rules). Prefer this chapter's geometry table when diagrams exist.
+1. **Preset layouts (default for First Playable / teaching):** Follow the validated geometry table and procedure above, summarized in `First_Playable_Packet.md` §3.
 2. **Slice draft (experienced groups):** Deal **2** candidate slices per player; each picks **1**. Place chosen slices around the core in Speaker order (or random seats).
 
 ---

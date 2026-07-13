@@ -78,6 +78,7 @@ pnpm-debug.log*
 #############################
 sim/.venv/
 sim/.python/
+sim/tmp-*.json
 __pycache__/
 *.py[cod]
 .pytest_cache/

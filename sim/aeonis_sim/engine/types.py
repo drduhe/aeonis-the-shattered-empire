@@ -277,6 +277,7 @@ class PlayerState:
     battle_wins_at: list = field(default_factory=list)     # hexes where pid won a battle
     influence_hex_gains: list = field(default_factory=list)  # hexes gained via Influence council
     shared_scored: list = field(default_factory=list)   # public objective ids scored
+    public_objective_progress: dict = field(default_factory=dict)  # revealed cumulative public cards
     public_scored_this_round: bool = False
     battle_wins: int = 0
     used_portal_travel: bool = False
@@ -323,6 +324,7 @@ class PlayerState:
             "battle_wins_at": [list(c) for c in self.battle_wins_at],
             "influence_hex_gains": [list(c) for c in self.influence_hex_gains],
             "shared_scored": list(self.shared_scored),
+            "public_objective_progress": dict(self.public_objective_progress),
             "public_scored_this_round": self.public_scored_this_round,
             "battle_wins": self.battle_wins,
             "used_portal_travel": self.used_portal_travel,
@@ -382,6 +384,7 @@ class PlayerState:
             p.battle_wins_at = [tuple(c) for c in d.get("battle_wins_at", [])]
             p.influence_hex_gains = [tuple(c) for c in d.get("influence_hex_gains", [])]
             p.shared_scored = list(d.get("shared_scored", []))
+            p.public_objective_progress = dict(d.get("public_objective_progress", {}))
         elif "secret_objective" in d:
             for k in ("ap", "banked", "gold", "mana", "influence", "renown", "vp", "pop_pool",
                       "passed", "public_scored_this_round",
@@ -441,6 +444,7 @@ class GameState:
     next_uid: int = 1
     shared_public_revealed: list = field(default_factory=list)  # objective ids
     shared_public_deck: list = field(default_factory=list)
+    shared_public_stage_two: list = field(default_factory=list)
     # Plan 1 combat ladder (PROPOSED; toggled via config["combat"]).
     # aggressors_edge_mode: "off" | "full" | "pre_strike"
     aggressors_edge_mode: str = "off"
@@ -535,6 +539,7 @@ class GameState:
             "next_uid": self.next_uid,
             "shared_public_revealed": list(self.shared_public_revealed),
             "shared_public_deck": list(self.shared_public_deck),
+            "shared_public_stage_two": list(self.shared_public_stage_two),
             "speaker": self.speaker,
             "strategy_pool": list(self.strategy_pool),
             "strategy_bounty": dict(self.strategy_bounty),
@@ -579,6 +584,7 @@ class GameState:
             next_uid=d["next_uid"],
             shared_public_revealed=list(d.get("shared_public_revealed", [])),
             shared_public_deck=list(d.get("shared_public_deck", [])),
+            shared_public_stage_two=list(d.get("shared_public_stage_two", [])),
             speaker=d.get("speaker", 0),
             strategy_pool=list(d.get("strategy_pool", [])),
             strategy_bounty=dict(d.get("strategy_bounty", {})),
@@ -657,6 +663,7 @@ class GameState:
                 battle_wins_at=list(p.battle_wins_at),
                 influence_hex_gains=list(p.influence_hex_gains),
                 shared_scored=list(p.shared_scored),
+                public_objective_progress=dict(p.public_objective_progress),
                 public_scored_this_round=p.public_scored_this_round,
                 battle_wins=p.battle_wins,
                 used_portal_travel=p.used_portal_travel,
@@ -695,6 +702,7 @@ class GameState:
             next_uid=self.next_uid,
             shared_public_revealed=list(self.shared_public_revealed),
             shared_public_deck=list(self.shared_public_deck),
+            shared_public_stage_two=list(self.shared_public_stage_two),
             aggressors_edge_mode=self.aggressors_edge_mode,
             pillage=self.pillage,
             ap_bonus_cap=self.ap_bonus_cap,

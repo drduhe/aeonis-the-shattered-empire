@@ -1,6 +1,6 @@
 # Plan 4: High Player Count Scaling (6–8)
 
-- **Status:** PROPOSED — nothing here is canon until playtested and locked in `rules_and_systems/INDEX.md`.
+- **Status:** **PARTIAL 2026-07-13** — map geometry and the 91-tile 8p inventory are sim-validated/promoted for First Playable; Docket, Whisper scaling, and slice drafting remain PROPOSED pending humans.
 - **Date:** 2026-07-02
 - **Owning docs:** `rules_and_systems/High_Council.md` (council throughput), `rules_and_systems/Whispers.md` (deck scaling), **new** `rules_and_systems/Map_Construction.md` (to be created)
 - **Related decisions:** 3–8 player support is **LOCKED** (`marketing/Positioning.md`). This plan is about *delivering* it, not relitigating it.
@@ -95,7 +95,7 @@ This plan needs **bodies at the table**; solo testing only validates §3.3 geome
 
 **Milestones:**
 
-1. Geometry table + 4p preset validated in solo/2p setups (no people needed).
+1. **DONE 2026-07-13:** geometry table validated across 200 seeds per count (1,200 maps); corrected angular anchors and special access encoded; combat rebaseline green at 6p/8p.
 2. **6-player session** with Docket + reduced draws: measure council phase length (target ≤ 15 min), round length, downtime complaints.
 3. **8-player session**: same metrics plus map claustrophobia check (hexes per player, expansion room through round 4).
 

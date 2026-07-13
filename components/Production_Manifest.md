@@ -12,17 +12,17 @@ Counts assume **8 players max**, 8 launch factions. Quantities marked ~ need pla
 | --- | --- | --- |
 | City (home) | 8 | 1 per player |
 | Imperial Seat | 1 | centerpiece tile; consider oversized |
-| Plains | 14 | 8 home-cluster + 6 neutral |
-| Forest | 14 | 8 home-cluster + 6 neutral |
-| Mountain | 14 | 8 home-cluster + 6 neutral |
+| Plains | 21 | validated radius-5 8p preset after Unique Tile substitutions |
+| Forest | 16 | validated radius-5 8p preset after Unique Tile substitutions |
+| Mountain | 19 | validated radius-5 8p preset after Unique Tile substitutions |
 | Desert | 8 | flashpoint ring tiles |
 | Ruins | 4 | |
 | Portal | 3 | |
 | Lake | 3 | |
 | Unique starting tiles | 8 | 1 per Lord (Arcane Nexus, Ironworks Ridge, Caravan Bazaar, Sacred Grove, Oasis Wellspring, Obsidian Spire, Hallowed Grove, Rift Anchor) |
-| **Total hex tiles** | **81** | |
+| **Total hex tiles** | **91** | validated full 8p disk |
 
-Geometry targets and slice inventory for 3–8p: see draft `../rules_and_systems/Map_Construction.md` (Plan 4). Re-quote tile counts when that table freezes.
+Geometry and inventory were sim-validated across 200 seeds per count on 2026-07-13; see `../rules_and_systems/Map_Construction.md` and `../docs/reports/2026-07-13-plan4-geometry-spacing.md`. Re-quote the 91-tile bill of materials.
 
 ## 1b. Player boards (1 per player, ×8)
 

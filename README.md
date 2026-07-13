@@ -93,7 +93,7 @@ python3.11 -m venv .venv
 # Windows:  .venv\Scripts\Activate.ps1
 # macOS/Linux:  source .venv/bin/activate
 pip install -r requirements-dev.txt
-python -m pytest          # 245 tests
+python -m pytest          # 342 tests
 ```
 
 Bot games and tournament brackets: see [`sim/README.md`](sim/README.md).

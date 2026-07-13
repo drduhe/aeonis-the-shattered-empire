@@ -41,7 +41,9 @@ First Playable restrictions are listed below where needed.
 
 ### 3.1 Map layout
 
-Build a map scaled to player count. **Authoritative First Playable presets** stay in this section; the draft geometry / slice system lives in `../rules_and_systems/Map_Construction.md` (PROPOSED — Plan 4).
+Build a map scaled to player count. **Authoritative First Playable preset geometry** is summarized here and specified in `../rules_and_systems/Map_Construction.md`; slice drafting remains PROPOSED.
+
+**Validated spacing rule (2026-07-13):** Place Home Cities at evenly spaced angular positions around the outer ring—never by coordinate row. Minimum Home-City distance is 4 at 3–7 players and 3 at 8 players. Every home must have a Ruins or Portal within 2 hexes. Starting printed-production totals must remain within ±1 across players. See `Map_Construction.md` §4 for the exact radius/tile-count table and reproducible placement procedure.
 
 **For 3-4 players:**
 
@@ -172,20 +174,18 @@ Use the full 8-card deck from `Strategy.md` (print as cards):
 
 **Shared public row (Plan 3 MVP):** Shuffle the 6 public objective cards. Reveal **2** face-up in a shared row visible to all players. At each **Round Start** from Round 2, reveal **1** additional public card until all 6 are face-up.
 
-**Staged economy opening (PROPOSED E3, sim-led 2026-07-03):** For economist-row experiments, the opening **2** cards are always **Builder** and **Merchant Lord** (either order). The remaining four public cards are shuffled into the deck and reveal one per Round Start from Round 2 as usual. Tempo objectives (`Frontier Lord`, `Seat of Empire`, etc.) enter the row from Round 2 onward. Not promoted until human playtest; sim toggle `objectives.staged_economy_opening`.
-
 **Public Objectives (2 VP each, each player may score each card once):**
 
 - **Frontier Lord**: Control 7 hexes.
 - **Builder**: Have 3 buildings in play.
-- **Merchant Lord**: Have 8 or more Gold. *(PROPOSED 2026-07-03 — economy experiment filling the row's sixth slot; see `../rules_and_systems/Objectives.md` §4.4 and the Economist viability memo.)*
-- **Portal Mastery**: Control a Portal and use Portal travel at least once.
-- **Warlord**: Win 2 battles (attacker or defender).
+- **Merchant Lord**: Have 8 or more Gold.
+- **Portal Mastery**: After this card is revealed, use Portal travel at least once and control a Portal when scored.
+- **Warlord**: After this card is revealed, win 2 battles (attacker or defender).
 - **Seat of Empire**: Control the Imperial Seat at Cleanup & Checks.
 
-> **Council Power** (win 2 High Council votes you proposed) sits out of the First Playable row while the Merchant Lord experiment runs; it returns with the full 24-card deck audit (Plan 3 §5).
+> **Council Power** (after reveal, spend 4 total Influence lobbying on motions that pass) sits out of the reduced First Playable teaching row; it appears in the full 24-card deck.
 
-**Scoring:** At **Cleanup & Checks**, you may score each revealed public objective **once per game** when you meet its condition. Limit: **1 public objective per player per round.**
+**Scoring:** At **Cleanup & Checks**, you may score each revealed public objective **once per game** when you meet its condition. Limit: **1 public objective per player per round.** For cumulative public conditions, place your control markers beside the card; only events after the card is revealed count.
 
 **Secret Objectives (2 VP each):**
 

@@ -1,6 +1,6 @@
 # Design plans — index & status
 
-**Updated:** 2026-07-12 · This is the entry point for `docs/plans/`. Plans marked PROPOSED change nothing until playtested (sim-led for now) and registered under "Design decisions (resolved)" in `rules_and_systems/INDEX.md`.
+**Updated:** 2026-07-13 · This is the entry point for `docs/plans/`. Plans marked PROPOSED change nothing until playtested (sim-led for now) and registered under "Design decisions (resolved)" in `rules_and_systems/INDEX.md`.
 
 **Mission context:** the simulator (`sim/`) is the primary feedback loop. Work streams either (a) close the gap between sim and canon rules, or (b) use sim evidence to refine game systems. See `docs/reports/INDEX.md` for current baselines and findings.
 
@@ -10,11 +10,11 @@
 
 | # | Plan | Status | Sim encoding | Next gate |
 |---|---|---|---|---|
-| 1 | [Combat aggression](2026-07-02-plan-combat-aggression.md) | PROPOSED | Toggles live (`combat.aggressors_edge_mode`, `pillage`); mixed M4 ladder 2026-07-13 | **Do not promote** Pre-Strike ([report](../reports/2026-07-13-plan1-prestrike-mixed.md)); 4p near band, 6–8p still hot |
+| 1 | [Combat aggression](2026-07-02-plan-combat-aggression.md) | **RESOLVED 2026-07-13: no combat modifier** | Edge/Pillage toggles retained for regression; corrected Plan 4 spacing is the successful lever | Human confirmation; all counts now in band |
 | 2 | [AP economy](2026-07-02-plan-ap-economy.md) | PROPOSED | Toggles live (`ap_economy.ap_bonus_cap`, `rally`); regression gates green in CI | Human playtest of cap + Rally |
-| 3 | [VP legibility (full)](2026-07-02-plan-vp-legibility.md) | PARTIAL — MVP promoted; score-once + D4/D5 landed 2026-07-13 | Score-once artifacts/legendaries encoded; purchased-VP cut; event VP budget + Seat-drip wording fixed | Remaining: 24-card Objectives audit |
+| 3 | [VP legibility (full)](2026-07-02-plan-vp-legibility.md) | **PROMOTED 2026-07-13 (sim-validated)** | Full 24-card shared row encoded; 130/130 audited games; 74–80% winner objective share | Human confirmation when playtests resume |
 | 3b | [VP legibility MVP](2026-07-03-plan-vp-legibility-mvp.md) | **PROMOTED** (sim-validated 2026-07-03, `rules_and_systems/INDEX.md`) | Fully encoded | Human confirmation when playtests resume |
-| 4 | [High player count](2026-07-02-plan-high-player-count.md) | PROPOSED — authoring started 2026-07-13 | Docket §3.2b + Whisper draw table drafted; `Map_Construction.md` draft | Playtest Docket + 6p/8p tables; sim encode later |
+| 4 | [High player count](2026-07-02-plan-high-player-count.md) | **PARTIAL — geometry promoted; social systems PROPOSED** | 1,200-map geometry gate passed; corrected anchors rebaseline combat; Docket + Whisper table remain drafts | Human Docket/Whisper + 8p spacing confirmation |
 | 5 | [Core Lords parity](2026-07-02-plan-core-lords-parity.md) | **PROMOTED 2026-07-09** | **M4 full encode DONE** (2026-07-12): unique tiles, remaining abilities, faction discoveries, Legendary Buildings; gate `bracket-m4.json` 100/100 | Lord-sheet tuning **paused** 2026-07-12 (Dial 3 kept); `lord_asymmetry` stays opt-in |
 | 6 | [Bookkeeping](2026-07-02-plan-bookkeeping.md) | PROPOSED — trade hygiene landed 2026-07-13 | `Trade_Taxes.md` rewrite (trade-only); player-board ledger spec | Renown milestones + building upkeep kill still deferred |
 | 7 | [Seat reward sweep](2026-07-03-plan-seat-reward-sweep.md) | **S1 adopted** (sim default) | `seat_rewards.seat_of_empire_vp` live | S2+ if revisited — see [H7 conclusion](../reports/2026-07-03-h7-calibration-sweep-conclusion.md) |
@@ -23,9 +23,9 @@
 ## Open design questions (sim-flagged, owner decision needed)
 
 - **Economist viability / objective tempo** — Lever B **decided 2026-07-03**: **Merchant Lord** (public, 8+ Gold) landed PROPOSED in the First Playable row. **E1/E2/E3/E5 killed 2026-07-03**. **Post-M4 (2026-07-12):** economist **6.5% / 5.2%** at mixed 6p/8p (H8 pass) with full Lord asymmetry — see [rebaseline](../reports/2026-07-12-m4-rebaseline.md). **Lever A pacing decided 2026-07-12:** design for **6–8 mean rounds** (accept current ~6.8 pace; do not stretch toward the old 8–10 aspirational band). Registered in `rules_and_systems/INDEX.md`.
-- **Attacker win rate** — contested ~65–68% at mixed 4p (top of / above Plan 1 band); 6–8p still hot (~70–74%). Pre-Strike does not fix 6–8p — see [2026-07-13 report](../reports/2026-07-13-plan1-prestrike-mixed.md).
+- **Attacker win rate** — corrected angular home spacing and exact four-tile starts resolve the heat: mixed M4 Edge-off is **64.5% / 64.7% / 62.9%** at 4p/6p/8p. Pre-Strike worsens all counts and stays off. See [geometry/spacing report](../reports/2026-07-13-plan4-geometry-spacing.md).
 - **M4 default-on** — deferred (not blocked on more Rakhis dials). **Owner 2026-07-12:** stop Lord-sheet tuning for now; leave Dial 3 in place (no Sandstride ZOC ignore; Hit and Run once/game; Oasis cavalry discount cut). Revisit Thal'rik / floors / default-on in a later pass — see [Dial 3](../reports/2026-07-12-rakhis-ladder-dial3.md).
-- **Next sim/design focus** — Plan 3 remaining = 24-card Objectives audit; Plan 4 Docket playtest when humans resume; Plan 1 needs a non-Pre-Strike lever for 6–8p heat.
+- **Next sim/design focus** — Plan 4 map-geometry validation now precedes Plan 1's non-Pre-Strike 6–8p combat lever; Docket/Whisper throughput still awaits humans.
 
 ## Sim track
 

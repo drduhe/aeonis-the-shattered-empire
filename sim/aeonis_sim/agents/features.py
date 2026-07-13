@@ -173,12 +173,66 @@ def _objective_progress(state, pid: int, name: str, *, secret: bool = False) -> 
         return min(state.player(pid).gold, need) / float(need)
     if name == "portal_mastery":
         portal = any(t.terrain == Terrain.PORTAL for t in state.controlled(pid))
-        travel = state.player(pid).used_portal_travel
+        travel = state.player(pid).public_objective_progress.get("portal_mastery", 0) >= 1
         return (0.5 if portal else 0.0) + (0.5 if travel else 0.0)
     if name == "warlord":
-        return min(state.player(pid).battle_wins, 2) / 2.0
+        return min(state.player(pid).public_objective_progress.get("warlord", 0), 2) / 2.0
     if name == "seat_of_empire":
         return 1.0 if any(t.imperial_seat for t in state.controlled(pid)) else 0.0
+    p = state.player(pid)
+    controlled = state.controlled(pid)
+    if name == "council_power":
+        return min(p.public_objective_progress.get(name, 0), 4) / 4.0
+    if name in ("twin_cities", "master_of_cities"):
+        need = 2 if name == "twin_cities" else 3
+        cities = sum(1 for t in controlled if t.imperial_seat or t.terrain == Terrain.CITY)
+        return min(cities, need) / float(need)
+    if name == "prosperous_realm":
+        buildings = sum(len(t.buildings) for t in controlled)
+        return 0.5 * min(buildings, 5) / 5.0 + 0.5 * min(state.pop_cap(pid), 12) / 12.0
+    if name == "adept_of_the_schools":
+        return min(len(p.discoveries), 2) / 2.0
+    if name == "voice_of_the_realm":
+        return min(p.renown, 5) / 5.0
+    if name in ("relic_seeker", "reliquary"):
+        need = 1 if name == "relic_seeker" else 3
+        artifacts = (
+            len(p.lord_equipment) + len(p.utilities)
+            + sum(1 for t in controlled if t.building_relic)
+            + (1 if p.pending_building_relic else 0)
+        )
+        return min(artifacts, need) / float(need)
+    if name == "realm_of_plenty":
+        standard = {Terrain.PLAINS, Terrain.FOREST, Terrain.MOUNTAIN, Terrain.DESERT}
+        varied = len({t.terrain for t in controlled if t.terrain in standard})
+        return min(varied, 3) / 3.0
+    if name == "standing_army":
+        units = sum(1 for _, u in state.units_of(pid) if u.type != UnitType.LORD)
+        return min(units, 8) / 8.0
+    if name in ("frontier_lord", "dominion"):
+        need = state.frontier_lord_min_hexes if name == "frontier_lord" else 12
+        return min(len(controlled), need) / float(need)
+    if name == "living_legend":
+        return 1.0 if PUBLIC_OBJECTIVES[name](state, pid) else 0.0
+    if name == "crossroads_of_empire":
+        special = sum(
+            1 for t in controlled
+            if t.imperial_seat or t.terrain in (Terrain.CITY, Terrain.RUINS, Terrain.PORTAL)
+        )
+        return min(special, 4) / 4.0
+    if name == "archmage":
+        return min(len(p.discoveries), 4) / 4.0
+    if name == "breaker_of_walls":
+        return min(p.public_objective_progress.get(name, 0), 1)
+    if name == "conqueror":
+        return min(p.public_objective_progress.get(name, 0), 5) / 5.0
+    if name in ("hold_the_line", "lawgiver"):
+        return min(p.public_objective_progress.get(name, 0), 2) / 2.0
+    if name == "beacon_of_renown":
+        return min(p.renown, 10) / 10.0
+    if name == "imperial_treasury":
+        total = p.gold + p.mana + p.influence
+        return min(total, 20) / 20.0
     return 0.0
 
 

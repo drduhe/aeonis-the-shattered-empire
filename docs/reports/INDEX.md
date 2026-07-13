@@ -1,8 +1,8 @@
 # Sim reports — index
 
-**Updated:** 2026-07-12 · Sim-only unless noted. Full tournament dumps are **regenerable** — conclusions live in the memos below.
+**Updated:** 2026-07-13 · Sim-only unless noted. Full tournament dumps are **regenerable** — conclusions live in the memos below.
 
-**Engine:** M3 card systems + full M4 Lord asymmetry (opt-in) + Lever C brakes + S1 seat VP. **332+ pytest** passing.
+**Engine:** M3 card systems + full M4 Lord asymmetry (opt-in) + audited objectives + validated map geometry + Lever C brakes + S1 seat VP. **342 pytest** passing.
 
 ---
 
@@ -18,6 +18,8 @@
 | [Persona parity diagnosis](2026-07-03-persona-parity-diagnosis.md) | Bot vs design-pressure methodology |
 | [Plan 1 combat ladder](2026-07-03-plan1-combat-ladder.md) | Edge/Pillage variants; Pre-Strike for human test |
 | [Plan 1 Pre-Strike mixed (M4)](2026-07-13-plan1-prestrike-mixed.md) | Mixed 4/6/8p baseline vs pre_strike; **do not promote**; 4p near band, 6–8p still hot |
+| [Plan 3 Public Objectives audit](2026-07-13-plan3-objective-audit.md) | 24-card shared-row audit; 130/130 complete; 6.33–6.73 rounds; **promote** |
+| [Plan 4 geometry + Plan 1 spacing](2026-07-13-plan4-geometry-spacing.md) | 1,200-map gate; fixes clustered homes; 6p/8p attacker heat enters band; 91-tile BOM |
 | [Plan 5 / M4 foundation](2026-07-09-plan5-m4-foundation.md) | Six signature redesigns promoted; 40/40 stability smoke; full M4 entry scope |
 | [M4 full encode gate](2026-07-12-m4-gate.md) | 100/100 completed; unique tiles, abilities, discoveries, Legendaries; AL-49 closed |
 | [Post-M4 rebaseline + pacing](2026-07-12-m4-rebaseline.md) | M4-on 4/6/8p mixed; economist H8 pass at 6–8p; Lever A → design for **6–8 rounds** (accepted) |

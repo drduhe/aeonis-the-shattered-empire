@@ -28,8 +28,8 @@ This is the minimal component list needed to run the **First Playable** packet. 
   - 2x **Lakes** (see scaling below)
 
 - **5-8 player scaling** (per `playtest/First_Playable_Packet.md` section 3.1):
-  - Home-cluster terrain: each player needs 1x Plains + 1x Forest + 1x Mountain (or their unique tile substitute), so bring **8x each** of Plains/Forests/Mountains for a full 8-player table.
-  - Neutral ring: ~+3 neutral terrain tiles per player beyond 4 (mix of Plains/Forest/Mountain); 1 Desert per pair of adjacent home clusters (up to **8x Deserts**).
+  - Validated 8-player preset (with all 8 Unique Starting Tiles): **21 Plains, 16 Forests, 19 Mountains**, 8 Deserts, 4 Ruins, 3 Portals, 3 Lakes, 8 Home Cities, and the Imperial Seat = 91 map hexes including the 8 Unique Tiles.
+  - If Unique Starting Tiles are omitted, substitute their listed standard terrains; the no-uniques inventory is 22 Plains, 21 Forests, and 21 Mountains.
   - Ruins: 1 per 2 players, round up (up to **4x**).
   - Portals: 1 per 3 players, round up, minimum 2 (up to **3x**).
   - Lakes: 1 per 3 players, round up, minimum 2 (up to **3x**).
@@ -43,7 +43,7 @@ This is the minimal component list needed to run the **First Playable** packet. 
   - 4x Archer tokens
 
 - **Control markers** (per player):
-  - 20x control tokens (for hex control if you want a visual marker)
+  - 20x control tokens (hex control plus scoring/progress markers on shared public objectives)
 
 - **Buildings** (shared supply):
   - 8x Farm
@@ -108,6 +108,7 @@ For First Playable, you can print these as simple text cards:
 - **Objectives**:
   - 6x Public objectives (2 VP each)
   - 6x Secret objectives (2 VP each)
+  - Public cards form one shared row; use player control tokens to mark scores and cumulative progress after reveal.
 - **Events**:
   - 10x Global events (includes 2 catch-up events)
   - 8x Exploration events (used for Ruins / exploration)

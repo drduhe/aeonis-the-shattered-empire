@@ -1,6 +1,6 @@
 # Plan 3: VP Legibility & Consolidation
 
-- **Status:** PROPOSED — nothing here is canon until playtested and locked in `rules_and_systems/INDEX.md`. `Victory.md` and `Objectives.md` remain authoritative.
+- **Status:** **PROMOTED 2026-07-13 (sim-validated)** — shared full-game row, audited 24-card deck, permanent score-once VP, Coronation Rite, purchased-VP removal, and event budget are registered in `rules_and_systems/INDEX.md`. Human confirmation remains pending.
 - **Date:** 2026-07-02
 - **Owning docs:** `rules_and_systems/Victory.md` (VP budget), `rules_and_systems/Objectives.md` (objective mechanics)
 - **Related plans:** Plan 1 (military VP), Plan 2 (Rally valve reads VP), Plan 6 (Renown/title overlap)
@@ -30,7 +30,7 @@ Also, purchased VP (buy 1 VP for 5 Influence / 10 Gold) converts economy directl
 
 **Non-goals**
 
-- Not redesigning the objective card lists (the 44-card content in `Objectives.md` survives; this changes the *frame* around it).
+- Secret-objective redesign remains out of scope. The public audit keeps 24 cards but replaces four cards whose incentives or reachability failed the shared-row contract.
 - Not removing the Imperial Seat as a VP source — it's the thematic centerpiece.
 - Not changing the 10 VP threshold / final-round structure until data says otherwise.
 
@@ -127,4 +127,4 @@ A typical 10 VP winner, by design intent:
 
 ## 8. Sequencing
 
-Third — after Plans 1–2 establish combat/tempo baselines, because the §4 budget can't be validated while military VP frequency is still moving.
+**Executed 2026-07-13.** Final integrated M4 ladders completed 130/130 audited games at 6.33–6.73 mean rounds with 74–80% winner objective share. See `../reports/2026-07-13-plan3-objective-audit.md`.

@@ -9,7 +9,7 @@ from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
 from .hexmap import neighbors
-from .objectives import record_influence_hex_gain
+from .objectives import record_influence_hex_gain, record_public_progress
 
 if TYPE_CHECKING:
     from .types import GameState
@@ -221,6 +221,14 @@ def run_emergency_council(state: GameState, proposer: int, rng: random.Random) -
         ballots.append({"pid": pid, "support": support, "lobby": 0})
     if tally_votes(state, motion, ballots, proposer=proposer):
         apply_motion(state, motion, proposer, rng)
+        card = AGENDA_CARDS.get(motion)
+        for ballot in ballots:
+            if ballot.get("support") and int(ballot.get("lobby", 0)):
+                record_public_progress(
+                    state, ballot["pid"], "council_power", int(ballot.get("lobby", 0)),
+                )
+            if ballot.get("support") and card and card.kind == "law":
+                record_public_progress(state, ballot["pid"], "lawgiver")
         return True
     return False
 

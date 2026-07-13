@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import random
 
-from .hexmap import generate_map, neighbors
+from .hexmap import distance, generate_map, neighbors
 from .objectives import (
     SECRET_OBJECTIVE_IDS,
     deal_secret_draw,
@@ -73,9 +73,10 @@ def build_initial_state(config: dict, rng: random.Random) -> GameState:
     rng.shuffle(secret_deck)
     state.secret_objective_deck = secret_deck
 
-    revealed, public_deck = setup_shared_public_row(rng, objectives)
+    revealed, public_deck, stage_two = setup_shared_public_row(rng, objectives)
     state.shared_public_revealed = revealed
     state.shared_public_deck = public_deck
+    state.shared_public_stage_two = stage_two
 
     lord_roster = configured_roster(config, n)
     for pid in range(n):
@@ -105,11 +106,16 @@ def build_initial_state(config: dict, rng: random.Random) -> GameState:
                                    else UNIT_STATS[ut].hp))
 
         home.controller = pid
-        for nb in neighbors(homes[pid]):
-            t = tiles.get(nb)
-            if t is not None and t.controller is None and not t.imperial_seat \
-                    and t.terrain.value in ("plains", "forest", "mountain"):
-                t.controller = pid
+        cluster = [
+            c for c in neighbors(homes[pid])
+            if c in tiles
+            and tiles[c].controller is None
+            and not tiles[c].imperial_seat
+            and tiles[c].terrain.value in ("plains", "forest", "mountain")
+        ]
+        cluster.sort(key=lambda c: (distance(c, (0, 0)), c))
+        for coord in cluster[:3]:
+            tiles[coord].controller = pid
 
     place_unique_tiles(state)
 

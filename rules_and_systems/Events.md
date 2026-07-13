@@ -85,7 +85,7 @@ These events specifically help trailing players stay competitive. They are mixed
 ### Winds of Fortune
 
 - **Type:** Global Event
-- **Effect:** The player(s) with the **fewest VP** gain **+2 AP** next round (added during Round Start) and may **draw one additional objective card** (public or secret, their choice; if the objective deck is empty, gain +1 Renown instead). If tied for fewest VP, all tied players gain the bonus.
+- **Effect:** The player(s) with the **fewest VP** gain **+2 AP** next round (added during Round Start) and may either **reveal one additional public objective to the shared row** or draw one secret objective (their choice; if the chosen deck is empty, gain +1 Renown instead). If tied for fewest VP, all tied players gain the bonus.
 
 A third catch-up event, **The Realm Remembers**, is defined in the Full Deck Lists below.
 
@@ -197,7 +197,7 @@ Event-driven VP stays in the design (dramatic moments), but:
 - **Supply Disruption**: Each player must discard 2 total resources (any mix of Gold/Mana/Influence).
 - **Open Roads**: Until end of round, movement across Plains costs 1 less AP (min 1).
 - **Populist Uprising** (catch-up): The player(s) with the fewest controlled hexes gain +2 Population Pool (up to cap) and +1 Influence.
-- **Winds of Fortune** (catch-up): The player(s) with the fewest VP gain +2 AP next round and may draw one additional objective card (public or secret, their choice).
+- **Winds of Fortune** (catch-up): The player(s) with the fewest VP gain +2 AP next round and may reveal one public objective to the shared row or draw one secret objective.
 - **Ruins Unearthed**: Place an Artifact Site marker on a neutral/uncontrolled Ruins hex (or any neutral hex). Draw the top Artifact Card face-up on it (see `Artifacts.md`).
 - **Echo of the Old Empire**: Place an Artifact Site marker on the hex closest to the Imperial Seat without one. Draw the top Artifact Card face-up. All players gain 1 Remnant (see `Artifacts.md`).
 

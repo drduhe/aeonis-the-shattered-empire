@@ -4,7 +4,7 @@ This chapter is the **owning rules reference** for the objective system: how obj
 
 - **VP context**: objectives are one VP source among several — see `Victory.md`.
 - **Timing spine**: scoring happens at **Cleanup & Checks** unless a card says otherwise — see `Round_Structure.md`, phase 7.
-- **First Playable**: the playtest packet prints a reduced 6 public + 6 secret set (see `../playtest/First_Playable_Packet.md`, section 4.4). Those cards appear in the full decks below, unchanged in effect — except **Merchant Lord**, a PROPOSED experiment card defined in section 4.4 of this chapter that is not yet part of the printed 24-card public deck.
+- **First Playable**: the playtest packet prints a reduced 6 public + 6 secret set (see `../playtest/First_Playable_Packet.md`, section 4.4). Those cards appear in the full decks below unchanged in effect.
 
 ---
 
@@ -13,18 +13,18 @@ This chapter is the **owning rules reference** for the objective system: how obj
 ### 1.1 How objectives work
 
 - Each objective card is worth **2 VP** (public and secret alike; see `Victory.md`).
-- **Public Objectives** are personal: each player draws their own from the public deck and **must reveal it to all players immediately** when drawn.
+- **Public Objectives** form one **shared revealed row**. Every player may score each revealed card once; place one of your control markers on the card when you score it.
 - **Secret Objectives** are drawn from the secret deck and kept **hidden** from other players until scored.
 - An objective is **scored** when its condition is **verified at Cleanup & Checks**, unless the card says otherwise (see 1.3).
-- Once scored, an objective is **discarded** — **each card scores once**. It grants no ongoing effect. (Recommended: keep scored cards face-up near your VP track as a score record.)
+- A scored public objective stays in the shared row so other players may score it; your marker proves you cannot score it again. A scored secret objective stays face-up near your VP track as a score record. **Each objective scores once per player** and grants no ongoing effect.
 - Whenever you score an objective, you score VP — this triggers the standard "draw 1 Whisper Card when you score VP" rule (see `Whispers.md`).
 
 ### 1.2 Definitions
 
-- **Public deck**: a 24-card deck of public objectives, split into **Stage I** (12 cards) and **Stage II** (12 cards). See section 2.
+- **Public deck**: a 24-card deck of public objectives, split into **Stage I** (12 cards) and **Stage II** (12 cards). Revealed cards form the shared public row. See section 2.
 - **Secret deck**: a 20-card deck of secret objectives. See section 2.
-- **Unscored objective**: an objective card you hold (revealed or hidden) that has not yet been scored.
-- **Progress marker**: a generic token placed on an objective card to track a cumulative condition (e.g., "win 2 battles"). Place a marker at the moment each qualifying event occurs. For secret objectives, markers sit on the face-down card — opponents may see the count, but not the condition.
+- **Unscored objective**: a revealed public card without your control marker, or a secret objective you hold that you have not scored.
+- **Progress marker**: one of your control markers placed beside a cumulative objective to track your progress (e.g., "win 2 battles"). Public-objective progress begins when that card is revealed; earlier events never count. Secret-objective progress begins when you draw the card. For secrets, markers sit on the face-down card — opponents may see the count, but not the condition.
 - **Hex distance**: the smallest number of hex-to-hex steps between two hexes, counted across adjacent hexes on the map (including Lakes and hexes any player controls). Terrain costs, ZOC, and passability are ignored — hex distance measures the map, not movement (see `Movement.md` for movement costs, which are unrelated).
 - **Winning a battle**: you win a battle when its Aftermath resolves in your favor (see `Combat.md`, section 5):
   - As **attacker**: the defender's committed units are eliminated and you gain control of the target hex (`Combat.md` §5.1).
@@ -36,10 +36,9 @@ This chapter is the **owning rules reference** for the objective system: how obj
 ### 1.3 Scoring windows and resolution order
 
 - **Default window**: objectives are verified during **Cleanup & Checks**, as part of the **Victory checks** step (`Round_Structure.md`, phase 7, step 5), **before** the VP-threshold check.
-  - In **initiative order**, each player may score any of their unscored objectives whose conditions are verified at that moment (reveal secrets as you score them).
-  - A player may score **multiple objectives** at the same Cleanup & Checks.
+  - In **initiative order**, each player may score **at most 1 public objective**, then any number of eligible secret objectives (reveal secrets as you score them).
 - **Immediate window**: a card marked **"Scoring window: Immediate"** may instead be scored at the **moment its condition is verified**, during any phase (reveal it, score 2 VP, discard it). If you do not score it immediately, you may still score it at any later moment the condition is verified again.
-- **Cumulative conditions**: cards that count events over time (marked with a **Tracking** line) are verified by their progress markers. The markers are the tracking method — no memory-dependent claims are allowed.
+- **Cumulative conditions**: cards that count events over time (marked with a **Tracking** line) are verified by player-colored progress markers. Public cards count only events after reveal; secret cards count only events after draw. The markers are the tracking method — no memory-dependent claims are allowed.
 - **Conditions must hold when checked**: for state-based conditions ("control 7 hexes"), the condition must be true at the moment of verification. There is no credit for having met it earlier in the round.
 
 ---
@@ -51,12 +50,13 @@ This chapter is the **owning rules reference** for the objective system: how obj
 - **Stage I (12 cards)**: objectives tuned to be achievable by rounds 1–4.
 - **Stage II (12 cards)**: harder objectives tuned for the mid and late game.
 
-**Setup and staging (default rule):**
+**Shared-row setup and staging (default rule):**
 
 1. During setup, shuffle the Stage I cards and the Stage II cards into **two separate face-down decks**.
-2. All public objective draws come from the **Stage I deck** through the end of Round 3.
-3. At **Round Start of Round 4**, shuffle the Stage II deck together with the remaining Stage I deck to form a **single public deck**. All later public draws come from this combined deck.
-4. **Exception**: if the Stage I deck is empty before Round 4, shuffle the Stage II deck in immediately.
+2. Reveal **2 Stage I cards** to form the opening shared public row.
+3. At each **Round Start from Round 2**, reveal 1 public objective. Draw from Stage I through the end of Round 3.
+4. At **Round Start of Round 4**, shuffle the Stage II deck together with the remaining Stage I deck to form a **single public deck**, then reveal that round's card. All later reveals come from this combined deck.
+5. **Exception**: if the Stage I deck is empty before Round 4, shuffle the Stage II deck in immediately.
 
 *Why Round 4:* Stage I is tuned to be achievable by rounds 1–4; folding Stage II in at Round 4 means mid/late-game draws scale with board development instead of handing a fresh player an unreachable goal.
 
@@ -66,7 +66,7 @@ This chapter is the **owning rules reference** for the objective system: how obj
 
 - Shuffle all 20 secret objectives into a single face-down deck during setup.
 - Discarded secret objectives go to a **face-down discard pile**. If the secret deck empties, shuffle the discard pile to form a new deck.
-- Discarded public objectives go to a **face-up discard pile** next to the public deck; reshuffle likewise if the public deck empties.
+- Public objectives are not discarded after scoring; revealed cards remain in the shared row for the rest of the game.
 
 ---
 
@@ -74,7 +74,7 @@ This chapter is the **owning rules reference** for the objective system: how obj
 
 ### 3.1 Starting draws
 
-- During setup, each player draws **1 public objective** (from the Stage I deck; reveal it to all players) and **1 secret objective** (keep it hidden).
+- During setup, each player draws **1 secret objective** and keeps it hidden. The opening 2 public objectives are revealed to the shared row per section 2.1.
 
 ### 3.2 Round 3 secret draw
 
@@ -87,10 +87,10 @@ This chapter is the **owning rules reference** for the objective system: how obj
 
 *Why 3:* the cap limits outstanding hidden VP to 6 (of the 10 VP threshold), preventing hidden blowouts — consistent with the "secret objectives are 2 VP" design decision in `INDEX.md`. The draw-2-keep-1 rule keeps draw effects (e.g., the **Winds of Fortune** event) valuable at the cap by offering selection instead of raw cards.
 
-### 3.4 Public objective draws
+### 3.4 Additional public reveals
 
-- Whenever an effect lets you draw a public objective (e.g., **Winds of Fortune**, see `First_Playable_Packet.md` section 4.5), draw from the public deck per section 2.1 and **reveal it immediately**.
-- There is **no cap** on unscored public objectives (they are open information).
+- Whenever an effect lets you draw a public objective (e.g., **Winds of Fortune**, see `First_Playable_Packet.md` section 4.5), reveal the next card from the current public deck into the shared row. It is available to every player immediately but can be scored only at its stated window.
+- There is no row-size cap; public objectives remain open information.
 
 ---
 
@@ -115,23 +115,23 @@ Every card below is worth **2 VP** and uses the **default scoring window (Cleanu
 #### Council Power
 
 - **Category:** Politics
-- **Condition:** Win 2 High Council votes you proposed.
-- **Clarifications:** A vote is "won" when a motion you proposed **passes** (see `High_Council.md` §3.4–3.5). Motions you proposed for free from the agenda deck count.
-- **Tracking:** Place a progress marker on this card each time a motion you proposed passes.
+- **Condition:** Spend 4 total Influence lobbying on motions that pass.
+- **Clarifications:** Count only Influence you spend during the High Council Phase on a **For** vote whose motion passes (see `High_Council.md` §2.3 and §3.4–3.5). The 4 Influence may be split across multiple motions.
+- **Tracking:** After this card is revealed, place that many of your control markers beside it whenever your qualifying motion passes.
 
 #### Portal Mastery
 
 - **Category:** Exploration
 - **Condition:** Control a Portal and use Portal travel at least once.
-- **Clarifications:** Portal control follows `Tiles.md` (occupy it at the start of your turn, or have your Tower on it). Portal travel is the Portal-to-Portal move defined in `Movement.md` §4; the travel may have happened in any round. Both parts must be satisfied when checked: the marker for travel, plus current Portal control.
-- **Tracking:** Place a progress marker on this card the first time you use Portal travel.
+- **Clarifications:** Portal control follows `Tiles.md` (occupy it at the start of your turn, or have your Tower on it). Portal travel is the Portal-to-Portal move defined in `Movement.md` §4. Both parts must be satisfied when checked: a travel marker earned after this card was revealed, plus current Portal control.
+- **Tracking:** After this card is revealed, place your control marker beside it the first time you use Portal travel.
 
 #### Warlord
 
 - **Category:** Military
 - **Condition:** Win 2 battles (attacker or defender).
 - **Clarifications:** Uses the "Winning a battle" definition in section 1.2.
-- **Tracking:** Place a progress marker on this card each time you win a battle.
+- **Tracking:** After this card is revealed, place your control marker beside it each time you win a battle.
 
 #### Seat of Empire
 
@@ -163,11 +163,11 @@ Every card below is worth **2 VP** and uses the **default scoring window (Cleanu
 - **Condition:** Own an Artifact.
 - **Clarifications:** Any category counts (Lord Equipment, Building Relic, or Utility; see `Artifacts.md`) as long as you control it when checked. Remnants are not Artifacts.
 
-#### Realm of Plenty
+#### Merchant Lord
 
-- **Category:** Economy / Territory
-- **Condition:** Control at least 1 Mountain hex, 1 Forest hex, and 1 Desert hex.
-- **Clarifications:** Unique starting tiles count as their listed terrain type (see `Tiles.md`).
+- **Category:** Economy
+- **Condition:** Have 8 or more Gold.
+- **Clarifications:** Read directly from your Gold stock at Cleanup & Checks. This is separate from, and may be scored in addition to, the secret objective **Golden Hoard** (10 Gold, Immediate window).
 
 #### Standing Army
 
@@ -183,11 +183,11 @@ Every card below is worth **2 VP** and uses the **default scoring window (Cleanu
 - **Condition:** Control 12 hexes.
 - **Clarifications:** As **Frontier Lord**, at a mid/late-game scale.
 
-#### Master of Cities
+#### Prosperous Realm
 
-- **Category:** Military / Territory
-- **Condition:** Control 3 Cities.
-- **Clarifications:** The Imperial Seat counts as a City. Your Home City counts.
+- **Category:** Economy / Growth
+- **Condition:** Have 5 buildings in play and a Population Cap of 12 or more.
+- **Clarifications:** Buildings of any type count while they are on hexes you control. Read Population Cap from your player board (see `Population.md`). This replaces **Master of Cities**, which required capturing an enemy Home City at most player counts and recorded no scores at 4p/6p in the first two audit ladders.
 
 #### Living Legend
 
@@ -195,12 +195,11 @@ Every card below is worth **2 VP** and uses the **default scoring window (Cleanu
 - **Condition:** Have your Legendary Building in play, in a City you control.
 - **Clarifications:** "Your" Legendary Building is the faction capstone on your Lord Sheet (see `Buildings.md`). If the City containing it has been captured, you do not meet this condition (the captor may have scored **1 VP once** for the capture, but cannot score this card — it is not their Legendary Building).
 
-#### Heir of Aeonis
+#### Crossroads of Empire
 
-- **Category:** Territory
-- **Condition:** Control the Imperial Seat at 2 consecutive Cleanup & Checks.
-- **Clarifications:** Separate from the Imperial Seat's **Coronation Rite** and its third-Rite +2 VP bonus in `Victory.md`; all may apply.
-- **Tracking:** Place a progress marker on this card at the first Cleanup & Checks at which you control the Imperial Seat. If you do not control it at a later Cleanup & Checks, remove the marker. Score at the second consecutive check.
+- **Category:** Exploration / Territory
+- **Condition:** Control 4 special tiles.
+- **Clarifications:** Cities, Ruins, Portals, and the Imperial Seat are special tiles. The Imperial Seat counts once, not once as the Seat and again as a City. This replaces **Heir of Aeonis** so the objective deck does not stack another scoring reward onto the Coronation Rite.
 
 #### Archmage
 
@@ -213,27 +212,28 @@ Every card below is worth **2 VP** and uses the **default scoring window (Cleanu
 - **Category:** Military
 - **Condition:** Win a Siege as the attacker.
 - **Clarifications:** You must capture a hex that was under a Siege marker (a Fortress hex, or a City whose defender declared Hold the Walls; see `Combat.md` §6.5).
-- **Tracking:** Place a progress marker on this card when you win a Siege.
+- **Tracking:** After this card is revealed, place your control marker beside it when you win a Siege.
 
 #### Conqueror
 
 - **Category:** Military
 - **Condition:** Win 5 battles (attacker or defender).
 - **Clarifications:** Uses the "Winning a battle" definition in section 1.2.
-- **Tracking:** Place a progress marker on this card each time you win a battle.
+- **Tracking:** After this card is revealed, place your control marker beside it each time you win a battle.
 
-#### Kingslayer
+#### Hold the Line
 
 - **Category:** Military
-- **Condition:** Capture an enemy Lord.
-- **Clarifications:** Reduce an enemy Lord to 0 HP in battle (see `Combat.md` §2.1.4). The capture's own +1 VP and +2 Renown apply separately.
-- **Tracking:** Place a progress marker on this card when you capture an enemy Lord.
+- **Condition:** Win 2 battles as the defender.
+- **Clarifications:** Uses the defender victory definition in section 1.2. The wins may occur in the same or different hexes.
+- **Tracking:** After this card is revealed, place your control marker beside it each time you win as the defender. This replaces **Kingslayer** so Lord capture does not bundle objective VP with its existing VP, Renown, equipment-transfer, and ability-lockout rewards.
 
 #### Lawgiver
 
 - **Category:** Politics
-- **Condition:** Have 2 Laws you proposed in effect at Cleanup & Checks.
-- **Clarifications:** Laws only (not Decrees or Titles; see `High_Council.md`). A repealed Law does not count. When a Law is enacted, place the proposer's control marker on it so proposal credit stays on the table.
+- **Condition:** Support 2 Laws that pass.
+- **Clarifications:** Laws only (not Decrees or Titles; see `High_Council.md`). You must cast a **For** vote on each qualifying Law during the High Council Phase.
+- **Tracking:** After this card is revealed, place your control marker beside it whenever a Law you supported passes. This remains achievable when the proposed Plan 4 Docket limits who may propose.
 
 #### Beacon of Renown
 
@@ -383,22 +383,15 @@ Every card below is worth **2 VP** and uses the **default scoring window (Cleanu
 - **Condition:** Have a Population Cap of 15 or more.
 - **Clarifications:** Read directly from your Population Cap track (see `Population.md`).
 
-### 4.4 Proposed playtest cards (not yet in the printed decks)
+### 4.4 Retired objective-row experiment
 
-Cards in this section are **PROPOSED** balance experiments: they are legal only where a playtest packet explicitly includes them, and they do not count toward the deck totals in section 2 until promoted via the decision log in `INDEX.md`.
-
-#### Merchant Lord
-
-- **Category:** Economy
-- **Condition:** Have 8 or more Gold.
-- **Clarifications:** Read directly from your Gold stock at the moment of verification. This is separate from, and may be scored in addition to, the secret objective **Golden Hoard** (10 Gold, Immediate window) — banking toward one naturally progresses the other.
-- **Status:** PROPOSED (2026-07-03) — First Playable public-row experiment addressing Economist viability (see `../docs/reports/2026-07-03-memo-economist-viability.md`, Lever B). Included in the First Playable shared row per `../playtest/First_Playable_Packet.md` §4.4; intended as a **Stage I public** if promoted.
+This section preserves a killed sim configuration for reproducibility. It is not a current playtest rule.
 
 #### Staged economy opening (E3)
 
-- **Rule (PROPOSED):** At setup, the shared row's opening **2** revealed cards are **Builder** and **Merchant Lord** instead of a random pair. Remaining public cards shuffle into the deck and reveal per the normal Round Start schedule.
+- **Retired rule:** At setup, the shared row's opening **2** revealed cards were **Builder** and **Merchant Lord** instead of a random pair.
 - **Intent:** Make economy paths **visible from round 1** without changing thresholds or pacing knobs (contrast E1/E2/E5, killed in sim).
-- **Status:** PROPOSED (2026-07-03) — sim toggle `objectives.staged_economy_opening`; see `../docs/plans/2026-07-03-plan-early-economy-impact.md` track E3.
+- **Status:** **KILLED 2026-07-03** — sim toggle `objectives.staged_economy_opening` remains only to reproduce the E3 ladder; see `../docs/plans/2026-07-03-plan-early-economy-impact.md`.
 
 ---
 
@@ -410,12 +403,12 @@ Every deck spreads its conditions across the game's major playstyles so that any
 
 | Playstyle | Stage I Public | Stage II Public | Secret |
 | --- | --- | --- | --- |
-| **Military** | Warlord, Standing Army, Twin Cities | Conqueror, Breaker of Walls, Kingslayer, Master of Cities | Hidden Arsenal, Bloodied Blade, Breaker of Lines, Horselord |
-| **Economy** | Builder, Realm of Plenty | Imperial Treasury, Living Legend | Golden Hoard, Mana Flood, Master of Trade, Remnant Collector |
+| **Military** | Warlord, Standing Army, Twin Cities | Conqueror, Breaker of Walls, Hold the Line | Hidden Arsenal, Bloodied Blade, Breaker of Lines, Horselord |
+| **Economy** | Builder, Merchant Lord | Prosperous Realm, Imperial Treasury, Living Legend | Golden Hoard, Mana Flood, Master of Trade, Remnant Collector |
 | **Politics** | Council Power, Voice of the Realm | Lawgiver, Beacon of Renown | The Quiet Knife, Silver Tongue, Titleholder |
 | **Arcane** | Adept of the Schools | Archmage | Archivist |
-| **Exploration** | Portal Mastery, Relic Seeker | Reliquary | Architect of Control, Pathfinder |
-| **Territory** | Frontier Lord, Seat of Empire | Dominion, Heir of Aeonis | Borderbreaker, Far Dominion, Bridgewright, Desert Crown |
+| **Exploration** | Portal Mastery, Relic Seeker | Crossroads of Empire, Reliquary | Architect of Control, Pathfinder |
+| **Territory** | Frontier Lord, Seat of Empire | Dominion, Crossroads of Empire | Borderbreaker, Far Dominion, Bridgewright, Desert Crown |
 | **Subterfuge / Growth** | — | — | Ear to the Stones, Teeming Realm |
 
 ### 5.2 Verifiability rules (design contract)
@@ -424,7 +417,7 @@ Every objective condition **must** be objectively verifiable with components on 
 
 - **State-based conditions** (control X hexes, own Y artifacts, have Z resources) are read directly from the board, tracks, and player areas at the moment of verification.
 - **Event-based conditions** (win battles, pass motions, play Whispers) **must** carry a **Tracking** line: place a progress marker on the card at the moment each qualifying event occurs. No condition may rely on table memory.
-- Cards that currently require tracking: Council Power, Portal Mastery, Warlord, Heir of Aeonis, Breaker of Walls, Conqueror, Kingslayer, Hidden Arsenal, The Quiet Knife, Bloodied Blade, Breaker of Lines, Pathfinder, Master of Trade, Silver Tongue, Ear to the Stones. (Lawgiver instead marks enacted Laws with the proposer's control marker.)
+- Public cards that currently require player-colored tracking after reveal: Council Power, Portal Mastery, Warlord, Breaker of Walls, Conqueror, Hold the Line, and Lawgiver. Secret cards track only after draw: Hidden Arsenal, The Quiet Knife, Bloodied Blade, Breaker of Lines, Pathfinder, Master of Trade, Silver Tongue, and Ear to the Stones.
 - New objectives added later must follow the same contract, use only mechanics defined in an owning chapter, and reference that chapter in a clarification line.
 
 ### 5.3 First Playable compatibility
@@ -438,3 +431,16 @@ Every objective condition **must** be objectively verifiable with components on 
 - **Stage II** conditions require mid/late-game development (12 hexes, 3 Cities, sieges, Tier II research, 10 Renown) and enter the deck at Round 4 (section 2.1) so they are never a new player's only path.
 - **Secrets** are deliberately more specific than publics: they reward committing to a plan opponents cannot see, and the 3-card cap (section 3.3) bounds the hidden VP swing.
 - **Counterplay**: most conditions are contestable on the board — hexes and Cities can be retaken, Artifacts and the Imperial Seat change hands, Laws can be repealed, and Titles have maintenance checks. Immediate-window cards (Golden Hoard, Mana Flood, Remnant Collector) are stockpile targets that reward striking a hoarder before they cash in.
+
+### 5.5 Public-deck audit decisions (2026-07-13)
+
+The 24-card audit keeps the 12/12 stage split and 2 VP value while removing three legibility and incentive traps:
+
+1. Public cumulative progress starts only after reveal, so the shared row shows every player's real progress and never requires reconstructing earlier rounds.
+2. **Crossroads of Empire** replaces **Heir of Aeonis**, avoiding a third overlapping reward for holding the Imperial Seat.
+3. **Hold the Line** replaces **Kingslayer**, avoiding another reward on the already-loaded Lord-capture moment and adding a visible defensive victory path.
+4. **Council Power** and **Lawgiver** reward participation rather than proposal ownership, so they remain attainable if the Plan 4 Docket is later promoted.
+5. **Merchant Lord** replaces **Realm of Plenty**. The first audit ladder found Realm of Plenty effectively automatic (340 scores across 60 revealed games), while the full deck without Merchant Lord pushed the economist persona to 0–3.3% at 6p/8p.
+6. **Prosperous Realm** replaces **Master of Cities**. The first two ladders recorded no Master of Cities scores at 4p/6p and confirmed that the deck over-weighted military/territory conditions.
+
+**Sim hypotheses:** audited objectives should provide at least 60% of winner VP, preserve the accepted 6–8-round mean, and avoid any objective with zero scores across the 4p/6p/8p mixed-persona audit except **Archmage**, which is removed whenever the Tier II module is disabled.

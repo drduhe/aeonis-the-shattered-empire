@@ -149,7 +149,9 @@ All players resolve this phase (typically in initiative order, but it may be sim
 3. **Release captured Lords**: all captured Lords return to their owner's Home City at full HP (see `Combat.md`).
 4. **Whisper hand limit**: players with more than **7 Whisper Cards** must discard down to 7 (their choice).
 5. **Victory checks**:
-   - If a player reached the VP threshold **during the round**, the game ends **at the end of this phase** (end of the round), unless a scenario/variant says otherwise (see `Victory.md`).
+   - In initiative order, each player resolves their scoring checks: **Coronation Rite**, at most **1 revealed public objective**, any eligible secret objectives, then Title/asset checks (see `Victory.md` and `Objectives.md`).
+   - Cumulative public-objective progress counts only events after that card was revealed; place player-colored progress markers at the qualifying event's named window.
+   - After every player completes scoring, if anyone reached the VP threshold **during the round or these checks**, the game ends **at the end of this phase** (end of the round), unless a scenario/variant says otherwise.
 6. **Advance the round marker** and pass the Speaker marker clockwise.
 
 ---

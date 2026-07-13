@@ -454,6 +454,22 @@
           "status": "internal",
           "minutes": 5,
           "tags": ["design", "simulation", "combat", "plan1"]
+        },
+        {
+          "title": "Plan 3 Public Objectives Audit",
+          "path": "docs/reports/2026-07-13-plan3-objective-audit.md",
+          "description": "24-card shared-row audit; 130/130 complete; accepted pacing and objective-share gates; promote.",
+          "status": "internal",
+          "minutes": 7,
+          "tags": ["design", "simulation", "objectives", "victory", "plan3"]
+        },
+        {
+          "title": "Plan 4 Geometry + Plan 1 Spacing",
+          "path": "docs/reports/2026-07-13-plan4-geometry-spacing.md",
+          "description": "1,200-map geometry gate; corrected home spacing resolves 6p/8p attacker heat and freezes a 91-tile BOM.",
+          "status": "internal",
+          "minutes": 7,
+          "tags": ["design", "simulation", "map", "combat", "plan4", "plan1"]
         }
       ]
     }

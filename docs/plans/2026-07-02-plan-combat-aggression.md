@@ -1,6 +1,6 @@
 # Plan 1: Combat Aggression Tuning
 
-- **Status:** PROPOSED — nothing here is canon until playtested and locked in `rules_and_systems/INDEX.md`. `Combat.md` remains authoritative.
+- **Status:** **RESOLVED 2026-07-13 (sim-led): do not promote Edge or Pillage.** Corrected Plan 4 home spacing is the accepted non-Pre-Strike lever; 6p/8p contested attacker wins now sit inside the 55–65% band. `Combat.md` remains unchanged.
 - **Date:** 2026-07-02
 - **Owning doc:** `rules_and_systems/Combat.md`
 - **Related plans:** Plan 3 (VP legibility — military VP), Plan 5 (Lords parity — Vharok/Rakhis signatures touch combat)
@@ -42,8 +42,8 @@ The current combat math makes initiating battle irrational against a peer-streng
 
 | Option | Effect | Verdict |
 |---|---|---|
-| A. **Aggressor's Edge** — the attacking side's Attack rolls win ties (defender's Counterstrike rolls still must exceed) | d6-vs-d6 hit rate 42% → **58%** for the attacker only | **Adopt** |
-| B. **Pillage** — capturing a hex immediately grants its printed production once (Cities: 2 Gold) | Pays back part of the AP cost of a successful attack; makes conquest economically rational | **Adopt** |
+| A. **Aggressor's Edge** — the attacking side's Attack rolls win ties (defender's Counterstrike rolls still must exceed) | d6-vs-d6 hit rate 42% → **58%** for the attacker only | **Rejected by sim** |
+| B. **Pillage** — capturing a hex immediately grants its printed production once (Cities: 2 Gold) | Pays back part of the AP cost of a successful attack; makes conquest economically rational | **Rejected with Edge ladder; keep off** |
 | C. **Engagement pins** — committed defenders are locked until the battle ends | Aggression creates openings elsewhere; also fixes the commitment ambiguity | **Adopt the state, defer the pin** (see §4.3) |
 | D. Attack cost 2 AP → 1 AP | Fixes EV but invites low-cost harassment spam and drags round length | Rejected |
 | E. Both sides win ties on their own Attack rolls | Faster and bloodier but symmetric — doesn't fix the attacker's AP tax | Rejected |
@@ -112,4 +112,4 @@ Run as an A/B ladder, changing one thing per ladder step: **baseline (current ru
 
 ## 8. Sequencing
 
-First plan to test — it is solo-testable with the First Playable packet today, and Plans 2/3 both read its outputs (combat frequency and military VP share).
+**Executed.** Full Edge ran hot; Pre-Strike failed its mixed M4 ladder. After Plan 4 corrected clustered home anchors and restored exact four-tile starts, Edge-off contested attacker wins rebaselined to 64.5% / 64.7% / 62.9% at 4p/6p/8p with ~7-round pacing. See `../reports/2026-07-13-plan4-geometry-spacing.md`.

@@ -1,0 +1,20 @@
+{
+  "name": "plan3-audited-objectives-8p-mixed-m4",
+  "players": 8,
+  "games": 40,
+  "seed_base": 134000,
+  "personas": ["warmonger", "economist", "expander", "diplomat", "balanced"],
+  "matchmaking": "mixed",
+  "objectives": {
+    "full_public_deck": true,
+    "exclude_public_ids": ["archmage"]
+  },
+  "seat_rewards": {"seat_of_empire_vp": 1},
+  "lord_asymmetry": {
+    "enabled": true,
+    "roster": [
+      "cassian", "seraphel", "vharok", "elyndra",
+      "rakhis", "nyxara", "auriel", "thalrik"
+    ]
+  }
+}

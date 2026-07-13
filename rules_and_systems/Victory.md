@@ -10,7 +10,7 @@ Players earn **Victory Points (VP)** throughout the game by achieving key object
 
 **VP permanence:** Once scored, VP are never removed, even if the source (hex, artifact, building, title) is later lost.
 
-**Objective scoring timing:** Public and secret objectives score at **Cleanup & Checks** when the condition is met. Each card scores **once per player per game**. No separate claim action.
+**Objective scoring timing:** Public and secret objectives score at **Cleanup & Checks** when the condition is met. Each card scores **once per player per game**. A player may score at most 1 public objective per Cleanup. Cumulative public progress begins only after that card is revealed. No separate claim action.
 
 ---
 
@@ -20,13 +20,13 @@ Players earn **Victory Points (VP)** throughout the game by achieving key object
 
 **First Playable (shared row):** Reveal public objectives in a shared row; every player may score each revealed public objective once. See `playtest/First_Playable_Packet.md` §4.4.
 
-**Full game (default):** At setup, reveal **2 Stage I** public objectives in the shared row; reveal 1 more at each Round Start until the row is full. Each revealed public objective can be scored by **every player, once each**, at Cleanup & Checks (limit: 1 public objective scored per player per round).
+**Full game (default):** At setup, reveal **2 Stage I** public objectives in the shared row. Reveal 1 more at each Round Start from Round 2; Stage II joins the remaining Stage I deck at Round Start of Round 4. Each revealed public objective can be scored by **every player, once each**, at Cleanup & Checks (limit: 1 public objective scored per player per round).
 
 - **Public Objective:** Revealed to all players. Completing it earns **2 VP**.
 - **Secret Objective:** Hidden from other players. Completing it earns **2 VP**.
 
 - **Examples of Objectives:**
-  - **Military Feats:** Control 5 hexes, win 3 battles, or defeat a Lord.
+  - **Military Feats:** Maintain a standing army, win battles after a card is revealed, or hold against attacks.
   - **Economic Goals:** Stockpile 10 Gold, build 3 Farms, or control 3 resource-rich hexes.
   - **Cultural Influence:** Construct a Legendary Building or complete a Renown-based milestone.
 
