@@ -90,6 +90,10 @@ When a problem shows up, reach for the matching dial. Change **one dial at a tim
 ### 5.3 AP economy stacking
 - **Symptom:** wide players run away on tempo. Max stack today: 5 base +2 Cities +1 Guild Hall +1 Renown(5) + free 1-AP action (Renown 10) + banked 2.
 - **Dials:** City AP cap +2 → +1; Guild Hall +1 AP → once per game rebate; bank max 2 → 1; Renown 10 free action → once per two rounds.
+- **2026-07-13 sim verdict:** unified +2 bonus cap produced no material action-gap improvement; Rally widened AP spread and heated combat. Both rejected; keep current AP rules.
+
+### 5.3a Building upkeep burden
+- **2026-07-13 sim verdict:** remove recurring building resource upkeep. Forge, Academy, Castle, and Iron Citadel pay increased up-front costs; advanced-unit and Law upkeep remain. The matched ladder held builds above 2.4/player and removed all building-upkeep checks.
 
 ### 5.4 Catch-up sufficiency
 - **Symptom:** last place at round 4 never finishes better than last.

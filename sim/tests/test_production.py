@@ -43,8 +43,9 @@ def test_growth_capped():
     assert p.pop_pool == s.pop_cap(0) - s.pop_used(0)  # surplus lost
 
 
-def test_castle_upkeep_suspension():
+def test_legacy_castle_upkeep_suspension():
     s = make_state()
+    s.building_upkeep = True
     p = s.players[0]
     home = s.tiles[p.home]
     home.buildings.append(BuildingType.CASTLE)

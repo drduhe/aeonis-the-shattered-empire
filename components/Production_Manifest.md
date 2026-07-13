@@ -26,7 +26,7 @@ Geometry and inventory were sim-validated across 200 seeds per count on 2026-07-
 
 ## 1b. Player boards (1 per player, ×8)
 
-Printed ledger: Gold / Mana / Influence tracks, Population well, Renown 0–10 with milestone boxes, AP wells, production reminder strip. See `Components.md`.
+Printed ledger: Gold / Mana / Influence tracks, Population well, Renown 0–10 with milestone boxes, AP wells, and a Production & Upkeep strip that reminds players buildings have no recurring resource upkeep. See `Components.md`.
 
 ## 2. Standees (acrylic, with colored bases per player)
 
@@ -66,7 +66,7 @@ Printed ledger: Gold / Mana / Influence tracks, Population well, Renown 0–10 w
 | --- | --- | --- |
 | Lord sheets | 8 | letter-half size; dual-layer as deluxe upgrade |
 | Player aid cards | 8 | round sequence / action costs / combat steps (see `../rulebook/Player_Aid.md`) |
-| Player tracker board | 8 | AP, Population Pool/Cap, Renown, Lord HP on one board with sliders/cubes |
+| Player tracker board | 8 | AP, resources, Population Pool/Cap, Renown, Lord HP, and no-building-upkeep production strip |
 
 ## 5. Tokens & markers (punchboard unless noted)
 

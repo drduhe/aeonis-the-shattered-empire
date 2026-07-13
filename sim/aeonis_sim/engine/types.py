@@ -133,16 +133,15 @@ BUILDING_SPECS = {
     BuildingType.FORTRESS: BuildingSpec(None, gold=5, mana=2, pop=2),
     BuildingType.BRIDGE: BuildingSpec(Terrain.LAKE, gold=4, pop=0),
     BuildingType.GUILD_HALL: BuildingSpec(Terrain.CITY, gold=4, influence=2, pop=1),
-    BuildingType.FORGE: BuildingSpec(Terrain.CITY, gold=5, pop=1, upkeep_mana=1),
-    BuildingType.ACADEMY: BuildingSpec(Terrain.CITY, gold=4, mana=3, pop=2,
-                                       upkeep_mana=1),
+    BuildingType.FORGE: BuildingSpec(Terrain.CITY, gold=6, mana=1, pop=1),
+    BuildingType.ACADEMY: BuildingSpec(Terrain.CITY, gold=4, mana=4, pop=2),
     BuildingType.BANK: BuildingSpec(Terrain.CITY, gold=5, pop=1),
     BuildingType.MARKET: BuildingSpec(Terrain.CITY, gold=2, influence=2, pop=1),
-    BuildingType.CASTLE: BuildingSpec(Terrain.CITY, gold=6, pop=2, upkeep_gold=2),
+    BuildingType.CASTLE: BuildingSpec(Terrain.CITY, gold=8, pop=2),
     BuildingType.GRAND_EXCHANGE: BuildingSpec(Terrain.CITY, gold=6, influence=3, pop=3),
     BuildingType.ARCANE_SANCTUM: BuildingSpec(Terrain.CITY, gold=4, mana=6, pop=3),
     BuildingType.IRON_CITADEL: BuildingSpec(
-        Terrain.CITY, gold=8, mana=2, pop=3, upkeep_gold=2,
+        Terrain.CITY, gold=10, mana=2, pop=3,
     ),
     BuildingType.HEARTWOOD_SANCTUM: BuildingSpec(
         Terrain.CITY, gold=3, mana=4, influence=2, pop=3,
@@ -156,6 +155,31 @@ BUILDING_SPECS = {
     ),
     BuildingType.DIMENSIONAL_NEXUS: BuildingSpec(Terrain.CITY, gold=5, mana=5, pop=3),
 }
+
+
+LEGACY_UPKEEP_BUILDING_COSTS = {
+    BuildingType.FORGE: {"gold": 5, "mana": 0, "upkeep_mana": 1},
+    BuildingType.ACADEMY: {"gold": 4, "mana": 3, "upkeep_mana": 1},
+    BuildingType.CASTLE: {"gold": 6, "mana": 0, "upkeep_gold": 2},
+    BuildingType.IRON_CITADEL: {"gold": 8, "mana": 2, "upkeep_gold": 2},
+}
+
+
+def effective_building_spec(state, btype: BuildingType) -> BuildingSpec:
+    """Resource cost for the selected bookkeeping variant; slots stay canonical."""
+    spec = BUILDING_SPECS[btype]
+    if not state.building_upkeep or btype not in LEGACY_UPKEEP_BUILDING_COSTS:
+        return spec
+    cost = LEGACY_UPKEEP_BUILDING_COSTS[btype]
+    return BuildingSpec(
+        terrain=spec.terrain,
+        gold=cost["gold"],
+        mana=cost["mana"],
+        influence=spec.influence,
+        pop=spec.pop,
+        upkeep_gold=cost.get("upkeep_gold", 0),
+        upkeep_mana=cost.get("upkeep_mana", 0),
+    )
 
 
 @dataclass
@@ -303,6 +327,8 @@ class PlayerState:
     shadow_sight_tokens: int = 0  # AL-51: Nyxara Shadow Sight information tokens
     sacred_rite_5: bool = False
     sacred_rite_10: bool = False
+    renown_reward_5: bool = False
+    renown_reward_10: bool = False
     attacker_battle_wins: int = 0  # M4 Warcamp prereq
     whispers_played: int = 0  # M4 Hall of Whispers prereq
 
@@ -354,6 +380,10 @@ class PlayerState:
             out["sacred_rite_5"] = self.sacred_rite_5
         if self.sacred_rite_10:
             out["sacred_rite_10"] = self.sacred_rite_10
+        if self.renown_reward_5:
+            out["renown_reward_5"] = self.renown_reward_5
+        if self.renown_reward_10:
+            out["renown_reward_10"] = self.renown_reward_10
         # Keep pre-M4 records byte-stable when the opt-in layer is disabled.
         if self.lord_id:
             out["lord_id"] = self.lord_id
@@ -430,6 +460,8 @@ class PlayerState:
         p.shadow_sight_tokens = int(d.get("shadow_sight_tokens", 0))
         p.sacred_rite_5 = bool(d.get("sacred_rite_5", False))
         p.sacred_rite_10 = bool(d.get("sacred_rite_10", False))
+        p.renown_reward_5 = bool(d.get("renown_reward_5", False))
+        p.renown_reward_10 = bool(d.get("renown_reward_10", False))
         p.attacker_battle_wins = int(d.get("attacker_battle_wins", 0))
         p.whispers_played = int(d.get("whispers_played", 0))
         return p
@@ -452,6 +484,10 @@ class GameState:
     # Plan 2 AP economy (PROPOSED; toggled via config["ap_economy"]).
     ap_bonus_cap: Optional[int] = None  # e.g. 2 = unified +2 cap
     rally: bool = False  # +1 AP to lowest VP at Round Start (ignores cap)
+    # Plan 6 bookkeeping: slim Renown is a rejected regression variant;
+    # building_upkeep restores the retired recurring-cost baseline when true.
+    slim_renown: bool = False
+    building_upkeep: bool = False
     vp_threshold: int = VP_THRESHOLD  # Plan 3 pacing experiment (config["pacing"])
     frontier_lord_min_hexes: int = FRONTIER_LORD_MIN_HEXES  # Lever B row tempo (config["objectives"])
     seat_of_empire_vp: int = SEAT_OF_EMPIRE_VP  # Seat sweep S1 (config["seat_rewards"])
@@ -540,6 +576,18 @@ class GameState:
             "shared_public_revealed": list(self.shared_public_revealed),
             "shared_public_deck": list(self.shared_public_deck),
             "shared_public_stage_two": list(self.shared_public_stage_two),
+            "aggressors_edge_mode": self.aggressors_edge_mode,
+            "pillage": self.pillage,
+            "ap_bonus_cap": self.ap_bonus_cap,
+            "rally": self.rally,
+            "slim_renown": self.slim_renown,
+            "building_upkeep": self.building_upkeep,
+            "vp_threshold": self.vp_threshold,
+            "frontier_lord_min_hexes": self.frontier_lord_min_hexes,
+            "seat_of_empire_vp": self.seat_of_empire_vp,
+            "merchant_lord_min_gold": self.merchant_lord_min_gold,
+            "builder_min_buildings": self.builder_min_buildings,
+            "tier1_production_build_ap": self.tier1_production_build_ap,
             "speaker": self.speaker,
             "strategy_pool": list(self.strategy_pool),
             "strategy_bounty": dict(self.strategy_bounty),
@@ -585,6 +633,28 @@ class GameState:
             shared_public_revealed=list(d.get("shared_public_revealed", [])),
             shared_public_deck=list(d.get("shared_public_deck", [])),
             shared_public_stage_two=list(d.get("shared_public_stage_two", [])),
+            aggressors_edge_mode=str(d.get("aggressors_edge_mode", "off")),
+            pillage=bool(d.get("pillage", False)),
+            ap_bonus_cap=(
+                int(d["ap_bonus_cap"]) if d.get("ap_bonus_cap") is not None else None
+            ),
+            rally=bool(d.get("rally", False)),
+            slim_renown=bool(d.get("slim_renown", False)),
+            building_upkeep=bool(d.get("building_upkeep", False)),
+            vp_threshold=int(d.get("vp_threshold", VP_THRESHOLD)),
+            frontier_lord_min_hexes=int(
+                d.get("frontier_lord_min_hexes", FRONTIER_LORD_MIN_HEXES)
+            ),
+            seat_of_empire_vp=int(d.get("seat_of_empire_vp", SEAT_OF_EMPIRE_VP)),
+            merchant_lord_min_gold=int(
+                d.get("merchant_lord_min_gold", MERCHANT_LORD_MIN_GOLD)
+            ),
+            builder_min_buildings=int(
+                d.get("builder_min_buildings", BUILDER_MIN_BUILDINGS)
+            ),
+            tier1_production_build_ap=int(
+                d.get("tier1_production_build_ap", TIER1_PRODUCTION_BUILD_AP)
+            ),
             speaker=d.get("speaker", 0),
             strategy_pool=list(d.get("strategy_pool", [])),
             strategy_bounty=dict(d.get("strategy_bounty", {})),
@@ -689,6 +759,8 @@ class GameState:
                 shadow_sight_tokens=p.shadow_sight_tokens,
                 sacred_rite_5=p.sacred_rite_5,
                 sacred_rite_10=p.sacred_rite_10,
+                renown_reward_5=p.renown_reward_5,
+                renown_reward_10=p.renown_reward_10,
                 attacker_battle_wins=p.attacker_battle_wins,
                 whispers_played=p.whispers_played,
             )
@@ -707,6 +779,8 @@ class GameState:
             pillage=self.pillage,
             ap_bonus_cap=self.ap_bonus_cap,
             rally=self.rally,
+            slim_renown=self.slim_renown,
+            building_upkeep=self.building_upkeep,
             vp_threshold=self.vp_threshold,
             frontier_lord_min_hexes=self.frontier_lord_min_hexes,
             seat_of_empire_vp=self.seat_of_empire_vp,

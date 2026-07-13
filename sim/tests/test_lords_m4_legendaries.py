@@ -71,7 +71,8 @@ def test_legendary_building_types_and_specs():
     assert BUILDING_SPECS[ge].pop == 3
     assert BUILDING_SPECS[ge].gold == 6
     assert BUILDING_SPECS[ge].influence == 3
-    assert BUILDING_SPECS[BuildingType.IRON_CITADEL].upkeep_gold == 2
+    assert BUILDING_SPECS[BuildingType.IRON_CITADEL].gold == 10
+    assert BUILDING_SPECS[BuildingType.IRON_CITADEL].upkeep_gold == 0
     assert build_ap_cost(m4_state(), BuildingType.GRAND_EXCHANGE) == 4
 
 
@@ -257,7 +258,7 @@ def test_legendary_capture_awards_one_vp_once():
     assert state.player(1).vp == before2
 
 
-def test_iron_citadel_upkeep_charged():
+def test_iron_citadel_has_no_building_upkeep():
     state = m4_state(["vharok", "cassian", "seraphel"])
     p = state.player(0)
     home = _clear_city_for_legendary(state, 0)
@@ -268,7 +269,7 @@ def test_iron_citadel_upkeep_charged():
             t.controller = None
     p.gold = 5
     run_production(state)
-    assert p.gold == 5 - 2  # city prints 0 gold resources in AL-13; only upkeep
+    assert p.gold == 5  # City prints no trade resources; buildings have no upkeep.
 
 
 def test_attacker_battle_wins_and_whispers_played_serialize():

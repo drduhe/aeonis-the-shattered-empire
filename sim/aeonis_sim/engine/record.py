@@ -6,6 +6,24 @@ from pathlib import Path
 
 def build_record(game) -> dict:
     s = game.state
+    action_spreads = [
+        max(row.values()) - min(row.values())
+        for row in game.action_count_log
+        if row
+    ]
+    player_rounds = sum(len(row) for row in game.action_count_log)
+    total_actions = sum(sum(row.values()) for row in game.action_count_log)
+    total_stranded = sum(entry["stranded_ap"] for entry in game.pass_log)
+    first_passes = [entry for entry in game.pass_log if entry["order"] == 1]
+    total_builds = sum(game.build_counts.values())
+    players = len(s.players) or 1
+    bookkeeping = dict(game.bookkeeping_stats)
+    bookkeeping["upkeep_checks_per_player_round"] = (
+        bookkeeping["upkeep_checks"] / player_rounds if player_rounds else 0.0
+    )
+    bookkeeping["upkeep_payments_per_player_round"] = (
+        bookkeeping["upkeep_payments"] / player_rounds if player_rounds else 0.0
+    )
     return {
         "seed": game.seed,
         "config": game.config,
@@ -23,11 +41,31 @@ def build_record(game) -> dict:
                 sum(game.ap_spread_log) / len(game.ap_spread_log)
                 if game.ap_spread_log else 0.0
             ),
+            "max_action_gap": max(action_spreads) if action_spreads else 0,
+            "avg_action_gap": (
+                sum(action_spreads) / len(action_spreads) if action_spreads else 0.0
+            ),
+            "actions_per_player_round": (
+                total_actions / player_rounds if player_rounds else 0.0
+            ),
+            "stranded_ap": total_stranded,
+            "stranded_ap_per_player_round": (
+                total_stranded / player_rounds if player_rounds else 0.0
+            ),
+            "avg_first_pass_after_actions": (
+                sum(entry["actions_before_pass"] for entry in first_passes) / len(first_passes)
+                if first_passes else 0.0
+            ),
+            "builds": total_builds,
+            "builds_per_player_game": total_builds / players,
+            "builds_by_player": dict(game.build_counts),
+            "round_action_counts": list(game.action_count_log),
         },
         "event_stats": dict(game.event_stats),
         "council_stats": dict(game.council_stats),
         "negotiation_stats": dict(game.negotiation_stats),
         "building_stats": dict(game.building_stats),
+        "bookkeeping_stats": bookkeeping,
         "whisper_stats": dict(game.whisper_stats),
         "first_artifact_round": game.first_artifact_round,
         "final_state": s.to_dict(),

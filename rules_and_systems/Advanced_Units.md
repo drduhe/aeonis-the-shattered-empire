@@ -61,7 +61,8 @@ These limits are also the component counts (see `../components/Components.md`). 
 
 ## 4. Upkeep
 
-- If a unit's sheet lists an upkeep cost, pay it during **Production & Upkeep** each round (see `Round_Structure.md`, step 6, and `Trade_Taxes.md`).
+- Advanced units and active Laws are the only systems with recurring resource upkeep; buildings pay their full cost up front (see `Buildings.md`).
+- If a unit's sheet lists an upkeep cost, pay it during **Production & Upkeep** each round (see `Round_Structure.md`, step 6).
 - **Missed upkeep:** if you cannot or choose not to pay, the unit is **disbanded** immediately — remove it from the map and refund its Population to your pool.
 - Elite Units have **no upkeep** unless their sheet says otherwise. Advanced/Mythic Units usually do.
 

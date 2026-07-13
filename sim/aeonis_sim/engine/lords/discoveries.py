@@ -339,9 +339,30 @@ def bump_renown(state: GameState, pid: int, amount: int, rng: Optional[random.Ra
     p = state.player(pid)
     old = p.renown
     p.renown += amount
+    if amount > 0 and rng is not None and state.slim_renown:
+        apply_slim_renown_milestones(state, pid, old, rng)
     if amount > 0 and rng is not None and "sacred_rite" in p.discoveries:
         apply_sacred_rite_milestones(state, pid, old, rng)
     return p.renown
+
+
+def apply_slim_renown_milestones(
+    state: GameState,
+    pid: int,
+    old_renown: int,
+    rng: random.Random,
+) -> None:
+    """Plan 6 experiment: visible one-time rewards replace passive AP/votes."""
+    from ..whispers import draw_whispers
+
+    p = state.player(pid)
+    if not p.renown_reward_5 and old_renown < 5 <= p.renown:
+        p.renown_reward_5 = True
+        p.influence += 2
+        draw_whispers(state, pid, 2, rng)
+    if not p.renown_reward_10 and old_renown < 10 <= p.renown:
+        p.renown_reward_10 = True
+        p.add_vp(1, "renown_milestone")
 
 
 def apply_sacred_rite_milestones(

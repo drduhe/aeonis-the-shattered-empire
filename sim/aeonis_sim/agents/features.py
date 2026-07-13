@@ -7,12 +7,12 @@ from ..engine.move import apply_move
 from ..engine.objectives import PUBLIC_OBJECTIVES, SECRET_OBJECTIVES
 from ..engine.recruit import apply_recruit
 from ..engine.types import (
-    BUILDING_SPECS,
     BuildingType,
     GameState,
     Terrain,
     UNIT_STATS,
     UnitType,
+    effective_building_spec,
 )
 
 
@@ -61,7 +61,7 @@ def evaluate_state(state, pid: int) -> dict[str, float]:
     military = 0.0
     for t in controlled:
         for b in t.buildings:
-            spec = BUILDING_SPECS[b]
+            spec = effective_building_spec(state, b)
             economy += spec.gold * 0.15 + spec.mana * 0.12 + spec.influence * 0.1
     for _, u in state.units_of(pid):
         st = UNIT_STATS[u.type]
@@ -290,7 +290,7 @@ def _move_features(state, pid: int, choice: dict) -> dict[str, float]:
     seat = _seat_coord(state)
     expansion = 0.0
     tile = state.tiles.get(dest)
-    if tile and tile.controller not in (pid, None):
+    if tile and tile.controller not in (pid, None) and choice.get("cost", 0) > 0:
         expansion = 0.45
     elif tile and tile.controller is None:
         expansion = 0.3
@@ -302,17 +302,28 @@ def _move_features(state, pid: int, choice: dict) -> dict[str, float]:
         after = distance(dest, seat)
         seat_pull = max(0.0, (before - after) * 0.25)
     builder_need = _builder_need(state, pid)
+    # A 0-AP Portal hop between already controlled hexes can be repeated forever
+    # without changing strategic state. Humans simply stop; bots need an explicit
+    # idle-action brake so tempo metrics are not dominated by random portal bounces.
+    idle_portal_hop = (
+        choice.get("cost", 0) == 0
+        and tile is not None
+        and tile.controller is not None
+        and seat_pull == 0.0
+        and (seat is None or dest != seat)
+    )
     return {
         "expansion": expansion,
         "seat_pull": seat_pull,
         "rite_ready": 1.0 if (seat is not None and dest == seat) else 0.0,
         "builder_need": builder_need,
+        "pass_penalty": -5.0 if idle_portal_hop else 0.0,
     }
 
 
 def _build_features(state, pid: int, choice: dict) -> dict[str, float]:
     b = BuildingType(choice["building"])
-    spec = BUILDING_SPECS[b]
+    spec = effective_building_spec(state, b)
     econ = spec.gold * 0.2 + spec.mana * 0.15 + spec.influence * 0.1
     mil = 0.3 if b in (BuildingType.FORTRESS, BuildingType.TOWER, BuildingType.CASTLE) else 0.0
     before = sum(len(t.buildings) for t in state.controlled(pid))

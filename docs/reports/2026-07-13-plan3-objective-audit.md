@@ -11,13 +11,13 @@
 
 | Players | Reduced-row mean rounds | Audited mean rounds | Reduced winner objective share | Audited winner objective share | Completed |
 |---:|---:|---:|---:|---:|---:|
-| 4 | 6.48 | **6.46** | 81.0% | **75.2%** | 50/50 |
-| 6 | 5.85 | **6.33** | 72.9% | **74.4%** | 40/40 |
-| 8 | 6.30 | **6.73** | 81.8% | **79.8%** | 40/40 |
+| 4 | 6.02 | **6.30** | 82.7% | **74.1%** | 50/50 |
+| 6 | 5.88 | **6.83** | 76.4% | **81.9%** | 40/40 |
+| 8 | 5.98 | **6.33** | 80.3% | **76.9%** | 40/40 |
 
-- Audited pacing stays inside the accepted **6–8 round** band at every count; at 8p it corrects the matched reduced row's too-fast 5.75 mean.
+- Audited pacing stays inside the accepted **6–8 round** band at every count; at 6p/8p it corrects the matched reduced row's sub-6 mean.
 - Winner objective share stays above the Plan 3 **60%** floor at every count.
-- Every sim-compatible public card scored at least once across the audit. `Archmage` was correctly excluded because First Playable enables Tier I only.
+- Every sim-compatible public card except `Hold the Line` scored at least once across the audit. `Hold the Line` remains a human-playtest watch because the current bots do not model defensive intent well; `Archmage` was correctly excluded because First Playable enables Tier I only.
 - No crashes, timeouts, or degenerate verdicts occurred.
 
 ## Audit changes
@@ -28,7 +28,7 @@
 4. `Hold the Line` replaces `Kingslayer`, removing another reward from the already-loaded Lord-capture loop and adding a defensive path.
 5. `Council Power` and `Lawgiver` now reward successful participation, remaining viable under the proposed Plan 4 Docket.
 6. `Merchant Lord` replaces `Realm of Plenty`. Ladder 1 found Realm effectively automatic: 340 scores across 60 revealed games.
-7. `Prosperous Realm` replaces `Master of Cities`. The final integrated ladder produced **40 scores across 25 revealed games**, while Master of Cities recorded no scores at 4p/6p in the earlier ladders.
+7. `Prosperous Realm` replaces `Master of Cities`. The final canonical no-upkeep ladder produced **36 scores across 25 revealed games**, while Master of Cities recorded no scores at 4p/6p in the earlier ladders.
 
 ## Reachability watchlist
 
@@ -36,17 +36,17 @@ The final aggregate low-frequency cards are intentionally demanding Stage II goa
 
 | Card | Revealed games | Scores | Read |
 |---|---:|---:|---|
-| Hold the Line | 14 | 3 | Opponent-dependent defensive goal; keep as combat incentive |
-| Conqueror | 27 | 4 | Five post-reveal wins is a true late military goal |
-| Reliquary | 19 | 4 | Three-Artifact ceiling is aspirational |
-| Breaker of Walls | 16 | 5 | Siege availability is board-dependent |
-| Living Legend | 27 | 5 | Legendary construction remains rare before game end |
+| Hold the Line | 14 | 0 | Opponent-dependent defensive goal; keep on the human-playtest watchlist |
+| Conqueror | 33 | 10 | Five post-reveal wins is a true late military goal |
+| Reliquary | 25 | 9 | Three-Artifact ceiling is aspirational |
+| Breaker of Walls | 22 | 5 | Siege availability is board-dependent |
+| Living Legend | 22 | 4 | Legendary construction remains rare before game end |
 
 Do not tune these together. If later evidence shows dead cards at the table, test one threshold at a time.
 
 ## Persona read
 
-On the final integrated geometry, audited economist win rates were 2.4% (4p), **9.3% (6p)**, and **8.3% (8p)**. The high-count H8 floor recovers; 4p remains weak. Balanced rises from an already-high 42.5% baseline to 60.0% at 4p, while audited 6p/8p are 25.0%/20.0%. Treat the 4p adaptable-persona spike as a carry-forward signal, not a Lord-sheet tuning trigger; Lord tuning remains paused per the 2026-07-12 owner decision.
+On the final canonical no-upkeep rebaseline, audited economist win rates were 2.4% (4p), 2.3% (6p), and 0.0% (8p). Balanced recorded 50.0%/19.2%/27.7%. The deck still passes its objective-share and pacing gates, but economist viability remains a cross-system watch rather than evidence for more objective changes; Lord tuning remains paused per the 2026-07-12 owner decision.
 
 ## Promotion scope
 

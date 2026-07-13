@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from .types import BUILDING_SPECS, BuildingType, Terrain
+from .types import BuildingType, Terrain, effective_building_spec
 from .artifacts import (
     production_adjacent_gold,
     production_ley_line_mana,
@@ -49,29 +49,46 @@ def apply_tile_production(player, tile) -> None:
         setattr(player, res, getattr(player, res) + amt)
 
 
-def _pay_upkeep(state, p) -> None:
-    """Building upkeep with AL-8 suspension (Castle gold; Forge/Academy mana)."""
+def _pay_upkeep(state, p) -> dict[str, int]:
+    """Run the retired building-upkeep variant and return bookkeeping stats."""
+    stats = {"checks": 0, "payments": 0, "failures": 0, "gold_paid": 0, "mana_paid": 0}
     for t in state.controlled(p.pid):
         t.suspended = []
+        if not state.building_upkeep:
+            t.castle_suspended = False
+            continue
         for b in t.buildings:
-            spec = BUILDING_SPECS[b]
+            spec = effective_building_spec(state, b)
             if b == BuildingType.CASTLE:
+                stats["checks"] += 1
                 if p.gold >= spec.upkeep_gold:
                     p.gold -= spec.upkeep_gold
                     t.castle_suspended = False
+                    stats["payments"] += 1
+                    stats["gold_paid"] += spec.upkeep_gold
                 else:
                     t.castle_suspended = True
+                    stats["failures"] += 1
             elif spec.upkeep_gold:
                 # Iron Citadel and any future gold-upkeep buildings.
+                stats["checks"] += 1
                 if p.gold >= spec.upkeep_gold:
                     p.gold -= spec.upkeep_gold
+                    stats["payments"] += 1
+                    stats["gold_paid"] += spec.upkeep_gold
                 else:
                     t.suspended.append(b.value)
+                    stats["failures"] += 1
             elif spec.upkeep_mana:
+                stats["checks"] += 1
                 if p.mana >= spec.upkeep_mana:
                     p.mana -= spec.upkeep_mana
+                    stats["payments"] += 1
+                    stats["mana_paid"] += spec.upkeep_mana
                 else:
                     t.suspended.append(b.value)
+                    stats["failures"] += 1
+    return stats
 
 
 def _bank_conversion(state, p) -> str | None:
@@ -96,7 +113,10 @@ def _bank_conversion(state, p) -> str | None:
 
 def run_production(state, rng=None) -> dict:
     """Round_Structure.md §6: production, growth, upkeep. Returns stats."""
-    stats: dict = {"bank_conversions": {}}
+    stats: dict = {
+        "bank_conversions": {},
+        "upkeep": {"checks": 0, "payments": 0, "failures": 0, "gold_paid": 0, "mana_paid": 0},
+    }
     for p in state.players:
         # 1. Resource production (AL-13: Cities print growth only, not trade resources)
         for t in state.controlled(p.pid):
@@ -156,7 +176,9 @@ def run_production(state, rng=None) -> dict:
         room = state.pop_cap(p.pid) - state.pop_used(p.pid) - p.pop_pool
         p.pop_pool += max(0, min(growth, room))
         # 3. Upkeep (suspend when unpaid)
-        _pay_upkeep(state, p)
+        upkeep = _pay_upkeep(state, p)
+        for key, value in upkeep.items():
+            stats["upkeep"][key] += value
         # 4. Bank conversion (after upkeep so it never starves upkeep mana)
         conv = _bank_conversion(state, p)
         if conv:

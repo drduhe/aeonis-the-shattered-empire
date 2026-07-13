@@ -1,6 +1,6 @@
 # Plan 2: AP Economy Flattening & Catch-Up
 
-- **Status:** PROPOSED — nothing here is canon until playtested and locked in `rules_and_systems/INDEX.md`. `Actions.md` remains authoritative.
+- **Status:** **RESOLVED 2026-07-13 — no AP cap or Rally change.** `Actions.md` remains authoritative; experiment toggles stay available for regression.
 - **Date:** 2026-07-02
 - **Owning doc:** `rules_and_systems/Actions.md`
 - **Related plans:** Plan 1 (combat — Attack cost held constant there), Plan 6 (bookkeeping — Renown threshold cleanup overlaps)
@@ -120,3 +120,7 @@ Run cost variants **only after** §4.1/§4.2 have baseline data — cap first, t
 ## 8. Sequencing
 
 Second plan to test, immediately after Plan 1's ladder. The cap + Rally are two rule lines — cheap to toggle in solo playtests. The §4.3 cost variants ride along afterwards, one at a time.
+
+## 9. Execution record (2026-07-13)
+
+The matched M4 ladder completed **390/390 games** at 4p/6p/8p. The +2 bonus cap moved average round-start AP spread by only 0.09–0.12 AP and did not improve action gaps; ordinary bonuses were already usually within the cap. Adding Rally raised average AP spread to 1.30–1.37, produced no material action-gap improvement, and pushed 4p contested attacker wins from 65.3% to 68.8%. Both changes are rejected. See `../reports/2026-07-13-plan2-plan6-tempo-bookkeeping.md`.

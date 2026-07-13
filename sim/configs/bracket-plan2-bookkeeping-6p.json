@@ -1,0 +1,22 @@
+{
+  "name": "plan2-bookkeeping-6p-mixed-m4",
+  "players": 6,
+  "games": 40,
+  "seed_base": 142000,
+  "personas": ["warmonger", "economist", "expander", "diplomat", "balanced"],
+  "matchmaking": "mixed",
+  "combat": {"aggressors_edge_mode": "off", "pillage": false},
+  "objectives": {
+    "full_public_deck": true,
+    "exclude_public_ids": ["archmage"]
+  },
+  "seat_rewards": {"seat_of_empire_vp": 1},
+  "bookkeeping": {"building_upkeep": true},
+  "lord_asymmetry": {
+    "enabled": true,
+    "roster": [
+      "cassian", "seraphel", "vharok", "elyndra",
+      "rakhis", "nyxara", "auriel", "thalrik"
+    ]
+  }
+}

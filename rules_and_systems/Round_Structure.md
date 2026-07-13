@@ -134,7 +134,7 @@ All players resolve this phase (typically in initiative order, but it may be sim
 2. **Population growth**:
    - Replenish population up to cap (see `Population.md`).
 3. **Upkeep / maintenance**:
-   - Pay any required upkeep costs for units/buildings (see `Trade_Taxes.md` and/or `Population.md` depending on which constraint model is used).
+   - Pay any required upkeep for **advanced units** and active Laws (see `Advanced_Units.md` and `High_Council.md`). Buildings have no recurring resource upkeep; their Population remains occupied while they exist (see `Buildings.md` and `Population.md`).
 4. **Resolve "end of round" resource effects**:
    - Any laws, artifacts, or discoveries that say "each round" resolve here unless they specify a different window (see `Artifacts.md` for artifact-specific timing).
 5. **Remnant generation**:

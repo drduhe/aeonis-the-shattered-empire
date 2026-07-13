@@ -77,6 +77,8 @@ def _play_tournament_game(config: dict, game_index: int) -> dict:
         game_config["combat"] = dict(config["combat"])
     if "ap_economy" in config:
         game_config["ap_economy"] = dict(config["ap_economy"])
+    if "bookkeeping" in config:
+        game_config["bookkeeping"] = dict(config["bookkeeping"])
     if "pacing" in config:
         game_config["pacing"] = dict(config["pacing"])
     if "objectives" in config:

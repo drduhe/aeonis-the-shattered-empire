@@ -11,7 +11,7 @@
 3. **Strategy Selection** — draft in ascending VP order (2 cards each at 3–4 players, 1 at 5–8); 1 Gold bounty on undrafted cards; lowest card number = initiative.
 4. **High Council Phase** — proposals (1 Influence each), agenda card reveal (free proposal), negotiation, voting, enactment.
 5. **Action Phase** — rotating turns in initiative order; one action per turn until all players pass.
-6. **Production & Upkeep** — collect from controlled hexes/buildings, grow Population, pay upkeep, gain 1 Remnant per controlled Ruins.
+6. **Production & Upkeep** — collect from controlled hexes/buildings, grow Population, pay advanced-unit/Law upkeep (buildings have none), gain 1 Remnant per controlled Ruins.
 7. **Cleanup & Checks** — release captured Lords, discard Whispers to 7, score objectives and VP checks, check 10 VP threshold, pass Speaker clockwise.
 
 ---
@@ -100,10 +100,10 @@
 | Fortress | Any tile | 5 Gold, 2 Mana | 2 | +2 Defense in hex; attacks on it are always Sieges |
 | Bridge | Lake | 4 Gold | 0 | Lake becomes passable/controllable; needs adjacent controlled non-Lake hex |
 | Guild Hall | City | 4 Gold, 2 Influence | 1 | +1 AP per round |
-| Forge | City | 5 Gold (upkeep 1 Mana) | 1 | +1 unit per Recruit here (once/round); units here cost −1 Gold (min 1) |
-| Academy | City | 4 Gold, 3 Mana (upkeep 1 Mana) | 2 | School Specialty of choice; −1 Mana on one Research per round (min 0) |
+| Forge | City | 6 Gold, 1 Mana | 1 | +1 unit per Recruit here (once/round); units here cost −1 Gold (min 1) |
+| Academy | City | 4 Gold, 4 Mana | 2 | School Specialty of choice; −1 Mana on one Research per round (min 0) |
 | Bank | City | 5 Gold | 1 | Once per round at Production: convert 2 Mana→3 Gold, 2 Gold→3 Mana, or 2 Gold→3 Influence |
-| Castle | City | 6 Gold (upkeep 2 Gold) | 2 | +3 Population Cap; +2 Defense in this City |
+| Castle | City | 8 Gold | 2 | +3 Population Cap; +2 Defense in this City |
 | Market | City | 2 Gold, 2 Influence | 1 | Once per round: initiate one Trade at 0 AP |
 | Legendary | Your City | Per Lord sheet | 3 | Unique per Lord; prerequisite; **2 VP once on build** (+ **1 VP once** to City captor); +2 Renown on build |
 

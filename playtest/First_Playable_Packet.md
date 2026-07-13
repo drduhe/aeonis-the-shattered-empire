@@ -151,6 +151,8 @@ All buildings from `Buildings.md` are available:
 
 **Build action cost: 3 AP** for standard buildings, **4 AP** for Legendary Buildings (see `Actions.md`).
 
+**First Playable building rule:** Buildings pay their full listed resource cost when built and require no recurring Gold, Mana, or Influence upkeep. Their listed Population remains occupied while they exist. The adjusted costs are Forge 6 Gold + 1 Mana, Academy 4 Gold + 4 Mana, Castle 8 Gold, and Iron Citadel 10 Gold + 2 Mana.
+
 ### 4.3 Strategy cards (all 8, every player count)
 
 Use the full 8-card deck from `Strategy.md` (print as cards):
@@ -322,7 +324,7 @@ The round order for First Playable follows `Round_Structure.md`:
 3. **Strategy Selection** (lowest VP picks first)
 4. **High Council Phase** (proposals, negotiation, voting; COUNCIL Whispers may be played)
 5. **Action Phase** (rotating turns in initiative order; ACTION/COMBAT/WHEN Whispers may be played)
-6. **Production & Upkeep** (gain resources, grow population, pay upkeep)
+6. **Production & Upkeep** (gain resources, grow Population, then pay only advanced-unit or Law upkeep; buildings have none)
 7. **Cleanup & Checks** (release captured Lords, **discard Whispers to hand limit 7**, check VP threshold, advance round marker)
 
 ---

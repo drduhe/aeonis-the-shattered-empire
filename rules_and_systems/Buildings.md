@@ -8,11 +8,13 @@ This chapter also acts as the **canonical reference** for buildings mentioned in
 
 ---
 
-## Building “cost types” (how buildings interact with Population and upkeep)
+## Building cost types
 
 - **Build cost**: resources paid once when constructing the building (and the Build action AP cost, see `Actions.md`).
 - **Population capacity**: if a building is “Population-maintained,” it occupies Population while it exists (see `Population.md`).
-- **Resource upkeep**: only **advanced/legendary buildings** should have Gold/Mana/Influence upkeep (see `Trade_Taxes.md`). Basic production buildings generally do **not**.
+- **No building resource upkeep:** all building costs are paid up front. Buildings continue to occupy their listed Population while they exist, but never require recurring Gold, Mana, or Influence payments.
+
+**Why (Plan 6, 2026-07-13):** the former Forge, Academy, Castle, and Iron Citadel maintenance payments created repeated checks without changing build frequency or strategic pacing. Their costs are now priced up front; advanced-unit and Law upkeep remain separate systems.
 
 ## Building Categories
 
@@ -63,7 +65,6 @@ These buildings strengthen a player’s position and allow for strategic control
 - **Bridge** (Lake hex only):
   - Build cost: 4 Gold
   - Population capacity: none
-  - Resource upkeep: none (default)
   - Build condition: you must control at least one **adjacent non-Lake hex**.
   - Effect: the Lake hex becomes **passable** and can be occupied/controlled, but produces **no resources** (see `Tiles.md`).
 
@@ -74,32 +75,26 @@ These buildings unlock powerful abilities and game-altering effects.
 - **Guild Hall** (Cities):
   - Build cost: 4 Gold, 2 Influence
   - Population capacity: occupies 1 Population
-  - Resource upkeep: none (default)
   - Effect: **+1 AP per round** (aligns with `Actions.md`).
 - **Forge / Arcane Forge** (Cities):
-  - Build cost: 5 Gold
+  - Build cost: 6 Gold, 1 Mana
   - Population capacity: occupies 1 Population
-  - Resource upkeep: 1 Mana per round (see `Trade_Taxes.md`)
   - Effect: Once per round, when you Recruit at this City, you may recruit **1 additional unit** beyond the normal 2-unit limit. Units recruited at this City cost **−1 Gold** (minimum 1).
 - **Academy** (Cities):
-  - Build cost: 4 Gold, 3 Mana
+  - Build cost: 4 Gold, 4 Mana
   - Population capacity: occupies 2 Population
-  - Resource upkeep: 1 Mana per round (see `Trade_Taxes.md`)
   - Effect: You gain a **School Specialty** of your choice (counts as +1 sigil when checking Arcane prerequisites; see `Arcane.md` section 3.3). Once per round, when you take a Research action, reduce its resource cost by **1 Mana** (minimum 0).
 - **Bank** (Cities):
   - Build cost: 5 Gold
   - Population capacity: occupies 1 Population
-  - Resource upkeep: none
   - Effect: Once per round during **Production & Upkeep**, you may convert resources at a 2:3 rate. Choose one: **2 Mana → 3 Gold**, **2 Gold → 3 Mana**, or **2 Gold → 3 Influence**.
 - **Castle** (Cities):
-  - Build cost: 6 Gold
+  - Build cost: 8 Gold
   - Population capacity: occupies 2 Population
-  - Resource upkeep: 2 Gold per round (aligns with `Trade_Taxes.md` example)
   - Effect: increases your **Population Cap by +3** and grants **+2 Defense** to units defending this City.
 - **Market** (Cities):
   - Build cost: 2 Gold, 2 Influence
   - Population capacity: occupies 1 Population
-  - Resource upkeep: none (default)
   - Effect: once per round, you may **initiate one Trade at 0 AP cost** (does not increase the “one trade initiation per round” limit unless you choose to make it do so; see `Trade_Taxes.md`).
 
 ## Legendary Buildings (Faction Capstones)
@@ -134,8 +129,8 @@ Each Lord has exactly **1 Legendary Building** unique to them. No other Lord may
 ### Iron Citadel (Vharok)
 
 - **Prerequisite:** Control at least 1 Fortress.
-- **Cost:** 8 Gold, 2 Mana
-- **Upkeep:** 2 Gold per round
+- **Cost:** 10 Gold, 2 Mana
+- **Upkeep:** none
 - **Effect:** This City is treated as a **Fortress** (Siege rules apply to attackers; see `Combat.md`). Units defending this hex gain **+3 Defense**.
 
 ### Heartwood Sanctum (Elyndra)
@@ -199,7 +194,7 @@ Certain artifacts in the Artifact Deck are **Building Relics** — ancient power
 ## Special Rules for Buildings
 
 - **Construction Limits:** Basic terrain tiles (Plains, Forests, Mountains, Deserts): 1 building per tile. Cities: Up to 2 buildings (expandable to 3 via upgrades or research).
-- **Maintenance Costs:** As a default, **only advanced/legendary buildings** require Gold/Mana/Influence upkeep (see `Trade_Taxes.md`). Basic production and defensive buildings are typically maintained via **Population capacity**.
+- **Maintenance:** Buildings require no recurring resource upkeep. Their listed Population remains occupied while they exist.
 - **Destruction of Buildings:** If a tile is captured, its building may be destroyed, downgraded, or taken over, depending on the circumstances.
 
 ## Synergy with Lords and Unique Tiles

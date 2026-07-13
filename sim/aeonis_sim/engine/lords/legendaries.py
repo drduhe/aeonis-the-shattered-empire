@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Optional
 
-from ..types import BUILDING_SPECS, BuildingType, LEGENDARY_BUILDINGS
+from ..types import BuildingType, LEGENDARY_BUILDINGS, effective_building_spec
 from .specs import is_lord
 from .tiles import tile_is_portal
 
@@ -85,7 +85,7 @@ def can_build_legendary(state: GameState, pid: int, btype: BuildingType) -> bool
         return False
     if p.ap < LEGENDARY_AP:
         return False
-    spec = BUILDING_SPECS[btype]
+    spec = effective_building_spec(state, btype)
     if p.gold < spec.gold or p.mana < spec.mana or p.influence < spec.influence:
         return False
     if p.pop_pool < spec.pop:

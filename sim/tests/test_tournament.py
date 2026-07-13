@@ -107,6 +107,23 @@ def test_ap_economy_config_forwarded_in_tournament():
     assert "avg_spread" in rec["ap_economy_stats"]
 
 
+def test_bookkeeping_config_forwarded_in_tournament():
+    config = {
+        "name": "bookkeeping-forward",
+        "players": 3,
+        "games": 1,
+        "seed_base": 715,
+        "personas": ["balanced"],
+        "matchmaking": "solo",
+        "bookkeeping": {"slim_renown": True, "building_upkeep": False},
+    }
+    rec = run_tournament(config, workers=1)[0]
+    assert rec["config"]["bookkeeping"]["slim_renown"] is True
+    assert rec["final_state"]["slim_renown"] is True
+    assert rec["final_state"]["building_upkeep"] is False
+    assert "upkeep_checks_per_player_round" in rec["bookkeeping_stats"]
+
+
 def test_run_tournament_parallel_matches_sequential():
     config = {
         "name": "parallel-equiv",

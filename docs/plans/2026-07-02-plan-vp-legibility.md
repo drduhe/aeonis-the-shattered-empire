@@ -127,4 +127,4 @@ A typical 10 VP winner, by design intent:
 
 ## 8. Sequencing
 
-**Executed 2026-07-13.** Final integrated M4 ladders completed 130/130 audited games at 6.33–6.73 mean rounds with 74–80% winner objective share. See `../reports/2026-07-13-plan3-objective-audit.md`.
+**Executed 2026-07-13.** Final canonical no-upkeep ladders completed 130/130 audited games at 6.30–6.83 mean rounds with 74–82% winner objective share. See `../reports/2026-07-13-plan3-objective-audit.md`.

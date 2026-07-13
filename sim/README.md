@@ -39,8 +39,10 @@ Tournament: `--config`, `--report`, `--html`, `--session-log`, `--workers` (defa
 Combat variant flags (Plan 1 ladder) live in tournament config under `"combat"`:
 `aggressors_edge_mode` (`off` | `full` | `pre_strike`), legacy `aggressors_edge`, `pillage`.
 
-Plan 2 AP economy toggles (PROPOSED) under `"ap_economy"`:
-`ap_bonus_cap` (e.g. `2`), `rally` (`true` / `false`).
+Rejected Plan 2 AP economy toggles remain under `"ap_economy"` for regression:
+`ap_bonus_cap` (e.g. `2`), `rally` (`true` / `false`). Plan 6 experiments use
+`"bookkeeping"`: `slim_renown` remains rejected/default-off; `building_upkeep`
+defaults to `false` (canonical) and `true` reproduces the retired upkeep rules.
 
 H7 calibration toggles (PROPOSED, sim-only): `"pacing"` (`vp_threshold`), `"objectives"`
 (`frontier_lord_min_hexes`), `"seat_rewards"` (`seat_of_empire_vp`), `"economy"` (see
@@ -91,7 +93,7 @@ Opt-in via `lord_asymmetry` (not default-on). Full eight-sheet encode: unique ti
     cd sim && python scripts/regression_check.py --config configs/bracket-m4-ci.json --workers 4
 ```
 
-## Plan 3 objectives + Plan 4 geometry
+## Plan 2/6 tempo + Plan 3 objectives + Plan 4 geometry
 
 The full-deck objective audit and geometry/spacing gates are reproducible:
 
@@ -100,6 +102,8 @@ cd sim
 python scripts/plan3_objective_audit_ladder.py
 python scripts/plan4_geometry_audit.py
 python scripts/plan1_prestrike_mixed_ladder.py
+python scripts/plan2_ap_ladder.py
+python scripts/plan6_bookkeeping_ladder.py
 ```
 
 The objective ladder compares the reduced First Playable row with the audited full deck at 4p/6p/8p. The geometry audit checks 200 seeds per count for home spacing, Ruins/Portal access, starting-production parity, and tile inventory. The Plan 1 ladder is the combat rebaseline after geometry changes.

@@ -22,9 +22,9 @@ def test_building_specs_match_canon():
     fortress = BUILDING_SPECS[BuildingType.FORTRESS]
     assert fortress.gold == 5 and fortress.mana == 2 and fortress.pop == 2
     castle = BUILDING_SPECS[BuildingType.CASTLE]
-    assert castle.terrain == Terrain.CITY and castle.upkeep_gold == 2
+    assert castle.terrain == Terrain.CITY and castle.gold == 8 and castle.upkeep_gold == 0
     forge = BUILDING_SPECS[BuildingType.FORGE]
-    assert forge.upkeep_mana == 1
+    assert forge.gold == 6 and forge.mana == 1 and forge.upkeep_mana == 0
     market = BUILDING_SPECS[BuildingType.MARKET]
     assert market.influence == 2
 
@@ -34,12 +34,17 @@ def test_state_round_trips_through_dict():
     t = Tile(coord=(1, -1), terrain=Terrain.CITY, imperial_seat=True,
              controller=0, units=[u], buildings=[BuildingType.CASTLE])
     p = PlayerState(pid=0, home=(1, -1))
-    s = GameState(players=[p], tiles={(1, -1): t}, round=3)
+    s = GameState(
+        players=[p], tiles={(1, -1): t}, round=3,
+        ap_bonus_cap=2, rally=True, slim_renown=True, building_upkeep=False,
+    )
     s2 = GameState.from_dict(s.to_dict())
     assert s2.tiles[(1, -1)].units[0].type == UnitType.CAVALRY
     assert s2.tiles[(1, -1)].imperial_seat is True
     assert s2.players[0].home == (1, -1)
     assert s2.round == 3
+    assert s2.ap_bonus_cap == 2 and s2.rally is True
+    assert s2.slim_renown is True and s2.building_upkeep is False
     assert s.to_dict() == s2.to_dict()
 
 

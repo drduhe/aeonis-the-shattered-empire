@@ -470,6 +470,14 @@
           "status": "internal",
           "minutes": 7,
           "tags": ["design", "simulation", "map", "combat", "plan4", "plan1"]
+        },
+        {
+          "title": "Plan 2 AP + Plan 6 Bookkeeping",
+          "path": "docs/reports/2026-07-13-plan2-plan6-tempo-bookkeeping.md",
+          "description": "910-game AP/bookkeeping ladder; rejects cap, Rally, and slim Renown; promotes no building upkeep.",
+          "status": "internal",
+          "minutes": 8,
+          "tags": ["design", "simulation", "ap", "bookkeeping", "plan2", "plan6"]
         }
       ]
     }

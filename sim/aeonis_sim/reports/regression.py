@@ -3,7 +3,10 @@ from __future__ import annotations
 
 from .summary import (
     _completed,
+    ap_economy_metrics,
+    bookkeeping_metrics,
     combat_metrics,
+    played_rounds,
     verdict_breakdown,
     winner_vp_source_mix,
 )
@@ -45,6 +48,11 @@ def _max_ap_spread(records: list[dict]) -> float:
     return max(vals) if vals else 0.0
 
 
+def _mean_rounds(records: list[dict]) -> float:
+    vals = [played_rounds(r) for r in _completed(records)]
+    return sum(vals) / len(vals) if vals else 0.0
+
+
 _METRICS = {
     "crash_rate": _crash_rate,
     "timeout_rate": _timeout_rate,
@@ -59,6 +67,24 @@ _METRICS = {
     ),
     "avg_ap_spread": _avg_ap_spread,
     "max_ap_spread": _max_ap_spread,
+    "avg_action_gap": lambda rs: ap_economy_metrics(rs).get("avg_action_gap", 0.0),
+    "max_action_gap": lambda rs: ap_economy_metrics(rs).get("max_action_gap", 0.0),
+    "actions_per_player_round": lambda rs: ap_economy_metrics(rs).get(
+        "actions_per_player_round", 0.0
+    ),
+    "stranded_ap_per_player_round": lambda rs: ap_economy_metrics(rs).get(
+        "stranded_ap_per_player_round", 0.0
+    ),
+    "builds_per_player_game": lambda rs: ap_economy_metrics(rs).get(
+        "builds_per_player_game", 0.0
+    ),
+    "upkeep_checks_per_player_round": lambda rs: bookkeeping_metrics(rs).get(
+        "upkeep_checks_per_player_round", 0.0
+    ),
+    "mean_rounds": _mean_rounds,
+    "contested_attacker_win_rate": lambda rs: combat_metrics(rs).get(
+        "contested_attacker_win_rate", 0.0
+    ),
 }
 
 

@@ -17,7 +17,7 @@ canon.
 | AL-5 | When are objectives claimed/scored? No timing window in packet §4.4 or `Victory.md` | **Cleanup & Checks**; once per card per player; no claim action | `Victory.md` | **Resolved** (2026-07-03, Plan 3 MVP) |
 | AL-6 | Does building a Bridge on a neutral Lake grant control of the Lake hex? | Yes — builder controls the bridged Lake | `Tiles.md` | **Resolved** (engine: `build.py`) |
 | AL-7 | Defender choice to Hold the Walls for Cities | Auto-declare in First Playable / sim (City retreat banned) | `Combat.md` §6.1 | **Resolved** (2026-07-03, doc + engine) |
-| AL-8 | What happens when Castle upkeep (2 Gold) cannot be paid? | Castle effects suspended for the round; building persists | `Buildings.md` | **Resolved** (engine: `production.py`) |
+| AL-8 | What happens when Castle upkeep (2 Gold) cannot be paid? | **Superseded:** Plan 6 removed all building resource upkeep and priced Castle at 8 Gold up front | `Buildings.md` | **Resolved** (2026-07-13, Plan 6) |
 | AL-9 | Lord release when Home City is enemy-held | Nearest safe controlled hex; stay captured if none | `Combat.md` | **Resolved** (engine: `cleanup.py`) |
 | AL-10 | Defender win definition for objectives | All attacker committed units eliminated | `Combat.md` | **Resolved** (engine: `combat.py`) |
 | AL-11 | Captured hex buildings fate | Taken over intact | `Tiles.md` / `Buildings.md` | **Resolved** (engine: `combat.py`) |

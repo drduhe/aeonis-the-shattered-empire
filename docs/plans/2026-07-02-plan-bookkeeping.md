@@ -1,6 +1,6 @@
 # Plan 6: Bookkeeping Reduction & Trade Chapter Rewrite
 
-- **Status:** PROPOSED — nothing here is canon until playtested and locked in `rules_and_systems/INDEX.md`. `Trade_Taxes.md` remains authoritative until its rewrite lands.
+- **Status:** **RESOLVED 2026-07-13 — trade/player-board hygiene and no-building-upkeep promoted; slim Renown rejected.**
 - **Date:** 2026-07-02
 - **Owning docs:** `rules_and_systems/Trade_Taxes.md` (rewrite), `rules_and_systems/Renown.md` (threshold cleanup), player-board spec in `components/`
 - **Related plans:** Plan 2 (Renown AP threshold), Plan 4 (Influence sink via Docket bids)
@@ -98,3 +98,13 @@ Add to the component spec (feeds `components/Components.md` + `Production_Manife
 ## 6. Sequencing
 
 §3.3 (Trade rewrite) and §3.4 (player-board spec) are pure hygiene — execute immediately, no playtest gate. §3.1 and §3.2 change balance; run them with Plan 2's ladder since they touch the same compounding loop (Renown AP + votes).
+
+## 7. Execution record (2026-07-13)
+
+The matched Plan 6 ladder completed **520/520 games** at 4p/6p/8p.
+
+- **§3.2 promoted:** no-building-upkeep reduced the sim proxy from 0.21–0.28 checks per player-round to zero while preserving 2.46–2.66 builds per player-game and 6.22–6.63 mean rounds. Canonical up-front costs are Forge 6 Gold + 1 Mana, Academy 4 Gold + 4 Mana, Castle 8 Gold, and Iron Citadel 10 Gold + 2 Mana.
+- **§3.1 rejected:** slim Renown did not materially improve action gaps, its 5-Renown reward fired for only 14–18% of seats, and the 6p economist fell from 7.9% to 2.3%.
+- **§3.3/§3.4 remain landed:** `Trade_Taxes.md` is trade-only and player boards carry the printed production ledger.
+
+See `../reports/2026-07-13-plan2-plan6-tempo-bookkeeping.md`.

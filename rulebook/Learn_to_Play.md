@@ -122,11 +122,11 @@ All players resolve, in initiative order (or simultaneously if the table prefers
 
 1. **Production:** gain resources from every hex and building you control — Plains give Population, Forests Mana, Mountains Gold, Deserts Influence (buildings boost these; see the Player Aid).
 2. **Population growth:** replenish your Population Pool by **+1 base, +1 per controlled Plains, +2 per controlled City**, up to your Population Cap.
-3. **Upkeep:** pay maintenance for advanced buildings (e.g., Forge: 1 Mana per round). Basic units have **no** Gold upkeep — Population is their limit.
+3. **Upkeep:** buildings require no recurring resource payments—their costs are paid when built and their Population stays occupied. Pay only upkeep printed on advanced units or active Laws. Basic units have **no** Gold upkeep; Population is their limit.
 4. **"Each round" effects** (laws, artifacts, Discoveries) resolve now unless they say otherwise.
 5. **Remnants:** each **Ruins** hex you control generates **1 Remnant**.
 
-> **Example:** Rakhis controls his home cluster plus the conquered Desert: 1 Mana (Forest), 1 Gold (Mountain), 1 Influence (Desert), and Population growth of 1 + 1 (Plains) + 2 (City) = +4. Vharok collects his production and pays 1 Mana to keep his Forge running.
+> **Example:** Rakhis controls his home cluster plus the conquered Desert: 1 Mana (Forest), 1 Gold (Mountain), 1 Influence (Desert), and Population growth of 1 + 1 (Plains) + 2 (City) = +4. Vharok collects his production; his Forge requires no additional payment because its full 6 Gold + 1 Mana cost was paid when built.
 
 ### Phase 7: Cleanup & Checks
 

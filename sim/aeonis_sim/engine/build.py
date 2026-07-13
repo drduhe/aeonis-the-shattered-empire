@@ -8,7 +8,14 @@ from .arcane import (
     mark_waystones_used,
     waystones_move_discount,
 )
-from .types import BUILDING_SPECS, BuildingType, DEFAULT_BUILD_AP, LEGENDARY_BUILDINGS, Terrain
+from .types import (
+    BUILDING_SPECS,
+    BuildingType,
+    DEFAULT_BUILD_AP,
+    LEGENDARY_BUILDINGS,
+    Terrain,
+    effective_building_spec,
+)
 from .lords import controls_unique, mark_round_used, round_unused, unique_spec_by_id
 from .lords.legendaries import LEGENDARY_AP, can_build_legendary
 
@@ -62,7 +69,8 @@ def _unique_allows(btype, us) -> bool:
 def enumerate_builds(state, pid) -> list:
     p = state.player(pid)
     out = []
-    for btype, spec in BUILDING_SPECS.items():
+    for btype in BUILDING_SPECS:
+        spec = effective_building_spec(state, btype)
         if btype in LEGENDARY_BUILDINGS and not can_build_legendary(state, pid, btype):
             continue
         if p.ap < build_ap_cost(state, btype):
@@ -100,7 +108,7 @@ def apply_build(state, pid, choice, rng=None) -> None:
     p = state.player(pid)
     tile = state.tiles[tuple(choice["hex"])]
     btype = BuildingType(choice["building"])
-    spec = BUILDING_SPECS[btype]
+    spec = effective_building_spec(state, btype)
     p.ap -= build_ap_cost(state, btype)
     gold = build_gold_cost(state, pid, btype, spec.gold, tile=tile)
     p.gold -= gold

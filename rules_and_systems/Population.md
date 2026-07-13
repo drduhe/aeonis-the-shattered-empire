@@ -8,7 +8,7 @@ Population represents the Lord’s ability to sustain and field military units, 
 
 - **Population is the primary hard cap** on how many units/buildings you can have in play. In general, you cannot “temporarily overbuild” beyond your available Population Pool.
 - **Basic units have no Gold upkeep**. Infantry/Cavalry/Archers are constrained by Population, not by per-round resource taxes.
-- **Resource upkeep (Gold/Mana/Influence)**, if used, is reserved for **advanced units** and **advanced/legendary buildings** (see `Trade_Taxes.md`).
+- **Buildings have no recurring resource upkeep.** Their full resource price is paid when built, and their listed Population stays occupied while they exist. Recurring resource upkeep is reserved for advanced units and active Laws (see `Advanced_Units.md` and `High_Council.md`).
 
 ---
 

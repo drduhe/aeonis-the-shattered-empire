@@ -43,9 +43,10 @@ def test_advanced_buildings_city_only():
 
 def test_building_specs_match_canon():
     forge = BUILDING_SPECS[BuildingType.FORGE]
-    assert forge.terrain == Terrain.CITY and forge.gold == 5 and forge.upkeep_mana == 1
+    assert forge.terrain == Terrain.CITY and forge.gold == 6 and forge.mana == 1
+    assert forge.upkeep_mana == 0
     academy = BUILDING_SPECS[BuildingType.ACADEMY]
-    assert academy.gold == 4 and academy.mana == 3 and academy.pop == 2
+    assert academy.gold == 4 and academy.mana == 4 and academy.pop == 2
     bank = BUILDING_SPECS[BuildingType.BANK]
     assert bank.gold == 5 and bank.upkeep_mana == 0
     market = BUILDING_SPECS[BuildingType.MARKET]
@@ -70,8 +71,9 @@ def test_forge_allows_third_unit_and_discount():
     assert p.gold == 7
 
 
-def test_forge_suspended_without_mana_upkeep():
+def test_legacy_forge_upkeep_toggle_suspends_without_mana():
     s = make_state()
+    s.building_upkeep = True
     _build_on_home(s, 0, BuildingType.FORGE)
     p = s.players[0]
     p.mana = 0

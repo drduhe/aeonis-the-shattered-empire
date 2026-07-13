@@ -112,4 +112,4 @@ Run as an A/B ladder, changing one thing per ladder step: **baseline (current ru
 
 ## 8. Sequencing
 
-**Executed.** Full Edge ran hot; Pre-Strike failed its mixed M4 ladder. After Plan 4 corrected clustered home anchors and restored exact four-tile starts, Edge-off contested attacker wins rebaselined to 64.5% / 64.7% / 62.9% at 4p/6p/8p with ~7-round pacing. See `../reports/2026-07-13-plan4-geometry-spacing.md`.
+**Executed.** Full Edge ran hot; Pre-Strike failed its mixed M4 ladder. After Plan 4 corrected clustered home anchors and restored exact four-tile starts, the canonical no-upkeep Edge-off rebaseline recorded 66.7% / 64.2% / 62.3% contested attacker wins at 4p/6p/8p with ~7-round pacing. The 4p result remains a narrow watch; Pre-Strike worsened every count and stays off. See `../reports/2026-07-13-plan4-geometry-spacing.md`.

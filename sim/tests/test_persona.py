@@ -4,7 +4,12 @@ from __future__ import annotations
 import json
 
 from aeonis_sim.agents.factory import agents_from_config, make_agents, parse_persona_list
-from aeonis_sim.agents.features import evaluate_state, score_action, simulate_action
+from aeonis_sim.agents.features import (
+    _move_features,
+    evaluate_state,
+    score_action,
+    simulate_action,
+)
 from aeonis_sim.agents.persona import PERSONA_NAMES, PersonaBot
 from aeonis_sim.engine.game import Game
 from aeonis_sim.engine.observations import DecisionPoint, observe
@@ -127,3 +132,26 @@ def test_simulate_action_does_not_mutate_original():
     before = game.state.to_dict()
     simulate_action(game.state, dp.pid, moves[0], dp.kind)
     assert game.state.to_dict() == before
+
+
+def test_free_portal_hop_without_progress_gets_idle_brake():
+    state = build_initial_state({"players": 3}, random.Random(23))
+    portals = [
+        coord for coord, tile in state.tiles.items() if tile.terrain.value == "portal"
+    ]
+    origin, dest = portals[:2]
+    seat = next(coord for coord, tile in state.tiles.items() if tile.imperial_seat)
+    from aeonis_sim.engine.hexmap import distance
+
+    if distance(origin, seat) > distance(dest, seat):
+        origin, dest = dest, origin
+    state.tiles[origin].controller = 0
+    state.tiles[dest].controller = 0
+
+    features = _move_features(
+        state,
+        0,
+        {"type": "move", "from": list(origin), "dest": list(dest), "cost": 0},
+    )
+
+    assert features["pass_penalty"] == -5.0

@@ -158,6 +158,49 @@ def persona_parity_metrics(records: list[dict]) -> dict:
     }
 
 
+def ap_economy_metrics(records: list[dict]) -> dict:
+    done = _completed(records)
+    if not done:
+        return {}
+    rows = [r.get("ap_economy_stats", {}) for r in done]
+    return {
+        "avg_ap_spread": mean(row.get("avg_spread", 0.0) for row in rows),
+        "max_ap_spread": max(row.get("max_spread", 0.0) for row in rows),
+        "avg_action_gap": mean(row.get("avg_action_gap", 0.0) for row in rows),
+        "max_action_gap": max(row.get("max_action_gap", 0.0) for row in rows),
+        "actions_per_player_round": mean(
+            row.get("actions_per_player_round", 0.0) for row in rows
+        ),
+        "stranded_ap_per_player_round": mean(
+            row.get("stranded_ap_per_player_round", 0.0) for row in rows
+        ),
+        "avg_first_pass_after_actions": mean(
+            row.get("avg_first_pass_after_actions", 0.0) for row in rows
+        ),
+        "builds_per_player_game": mean(
+            row.get("builds_per_player_game", 0.0) for row in rows
+        ),
+    }
+
+
+def bookkeeping_metrics(records: list[dict]) -> dict:
+    done = _completed(records)
+    if not done:
+        return {}
+    rows = [r.get("bookkeeping_stats", {}) for r in done]
+    return {
+        "upkeep_checks_per_player_round": mean(
+            row.get("upkeep_checks_per_player_round", 0.0) for row in rows
+        ),
+        "upkeep_payments_per_player_round": mean(
+            row.get("upkeep_payments_per_player_round", 0.0) for row in rows
+        ),
+        "upkeep_failures_per_game": mean(row.get("upkeep_failures", 0.0) for row in rows),
+        "upkeep_gold_paid_per_game": mean(row.get("upkeep_gold_paid", 0.0) for row in rows),
+        "upkeep_mana_paid_per_game": mean(row.get("upkeep_mana_paid", 0.0) for row in rows),
+    }
+
+
 def event_metrics(records: list[dict]) -> dict:
     done = _completed(records)
     if not done:
@@ -614,6 +657,34 @@ def balance_summary(records: list[dict], title: str = "Balance Summary") -> str:
                 f"- Contested attacker win rate: "
                 f"{100 * cm['contested_attacker_win_rate']:.1f}%"
             )
+    apm = ap_economy_metrics(records)
+    if apm:
+        lines.extend([
+            "",
+            "## AP economy and action tempo",
+            "",
+            f"- Round-start AP spread: {apm['avg_ap_spread']:.2f} average · "
+            f"{apm['max_ap_spread']:.0f} maximum",
+            f"- Action gap: {apm['avg_action_gap']:.2f} average · "
+            f"{apm['max_action_gap']:.0f} maximum",
+            f"- Actions per player-round: {apm['actions_per_player_round']:.2f}",
+            f"- Stranded AP per player-round: {apm['stranded_ap_per_player_round']:.3f}",
+            f"- Mean actions before first pass: {apm['avg_first_pass_after_actions']:.2f}",
+            f"- Builds per player-game: {apm['builds_per_player_game']:.2f}",
+        ])
+    bkm = bookkeeping_metrics(records)
+    if bkm:
+        lines.extend([
+            "",
+            "## Bookkeeping proxies",
+            "",
+            f"- Building-upkeep checks per player-round: "
+            f"{bkm['upkeep_checks_per_player_round']:.3f}",
+            f"- Building-upkeep payments per player-round: "
+            f"{bkm['upkeep_payments_per_player_round']:.3f}",
+            f"- Failed building-upkeep checks per game: "
+            f"{bkm['upkeep_failures_per_game']:.2f}",
+        ])
     lines.extend(format_stratified_combat_section(records))
     em = event_metrics(records)
     if em:

@@ -1,6 +1,6 @@
 # Aeonis: Trade
 
-> **Chapter hygiene (Plan 6, 2026-07-13):** This file replaces the stale “Trade and Taxes” chapter. Building upkeep and advanced-unit upkeep live in `Buildings.md` / `Advanced_Units.md`. Council tax laws live in `High_Council.md`. Renown milestone / upkeep-kill experiments remain PROPOSED in `../docs/plans/2026-07-02-plan-bookkeeping.md` and are **not** encoded here yet.
+> **Chapter hygiene (Plan 6, 2026-07-13):** This file replaces the stale “Trade and Taxes” chapter. Buildings pay their full cost up front and have no recurring resource upkeep (`Buildings.md`). Advanced-unit upkeep lives in `Advanced_Units.md`; Council tax laws live in `High_Council.md`.
 
 ---
 

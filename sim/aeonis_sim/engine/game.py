@@ -175,6 +175,16 @@ class Game:
             "stratified": combat.empty_stratified_stats(),
         }
         self.ap_spread_log: list[int] = []
+        self.action_count_log: list[dict[int, int]] = []
+        self.pass_log: list[dict] = []
+        self.build_counts: dict[int, int] = {p.pid: 0 for p in self.state.players}
+        self.bookkeeping_stats = {
+            "upkeep_checks": 0,
+            "upkeep_payments": 0,
+            "upkeep_failures": 0,
+            "upkeep_gold_paid": 0,
+            "upkeep_mana_paid": 0,
+        }
         self._draft_queue: list[int] = []
         self._followup: Optional[dict] = None
         self._deferred_followup: Optional[dict] = None
@@ -231,7 +241,8 @@ class Game:
         cities = sum(1 for t in s.controlled(pid) if t.terrain == Terrain.CITY)
         guild = sum(1 for t in s.controlled(pid)
                     if t.has(BuildingType.GUILD_HALL))
-        bonus = min(2, cities) + guild + (1 if s.player(pid).renown >= 5 else 0)
+        renown_bonus = 0 if s.slim_renown else (1 if s.player(pid).renown >= 5 else 0)
+        bonus = min(2, cities) + guild + renown_bonus
         if s.ap_bonus_cap is not None:
             bonus = min(bonus, s.ap_bonus_cap)
         return bonus
@@ -302,6 +313,8 @@ class Game:
             max(p.ap for p in s.players) - min(p.ap for p in s.players)
         )
         self._actions_taken = {p.pid: 0 for p in s.players}
+        self._meaningful_actions_taken = {p.pid: 0 for p in s.players}
+        self._pass_order: list[int] = []
         self._initiative_queue = []
         self._followup = None
         self._deferred_followup = None
@@ -776,10 +789,20 @@ class Game:
 
     def _advance_phases(self) -> None:
         """All players have passed: Production, Cleanup, next round or end."""
+        self.action_count_log.append(dict(self._meaningful_actions_taken))
         prod_stats = run_production(self.state, rng=self.rng)
         self.building_stats["bank_conversions"] += len(
             prod_stats.get("bank_conversions", {})
         )
+        upkeep = prod_stats.get("upkeep", {})
+        for source, target in (
+            ("checks", "upkeep_checks"),
+            ("payments", "upkeep_payments"),
+            ("failures", "upkeep_failures"),
+            ("gold_paid", "upkeep_gold_paid"),
+            ("mana_paid", "upkeep_mana_paid"),
+        ):
+            self.bookkeeping_stats[target] += int(upkeep.get(source, 0))
         for p in self.state.players:
             try_immediate_secrets(self.state, p.pid)
         run_cleanup(self.state, self.rng)
@@ -1395,10 +1418,23 @@ class Game:
         elif dp.kind == "action":
             self._actions_taken[dp.pid] += 1
             t = choice["type"]
+            if t != "pass":
+                self._meaningful_actions_taken[dp.pid] += 1
             if t == "pass":
                 p = s.player(dp.pid)
+                remaining = p.ap
                 p.passed = True
                 p.banked = min(2, p.ap)  # Actions.md banking
+                self.pass_log.append({
+                    "round": s.round,
+                    "pid": dp.pid,
+                    "order": len(self._pass_order) + 1,
+                    "remaining_ap": remaining,
+                    "banked_ap": p.banked,
+                    "stranded_ap": max(0, remaining - p.banked),
+                    "actions_before_pass": sum(self._meaningful_actions_taken.values()),
+                })
+                self._pass_order.append(dp.pid)
                 self._remove_from_initiative(dp.pid)
             elif t == "strategy_primary":
                 card = choice["card"]
@@ -1468,6 +1504,7 @@ class Game:
                 self._finish_action_turn(dp.pid)
             elif t == "build":
                 apply_build(s, dp.pid, choice, rng=self.rng)
+                self.build_counts[dp.pid] += 1
                 self._finish_action_turn(dp.pid)
             elif t == "trade":
                 target = int(choice["target"])

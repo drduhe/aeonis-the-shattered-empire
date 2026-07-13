@@ -32,11 +32,11 @@ Plan 1 target for contested attacker wins is 55–65%.
 
 | Players | Old baseline | Corrected spacing, Edge off | Corrected + Pre-Strike | Battles/player-round | Mean rounds (off) |
 |---:|---:|---:|---:|---:|---:|
-| 4 | 67.6% | **64.5%** | 67.1% | 0.242 | 7.18 |
-| 6 | 72.0% | **64.7%** | 68.3% | 0.263 | 6.95 |
-| 8 | 72.5% | **62.9%** | 68.1% | 0.283 | 7.13 |
+| 4 | 67.6% | **66.7%** | 69.1% | 0.245 | 7.10 |
+| 6 | 72.0% | **64.2%** | 65.0% | 0.262 | 6.88 |
+| 8 | 72.5% | **62.3%** | 64.9% | 0.291 | 7.08 |
 
-- All three counts now land inside the Plan 1 band without changing combat resolution.
+- 6p/8p land inside the Plan 1 band without changing combat resolution. The canonical no-upkeep rebaseline puts 4p at 66.7%, a 1.7-point watch above the narrow gate; the matched Plan 2 baseline was 65.3% and its no-upkeep arm was 58.1%, so the combined evidence does not justify a combat-rule change.
 - Pre-Strike worsens attacker advantage at every count in this ladder and remains rejected.
 - Mean rounds remain inside the accepted 6–8 band.
 

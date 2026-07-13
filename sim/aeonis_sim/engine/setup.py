@@ -36,6 +36,10 @@ def build_initial_state(config: dict, rng: random.Random) -> GameState:
     state.ap_bonus_cap = int(cap) if cap is not None else None
     state.rally = bool(economy.get("rally", False))
 
+    bookkeeping = config.get("bookkeeping", {})
+    state.slim_renown = bool(bookkeeping.get("slim_renown", False))
+    state.building_upkeep = bool(bookkeeping.get("building_upkeep", False))
+
     pacing = config.get("pacing", {})
     vp = pacing.get("vp_threshold")
     if vp is not None:
