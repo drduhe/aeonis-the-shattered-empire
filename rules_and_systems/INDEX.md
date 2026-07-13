@@ -75,6 +75,7 @@ These items were previously "red flags" and have been addressed:
 - **Rakhis balance ladder Dial 2 (2026-07-12):** Hit and Run is **once per game** (was once per round). Sandstride unchanged. Sim: `lords/rakhis.py` + `game.py` (`lord_game` flag); sheet: `../lords/Rakhis.md`.
 - **Rakhis balance ladder Dial 3 (2026-07-12):** Sandstride no longer ignores enemy ZOC surcharges. Keeps Desert 1 AP and once-per-battle pre-Pre-Strike retreat. Sim: `move.py`; docs: `Movement.md`, `Tiles.md`, sheet, First Playable, Learn to Play.
 - **Rakhis balance ladder Dial 3b (2026-07-12):** Tried removing pre-Pre-Strike retreat — **reverted same day** (solo/mixed win rates rose vs Dial 3). See `../docs/reports/2026-07-12-rakhis-ladder-dial3b.md`. Current Sandstride = Dial 3.
+- **Lord-sheet tuning pause (2026-07-12):** Owner paused further Lord balance ladders (Rakhis/Thal'rik/floors). Dial 1–3 changes remain; `lord_asymmetry` stays opt-in until a later default-on review.
 
 - **Six improvement plans (2026-07-02, PROPOSED — not canon):** combat aggression tuning, AP economy flattening, VP legibility, 6–8 player scaling (incl. a future `Map_Construction.md` chapter), core-Lords parity pass, and bookkeeping reduction. See `../docs/plans/INDEX.md`. None of their changes apply until playtested and recorded under "Design decisions (resolved)" above.
 - **Lakes / water**: Core rules are defined (impassable, Bridge exception). Consider adding more water-related events or abilities.

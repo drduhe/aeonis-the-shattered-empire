@@ -15,7 +15,7 @@
 | 3 | [VP legibility (full)](2026-07-02-plan-vp-legibility.md) | PARTIAL — MVP promoted | MVP encoded (shared row, Coronation Rite, VP permanence) | Remaining: D4 purchased-VP cut, D5 event audit, artifact/building score-once, 24-card audit |
 | 3b | [VP legibility MVP](2026-07-03-plan-vp-legibility-mvp.md) | **PROMOTED** (sim-validated 2026-07-03, `rules_and_systems/INDEX.md`) | Fully encoded | Human confirmation when playtests resume |
 | 4 | [High player count](2026-07-02-plan-high-player-count.md) | PROPOSED | Not encoded (Docket, Whisper scaling, map construction) | Docket text + `Map_Construction.md` authoring can start anytime; 6p/8p tables gate promotion |
-| 5 | [Core Lords parity](2026-07-02-plan-core-lords-parity.md) | **PROMOTED 2026-07-09** | **M4 full encode DONE** (2026-07-12): unique tiles, remaining abilities, faction discoveries, Legendary Buildings; gate `bracket-m4.json` 100/100 | Optional balance watch from [M4 gate report](../reports/2026-07-12-m4-gate.md); keep `lord_asymmetry` opt-in |
+| 5 | [Core Lords parity](2026-07-02-plan-core-lords-parity.md) | **PROMOTED 2026-07-09** | **M4 full encode DONE** (2026-07-12): unique tiles, remaining abilities, faction discoveries, Legendary Buildings; gate `bracket-m4.json` 100/100 | Lord-sheet tuning **paused** 2026-07-12 (Dial 3 kept); `lord_asymmetry` stays opt-in |
 | 6 | [Bookkeeping](2026-07-02-plan-bookkeeping.md) | PROPOSED | Not encoded | `Trade_Taxes.md` rewrite + Renown milestone track are no-gate hygiene; start anytime |
 | 7 | [Seat reward sweep](2026-07-03-plan-seat-reward-sweep.md) | **S1 adopted** (sim default) | `seat_rewards.seat_of_empire_vp` live | S2+ if revisited — see [H7 conclusion](../reports/2026-07-03-h7-calibration-sweep-conclusion.md) |
 | 8 | [Early economy impact](2026-07-03-plan-early-economy-impact.md) | **E1/E2/E3/E5 killed** | `economy.*` + `objectives.staged_economy_opening` toggles live | Next: **E6** (City gold) or **E4/E7** if revisited |
@@ -25,7 +25,8 @@
 - **Economist viability / objective tempo** — Lever B **decided 2026-07-03**: **Merchant Lord** (public, 8+ Gold) landed PROPOSED in the First Playable row. **E1/E2/E3/E5 killed 2026-07-03**. **Post-M4 (2026-07-12):** economist **6.5% / 5.2%** at mixed 6p/8p (H8 pass) with full Lord asymmetry — see [rebaseline](../reports/2026-07-12-m4-rebaseline.md). **Lever A pacing decided 2026-07-12:** design for **6–8 mean rounds** (accept current ~6.8 pace; do not stretch toward the old 8–10 aspirational band). Registered in `rules_and_systems/INDEX.md`.
 - **Attacker win rate** — contested ~58% at M4-on mixed 4p (inside Plan 1 band); 6–8p still hot (~68–71%).
 - **Council pass rate** — ~29% after motion-aware voting; acceptable band TBD (40–60% suggested).
-- **M4 default-on** — deferred: Rakhis ladder stopped at **Dial 3** (no Sandstride ZOC ignore; solo ~43% / mixed 4p ~27.5%); Dial 3b reverted — see [Dial 3](../reports/2026-07-12-rakhis-ladder-dial3.md) / [3b](../reports/2026-07-12-rakhis-ladder-dial3b.md).
+- **M4 default-on** — deferred (not blocked on more Rakhis dials). **Owner 2026-07-12:** stop Lord-sheet tuning for now; leave Dial 3 in place (no Sandstride ZOC ignore; Hit and Run once/game; Oasis cavalry discount cut). Revisit Thal'rik / floors / default-on in a later pass — see [Dial 3](../reports/2026-07-12-rakhis-ladder-dial3.md).
+- **Next sim/design focus (post-Lord pause)** — pick up non-sheet work: Plan 1 combat (6–8p attacker still hot), Plan 4 high-count authoring, or Plan 3 remaining VP-legibility items (`docs/plans/INDEX.md`).
 
 ## Sim track
 

@@ -33,10 +33,12 @@ Solo field after Dial 3: Rakhis **43.3%**, Thal'rik **40.0%**, then ~15–24% pa
 
 **First material lever.** Mixed 4p is near the ~25–35% seated band; mixed 6p is close to neutral (~16.7%). Solo overall still high at **43%** (warmonger/balanced pairings).
 
-Options for owner:
-1. **Stop / accept** — Rakhis as a strong cavalry Lord (~40% solo, healthy mixed). Document band; move to Thal'rik / floors.
-2. ~~**Dial 3b** — also drop pre-Pre-Strike retreat~~ — **tried and reverted** (see [Dial 3b](2026-07-12-rakhis-ladder-dial3b.md)).
-3. **Dial 3c** — Desert 2 AP (full Sandstride cut except retreat) — last resort.
+**Owner 2026-07-12:** accept Dial 3 as the stop for now; **pause further Lord-sheet tuning** (including Dial 3c / Thal'rik / floors). Revisit in a later pass before `lord_asymmetry` default-on.
+
+Options deferred:
+1. ~~Stop / accept~~ — **chosen** (pause).
+2. ~~Dial 3b~~ — tried and reverted.
+3. Dial 3c / other Lord ladders — later.
 
 ## Default-on
 
