@@ -6,6 +6,8 @@
 
 **Question:** Does raising the win threshold to **12 VP** stretch games toward the Plan 3 MVP **8–10 round** target and lift economist at 6–8p?
 
+> **Update 2026-07-12:** Round-count design band is now **6–8** (Lever A accepted). That removes the original motive for VP12 stretch; kill remains.
+
 ---
 
 ## Results (mixed seats, same seeds as baselines)

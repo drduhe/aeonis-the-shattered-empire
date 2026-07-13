@@ -394,7 +394,7 @@
         {
           "title": "Post-M4 Rebaseline + Pacing",
           "path": "docs/reports/2026-07-12-m4-rebaseline.md",
-          "description": "M4-on mixed 4/6/8p baselines; economist H8 pass; pacing and default-on recommendation.",
+          "description": "M4-on mixed 4/6/8p baselines; economist H8 pass; Lever A accepted (6–8 rounds); default-on still deferred.",
           "status": "internal",
           "minutes": 8,
           "tags": ["design", "simulation", "balance", "lords"]

@@ -112,7 +112,7 @@ A typical 10 VP winner, by design intent:
 
 - VP-source distribution of the winner vs. the §4 budget.
 - **Threat-legibility probe:** mid-game, ask each player "who is closest to winning?" — target ≥ 75% correct.
-- Rounds to game end — target 8–10 with the shared-row pacing.
+- Rounds to game end — target **6–8** with the shared-row pacing (updated 2026-07-12; superseded prior 8–10 aspirational band).
 - "Surprise wins" (players report not seeing the win coming) — target ~0.
 
 **Kill criteria:**

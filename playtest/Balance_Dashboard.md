@@ -66,7 +66,7 @@ Tally the winner's VP by source each game. Healthy state: no single source domin
 
 | Metric | Target | Observed (rolling) |
 | --- | --- | --- |
-| Rounds per game | 7-10 | |
+| Rounds per game | 6-8 (accepted 2026-07-12; was 7-10 / aspirational 8-10) | |
 | Time per round (4p) | 25-40 min | |
 | Full-game session (4-6p) | 4-10 hours (locked D1) | |
 | First battle | by round 2 | |

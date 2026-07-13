@@ -32,6 +32,7 @@ First Playable restrictions are listed below where needed.
 
 - **Players**: 3-8 (scale map per section 3 below)
 - **Victory threshold**: **10 VP** triggers the final round; highest VP at end of that round wins (ties: most Renown, then most Influence).
+- **Round pacing target**: **6–8 rounds** to game end (design/sim balance band; owner-accepted 2026-07-12). Wall-clock First Playable sessions still aim for **90–180 minutes**.
 - **Short game variant**: Use **8 VP** threshold for learning games or shorter sessions.
 
 ---
@@ -328,7 +329,7 @@ The round order for First Playable follows `Round_Structure.md`:
 
 ## 7) Playtest goals (what to watch)
 
-1. **Pacing**: Do rounds stay snappy with 3 AP Build and the new Recruit action? Does the Event-first order create interesting setup tension?
+1. **Pacing**: Do games land in the **6–8 round** design band? Do rounds stay snappy with 3 AP Build and the new Recruit action? Does the Event-first order create interesting setup tension?
 2. **Map flow**: Do Lakes + Bridges create fun chokepoints without stalling play?
 3. **Politics**: Does the High Council matter every round without taking over the session?
 4. **War feel**: Do front lines emerge naturally with Battle Line/Reserves and sieges? Does the unit-based ZOC create meaningful defensive play?

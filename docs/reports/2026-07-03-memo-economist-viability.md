@@ -5,6 +5,8 @@
 **Audience:** Owner / design review  
 **Evidence:** [Persona parity diagnosis](2026-07-03-persona-parity-diagnosis.md), M2 smoke bracket (`bracket-m2-smoke.json`, 100 games); 7–8p parity-sprint data summarized in `../plans/INDEX.md` (executed plans)
 
+> **Update 2026-07-12:** **Lever A decided** — design/sim target is **6–8 mean rounds** (not 8–10). See `rules_and_systems/INDEX.md` and [post-M4 rebaseline](2026-07-12-m4-rebaseline.md). Sections below retain the original 8–10 aspirational language as historical context.
+
 ---
 
 ## 1. Executive summary

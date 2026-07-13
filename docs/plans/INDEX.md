@@ -1,6 +1,6 @@
 # Design plans — index & status
 
-**Updated:** 2026-07-03 · This is the entry point for `docs/plans/`. Plans marked PROPOSED change nothing until playtested (sim-led for now) and registered under "Design decisions (resolved)" in `rules_and_systems/INDEX.md`.
+**Updated:** 2026-07-12 · This is the entry point for `docs/plans/`. Plans marked PROPOSED change nothing until playtested (sim-led for now) and registered under "Design decisions (resolved)" in `rules_and_systems/INDEX.md`.
 
 **Mission context:** the simulator (`sim/`) is the primary feedback loop. Work streams either (a) close the gap between sim and canon rules, or (b) use sim evidence to refine game systems. See `docs/reports/INDEX.md` for current baselines and findings.
 
@@ -22,10 +22,10 @@
 
 ## Open design questions (sim-flagged, owner decision needed)
 
-- **Economist viability / objective tempo** — Lever B **decided 2026-07-03**: **Merchant Lord** (public, 8+ Gold) landed PROPOSED in the First Playable row. **E1/E2/E3/E5 killed 2026-07-03**. **Post-M4 (2026-07-12):** economist **6.5% / 5.2%** at mixed 6p/8p (H8 pass) with full Lord asymmetry — see [rebaseline](../reports/2026-07-12-m4-rebaseline.md). Still open: **Lever A pacing** — mean rounds **6.75–6.96** with M4 on (target 8–10).
+- **Economist viability / objective tempo** — Lever B **decided 2026-07-03**: **Merchant Lord** (public, 8+ Gold) landed PROPOSED in the First Playable row. **E1/E2/E3/E5 killed 2026-07-03**. **Post-M4 (2026-07-12):** economist **6.5% / 5.2%** at mixed 6p/8p (H8 pass) with full Lord asymmetry — see [rebaseline](../reports/2026-07-12-m4-rebaseline.md). **Lever A pacing decided 2026-07-12:** design for **6–8 mean rounds** (accept current ~6.8 pace; do not stretch toward the old 8–10 aspirational band). Registered in `rules_and_systems/INDEX.md`.
 - **Attacker win rate** — contested ~58% at M4-on mixed 4p (inside Plan 1 band); 6–8p still hot (~68–71%).
 - **Council pass rate** — ~29% after motion-aware voting; acceptable band TBD (40–60% suggested).
-- **M4 default-on** — deferred pending pacing call and/or Lord×persona sweep (Rakhis / Thal'rik / floors).
+- **M4 default-on** — deferred pending Lord×persona sweep (Rakhis / Thal'rik / floors); pacing no longer blocks.
 
 ## Sim track
 

@@ -30,17 +30,17 @@ Neutral expectations: ~20% at 5-persona 4p; ~20% at 5-persona 6–8p (uneven sea
 
 ---
 
-## Pacing (open Lever A)
+## Pacing (Lever A — decided 2026-07-12)
 
-Target band remains **8–10 mean rounds**. M4 lengthens games slightly (~0.5–0.6 rounds) but does **not** close the gap.
+**Design band:** **6–8 mean rounds** to game end at 10 VP. Owner accepted current pace; the earlier Plan 3 aspirational **8–10** band is retired.
 
 | Read | Implication |
 | --- | --- |
-| Games still end ~round 7 | Objective tempo / VP threshold still dominate length |
-| 12 VP stretch previously killed economist lift | Do not re-open VP12 without a paired economist plan |
-| M4 content is not the pacing lever | Next pacing work is packet/objective design, not more Lord sheet encode |
+| M4-on means **6.75–6.96** | Inside the accepted 6–8 band |
+| 12 VP stretch previously killed economist lift | Keep 10 VP; do not reopen VP12 for length alone |
+| M4 content is not a pacing lever | No further packet stretch required for round count |
 
-**Owner decision still needed:** Lever A pacing — stretch without re-breaking H8/H12.
+Registered in `rules_and_systems/INDEX.md`.
 
 ---
 
@@ -109,19 +109,18 @@ Neutral ~25% at 4p seats; ~12.5% at 8 seats.
 **Keep `lord_asymmetry` opt-in** for default M3 CI brackets.
 
 Reasons:
-1. Pacing still short of 8–10 regardless of M4.
-2. 4p persona imbalance (warmonger) reappears with M4 on.
-3. Lord outliers need a dedicated Lord×persona bracket before calling sheets “balanced.”
+1. 4p persona imbalance (warmonger) reappears with M4 on.
+2. Lord outliers need a dedicated Lord×persona bracket before calling sheets “balanced.”
 
-Flip default-on only after: (a) pacing lever chosen, or (b) explicit owner call that M4 completeness > baseline continuity.
+Pacing is **no longer** a blocker (6–8 band accepted). Flip default-on after Lord×persona read, or on explicit owner call that M4 completeness > baseline continuity.
 
 ---
 
 ## Next actions (ordered)
 
-1. **Owner: Lever A pacing** — pick a packet-side stretch (objective cadence / VP sources) that preserves H8/H12.
-2. **Lord×persona sweep** — solo/rotate brackets with M4 on to separate sheet strength from persona fit (Rakhis / Thal'rik / Vharok / Cassian).
-3. **Revisit default-on** after (1) or (2).
+1. **Lord×persona sweep** — solo/rotate brackets with M4 on to separate sheet strength from persona fit (Rakhis / Thal'rik / Vharok / Cassian).
+2. **Revisit default-on** after (1).
+3. ~~Owner: Lever A pacing~~ — **done 2026-07-12** (design for 6–8 rounds).
 
 ---
 

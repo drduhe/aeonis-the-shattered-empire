@@ -4,6 +4,8 @@ Players earn **Victory Points (VP)** throughout the game by achieving key object
 
 **Victory Threshold:** First to **10 VP** triggers the final round. Highest VP at end of that round wins.
 
+**First Playable pacing:** Design and balance for **6–8 rounds** to game end at the 10 VP threshold (accepted 2026-07-12; see `INDEX.md`). Short-game variant: **8 VP** (see First Playable packet).
+
 **Tiebreaker:** Most Renown, then most Influence.
 
 **VP permanence:** Once scored, VP are never removed, even if the source (hex, artifact, building, title) is later lost.

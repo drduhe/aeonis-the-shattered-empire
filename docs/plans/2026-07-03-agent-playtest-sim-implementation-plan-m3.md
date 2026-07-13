@@ -27,7 +27,7 @@ Mirrors M1/M2 gates; all must hold at once on the final task's commit:
 | Ledger | every M3 chapter ambiguity triaged in `playtest/Ambiguity_Ledger.md` (AL-25 closed or re-scoped) |
 | Docs | baselines regenerated; `docs/reports/INDEX.md` + `docs/plans/INDEX.md` updated |
 
-**Sanity metrics recorded (not hard gates initially):** first-artifact round distribution (packet target: round 3–4), whisper hand sizes at cleanup (≤7 without constant forced discards), research uptake per game, remnant income per round, mean rounds (Lever A watch: 8–10 target).
+**Sanity metrics recorded (not hard gates initially):** first-artifact round distribution (packet target: round 3–4), whisper hand sizes at cleanup (≤7 without constant forced discards), research uptake per game, remnant income per round, mean rounds (historical Lever A watch was 8–10; **superseded 2026-07-12** — design band is **6–8**).
 
 ## 3. Tasks
 
@@ -118,7 +118,7 @@ The engineering core of M3 — reactive windows on top of the sequential decisio
 | --- | --- |
 | Whisper reactive windows explode decision count / runtime | Offer windows only to hands holding a matching card; skip-by-default heuristics; per-window enumeration caps; watch runtime in CI smoke |
 | Artifact effect sprawl (24 unique cards) | Category-pattern encode (persistent / one-time purge / WHEN); stub-with-ledger anything needing fog or M4 systems |
-| Round length drifts further from the 8–10 target as VP sources multiply | Track mean rounds at every task commit; if <6 or >12, pause and report before continuing (Lever A escalation per memo §7) |
+| Round length drifts outside the design band as VP sources multiply | Track mean rounds at every task commit; if **&lt;5 or &gt;9** vs the accepted **6–8** band (updated 2026-07-12; was 8–10 / pause if &lt;6 or &gt;12), pause and report before continuing |
 | Golden replay churn across 6 tasks | Regenerate per task that shifts sequence; keep per-task commits so bisection stays cheap |
 | Ambiguity backlog (Whispers/Artifacts wording) | AL entry **before** encoding any interpretation; expected new entries: unexplored-hex definition, no-fog stubs, whisper response ordering details |
 
