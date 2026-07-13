@@ -74,6 +74,8 @@ def enumerate_builds(state, pid) -> list:
                 if any(state.tiles[n].controller == pid
                        for n in neighbors(coord) if n in state.tiles
                        and state.tiles[n].terrain != Terrain.LAKE):
+                    if not _can_afford(p, spec, state, pid, btype, tile):
+                        continue
                     out.append({"type": "build", "hex": list(coord),
                                 "building": btype.value})
             continue
