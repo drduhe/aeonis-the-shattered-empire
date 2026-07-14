@@ -45,7 +45,7 @@ Cassian’s armies are never the largest, but they are always where the contract
 
 ### Population
 
-**Population Cap / Pool:** 10 / 10
+**Population Cap / Pool:** 10 / 7
 
 ### Starting AP
 
@@ -108,7 +108,7 @@ Cassian’s armies are never the largest, but they are always where the contract
 - **Build cost:** 4 AP + 6 Gold, 3 Influence
 - **Population:** 3
 - **Upkeep:** none
-- **VP:** 2 VP (checked at Cleanup & Checks)
+- **VP:** 2 VP once on construction
 - **Effect:** PRODUCTION: Gain +1 Gold for each Trade action completed this round (by any player, including trades with you). Once per round, you may initiate a Trade at 0 AP (in addition to any Market benefit).
 
 ---

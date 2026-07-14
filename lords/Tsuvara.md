@@ -50,7 +50,7 @@ Tsuvara has led the Caravan for forty years, and in that time it has never campe
 
 ### Population
 
-**Population Cap / Pool:** 10 / 10
+**Population Cap / Pool:** 10 / 7
 
 ### Starting AP
 
@@ -126,7 +126,7 @@ Tsuvara has led the Caravan for forty years, and in that time it has never campe
 - **Build cost:** 4 AP + 5 Gold, 2 Mana, 2 Influence
 - **Population:** 3
 - **Upkeep:** none
-- **VP:** 2 VP (checked at Cleanup & Checks)
+- **VP:** 2 VP once on construction
 - **Renown:** +2 immediately when constructed (standard Legendary rule, see `Buildings.md`)
 - **Effect:** Must be built in the **Great Caravan** (it travels with it). **PRODUCTION:** Gain +1 of the base resource of each **different terrain type** among hexes adjacent to the Great Caravan (max +3 total). Once per round, when the Great Caravan moves with **Wheels of the Ashkarr**, it may move **1 additional hex** (same restrictions).
 

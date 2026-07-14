@@ -48,7 +48,7 @@ The Pale Legion recruits from every battlefield in Aeonis, friend and foe alike.
 
 ### Population
 
-**Population Cap / Pool:** 10 / 10
+**Population Cap / Pool:** 10 / 6
 
 ### Starting AP
 
@@ -123,7 +123,7 @@ The Pale Legion recruits from every battlefield in Aeonis, friend and foe alike.
 - **Build cost:** 4 AP + 5 Gold, 4 Mana
 - **Population:** 3
 - **Upkeep:** none
-- **VP:** 2 VP (checked at Cleanup & Checks)
+- **VP:** 2 VP once on construction
 - **Renown:** +2 immediately when constructed (standard Legendary rule, see `Buildings.md`)
 - **Effect:** **PRODUCTION:** You may sacrifice up to **2 Population Points**; gain **2 Mana** per point sacrificed (in addition to Soul Tithe). Once per round, when you take a **Recruit** action at this City, you may recruit **1 additional Infantry** beyond the normal 2-unit limit by paying **1 Mana** instead of its Gold cost (Population as normal).
 

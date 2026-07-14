@@ -50,7 +50,7 @@ The Ashen Creed has no cathedrals, only converts — and it grows fastest where 
 
 ### Population
 
-**Population Cap / Pool:** 10 / 10
+**Population Cap / Pool:** 10 / 7
 
 ### Starting AP
 
@@ -127,7 +127,7 @@ You gain control of that hex immediately. *(This is the Influence-takeover metho
 - **Build cost:** 4 AP + 4 Gold, 2 Mana, 4 Influence
 - **Population:** 3
 - **Upkeep:** none
-- **VP:** 2 VP (checked at Cleanup & Checks)
+- **VP:** 2 VP once on construction
 - **Renown:** +2 immediately when constructed (standard Legendary rule, see `Buildings.md`)
 - **Effect:** **PRODUCTION:** Gain +2 Influence. **COUNCIL:** Once per round, when you use **The Unveiled Word**, you may convert **1 additional** opposing vote at no extra Influence cost. Units defending this hex gain **+1 Defense**.
 

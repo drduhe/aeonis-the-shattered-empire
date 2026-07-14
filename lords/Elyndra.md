@@ -45,7 +45,7 @@ Elyndra does not rule by decree—she rules by **roots**. Where others strip the
 
 ### Population
 
-**Population Cap / Pool:** 11 / 11
+**Population Cap / Pool:** 10 / 7
 
 ### Starting AP
 
@@ -108,7 +108,7 @@ Elyndra does not rule by decree—she rules by **roots**. Where others strip the
 - **Build cost:** 4 AP + 3 Gold, 4 Mana, 2 Influence
 - **Population:** 3
 - **Upkeep:** none
-- **VP:** 2 VP (checked at Cleanup & Checks)
+- **VP:** 2 VP once on construction
 - **Effect:** PRODUCTION: +3 Population growth at this hex. Adjacent hexes you control produce +1 of their primary resource. Units in this hex regenerate 1 HP at Round Start.
 
 ---

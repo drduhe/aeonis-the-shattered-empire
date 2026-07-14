@@ -46,7 +46,7 @@ The Luminari are crystalline beings formed from the sap of the World Tree King d
 
 ### Population
 
-**Population Cap / Pool:** 10 / 10
+**Population Cap / Pool:** 10 / 7
 
 ### Starting AP
 
@@ -109,7 +109,7 @@ The Luminari are crystalline beings formed from the sap of the World Tree King d
 - **Build cost:** 4 AP + 4 Gold, 3 Mana, 3 Influence
 - **Population:** 3
 - **Upkeep:** none
-- **VP:** 2 VP (checked at Cleanup & Checks)
+- **VP:** 2 VP once on construction
 - **Effect:** COUNCIL: Your Influence counts double when voting on proposals you initiated. PRODUCTION: Gain +1 Renown if you are currently the Speaker. Units defending this hex gain +2 Defense.
 
 ---

@@ -43,7 +43,7 @@
 | Cavalry | d8 | d6 | 2 | 2 | 2 Gold, 2 Population; ignores first ZOC hex per Move (flanking) |
 | Archer | d6 | d4 | 1 | 1 | 1 Gold + 1 Mana, 1 Population; Pre-Strike on the Battle Line |
 
-**Lords** (captured at 0 HP: captor gains +1 VP, +2 Renown; released at Cleanup):
+**Lords** (occupy 0 Population; captured at 0 HP: captor gains +1 VP, +2 Renown; released at Cleanup):
 
 | Lord | Race | Attack | Defense | HP | Move | Identity |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -149,8 +149,8 @@ Battle Line Cap: **3** (standard hex) / **5** (City or Fortress). Committed unit
 | Secret objective (each) | 2 |
 | Coronation Rite (control Seat + Lord present) | +1 per Cleanup; third total Rite +2 once |
 | Capture an enemy Lord | +1 (plus +2 Renown) |
-| Your Legendary Building in play | 2 |
-| VP artifact (Crown of Aeonis, Eternal Forge, Shard of the Throne, Imperial Seal) | 1 each |
+| Construct your Legendary Building | 2 once; a later City captor scores 1 once |
+| Gain a VP artifact (Crown of Aeonis, Eternal Forge, Shard of the Throne, Imperial Seal) | 1 once; max 2 scorers per artifact |
 | Title first claimed (Hero of the Realm, Magister of Mana) | 2 |
 | Imperial Mandate primary while controlling the Imperial Seat | 1 |
 

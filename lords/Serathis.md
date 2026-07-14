@@ -52,7 +52,7 @@ Serathis rules the Drowned Court from beneath the surface of lakes no army can c
 
 ### Population
 
-**Population Cap / Pool:** 10 / 10
+**Population Cap / Pool:** 10 / 7
 
 ### Starting AP
 
@@ -126,7 +126,7 @@ Serathis rules the Drowned Court from beneath the surface of lakes no army can c
 - **Build cost:** 4 AP + 5 Gold, 4 Mana
 - **Population:** 3
 - **Upkeep:** none
-- **VP:** 2 VP (checked at Cleanup & Checks)
+- **VP:** 2 VP once on construction
 - **Renown:** +2 immediately when constructed (standard Legendary rule, see `Buildings.md`)
 - **Effect:** **PRODUCTION:** Gain +1 Gold and +1 Mana if you control at least 1 Lake hex. Once per round, you may move one of your unit groups between this City and any Lake hex you control (either direction) at **0 AP** (does not count as a Move action).
 

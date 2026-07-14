@@ -212,7 +212,7 @@ Use these as templates; tune numbers during playtests.
 ### 6.2 Economy / Taxes
 
 - **Realm Tax (Law)**:
-  - Effect: Each round, each player gains +1 Gold but must pay 1 Influence (or lose 1 Renown).
+  - Effect: During **Production & Upkeep** each round, each player gains +1 Gold, then must pay 1 Influence (or lose 1 Renown).
   - Duration: until repealed.
 
 - **War Levy (Decree)**:
@@ -222,7 +222,7 @@ Use these as templates; tune numbers during playtests.
 
 - **Hero of the Realm (Title)**:
   - Eligibility: 5+ Renown.
-  - Benefit: +1 Influence per round while held.
+  - Benefit: During **Production & Upkeep** each round, gain +1 Influence while held.
   - VP: 2 VP when first claimed.
 
 - **Magister of Mana (Title)**:

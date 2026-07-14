@@ -375,6 +375,14 @@
           "status": "playtest",
           "minutes": 3,
           "tags": ["components"]
+        },
+        {
+          "title": "First Playable Print-and-Play Kit",
+          "path": "pnp/README.md",
+          "description": "Ready-to-print low-ink PDFs, assembly instructions, inventory gates, and regeneration workflow.",
+          "status": "playtest",
+          "minutes": 5,
+          "tags": ["components", "print-and-play", "prototype"]
         }
       ]
     },
@@ -398,6 +406,14 @@
           "status": "internal",
           "minutes": 5,
           "tags": ["design", "simulation", "balance", "lords"]
+        },
+        {
+          "title": "Synchronization + PnP Readiness Sprint",
+          "path": "docs/reports/2026-07-13-pnp-readiness-sprint.md",
+          "description": "Canon synchronization audit and verification record for the 45-page First Playable print-and-play kit.",
+          "status": "internal",
+          "minutes": 6,
+          "tags": ["design", "print-and-play", "components", "validation"]
         },
         {
           "title": "Post-M4 Rebaseline + Pacing",

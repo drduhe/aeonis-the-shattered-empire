@@ -49,7 +49,7 @@ Players earn **Victory Points (VP)** throughout the game by achieving key object
 
 - Players earn VP and bonuses by claiming **Titles** through High Council motions.
 - **Examples of Titles:**
-  - **Hero of the Realm:** Reach 5 Renown. **(2 VP + 1 Influence per round)**
+  - **Hero of the Realm:** Reach 5 Renown. **(2 VP + 1 Influence during Production & Upkeep each round while held)**
   - **Magister of Mana:** Control 3 Mana-producing hexes or Groves. **(2 VP)**
 
 *Why It Works:* Makes the High Council a critical arena for indirect competition.

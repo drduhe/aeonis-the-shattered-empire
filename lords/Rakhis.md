@@ -46,7 +46,7 @@ The Djinnborn are the descendants of imperial outriders who bound wind spirits i
 
 ### Population
 
-**Population Cap / Pool:** 10 / 10
+**Population Cap / Pool:** 10 / 6
 
 ### Starting AP
 
@@ -108,7 +108,7 @@ The Djinnborn are the descendants of imperial outriders who bound wind spirits i
 - **Build cost:** 4 AP + 5 Gold, 3 Influence
 - **Population:** 3
 - **Upkeep:** none
-- **VP:** 2 VP (checked at Cleanup & Checks)
+- **VP:** 2 VP once on construction
 - **Effect:** Units recruited at this City gain +1 Movement for their first move each round. Once per round, one Cavalry unit group may take a free Move action (1 hex) at 0 AP.
 
 ---

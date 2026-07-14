@@ -45,7 +45,7 @@ This project already has a strong source-of-truth set of docs at the repository 
 - `marketing/` — `Positioning.md` (locked product decisions), pitch, comps, campaign math.
 - `docs/plans/` — dated design plans; PROPOSED ≠ canon. Start at `docs/plans/INDEX.md` (plan statuses + sim milestone track); current sim baselines at `docs/reports/INDEX.md`.
 - `agents/` — roles, templates, checklists. `mcp/aeonis-tools/` — validation MCP server.
-- `content-manifest.json` + `app.js`/`index.html` — the Codex browsing app.
+- `content-manifest.json` + `codex.js`/`codex.html` — the Codex browsing app.
 
 ---
 
@@ -67,7 +67,7 @@ When working on Aeonis, treat these as canonical:
 - `rules_and_systems/Round_Structure.md` (timing spine)
 - `playtest/First_Playable_Packet.md` (what is “on” for current playtests)
 - `components/Components.md` (what needs to exist physically)
-- `content-manifest.json` + `app.js` (what the Codex app can browse)
+- `content-manifest.json` + `codex.js` (what the Codex app can browse)
 
 If you change a definition that other docs rely on (AP, Influence, ZOC, “Control”, “Imperial Seat”, etc.), you must **propagate the change** to every impacted doc (see checklists in `agents/checklists/`).
 

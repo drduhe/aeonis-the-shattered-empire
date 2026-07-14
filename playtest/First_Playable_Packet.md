@@ -96,7 +96,7 @@ The Imperial Seat is a City with this additional rule:
 - **Renown**: 0
 - **VP**: 0
 - **Population Cap**: 10 (base 7 + 3 from your home City)
-- **Population Pool**: 6 available at start (4 Population occupied by starting units)
+- **Population Pool**: Your Population Cap minus the Population occupied by the starting army on your Lord sheet. Lord units occupy 0 Population. Most launch Lords begin at **7 available** (3 occupied); Rakhis begins at **6 available** (4 occupied). If no Lord sheet is used, the default army occupies 4, so begin at **6 available**.
 - **Resources**: Use the starting resources listed on your **Lord sheet** (each Lord has different starting Gold/Mana/Influence). If no Lord sheet is used, default to 2 Gold, 2 Mana, 1 Influence.
 - **Whisper Cards**: 2 (draw from the shared deck during setup, before Round 1 begins)
 
@@ -195,7 +195,7 @@ Use the full 8-card deck from `Strategy.md` (print as cards):
 - **Golden Hoard**: Have 10 Gold at once.
 - **Mana Flood**: Have 10 Mana at once.
 - **The Quiet Knife**: Take control of a hex via Influence (annexation/arbitration/Influence takeover).
-- **Borderbreaker**: End the round with units in 3 different regions of the map (define regions by table agreement).
+- **Borderbreaker**: At Cleanup & Checks, have units in 3 hexes that are each at least 3 hexes apart from one another. All three pairwise distances must be 3 or more.
 - **Architect of Control**: Control 2 special tiles (any combination of City/Ruins/Portal/Imperial Seat).
 
 Setup:
@@ -204,7 +204,7 @@ Setup:
 - Each player draws 1 secret at start.
 - At the start of Round 3, each player draws 1 additional secret.
 
-### 4.5 Events (print 10 global + 8 exploration)
+### 4.5 Events (print 12 global + 9 exploration)
 
 **Global Events (resolve in Event Phase, before Strategy Selection):**
 

@@ -46,7 +46,7 @@ The Voidborn are not born -- they coalesce. When the Eternal Empire's portal net
 
 ### Population
 
-**Population Cap / Pool:** 10 / 10
+**Population Cap / Pool:** 10 / 7
 
 ### Starting AP
 
@@ -106,7 +106,7 @@ The Voidborn are not born -- they coalesce. When the Eternal Empire's portal net
 - **Build cost:** 4 AP + 5 Gold, 5 Mana
 - **Population:** 3
 - **Upkeep:** none
-- **VP:** 2 VP (checked at Cleanup & Checks)
+- **VP:** 2 VP once on construction
 - **Effect:** This City counts as a Portal for all Portal travel rules. Once per round, you may teleport a unit group from this hex to any Portal on the map for 0 AP (you must still control or have a unit at the destination Portal).
 
 ---

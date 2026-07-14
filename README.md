@@ -14,6 +14,7 @@ This is **not** a playable digital game. It is the canonical rules corpus, playt
 | Browse all docs in a UI | [`codex.html`](codex.html) (local) or [GitHub Pages site](https://drduhe.github.io/aeonis-the-shattered-empire/) |
 | See what's canon vs proposed | [`rules_and_systems/INDEX.md`](rules_and_systems/INDEX.md) |
 | Run balance experiments | [`sim/README.md`](sim/README.md) |
+| Print the First Playable prototype | [`pnp/README.md`](pnp/README.md) |
 | Contribute with an AI assistant | [`AGENTS.md`](AGENTS.md) |
 | Check locked product decisions | [`marketing/Positioning.md`](marketing/Positioning.md) |
 
@@ -50,6 +51,8 @@ lords/               12 faction sheets (8 launch + 4 expansion)
 rulebook/            Learn to Play + Player Aid (derived teaching docs)
 lore/                Worldbook + Naming Bible (terminology canon)
 components/          Prototype kit + production BOM
+pnp/                 Repeatable low-ink First Playable PDF generator
+output/pdf/           Generated print-and-play PDFs
 marketing/           Positioning, pitch, campaign plan, comps
 sim/                 Python engine-authoritative playtest simulator
 docs/plans/          Dated design plans (PROPOSED ≠ canon)
@@ -93,10 +96,14 @@ python3.11 -m venv .venv
 # Windows:  .venv\Scripts\Activate.ps1
 # macOS/Linux:  source .venv/bin/activate
 pip install -r requirements-dev.txt
-python -m pytest          # 349 tests
+python -m pytest          # 350 tests
 ```
 
 Bot games and tournament brackets: see [`sim/README.md`](sim/README.md).
+
+### Print-and-play kit
+
+Ready-to-print PDFs and assembly instructions are indexed in [`pnp/README.md`](pnp/README.md). Regenerate them from canonical Markdown with `python pnp/generate_pnp.py` (ReportLab required).
 
 ### Doc hygiene
 

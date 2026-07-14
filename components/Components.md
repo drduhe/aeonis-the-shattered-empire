@@ -104,17 +104,29 @@ This is the minimal component list needed to run the **First Playable** packet. 
 
 For First Playable, you can print these as simple text cards:
 
-- **Strategy Cards (6 for 3-4 players, 8 for 5-8)**: selected list in `playtest/First_Playable_Packet.md`
+- **Strategy Cards (8 at every player count)**: at 3-4 players each player drafts 2; at 5-8 each drafts 1 (see `playtest/First_Playable_Packet.md`)
 - **Objectives**:
   - 6x Public objectives (2 VP each)
   - 6x Secret objectives (2 VP each)
   - Public cards form one shared row; use player control tokens to mark scores and cumulative progress after reveal.
+
 - **Events**:
-  - 10x Global events (includes 2 catch-up events)
-  - 8x Exploration events (used for Ruins / exploration)
+  - 12x Global events (includes 2 catch-up events and 2 Artifact Site events)
+  - 9x Exploration events (used for Ruins / exploration)
 - **Council Motions (8)**: a short "agenda deck" drawn from `High_Council.md` examples
 - **Whisper Cards (26)**: shared tactical deck (see `Whispers.md` and `playtest/First_Playable_Packet.md`)
 - **Artifact Cards (24)**: unique relic cards drawn from a shared deck (see `rules_and_systems/Artifacts.md`)
+- **Tier I Arcane Discoveries (10)**: two from each core school (see `rules_and_systems/Arcane.md`)
+
+### Generated low-ink kit
+
+The repeatable print-and-play generator and assembly instructions live in [`../pnp/README.md`](../pnp/README.md). Its reviewed output contains:
+
+- **109 cuttable cards** across all enabled First Playable decks.
+- **3–8 player preset map diagrams**, eight launch-Lord references, a player board, and the Player Aid.
+- **Maximum 8-player proxy hex inventory** plus printable unit, control, building, Legendary Building, artifact, and status tokens.
+
+Generated PDFs are derived artifacts in `output/pdf/`; the Markdown chapters and this component inventory remain canonical.
 
 ---
 

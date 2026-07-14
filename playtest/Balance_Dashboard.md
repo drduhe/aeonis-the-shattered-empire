@@ -45,7 +45,7 @@ Update cumulative rows after each session.
 
 **Red flags:** any Lord above ~2x or below ~0.5x expected win rate after 8+ games; any Lord nobody voluntarily picks.
 
-**2026-07-13 sim watch:** M4 is now simulator-default after a 520/520 matched review. In the default-on arm, Auriel won 51.1% when seated at 4p and 23.9% at 8p; warmonger won 44.4% at 4p. At 6p, all Lords stayed between 10.5% and 23.2%. Treat Auriel/warmonger 4p as the first balance watch; do not fold it into the default-fidelity decision.
+**2026-07-13 sim watch (latest):** M4 is simulator-default. The objective-awareness diagnostic cooled Auriel to 33.3% at 4p, while warmonger remained 43.3%; Rakhis (39.1%) and Thal'rik (37.8%) are also 4p Lord watches. At 8p, the economist persona remained 1.2% with the audited full deck but reached 6.4% with the six-card teaching row, with Thal'rik supplying 10 of 16 wins. Treat these as sim-only pairing/objective-access signals, not sheet-tuning authority.
 
 ## 3. VP source distribution
 

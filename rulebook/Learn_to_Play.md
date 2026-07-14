@@ -21,9 +21,9 @@ The first player to reach **10 VP** triggers the final round: finish the current
 Your main VP sources:
 
 - **Objectives** — each public or secret objective you score is worth **2 VP**.
-- **The Imperial Seat** — control it at Cleanup & Checks for **+1 VP** each round.
+- **The Imperial Seat** — perform the **Coronation Rite** for 1 VP at Cleanup & Checks when you control it and your Lord is present; your third total Rite also scores a one-time +2 VP.
 - **Capturing an enemy Lord** in battle — **+1 VP**.
-- **Your Legendary Building** — worth **2 VP** while in play.
+- **Your Legendary Building** — scores **2 VP once when constructed**; a later captor may score 1 VP once.
 - **VP-bearing artifacts** — 4 of the 24 artifacts are worth **1 VP** each.
 - **Council Titles** — Hero of the Realm and Magister of Mana each grant **2 VP** when first claimed.
 - **Imperial Mandate** (Strategy Card) — its primary grants **1 VP** if you control the Imperial Seat.
@@ -61,7 +61,7 @@ From `../components/Components.md`:
 2. **Pick Lords.** Each player takes a different Lord sheet, standees, and control tokens. If your sheet lists a **Unique Starting Tile**, swap it in for the specified home-cluster tile (it still counts as its listed terrain type).
 3. **Place starting units.** Put the units listed on your Lord sheet in your Home City, with your Lord standee. (Default: 3 Infantry + 1 Archer. Lords differ — Rakhis starts with 2 Infantry + 1 Cavalry.)
 4. **Mark starting control.** You control your 4-tile home cluster; everything else starts neutral.
-5. **Set your trackers.** **5 AP**, **0 Renown**, **0 VP**, **Population Cap 10**, **Population Pool 10** (full). Take the starting Gold/Mana/Influence on your Lord sheet (default: 2 Gold, 2 Mana, 1 Influence).
+5. **Set your trackers.** **5 AP**, **0 Renown**, **0 VP**, and **Population Cap 10**. Set your available **Population Pool** to the cap minus Population occupied by your Lord sheet's starting army; Lord units occupy 0. Most launch Lords begin at **7**, while Rakhis begins at **6**. With the default 3 Infantry + 1 Archer army, begin at **6**. Take the starting Gold/Mana/Influence on your Lord sheet (default: 2 Gold, 2 Mana, 1 Influence).
 6. **Prepare the decks.** Lay out the 8 **Strategy Cards**. Shuffle the **agenda deck** (8), **Whisper deck** (26), **Artifact Deck** (24, face down), and the **Global** and **Exploration Event** decks. Set out the Remnant supply and Artifact Site markers. No one starts with artifacts or Remnants.
 7. **Prepare objectives.** Reveal **2 Stage I public objectives** in one shared row. Each player draws **1 secret objective** and keeps it hidden. Each objective is worth 2 VP when scored.
 8. **Draw Whispers.** Each player draws **2 Whisper Cards** into a private hand.
@@ -264,7 +264,7 @@ The council convenes every round in Phase 4 (`../rules_and_systems/High_Council.
 5. **Voting** — resolve motions one at a time, in the order proposed. When a motion is called, players may **lobby** in initiative order: **2 Influence buys +1 vote** for this motion only (minimum spend 2). Everyone commits votes for or against. A motion **passes on a strict majority of votes cast — ties fail** (optionally, the Speaker breaks ties). Passing your own motion earns **+1 Renown**.
 6. **Enactment** — Decrees resolve immediately, Laws persist until repealed, Titles are awarded on the spot.
 
-> **Worked vote:** Vharok has proposed **Realm Tax** (a Law: each round, every player gains +1 Gold but must pay 1 Influence or lose 1 Renown). Lobbying, in initiative order: Elyndra spends 2 Influence for +1 vote; the others decline. **For:** Vharok 2 votes (base 1, +1 for 5 Renown) + Elyndra 2 (base 1, +1 lobbied) = **4**. **Against:** Rakhis 1 + Cassian 1 = **2**. Six votes cast, 4 is a strict majority: the Law passes, and Vharok gains +1 Renown. Had Cassian played **Backroom Deal** (+2 votes against), it would have died in a 4–4 tie.
+> **Worked vote:** Vharok has proposed **Realm Tax** (a Law: during Production & Upkeep each round, every player gains +1 Gold, then must pay 1 Influence or lose 1 Renown). Lobbying, in initiative order: Elyndra spends 2 Influence for +1 vote; the others decline. **For:** Vharok 2 votes (base 1, +1 for 5 Renown) + Elyndra 2 (base 1, +1 lobbied) = **4**. **Against:** Rakhis 1 + Cassian 1 = **2**. Six votes cast, 4 is a strict majority: the Law passes, and Vharok gains +1 Renown. Had Cassian played **Backroom Deal** (+2 votes against), it would have died in a 4–4 tie.
 
 COUNCIL Whispers (Veto, Backroom Deal, Political Leverage, Leaked Intelligence) play at the council moments named on the cards.
 
@@ -283,7 +283,7 @@ Artifacts are 24 unique relics of the fallen empire (`../rules_and_systems/Artif
 - **Purge 3 Remnants** at any time on your turn to draw the top Artifact Card — free action, 0 AP. Remnants come from exploration, controlled Ruins (1 each per round), completing Discoveries, Whispers, and Events.
 - **Artifact Sites** — certain Events place a Site marker with a face-up artifact on a hex. Any player with a unit there may spend **1 AP** to claim it.
 
-Artifacts come in three categories: **Lord Equipment** attaches to your Lord (max **2**; a captor takes them all), **Building Relics** attach to an eligible building (1 per building; they change hands with the hex), and **Utility** artifacts sit in your play area. Only 4 artifacts award VP — **Crown of Aeonis, Eternal Forge, Shard of the Throne, Imperial Seal** — 1 VP each at Cleanup & Checks, each stealable in its own way.
+Artifacts come in three categories: **Lord Equipment** attaches to your Lord (max **2**; a captor takes them all), **Building Relics** attach to an eligible building (1 per building; they change hands with the hex), and **Utility** artifacts sit in your play area. Only 4 artifacts award VP — **Crown of Aeonis, Eternal Forge, Shard of the Throne, Imperial Seal** — 1 VP once when gained (at most 2 players per artifact), each stealable in its own way.
 
 ### Whispers
 
@@ -304,13 +304,13 @@ You may play at most **1 Whisper per timing window per occurrence**. Only ACTION
 
 Almost everything scores at **Cleanup & Checks**:
 
-- **Objectives** are verified there, in initiative order, before the victory-threshold check. If the condition holds at that moment, reveal (if secret) and score **2 VP** — meeting a condition mid-round and losing it by Cleanup scores nothing. Exception: objectives marked **Immediate** (like Golden Hoard) score the moment the condition is true. Each card scores once, then is discarded. And **every time you score VP, draw 1 Whisper Card.**
-- **Imperial Seat:** control it at Cleanup for **+1 VP** that round.
+- **Objectives** are verified there, in initiative order, before the victory-threshold check. If the condition holds at that moment, reveal (if secret) and score **2 VP** — meeting a condition mid-round and losing it by Cleanup scores nothing. Exception: objectives marked **Immediate** (like Golden Hoard) score the moment the condition is true. Public objectives remain in the shared row and receive your control marker after you score them; scored secrets are revealed and discarded. And **every time you score VP, draw 1 Whisper Card.**
+- **Imperial Seat:** perform the **Coronation Rite** for 1 VP if you control the Seat and your Lord is in its hex. On your third total Rite, score an additional +2 VP once.
 - **Titles** are checked at Cleanup: keep the eligibility or lose the Title (the 2 VP from first claiming it are yours forever).
 - **Legendary Buildings** score **2 VP once on construction**; capturing that City scores the captor **1 VP once**. **VP-bearing artifacts** score **1 VP once** when gained (at most two players per artifact). Lost control does not refund VP.
 - **Lord captures** (+1 VP) score immediately when they happen.
 
-You start with 1 public + 1 secret objective; a second secret arrives at Round 3, and effects like Imperial Mandate can draw more (max **3 unscored secrets**).
+The table starts with 2 objectives revealed in the shared public row; you personally start with 1 secret objective. A second secret arrives at Round 3, and effects like Imperial Mandate can draw more (max **3 unscored secrets**).
 
 **Ending the game:** the first time any player reaches **10 VP** (checked at Cleanup), that round is the final round — the game ends at the end of its Cleanup & Checks, and the highest VP total wins. Tiebreakers: most Renown, then most Influence.
 

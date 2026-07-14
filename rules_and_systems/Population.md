@@ -27,6 +27,7 @@ Examples (baseline):
 - **Infantry**: occupies 1 Population
 - **Cavalry**: occupies 2 Population
 - **Archers**: occupies 1 Population
+- **Lord units**: occupy 0 Population
 - **Tower**: occupies 1 Population
 
 Note:

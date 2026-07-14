@@ -46,7 +46,7 @@ The Umbral are shadow-touched humanoids who dwell in the spaces between light --
 
 ### Population
 
-**Population Cap / Pool:** 10 / 10
+**Population Cap / Pool:** 10 / 7
 
 ### Starting AP
 
@@ -105,7 +105,7 @@ The Umbral are shadow-touched humanoids who dwell in the spaces between light --
 - **Build cost:** 4 AP + 4 Gold, 4 Mana, 2 Influence
 - **Population:** 3
 - **Upkeep:** none
-- **VP:** 2 VP (checked at Cleanup & Checks)
+- **VP:** 2 VP once on construction
 - **Effect:** Draw +1 Whisper Card at Round Start. WHEN another player plays a Whisper Card: You may look at their hand. Once per round, you may play a Whisper Card from your hand as if it had any timing window.
 
 ---
