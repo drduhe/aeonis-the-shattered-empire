@@ -1,0 +1,19 @@
+{
+  "players": 3,
+  "games": 2,
+  "seed_base": 7301,
+  "report_title": "Aeonis M5 Agent Playtest Pipeline Dry Run",
+  "personas": ["warmonger", "economist", "diplomat"],
+  "llm_playtest": {
+    "enabled": true,
+    "seats": [0, 1, 2],
+    "provider": {
+      "type": "deterministic",
+      "action_index": 0
+    },
+    "decision_kinds": ["strategy_draft", "council_propose", "council_vote", "action", "press"],
+    "max_decision_calls_per_seat": 2,
+    "max_round_reflections_per_seat": 1,
+    "retries": 1
+  }
+}

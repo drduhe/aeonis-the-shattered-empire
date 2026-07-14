@@ -23,7 +23,7 @@ def _force_cards(g: Game, pid: int, *cards: str) -> None:
     g._initiative_queue = [pid] + [p for p in g._initiative_queue if p != pid]
 
 
-def test_diplomatic_decree_costs_influence_and_grants_speaker():
+def test_diplomatic_decree_grants_influence_and_speaker():
     g = Game({"players": 3}, seed=42)
     _force_cards(g, 0, "diplomatic_decree")
     p = g.state.player(0)
@@ -31,7 +31,7 @@ def test_diplomatic_decree_costs_influence_and_grants_speaker():
     old_speaker = g.state.speaker
     pay_primary_ap(g.state, 0, "diplomatic_decree")
     apply_diplomatic_decree_primary(g.state, 0)
-    assert p.influence == 3
+    assert p.influence == 7
     assert g.state.speaker == 0
     assert old_speaker != 0 or g.state.speaker == 0
 

@@ -1,0 +1,38 @@
+{
+  "players": 3,
+  "games": 1,
+  "seed_base": 7311,
+  "report_title": "Aeonis M5 Local-Model Agent Playtest Pilot",
+  "personas": ["warmonger", "economist", "diplomat"],
+  "llm_playtest": {
+    "enabled": true,
+    "seats": [0, 1, 2],
+    "provider": {
+      "type": "ollama",
+      "model": "deepseek-r1:32b",
+      "base_url": "http://127.0.0.1:11434",
+      "timeout_seconds": 900,
+      "temperature": 0.2,
+      "num_ctx": 16384,
+      "num_predict": 2048
+    },
+    "max_decision_calls_per_seat": 1,
+    "max_round_reflections_per_seat": 1,
+    "retries": 1,
+    "max_presented_choices": 80,
+    "seat_overrides": {
+      "0": {
+        "decision_kinds": ["action"],
+        "decision_round_min": 3
+      },
+      "1": {
+        "decision_kinds": ["action"],
+        "decision_round_min": 2
+      },
+      "2": {
+        "decision_kinds": ["council_vote"],
+        "decision_round_min": 2
+      }
+    }
+  }
+}

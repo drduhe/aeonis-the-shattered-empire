@@ -69,6 +69,19 @@ STRATEGY_CARDS: dict[str, StrategyCard] = {
     ),
 }
 
+# Prompt/report reference derived from the canonical card text in Strategy.md.
+# Keep behavior in the apply/enumerate functions below; this is explanatory only.
+STRATEGY_RULE_SUMMARIES: dict[str, str] = {
+    "arcane_ascendancy": "Primary (1 AP): gain 2 Mana, then research one Tier I discovery free.",
+    "resource_surge": "Primary (0 AP): gain 2 Gold, 2 Mana, and 1 Influence.",
+    "military_maneuvers": "Primary (1 AP): one Move at 0 AP path cost, then one Attack for 1 AP.",
+    "diplomatic_decree": "Primary (1 AP): gain 2 Influence, take Speaker, then resolve an emergency motion.",
+    "expansion_strategy": "Primary (1 AP): claim an eligible adjacent neutral hex and gain 1 Population Pool.",
+    "tactical_reinforcements": "Primary (1 AP): recruit up to 2 units free; Population costs still apply.",
+    "economic_boom": "Primary (0 AP): gain 5 Gold.",
+    "imperial_mandate": "Primary (1 AP): gain 1 VP if controlling the Imperial Seat, else draw a secret; gain 1 Influence.",
+}
+
 
 # All eight primaries encoded (M3 Task 7).
 PRIMARY_IMPLEMENTED: frozenset[str] = frozenset(STRATEGY_CARD_IDS)
@@ -170,8 +183,6 @@ def _can_use_primary(state: GameState, pid: int, card_id: str) -> bool:
     card = STRATEGY_CARDS[card_id]
     if player.ap < card.primary_ap:
         return False
-    if card_id == "diplomatic_decree" and player.influence < 2:
-        return False
     if card_id == "expansion_strategy":
         return bool(_eligible_claim_hexes(state, pid))
     if card_id == "tactical_reinforcements":
@@ -241,7 +252,7 @@ def apply_expansion_strategy_primary(state: GameState, pid: int, coord: tuple) -
 
 def apply_diplomatic_decree_primary(state: GameState, pid: int) -> None:
     p = state.player(pid)
-    p.influence -= 2
+    p.influence += 2
     state.speaker = pid
 
 

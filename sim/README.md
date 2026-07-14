@@ -28,6 +28,15 @@ Persona bots:
 
     cd sim && python3.11 -m aeonis_sim.runner.play --players 4 --persona balanced --seed 1 --games 10
 
+Qualitative agent playtests (M5):
+
+    cd sim && python scripts/m5_agent_playtest.py \
+      --config configs/m5-agent-playtest-dry-run.json \
+      --out ../playtest/agent_sessions/m5-dry-run.jsonl \
+      --report ../docs/reports/m5-dry-run.md
+
+Use `configs/m5-agent-playtest-ollama-pilot.json` for the quality-first local Ollama profile. The model receives a redacted seat view and numbered legal actions; the engine remains authoritative. Invalid responses consume the decision budget, retry once when configured, and fall back to the seat's persona bot. Reports label all findings sim-only, and deterministic-provider comments are pipeline evidence only.
+
 Tournament (balance campaign):
 
     cd sim && python3.11 -m aeonis_sim.runner.tournament \

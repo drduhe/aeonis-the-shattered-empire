@@ -4,9 +4,14 @@ from typing import Protocol
 
 
 class Agent(Protocol):
-    """One seat at the table. Milestone 1: choose() only; reflect() and
-    exit_interview() join in plan C (LLM agents)."""
+    """One seat at the table. Qualitative hooks are optional at runtime."""
 
     def choose(self, observation: dict, decision_point) -> dict:
         """Return exactly one of decision_point.choices."""
+        ...
+
+    def reflect(self, round_summary: dict) -> None:
+        ...
+
+    def exit_interview(self, game_summary: dict) -> dict:
         ...

@@ -2,7 +2,7 @@
 
 **Updated:** 2026-07-13 · Sim-only unless noted. Full tournament dumps are **regenerable** — conclusions live in the memos below.
 
-**Engine:** M3 card systems + full M4 Lord asymmetry (default-on) + audited objectives + validated map geometry + Lever C brakes + S1 seat VP. **350 pytest** passing.
+**Engine:** M3 card systems + full M4 Lord asymmetry (default-on) + audited objectives + validated map geometry + Lever C brakes + S1 seat VP + M5 qualitative agent layer. **357 pytest** passing.
 
 ---
 
@@ -28,6 +28,8 @@
 | [M4 Lord × persona sweep](2026-07-12-m4-lord-persona-sweep.md) | Historical pre-Dial-3 sheet/persona signals; superseded default decision, retained tuning context |
 | [M4 default-on review](2026-07-13-m4-default-on-review.md) | 520/520 matched canonical-stack games; promote M4 default-on; preserve explicit neutral regression path |
 | [Synchronization + PnP readiness sprint](2026-07-13-pnp-readiness-sprint.md) | Canon/derived-doc synchronization plus the 45-page, 109-card First Playable print-and-play kit |
+| [M5 deterministic pipeline](2026-07-13-m5-agent-playtest-dry-run.md) | Two-game, six-seat orchestration dry run; validates artifacts but contains no qualitative evidence |
+| [M5 local-model pilot](2026-07-13-m5-agent-playtest-ollama-pilot.md) | Three-persona qualitative pilot with reliability, sampled decisions, reflections, and interviews |
 | [Rakhis ladder Dial 1](2026-07-12-rakhis-ladder-dial1.md) | Oasis Cavalry −1 Gold removed; solo ~51%→49.5% — weak lever; Dial 2 = Hit and Run |
 | [Rakhis ladder Dial 2](2026-07-12-rakhis-ladder-dial2.md) | Hit and Run once/game; solo ~48.5%; warmonger 85%→60%; Dial 3 = Sandstride |
 | [Rakhis ladder Dial 3](2026-07-12-rakhis-ladder-dial3.md) | Sandstride ZOC ignore removed; solo 43%; mixed 4p 27.5%; first real lever |

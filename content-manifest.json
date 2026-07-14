@@ -60,6 +60,30 @@
       "color": "purple",
       "docs": [
         {
+          "title": "M5 Agent Playtest Sprint",
+          "path": "docs/plans/2026-07-13-m5-agent-playtest-sprint.md",
+          "description": "Executed plan for engine-bounded qualitative agents, privacy, safe fallback, and evidence gates.",
+          "status": "internal",
+          "minutes": 6,
+          "tags": ["design", "simulation", "agents", "playtest", "m5"]
+        },
+        {
+          "title": "M5 Agent Pipeline Dry Run",
+          "path": "docs/reports/2026-07-13-m5-agent-playtest-dry-run.md",
+          "description": "Deterministic two-game, six-seat orchestration check; explicitly not qualitative evidence.",
+          "status": "internal",
+          "minutes": 4,
+          "tags": ["design", "simulation", "agents", "validation", "m5"]
+        },
+        {
+          "title": "M5 Local-Model Agent Pilot",
+          "path": "docs/reports/2026-07-13-m5-agent-playtest-ollama-pilot.md",
+          "description": "Three-persona local-model playtest with sampled decisions, reflections, interviews, and reliability evidence.",
+          "status": "internal",
+          "minutes": 7,
+          "tags": ["design", "simulation", "agents", "playtest", "m5"]
+        },
+        {
           "title": "Rules & Systems Index",
           "path": "rules_and_systems/INDEX.md",
           "description": "Rulebook draft table of contents and design red flags.",

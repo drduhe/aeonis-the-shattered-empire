@@ -2,7 +2,9 @@
 from __future__ import annotations
 
 from .chaos import ChaosBot
+from .llm import LLMPlaytestAgent
 from .persona import PERSONA_NAMES, PersonaBot
+from .providers import provider_from_config
 
 
 def make_agents(seat_personas: dict[int, str], seed: int) -> dict[int, object]:
@@ -34,18 +36,45 @@ def agents_from_config(config: dict, seed: int) -> dict[int, object]:
     players = config["players"]
     personas = config.get("personas")
     if personas is None:
-        return {p: ChaosBot(seed * 1000 + p) for p in range(players)}
-    if isinstance(personas, dict):
+        seat = {p: "chaos" for p in range(players)}
+    elif isinstance(personas, dict):
         seat = {int(k): v for k, v in personas.items()}
     elif isinstance(personas, list):
         seat = dict(enumerate(personas))
     else:
         raise ValueError("personas must be dict or list")
     out = {}
+    qualitative = dict(config.get("llm_playtest", {}))
+    qualitative_enabled = bool(qualitative.get("enabled", False))
+    qualitative_seats = {int(x) for x in qualitative.get("seats", range(players))}
+    seat_overrides = {
+        int(k): dict(v)
+        for k, v in dict(qualitative.get("seat_overrides", {})).items()
+    }
     for pid in range(players):
         name = seat.get(pid, "balanced")
         if name == "chaos":
-            out[pid] = ChaosBot(seed * 1000 + pid)
+            fallback = ChaosBot(seed * 1000 + pid)
         else:
-            out[pid] = PersonaBot(name, seed * 1000 + pid)
+            fallback = PersonaBot(name, seed * 1000 + pid)
+        if qualitative_enabled and pid in qualitative_seats:
+            seat_config = {**qualitative, **seat_overrides.get(pid, {})}
+            provider = provider_from_config(
+                dict(qualitative.get("provider", {"type": "deterministic"})),
+                seed=seed * 1000 + pid,
+            )
+            out[pid] = LLMPlaytestAgent(
+                provider=provider,
+                fallback=fallback,
+                persona=name,
+                seat=pid,
+                decision_kinds=list(seat_config.get("decision_kinds", [])) or None,
+                max_decision_calls=int(seat_config.get("max_decision_calls_per_seat", 8)),
+                max_round_reflections=int(seat_config.get("max_round_reflections_per_seat", 2)),
+                retries=int(seat_config.get("retries", 1)),
+                decision_round_min=int(seat_config.get("decision_round_min", 1)),
+                max_presented_choices=int(seat_config.get("max_presented_choices", 80)),
+            )
+        else:
+            out[pid] = fallback
     return out
