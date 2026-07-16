@@ -313,6 +313,10 @@ For First Playable, use a simple agenda deck:
 
 Rule: each round, after proposals are placed, the Speaker reveals the top **one** agenda card. Any player may propose **that** motion for free (no proposal Influence cost) this round if they wish.
 
+### First Playable diplomacy scope
+
+Use `Diplomacy.md` sections 1 and 3: players may negotiate openly, make immediate legal exchanges through a Trade action, and make non-binding promises about future votes, payments, attacks, or non-aggression. An accepted immediate exchange is binding; a promise about future conduct is not. Formal Accords from `Diplomacy.md` section 2 are not used in First Playable.
+
 ---
 
 ## 6) Round structure reminder

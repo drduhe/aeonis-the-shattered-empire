@@ -1,6 +1,6 @@
 # Design plans — index & status
 
-**Updated:** 2026-07-13 · This is the entry point for `docs/plans/`. Plans marked PROPOSED change nothing until playtested (sim-led for now) and registered under "Design decisions (resolved)" in `rules_and_systems/INDEX.md`.
+**Updated:** 2026-07-16 · This is the entry point for `docs/plans/`. Plans marked PROPOSED change nothing until playtested (sim-led for now) and registered under "Design decisions (resolved)" in `rules_and_systems/INDEX.md`.
 
 **Mission context:** the simulator (`sim/`) is the primary feedback loop. Work streams either (a) close the gap between sim and canon rules, or (b) use sim evidence to refine game systems. See `docs/reports/INDEX.md` for current baselines and findings.
 
@@ -36,6 +36,7 @@
 - **M3 card systems — DONE** (2026-07-03): [2026-07-03-agent-playtest-sim-implementation-plan-m3.md](2026-07-03-agent-playtest-sim-implementation-plan-m3.md) — buildings, Remnants/exploration, Artifacts/Sites, Arcane Tier I, secrets, Whispers (26), strategy primaries, H10–H12; gate green (CI `bracket-m3-ci.json`, smoke 100/100, solo 200/200, 236 pytest). Merchant Lord H12 killed at 5.3% economist mixed 4p.
 - **M4 Lord asymmetry — DONE / DEFAULT-ON** (2026-07-13): full eight-sheet encode (unique tiles, remaining abilities, faction discoveries, Legendary Buildings). Architecture gate 100/100 and matched default review 520/520; explicit `enabled: false` retains the neutral regression path. See [M4 gate](../reports/2026-07-12-m4-gate.md) and [default-on review](../reports/2026-07-13-m4-default-on-review.md). AL-49 closed; AL-50–52 resolved.
 - **M5 qualitative agent playtests — DONE** (2026-07-13): engine-bounded local-model agents with hidden-information redaction, exact legal-action selection, persona fallback, per-seat sampling, round reflections, exit interviews, latency/reliability evidence, and deterministic CI dry runs. See [sprint plan](2026-07-13-m5-agent-playtest-sprint.md), [pipeline report](../reports/2026-07-13-m5-agent-playtest-dry-run.md), and [local-model pilot](../reports/2026-07-13-m5-agent-playtest-ollama-pilot.md). Findings remain sim-only and require replication.
+- **M6 conversational negotiation — DONE** (2026-07-16): typed resource, vote, non-aggression, attack-contract, and future-payment deals; bounded public model dialogue; kept/broken promise tracking; and First Playable scope synchronization. See [sprint plan](2026-07-16-m6-conversational-negotiation-sprint.md) and [pilot](../reports/2026-07-16-m6-conversational-negotiation-pilot.md). Findings remain sim-only.
 
 ## Strategic context
 

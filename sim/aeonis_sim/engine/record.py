@@ -64,6 +64,8 @@ def build_record(game) -> dict:
         "event_stats": dict(game.event_stats),
         "council_stats": dict(game.council_stats),
         "negotiation_stats": dict(game.negotiation_stats),
+        "promises_log": list(game.promises_log),
+        "negotiation_dialogue": list(game.negotiation_dialogue_log),
         "building_stats": dict(game.building_stats),
         "bookkeeping_stats": bookkeeping,
         "whisper_stats": dict(game.whisper_stats),

@@ -122,7 +122,17 @@ def play_game(config: dict, seed: int, agents=None) -> dict:
               and "no_vp_progress" not in game.degenerate_flags):
             game.degenerate_flags.append("no_vp_progress")
         obs = observe(game.state, dp.pid)
-        game.submit(agents[dp.pid].choose(obs, dp))
+        agent = agents[dp.pid]
+        choice = agent.choose(obs, dp)
+        game.submit(choice)
+        if dp.kind == "negotiation":
+            pop_utterance = getattr(agent, "pop_negotiation_utterance", None)
+            if callable(pop_utterance):
+                utterance = pop_utterance()
+                if utterance:
+                    game.record_negotiation_dialogue(
+                        dp, choice, utterance.get("message", ""), utterance.get("intent", ""),
+                    )
         latest_round_summary = _round_summary(game, observed_round)
     record = build_record(game)
     if record["verdict"] == "completed" and record["degenerate_flags"]:

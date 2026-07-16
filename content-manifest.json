@@ -84,6 +84,22 @@
           "tags": ["design", "simulation", "agents", "playtest", "m5"]
         },
         {
+          "title": "M6 Conversational Negotiation Sprint",
+          "path": "docs/plans/2026-07-16-m6-conversational-negotiation-sprint.md",
+          "description": "Executed typed-deal and bounded public-dialogue protocol for agent bargaining and promise tracking.",
+          "status": "internal",
+          "minutes": 5,
+          "tags": ["design", "simulation", "agents", "negotiation", "m6"]
+        },
+        {
+          "title": "M6 Conversational Negotiation Pilot",
+          "path": "docs/reports/2026-07-16-m6-conversational-negotiation-pilot.md",
+          "description": "Three-seat local-model bargaining pilot with public transcript, typed terms, and promise outcomes.",
+          "status": "internal",
+          "minutes": 7,
+          "tags": ["design", "simulation", "agents", "playtest", "negotiation", "m6"]
+        },
+        {
           "title": "Rules & Systems Index",
           "path": "rules_and_systems/INDEX.md",
           "description": "Rulebook draft table of contents and design red flags.",

@@ -37,6 +37,15 @@ Qualitative agent playtests (M5):
 
 Use `configs/m5-agent-playtest-ollama-pilot.json` for the quality-first local Ollama profile. The model receives a redacted seat view and numbered legal actions; the engine remains authoritative. Invalid responses consume the decision budget, retry once when configured, and fall back to the seat's persona bot. Reports label all findings sim-only, and deterministic-provider comments are pipeline evidence only.
 
+Conversational negotiation pilot (M6):
+
+    cd sim && python scripts/m5_agent_playtest.py \
+      --config configs/m6-conversational-negotiation-ollama.json \
+      --out ../playtest/agent_sessions/2026-07-16-m6-conversational-negotiation.jsonl \
+      --report ../docs/reports/2026-07-16-m6-conversational-negotiation-pilot.md
+
+M6 model seats choose only engine-enumerated proposals/responses, then add a short public message. Immediate exchanges execute; future promises remain non-binding and are reported as kept, broken, or unresolved.
+
 Tournament (balance campaign):
 
     cd sim && python3.11 -m aeonis_sim.runner.tournament \

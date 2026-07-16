@@ -118,6 +118,16 @@ class DeterministicProvider:
                 "frustration": "",
                 "rules_question": "",
             }
+        if title == "AeonisNegotiationDecision":
+            return {
+                "action_index": self.action_index,
+                "message": "I choose the indexed structured terms.",
+                "intent": "mixed",
+                "reason": "Deterministic negotiation pipeline choice.",
+                "highlight": "Public dialogue contract exercised.",
+                "frustration": "",
+                "rules_question": "",
+            }
         if title == "AeonisRoundReflection":
             return {
                 "summary": "Deterministic round-reflection pipeline exercised.",

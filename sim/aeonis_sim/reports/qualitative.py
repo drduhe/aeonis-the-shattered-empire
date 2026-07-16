@@ -1,6 +1,7 @@
 """Qualitative M5 playtest report generation."""
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 
@@ -111,6 +112,41 @@ def qualitative_report(records: list[dict], title: str = "Aeonis Agent Playtest 
             )
     if not reflection_count:
         lines.append("- No round reflections requested.")
+
+    lines.extend(["", "## Negotiation transcript", ""])
+    dialogue_count = 0
+    for record in records:
+        for entry in record.get("negotiation_dialogue", []):
+            dialogue_count += 1
+            terms = entry.get("authoritative_terms")
+            terms_suffix = (
+                " Terms: `" + json.dumps(terms, sort_keys=True) + "`."
+                if terms and any(terms.values()) else ""
+            )
+            lines.append(
+                f"- Seed {record.get('seed')}, round {entry.get('round')}, seat "
+                f"{entry.get('speaker')} ({entry.get('choice_type')}, "
+                f"{entry.get('deal_kind') or 'unspecified'}): {_text(entry.get('message'))}"
+                f"{terms_suffix}"
+            )
+    if not dialogue_count:
+        lines.append("- No model-authored negotiation dialogue recorded.")
+
+    lines.extend(["", "### Promise outcomes", ""])
+    promise_count = 0
+    for record in records:
+        for promise in record.get("promises_log", []):
+            promise_count += 1
+            status = "unresolved" if promise.get("kept") is None else (
+                "kept" if promise.get("kept") else "broken"
+            )
+            lines.append(
+                f"- Seed {record.get('seed')}: {promise.get('kind')} from seat "
+                f"{promise.get('from')} to seat {promise.get('to')} — {status} "
+                f"({promise.get('resolution', 'game still in progress')})."
+            )
+    if not promise_count:
+        lines.append("- No accepted future promises recorded.")
 
     lines.extend(["", "## Exit interviews", ""])
     interview_fields = (

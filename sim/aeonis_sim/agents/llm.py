@@ -23,6 +23,25 @@ DECISION_SCHEMA = {
     "additionalProperties": False,
 }
 
+NEGOTIATION_DECISION_SCHEMA = {
+    "title": "AeonisNegotiationDecision",
+    "type": "object",
+    "properties": {
+        "action_index": {"type": "integer"},
+        "message": {"type": "string"},
+        "intent": {"type": "string"},
+        "reason": {"type": "string"},
+        "highlight": {"type": "string"},
+        "frustration": {"type": "string"},
+        "rules_question": {"type": "string"},
+    },
+    "required": [
+        "action_index", "message", "intent", "reason", "highlight",
+        "frustration", "rules_question",
+    ],
+    "additionalProperties": False,
+}
+
 ROUND_REFLECTION_SCHEMA = {
     "title": "AeonisRoundReflection",
     "type": "object",
@@ -231,6 +250,7 @@ class LLMPlaytestAgent:
         self.reflections: list[dict] = []
         self.interview: dict | None = None
         self.errors: list[dict] = []
+        self._pending_negotiation_utterance: dict | None = None
         self.stats = {
             "provider": provider.name,
             "model_decision_attempts": 0,
@@ -256,7 +276,10 @@ class LLMPlaytestAgent:
             return choices
         buckets: dict[str, list[dict]] = {}
         for choice in choices:
-            buckets.setdefault(str(choice.get("type", "unknown")), []).append(choice)
+            kind = str(choice.get("type", "unknown"))
+            if choice.get("deal_kind"):
+                kind += ":" + str(choice["deal_kind"])
+            buckets.setdefault(kind, []).append(choice)
         selected: list[dict] = []
         depth = 0
         while len(selected) < self.max_presented_choices:
@@ -319,8 +342,17 @@ class LLMPlaytestAgent:
                 for i, choice in enumerate(presented_choices)
             ],
         }
+        negotiation = decision_point.kind == "negotiation"
+        task = "Choose one legal action by action_index and annotate the playtest experience."
+        if negotiation:
+            task = (
+                "Choose one legal negotiation action by action_index. Write a concise public table-facing "
+                "message that accurately advocates, accepts, counters, rejects, or declines that indexed "
+                "structured offer. The indexed terms control; prose cannot add or change terms. Set intent "
+                "to one of trade, vote, non_aggression, attack_target, future_payment, mixed, or decline."
+            )
         messages = self._messages(
-            "Choose one legal action by action_index and annotate the playtest experience.",
+            task,
             payload,
             str(decision_point.phase),
         )
@@ -333,13 +365,21 @@ class LLMPlaytestAgent:
                         "role": "user",
                         "content": f"Validation error: {error}. Return a corrected JSON object only.",
                     }]
-                result = self._provider_complete(messages, DECISION_SCHEMA)
+                schema = NEGOTIATION_DECISION_SCHEMA if negotiation else DECISION_SCHEMA
+                result = self._provider_complete(messages, schema)
                 index = int(result.get("action_index"))
                 if not 0 <= index < len(presented_choices):
                     raise ProviderError(
                         f"action_index {index} outside 0..{len(presented_choices) - 1}"
                     )
                 self.stats["model_decisions"] += 1
+                message = _clean_string(result.get("message")) if negotiation else ""
+                intent = _clean_string(result.get("intent")) if negotiation else ""
+                if negotiation and message:
+                    self._pending_negotiation_utterance = {
+                        "message": message,
+                        "intent": intent,
+                    }
                 self.annotations.append({
                     "round": compact["round"],
                     "phase": decision_point.phase,
@@ -352,6 +392,7 @@ class LLMPlaytestAgent:
                     "highlight": _clean_string(result.get("highlight")),
                     "frustration": _clean_optional(result.get("frustration")),
                     "rules_question": _clean_optional(result.get("rules_question")),
+                    **({"message": message, "intent": intent} if negotiation else {}),
                 })
                 return presented_choices[index]
             except (ProviderError, TypeError, ValueError, KeyError) as exc:
@@ -370,6 +411,11 @@ class LLMPlaytestAgent:
             "error": error[:600],
         })
         return self.fallback.choose(observation, decision_point)
+
+    def pop_negotiation_utterance(self) -> dict | None:
+        utterance = self._pending_negotiation_utterance
+        self._pending_negotiation_utterance = None
+        return utterance
 
     def reflect(self, round_summary: dict) -> None:
         if len(self.reflections) >= self.max_round_reflections:

@@ -2,7 +2,7 @@
 
 > **Draft for First Playable — matches the rules chapters as of this writing. The chapter docs remain authoritative.**
 
-This book teaches the **First Playable** version of Aeonis for 3–8 players: baseline units only (Infantry, Cavalry, Archers), **Tier I** Arcane Discoveries only, the 26-card Whisper deck, the full artifact system, the 8-card agenda deck, and all 8 Lords. Advanced units, Accords/Diplomacy, and Tier II/III Discoveries are not used. Exact scope: `../playtest/First_Playable_Packet.md`.
+This book teaches the **First Playable** version of Aeonis for 3–8 players: baseline units only (Infantry, Cavalry, Archers), **Tier I** Arcane Discoveries only, the 26-card Whisper deck, the full artifact system, the 8-card agenda deck, and all 8 Lords. Advanced units, formal Accords, and Tier II/III Discoveries are not used; ordinary deals and non-binding promises are in play. Exact scope: `../playtest/First_Playable_Packet.md`.
 
 ---
 
@@ -205,6 +205,10 @@ Pay **1 AP** plus the Discovery's resource cost to learn one **Tier I** Arcane D
 ### Trade
 
 Pay **1 AP** to initiate a trade with another player — resources, Remnants, Utility Artifacts, promises, even hexes or units. You may initiate only **once per round** (a Market allows one trade at 0 AP).
+
+The part exchanged immediately is binding and happens in the legal Trade window. Anything promised for later is non-binding. You may therefore pay an opponent now for a promise not to attack you through next round, offer future Gold for a Council vote, agree not to attack each other, or hire a player to attack a named rival. Breaking a promise is legal; the table decides what that does to trust. Population cannot be traded.
+
+> **Example:** Cassian pays Rakhis 2 Gold now. Rakhis promises not to attack Cassian through the end of next round. The 2 Gold changes hands immediately and cannot be taken back. Rakhis may still attack Cassian later, but doing so breaks the promise.
 
 ### Strategy Card primary
 

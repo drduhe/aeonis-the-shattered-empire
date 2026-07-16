@@ -1,7 +1,7 @@
 # Agent Playtest Simulation — Design Spec
 
 **Date:** 2026-07-02
-**Status:** Approved design; implementation not started
+**Status:** Implemented through M6 (conversational negotiation)
 **Scope:** A multi-agent simulation system that plays Aeonis (First Playable Packet) against itself to produce balance data and rules validation.
 
 ---
@@ -12,7 +12,7 @@
 2. **Rules validation**: surface contradictions, gaps, and undefined interactions in the `rules_and_systems/` chapters, both while encoding them and during agent play.
 3. **Subjective-experience signal**: structured feedback from LLM agents (and objective proxies from bots) mapped to the 11 playtest goals in `playtest/First_Playable_Packet.md` §7.
 
-Non-goals: replacing human playtesting (D1 pacing/fun judgments stay human); simulating free-form table talk beyond the structured negotiation protocol; 2-player support (out of scope per D4).
+Non-goals: replacing human playtesting (D1 pacing/fun judgments stay human); unbounded or rules-authoritative free-form table talk; 2-player support (out of scope per D4).
 
 ## 2. Decisions locked during brainstorming
 
@@ -21,7 +21,7 @@ Non-goals: replacing human playtesting (D1 pacing/fun judgments stay human); sim
 - **Engine scope**: phased content milestones (see §5), not full-packet-at-once.
 - **Stack**: Python, stdlib-preferred, living at `new/sim/` beside `new/mcp/`.
 - **LLM runtime**: provider-agnostic interface with adapters for **Cursor SDK** and **local models (Ollama)** as first-class targets, plus direct API as a third adapter. Selected per-agent in tournament config.
-- **Negotiation**: structured typed-offer protocol enforced by the engine; no free-form chat.
+- **Negotiation**: structured typed-offer protocol enforced by the engine, with bounded public dialogue around each indexed offer and response.
 
 ## 3. Architecture
 
@@ -105,10 +105,10 @@ Prompt = per-phase rules digest generated from the chapter docs + observation + 
 
 ### Negotiation protocol
 
-- Offer = bundle of *gives*/*gets*: resources, vote commitments on a named motion, non-aggression through round N, border permissions.
+- Offer = binding immediate *gives*/*gets* plus typed future promises: vote commitments on a named motion, non-aggression through round N, attack contracts against a named rival, and future payments.
 - Flow: propose → accept / reject / one counter → closed (bounded; no loops).
-- **Binding** terms per `Diplomacy.md` binding-deal rules execute automatically (resource transfers, enforceable commitments). **Non-binding promises** are tracked, making betrayal frequency and consequences measurable.
-- Bots evaluate offers with their persona scoring function; LLM agents see offers in observations and may propose wherever the phase allows (Council negotiation window, trade actions).
+- **Binding** immediate exchanges per `Diplomacy.md` execute automatically. **Non-binding promises** are tracked as kept, broken, or unresolved, making betrayal frequency measurable. Cassian's ability can bind only its canon current-motion vote promise.
+- Bots evaluate offers with their persona scoring function. LLM agents see the typed terms and public transcript, choose an indexed legal response, and add one concise table-facing message. The structured choice controls if prose and terms disagree.
 
 ## 7. Data flow and outputs
 

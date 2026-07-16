@@ -172,8 +172,24 @@ def _score_negotiation_choice(
     weights = PERSONA_WEIGHTS[persona]
     if t == "negotiation_skip":
         return 0.55 if persona != "diplomat" else 0.25
+    def promise_value(promises: list[dict], viewer: int) -> float:
+        value = 0.0
+        for promise in promises:
+            kind = promise.get("kind")
+            made_by_viewer = promise.get("from") == viewer
+            if kind == "non_aggression":
+                value += -0.15 if made_by_viewer else 0.25
+            elif kind == "vote":
+                value += -0.08 if made_by_viewer else 0.12
+            elif kind == "attack_target":
+                value += -0.05 if made_by_viewer else 0.1
+            elif kind == "future_payment":
+                amount = max(1, int(promise.get("amount", 1)))
+                value += (-0.12 if made_by_viewer else 0.12) * amount
+        return value
+
     if t == "negotiation_reject":
-        return 0.65
+        return 0.0
     if t == "negotiation_accept":
         proposer = int(context.get("proposer", pid))
         gives = context.get("gives", {})
@@ -183,12 +199,17 @@ def _score_negotiation_choice(
             val = offer_value_for_recipient(state, pid, cp, gives, gets, weights)
         else:
             val = offer_value_for_recipient(state, pid, proposer, gives, gets, weights)
-        return val + (0.2 if persona == "diplomat" else 0.0)
+        return (
+            val
+            + promise_value(context.get("promises", []), pid)
+            + (0.2 if persona == "diplomat" else 0.0)
+        )
     if t == "negotiation_propose":
         target = int(choice["target"])
         err = validate_offer(
             state, pid, target,
             choice.get("gives", {}), choice.get("gets", {}),
+            choice.get("promises"),
         )
         if err:
             return -10.0
@@ -201,12 +222,14 @@ def _score_negotiation_choice(
             val += 0.35
         if choice.get("promises"):
             val += 0.25 if persona == "diplomat" else 0.05
+            val += promise_value(choice.get("promises", []), pid)
         return val
     if t == "negotiation_counter":
         proposer = int(context.get("proposer", pid))
         err = validate_offer(
             state, pid, proposer,
             choice.get("gives", {}), choice.get("gets", {}),
+            choice.get("promises"),
         )
         if err:
             return -10.0

@@ -43,11 +43,14 @@ from .exploration import (
 from .invariants import check_invariants
 from .negotiation import (
     NegotiationSession,
+    active_promises_for,
     apply_session_choice,
+    check_attack_promises,
     check_vote_promises,
     enumerate_council_negotiation,
     enumerate_trade_negotiation,
     enumerate_trade_starts,
+    expire_promises,
     start_session,
     validate_offer,
 )
@@ -217,8 +220,21 @@ class Game:
             "promises_made": 0,
             "promises_kept": 0,
             "promises_broken": 0,
+            "vote_promises_made": 0,
+            "vote_promises_kept": 0,
+            "vote_promises_broken": 0,
+            "non_aggression_promises_made": 0,
+            "non_aggression_promises_kept": 0,
+            "non_aggression_promises_broken": 0,
+            "attack_target_promises_made": 0,
+            "attack_target_promises_kept": 0,
+            "attack_target_promises_broken": 0,
+            "future_payment_promises_made": 0,
+            "future_payment_promises_kept": 0,
+            "future_payment_promises_broken": 0,
         }
         self.promises_log: list[dict] = []
+        self.negotiation_dialogue_log: list[dict] = []
         self.building_stats = {
             "bank_conversions": 0,
             "forge_recruits": 0,
@@ -433,8 +449,12 @@ class Game:
                     "target": session.target,
                     "gives": dict(session.gives),
                     "gets": dict(session.gets),
+                    "promises": list(session.promises),
+                    "deal_kind": session.deal_kind,
                     "phase": session.phase,
                     "countered": session.countered,
+                    "dialogue": list(session.dialogue),
+                    "active_promises": active_promises_for(self.promises_log, pid),
                 },
             )
         if self._council_negotiation_queue:
@@ -447,7 +467,12 @@ class Game:
                 choices=self._council_extra_choices(pid) + enumerate_council_negotiation(
                     self.state, pid, motion=motion, session=None,
                 ),
-                context={"window": "council", "motion": motion},
+                context={
+                    "window": "council",
+                    "motion": motion,
+                    "dialogue": [],
+                    "active_promises": active_promises_for(self.promises_log, pid),
+                },
             )
         return None
 
@@ -813,6 +838,7 @@ class Game:
         for p in self.state.players:
             try_immediate_secrets(self.state, p.pid)
         run_cleanup(self.state, self.rng)
+        expire_promises(self.promises_log, self.state.round, self.negotiation_stats)
         check_invariants(self.state)
         self._whisper_discard_queue = [
             p.pid for p in self.state.players if hand_over_limit(self.state, p.pid)
@@ -922,6 +948,7 @@ class Game:
                 err = validate_offer(
                     s, dp.pid, target,
                     choice.get("gives", {}), choice.get("gets", {}),
+                    choice.get("promises"),
                 )
                 if err:
                     raise ValueError(err)
@@ -934,6 +961,8 @@ class Game:
                     gets=choice.get("gets", {}),
                     promises=choice.get("promises"),
                     motion=motion,
+                    state=s,
+                    deal_kind=str(choice.get("deal_kind", "resource_trade")),
                 )
                 self.negotiation_stats["offers_proposed"] += 1
                 if (
@@ -967,12 +996,45 @@ class Game:
             ) else None
             if cassian is not None:
                 for pr in self.promises_log[before_promises:]:
-                    pr["binding"] = True
-                mark_round_used(s, cassian, "binding_deal")
+                    if pr.get("kind") == "vote" and pr.get("motion") == active_session.motion:
+                        pr["binding"] = True
+                        mark_round_used(s, cassian, "binding_deal")
+                        break
         if added:
             self.negotiation_stats["promises_made"] += added
         if session is None:
             self._close_negotiation_session(window)
+
+    def record_negotiation_dialogue(
+        self, dp: DecisionPoint, choice: dict, message: str, intent: str = "",
+    ) -> None:
+        """Record bounded, public table talk attached to a structured choice."""
+        cleaned = " ".join(str(message or "").split())[:500]
+        if dp.kind != "negotiation" or not cleaned:
+            return
+        entry = {
+            "round": self.state.round,
+            "phase": dp.phase,
+            "speaker": dp.pid,
+            "choice_type": choice.get("type"),
+            "deal_kind": choice.get("deal_kind", dp.context.get("deal_kind", "")),
+            "intent": str(intent or "")[:80],
+            "message": cleaned,
+            "authoritative_terms": {
+                "gives": dict(
+                    choice.get("gives", dp.context.get("gives", {})) or {},
+                ),
+                "gets": dict(
+                    choice.get("gets", dp.context.get("gets", {})) or {},
+                ),
+                "promises": list(
+                    choice.get("promises", dp.context.get("promises", [])) or [],
+                ),
+            },
+        }
+        self.negotiation_dialogue_log.append(entry)
+        if self._negotiation_session is not None:
+            self._negotiation_session.dialogue.append(entry)
 
     def _whisper_discard_decision(self) -> Optional[DecisionPoint]:
         if not self._whisper_discard_queue:
@@ -1518,6 +1580,7 @@ class Game:
                 err = validate_offer(
                     s, dp.pid, target,
                     choice.get("gives", {}), choice.get("gets", {}),
+                    choice.get("promises"),
                 )
                 if err:
                     raise ValueError(err)
@@ -1563,6 +1626,8 @@ class Game:
                     gets=choice.get("gets", {}),
                     promises=choice.get("promises"),
                     motion=None,
+                    state=s,
+                    deal_kind=str(choice.get("deal_kind", "resource_trade")),
                 )
                 self.negotiation_stats["offers_proposed"] += 1
             elif t == "attack":
@@ -1574,6 +1639,10 @@ class Game:
                     rng=self.rng,
                 )
                 self._battle = combat.start_battle(s, dp.pid, choice, rng=self.rng)
+                check_attack_promises(
+                    self.promises_log, dp.pid, self._battle.defender,
+                    s.round, self.negotiation_stats,
+                )
                 self._start_lord_combat_round()
                 self._finish_action_turn(dp.pid)
             elif t == "desert_tempest":
@@ -1727,6 +1796,10 @@ class Game:
                         self._start_secondary_window(pid, card)
             elif t == "attack":
                 self._battle = combat.start_battle(s, dp.pid, choice, rng=self.rng)
+                check_attack_promises(
+                    self.promises_log, dp.pid, self._battle.defender,
+                    s.round, self.negotiation_stats,
+                )
                 self._start_lord_combat_round()
                 self._deferred_followup = {
                     "kind": "strategy_secondary",

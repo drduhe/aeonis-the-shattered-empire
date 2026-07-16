@@ -5,7 +5,7 @@ from aeonis_sim.agents.factory import agents_from_config
 from aeonis_sim.agents.llm import LLMPlaytestAgent, compact_observation
 from aeonis_sim.agents.providers import DeterministicProvider
 from aeonis_sim.engine.game import Game
-from aeonis_sim.engine.observations import observe
+from aeonis_sim.engine.observations import DecisionPoint, observe
 from aeonis_sim.reports.qualitative import qualitative_report
 from aeonis_sim.runner.play import play_game
 
@@ -71,6 +71,31 @@ def test_deterministic_agent_returns_an_enumerated_legal_choice():
     assert choice == dp.choices[1]
     assert agent.stats["model_decisions"] == 1
     assert agent.annotations[0]["action"] == choice
+
+
+def test_negotiation_agent_emits_bounded_public_message():
+    game = Game({"players": 3}, seed=15)
+    dp = DecisionPoint(
+        kind="negotiation",
+        phase="action",
+        pid=0,
+        choices=[{"type": "negotiation_reject"}, {"type": "negotiation_accept"}],
+        context={"window": "trade", "deal_kind": "protection_payment"},
+    )
+    agent = LLMPlaytestAgent(
+        provider=DeterministicProvider(action_index=1),
+        fallback=FirstChoiceFallback(),
+        persona="diplomat",
+        seat=0,
+        decision_kinds=["negotiation"],
+        max_decision_calls=1,
+    )
+
+    assert agent.choose(observe(game.state, 0), dp) == dp.choices[1]
+    utterance = agent.pop_negotiation_utterance()
+    assert utterance is not None
+    assert utterance["message"]
+    assert "message" in agent.annotations[0]
 
 
 def test_invalid_provider_retries_then_falls_back_safely():

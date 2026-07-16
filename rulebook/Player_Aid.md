@@ -131,6 +131,8 @@ Battle Line Cap: **3** (standard hex) / **5** (City or Fortress). Committed unit
 
 **Sequence:** agenda opens → proposals (1 Influence, max 1 per player) → Speaker reveals 1 agenda card (anyone may propose it free) → negotiation → vote motions in order proposed → enact.
 
+**Deals:** talk is always allowed. Immediate exchanges resolve only in a legal Trade window and are binding. Future vote, payment, attack, and non-aggression promises are non-binding. Population is never tradeable. Formal Accords are off in First Playable.
+
 **Vote math:**
 
 - Base: **1 vote** per player
