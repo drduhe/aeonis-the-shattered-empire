@@ -31,6 +31,7 @@
 | [M5 deterministic pipeline](2026-07-13-m5-agent-playtest-dry-run.md) | Two-game, six-seat orchestration dry run; validates artifacts but contains no qualitative evidence |
 | [M5 local-model pilot](2026-07-13-m5-agent-playtest-ollama-pilot.md) | Three-persona qualitative pilot with reliability, sampled decisions, reflections, and interviews |
 | [M6 conversational negotiation pilot](2026-07-16-m6-conversational-negotiation-pilot.md) | Three-seat bargaining pilot: 24/24 valid dialogue decisions; vote promises kept, future payments broken; non-aggression live coverage still open |
+| [Six-player assigned-Lord agent pilot](2026-07-16-m6-six-player-assigned-lords.md) | Two all-agent games with fixed Lords; 12/12 reliable seat-games; first live non-aggression and attack-contract coverage |
 | [Rakhis ladder Dial 1](2026-07-12-rakhis-ladder-dial1.md) | Oasis Cavalry −1 Gold removed; solo ~51%→49.5% — weak lever; Dial 2 = Hit and Run |
 | [Rakhis ladder Dial 2](2026-07-12-rakhis-ladder-dial2.md) | Hit and Run once/game; solo ~48.5%; warmonger 85%→60%; Dial 3 = Sandstride |
 | [Rakhis ladder Dial 3](2026-07-12-rakhis-ladder-dial3.md) | Sandstride ZOC ignore removed; solo 43%; mixed 4p 27.5%; first real lever |

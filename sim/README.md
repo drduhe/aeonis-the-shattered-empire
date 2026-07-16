@@ -46,6 +46,15 @@ Conversational negotiation pilot (M6):
 
 M6 model seats choose only engine-enumerated proposals/responses, then add a short public message. Immediate exchanges execute; future promises remain non-binding and are reported as kept, broken, or unresolved.
 
+Six-player assigned-Lord agent pilot:
+
+    cd sim && python scripts/m5_agent_playtest.py \
+      --config configs/m6-six-player-assigned-lords-ollama.json \
+      --out ../playtest/agent_sessions/2026-07-16-m6-six-player-assigned-lords.jsonl \
+      --report ../docs/reports/2026-07-16-m6-six-player-assigned-lords.md
+
+This two-game profile assigns one Lord and persona to every model-backed seat, samples two high-impact decisions per seat/game, and retains persona delegation for the remaining legal choices.
+
 Tournament (balance campaign):
 
     cd sim && python3.11 -m aeonis_sim.runner.tournament \

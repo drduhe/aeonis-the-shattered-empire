@@ -100,6 +100,14 @@
           "tags": ["design", "simulation", "agents", "playtest", "negotiation", "m6"]
         },
         {
+          "title": "Six-Player Assigned-Lord Agent Pilot",
+          "path": "docs/reports/2026-07-16-m6-six-player-assigned-lords.md",
+          "description": "Two six-player local-model games with fixed Lord/persona assignments and cross-game reliability findings.",
+          "status": "internal",
+          "minutes": 9,
+          "tags": ["design", "simulation", "agents", "playtest", "lords", "m6"]
+        },
+        {
           "title": "Rules & Systems Index",
           "path": "rules_and_systems/INDEX.md",
           "description": "Rulebook draft table of contents and design red flags.",
