@@ -123,6 +123,93 @@ def test_invalid_provider_retries_then_falls_back_safely():
     assert agent.annotations[0]["fallback"] is True
 
 
+def test_full_control_ignores_sampling_limits_but_skips_forced_choices():
+    game = Game({"players": 3}, seed=16)
+    agent = LLMPlaytestAgent(
+        provider=DeterministicProvider(action_index=1),
+        fallback=FirstChoiceFallback(),
+        persona="balanced",
+        seat=0,
+        decision_kinds=["never_this_kind"],
+        max_decision_calls=0,
+        decision_round_min=99,
+        full_control=True,
+    )
+    decision = DecisionPoint(
+        kind="action",
+        phase="action",
+        pid=0,
+        choices=[{"type": "pass"}, {"type": "build"}],
+        context={},
+    )
+
+    assert agent.choose(observe(game.state, 0), decision) == {"type": "build"}
+    assert agent.stats["model_decisions"] == 1
+    assert agent.stats["persona_delegations"] == 0
+
+    forced = DecisionPoint(
+        kind="scry_ack",
+        phase="council",
+        pid=0,
+        choices=[{"type": "scry_ack"}],
+        context={},
+    )
+    assert agent.choose(observe(game.state, 0), forced) == {"type": "scry_ack"}
+    assert agent.stats["provider_calls"] == 1
+    assert agent.stats["forced_choices"] == 1
+
+
+def test_full_control_suppresses_repeated_zero_cost_portal_route():
+    game = Game({"players": 3}, seed=17)
+    agent = LLMPlaytestAgent(
+        provider=DeterministicProvider(action_index=1),
+        fallback=FirstChoiceFallback(),
+        persona="expander",
+        seat=0,
+        full_control=True,
+    )
+    portal_out = {
+        "type": "move", "from": [0, 0], "dest": [2, -1],
+        "cost": 0, "portal": True,
+    }
+    portal_back = {
+        "type": "move", "from": [2, -1], "dest": [0, 0],
+        "cost": 0, "portal": True,
+    }
+    decision = DecisionPoint(
+        kind="action", phase="action", pid=0,
+        choices=[{"type": "pass"}, portal_out, portal_back], context={},
+    )
+
+    assert agent.choose(observe(game.state, 0), decision) == portal_out
+    assert agent.choose(observe(game.state, 0), decision) == portal_back
+    assert agent.choose(observe(game.state, 0), decision) == {"type": "pass"}
+    assert agent.stats["provider_calls"] == 2
+    assert agent.stats["loop_guard_activations"] == 2
+    assert agent.stats["loop_choices_suppressed"] == 3
+
+
+def test_full_control_presents_the_complete_legal_menu():
+    game = Game({"players": 3}, seed=18)
+    provider = DeterministicProvider(action_index=4)
+    agent = LLMPlaytestAgent(
+        provider=provider,
+        fallback=FirstChoiceFallback(),
+        persona="balanced",
+        seat=0,
+        max_presented_choices=2,
+        full_control=True,
+    )
+    choices = [{"type": "choice", "id": index} for index in range(5)]
+    decision = DecisionPoint(
+        kind="action", phase="action", pid=0,
+        choices=choices, context={},
+    )
+
+    assert agent.choose(observe(game.state, 0), decision) == choices[4]
+    assert agent.stats["shortlisted_decisions"] == 0
+
+
 def test_schema_type_error_falls_back_instead_of_coercing():
     game = Game({"players": 3}, seed=10)
     dp = game.next_decision()

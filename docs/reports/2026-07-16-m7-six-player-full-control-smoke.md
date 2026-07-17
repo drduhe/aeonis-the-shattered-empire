@@ -1,0 +1,740 @@
+# Aeonis Accelerated Six-Player Full-Control Agent Smoke
+
+**Status:** completed diagnostic baseline, sim-only
+
+## Executive readout
+
+- The accelerated 4-VP game completed in three rounds and demonstrated model choice at **461 of 466** attempted non-forced decisions (98.9%); five invalid-response paths used the persona safety fallback and ordinary persona delegation was zero.
+- This trace exposed a model-loop hazard: Rakhis/expander selected **191 zero-cost Portal moves**, bouncing repeatedly between the same two hexes and reaching the 100-action safety cap in two rounds.
+- The run used the sampled-mode 80-option presentation cap at 30 large choice windows. It is retained as an unguarded diagnostic baseline, not the final proof of complete-menu control.
+- A guarded, complete-menu replay supersedes this result for the M7 feasibility gate. The 4-VP threshold remains an acceleration device and provides no balance or pacing evidence.
+
+Games: **1** · Qualitative seats: **6** · Providers: ollama
+
+## Game facts
+
+| Seed | Rounds | Final VP | Battles (attacker wins) | Council passed/proposed | Deals accepted/proposed |
+| ---: | ---: | --- | ---: | ---: | ---: |
+| 7700 | 3 | {0: 2, 1: 2, 2: 4, 3: 4, 4: 2, 5: 2} | 1 (1) | 4/6 | 34/44 |
+
+> Treat one-game and low-battle observations as prompts for replication, not balance conclusions.
+
+## Reliability
+
+| Seat-game | Control | Provider calls | Decision attempts | Valid decisions | Forced choices | Persona delegations | Retries | Decision fallbacks | Qualitative failures | Model seconds |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| seed 7700 / seat 0 (diplomat) | full | 68 | 59 | 59 | 4 | 0 | 8 | 0 | 0 | 868.938 |
+| seed 7700 / seat 1 (economist) | full | 50 | 43 | 42 | 2 | 0 | 6 | 1 | 0 | 641.84 |
+| seed 7700 / seat 2 (warmonger) | full | 54 | 46 | 44 | 2 | 0 | 7 | 2 | 0 | 675.955 |
+| seed 7700 / seat 3 (expander) | full | 244 | 234 | 233 | 3 | 0 | 9 | 1 | 0 | 2664.099 |
+| seed 7700 / seat 4 (balanced) | full | 52 | 40 | 40 | 3 | 0 | 11 | 0 | 0 | 688.001 |
+| seed 7700 / seat 5 (warmonger) | full | 53 | 44 | 43 | 2 | 0 | 8 | 1 | 0 | 657.903 |
+
+### Provider diagnostics
+
+- Seed 7700, seat 0, decision: `provider response did not contain a JSON object`
+- Seed 7700, seat 0, decision: `provider response did not contain a JSON object`
+- Seed 7700, seat 0, decision: `provider response did not contain a JSON object`
+- Seed 7700, seat 0, decision: `provider response did not contain a JSON object`
+- Seed 7700, seat 0, decision: `provider response did not contain a JSON object`
+- Seed 7700, seat 0, decision: `provider response did not contain a JSON object`
+- Seed 7700, seat 0, decision: `provider response did not contain a JSON object`
+- Seed 7700, seat 0, decision: `provider response did not contain a JSON object`
+- Seed 7700, seat 1, decision: `provider response did not contain a JSON object`
+- Seed 7700, seat 1, decision: `provider response did not contain a JSON object`
+- Seed 7700, seat 1, decision: `provider response did not contain a JSON object`
+- Seed 7700, seat 1, decision: `provider response did not contain a JSON object`
+- Seed 7700, seat 1, decision: `provider response did not contain a JSON object`
+- Seed 7700, seat 1, decision: `provider response did not contain a JSON object`
+- Seed 7700, seat 1, decision: `provider response did not contain a JSON object`
+- Seed 7700, seat 2, decision: `provider response did not contain a JSON object`
+- Seed 7700, seat 2, decision: `provider response did not contain a JSON object`
+- Seed 7700, seat 2, decision: `provider response did not contain a JSON object`
+- Seed 7700, seat 2, decision: `provider response did not contain a JSON object`
+- Seed 7700, seat 2, decision: `provider response did not contain a JSON object`
+- Seed 7700, seat 2, decision: `provider response did not contain a JSON object`
+- Seed 7700, seat 2, decision: `provider response did not contain a JSON object`
+- Seed 7700, seat 2, decision: `provider response did not contain a JSON object`
+- Seed 7700, seat 2, decision: `provider response did not contain a JSON object`
+- Seed 7700, seat 3, decision: `provider response did not contain a JSON object`
+- Seed 7700, seat 3, decision: `provider response did not contain a JSON object`
+- Seed 7700, seat 3, decision: `provider response did not contain a JSON object`
+- Seed 7700, seat 3, decision: `provider response did not contain a JSON object`
+- Seed 7700, seat 3, decision: `provider response did not contain a JSON object`
+- Seed 7700, seat 3, decision: `provider response did not contain a JSON object`
+- Seed 7700, seat 3, decision: `provider response did not contain a JSON object`
+- Seed 7700, seat 3, decision: `provider response did not contain a JSON object`
+- Seed 7700, seat 3, decision: `provider response did not contain a JSON object`
+- Seed 7700, seat 3, decision: `provider response did not contain a JSON object`
+- Seed 7700, seat 4, decision: `provider response did not contain a JSON object`
+- Seed 7700, seat 4, decision: `provider response did not contain a JSON object`
+- Seed 7700, seat 4, decision: `provider response did not contain a JSON object`
+- Seed 7700, seat 4, decision: `provider response did not contain a JSON object`
+- Seed 7700, seat 4, decision: `provider response did not contain a JSON object`
+- Seed 7700, seat 4, decision: `provider response did not contain a JSON object`
+- Seed 7700, seat 4, decision: `provider response did not contain a JSON object`
+- Seed 7700, seat 4, decision: `provider response did not contain a JSON object`
+- Seed 7700, seat 4, decision: `provider response did not contain a JSON object`
+- Seed 7700, seat 4, decision: `provider response did not contain a JSON object`
+- Seed 7700, seat 4, decision: `provider response did not contain a JSON object`
+- Seed 7700, seat 5, decision: `provider response did not contain a JSON object`
+- Seed 7700, seat 5, decision: `provider response did not contain a JSON object`
+- Seed 7700, seat 5, decision: `provider response did not contain a JSON object`
+- Seed 7700, seat 5, decision: `provider response did not contain a JSON object`
+- Seed 7700, seat 5, decision: `provider response did not contain a JSON object`
+- Seed 7700, seat 5, decision: `provider response did not contain a JSON object`
+- Seed 7700, seat 5, decision: `provider response did not contain a JSON object`
+- Seed 7700, seat 5, decision: `provider response did not contain a JSON object`
+- Seed 7700, seat 5, decision: `provider response did not contain a JSON object`
+
+## Round reflections
+
+- No round reflections requested.
+
+## Negotiation transcript
+
+- Seed 7700, round 1, seat 0 (negotiation_propose, vote_agreement): Player 0 proposes to Player 1: In exchange for your support on the road_networks motion, I commit to voting in alignment with you. This agreement is contingent upon mutual support and aims to strengthen our collaboration towards a prosperous future. Terms: `{"gets": {}, "gives": {}, "promises": [{"from": 1, "kind": "vote", "motion": "road_networks", "support": true, "to": 0}]}`.
+- Seed 7700, round 1, seat 1 (negotiation_counter, resource_trade): Player 1 counters Player 0's proposal: In exchange for your support on the road_networks motion, I offer 1 gold in return for 1 mana. This trade aims to strengthen our collaboration with mutual benefits. Terms: `{"gets": {"mana": 1}, "gives": {"gold": 1}, "promises": []}`.
+- Seed 7700, round 1, seat 0 (negotiation_accept, resource_trade): Player 0 accepts Player 1's counter: In exchange for your support on the road_networks motion, I agree to receive 1 gold in return for 1 mana. This trade aligns our interests and strengthens our collaboration towards a successful outcome. Terms: `{"gets": {"gold": 0, "influence": 0, "mana": 1, "remnants": 0}, "gives": {"gold": 1, "influence": 0, "mana": 0, "remnants": 0}, "promises": []}`.
+- Seed 7700, round 1, seat 1 (negotiation_propose, vote_bargain): I propose that Player 2 supports 'road_networks' in exchange for 1 gold due in Round 2. This mutual agreement benefits both parties by securing votes and providing future resources. Terms: `{"gets": {}, "gives": {}, "promises": [{"from": 2, "kind": "vote", "motion": "road_networks", "support": true, "to": 1}, {"amount": 1, "due_round": 2, "from": 1, "kind": "future_payment", "resource": "gold", "to": 2}]}`.
+- Seed 7700, round 1, seat 2 (negotiation_accept, vote_bargain): I accept your proposal. Your gold will secure my vote for 'road_networks', ensuring our victory in this round. Terms: `{"gets": {"gold": 0, "influence": 0, "mana": 0, "remnants": 0}, "gives": {"gold": 0, "influence": 0, "mana": 0, "remnants": 0}, "promises": [{"from": 2, "kind": "vote", "motion": "road_networks", "support": true, "to": 1}, {"amount": 1, "due_round": 2, "from": 1, "kind": "future_payment", "resource": "gold", "to": 2}]}`.
+- Seed 7700, round 1, seat 2 (negotiation_propose, vote_bargain): Player 1, I propose a bargain: your vote in favor of road_networks in exchange for 1 gold next round. This ensures our motion passes and strengthens our alliance. Terms: `{"gets": {}, "gives": {}, "promises": [{"from": 1, "kind": "vote", "motion": "road_networks", "support": true, "to": 2}, {"amount": 1, "due_round": 2, "from": 2, "kind": "future_payment", "resource": "gold", "to": 1}]}`.
+- Seed 7700, round 1, seat 1 (negotiation_accept, vote_bargain): Player 2, I accept your proposal. Your motion will pass with my support in exchange for 1 gold next round. This strengthens our alliance and ensures the success of road_networks. Terms: `{"gets": {"gold": 0, "influence": 0, "mana": 0, "remnants": 0}, "gives": {"gold": 0, "influence": 0, "mana": 0, "remnants": 0}, "promises": [{"from": 1, "kind": "vote", "motion": "road_networks", "support": true, "to": 2}, {"amount": 1, "due_round": 2, "from": 2, "kind": "future_payment", "resource": "gold", "to": 1}]}`.
+- Seed 7700, round 1, seat 3 (negotiation_propose, vote_bargain): Player 0, I propose you support the road_networks motion. In return, I will pay you 1 gold in round 2. Terms: `{"gets": {}, "gives": {}, "promises": [{"from": 0, "kind": "vote", "motion": "road_networks", "support": true, "to": 3}, {"amount": 1, "due_round": 2, "from": 3, "kind": "future_payment", "resource": "gold", "to": 0}]}`.
+- Seed 7700, round 1, seat 0 (negotiation_counter, resource_trade): Player 3, I counter with a resource trade: I will give you 1 mana in exchange for 1 gold. This allows both of us to benefit from the resources we need most. Terms: `{"gets": {"mana": 1}, "gives": {"gold": 1}, "promises": []}`.
+- Seed 7700, round 1, seat 3 (negotiation_reject, resource_trade): Player 0, I reject your counter. The original proposal was about securing your vote for road_networks in exchange for future payment. A resource trade doesn't address the motion's passage, which is our priority. Terms: `{"gets": {"gold": 0, "influence": 0, "mana": 1, "remnants": 0}, "gives": {"gold": 1, "influence": 0, "mana": 0, "remnants": 0}, "promises": []}`.
+- Seed 7700, round 1, seat 4 (negotiation_propose, vote_bargain): Player 1, I propose you support 'road_networks' in exchange for 1 gold in round 2. This will help secure the motion and benefit both of us. Terms: `{"gets": {}, "gives": {}, "promises": [{"from": 1, "kind": "vote", "motion": "road_networks", "support": true, "to": 4}, {"amount": 1, "due_round": 2, "from": 4, "kind": "future_payment", "resource": "gold", "to": 1}]}`.
+- Seed 7700, round 1, seat 1 (negotiation_accept, vote_bargain): Player 4, I accept your proposal. Your support in securing 'road_networks' is valuable, and the future gold will aid my efforts. Terms: `{"gets": {"gold": 0, "influence": 0, "mana": 0, "remnants": 0}, "gives": {"gold": 0, "influence": 0, "mana": 0, "remnants": 0}, "promises": [{"from": 1, "kind": "vote", "motion": "road_networks", "support": true, "to": 4}, {"amount": 1, "due_round": 2, "from": 4, "kind": "future_payment", "resource": "gold", "to": 1}]}`.
+- Seed 7700, round 1, seat 0 (negotiation_propose, vote_bargain): Player 5, I propose a deal: support my road_networks motion, and I'll send you 1 gold next round. Terms: `{"gets": {}, "gives": {}, "promises": [{"from": 5, "kind": "vote", "motion": "road_networks", "support": true, "to": 0}, {"amount": 1, "due_round": 2, "from": 0, "kind": "future_payment", "resource": "gold", "to": 5}]}`.
+- Seed 7700, round 1, seat 5 (negotiation_accept, vote_bargain): Player 0, I accept your proposal. Your support for my motion is secured in exchange for the promised gold. Terms: `{"gets": {"gold": 0, "influence": 0, "mana": 0, "remnants": 0}, "gives": {"gold": 0, "influence": 0, "mana": 0, "remnants": 0}, "promises": [{"from": 5, "kind": "vote", "motion": "road_networks", "support": true, "to": 0}, {"amount": 1, "due_round": 2, "from": 0, "kind": "future_payment", "resource": "gold", "to": 5}]}`.
+- Seed 7700, round 1, seat 1 (negotiation_propose, vote_bargain): I'm interested in your proposal, but I need to understand better how supporting road_networks will directly benefit my position before committing to this agreement. Terms: `{"gets": {}, "gives": {}, "promises": [{"from": 0, "kind": "vote", "motion": "road_networks", "support": true, "to": 1}, {"amount": 1, "due_round": 2, "from": 1, "kind": "future_payment", "resource": "gold", "to": 0}]}`.
+- Seed 7700, round 1, seat 0 (negotiation_counter, resource_trade): I propose a trade where I give you 1 mana for 1 gold. This exchange aligns our interests and strengthens our position moving forward. Terms: `{"gets": {"gold": 1}, "gives": {"mana": 1}, "promises": []}`.
+- Seed 7700, round 1, seat 1 (negotiation_accept, resource_trade): I accept your offer of trading 1 mana for 1 gold. This exchange aligns our interests and strengthens our position moving forward. Terms: `{"gets": {"gold": 1, "influence": 0, "mana": 0, "remnants": 0}, "gives": {"gold": 0, "influence": 0, "mana": 1, "remnants": 0}, "promises": []}`.
+- Seed 7700, round 1, seat 2 (negotiation_propose, vote_bargain): Player 0, I propose you support the road_networks motion. In return, I promise to pay you 1 gold in round 2. This alliance strengthens our position and ensures progress for both of us. Terms: `{"gets": {}, "gives": {}, "promises": [{"from": 0, "kind": "vote", "motion": "road_networks", "support": true, "to": 2}, {"amount": 1, "due_round": 2, "from": 2, "kind": "future_payment", "resource": "gold", "to": 0}]}`.
+- Seed 7700, round 1, seat 0 (negotiation_accept, vote_bargain): Player 2, I accept your proposal. Your promise of future gold aligns with our mutual interest in advancing the road_networks agenda. Together, we strengthen our positions for the benefit of both our factions. Terms: `{"gets": {"gold": 0, "influence": 0, "mana": 0, "remnants": 0}, "gives": {"gold": 0, "influence": 0, "mana": 0, "remnants": 0}, "promises": [{"from": 0, "kind": "vote", "motion": "road_networks", "support": true, "to": 2}, {"amount": 1, "due_round": 2, "from": 2, "kind": "future_payment", "resource": "gold", "to": 0}]}`.
+- Seed 7700, round 1, seat 3 (negotiation_propose, vote_bargain): Player 3 offers Player 0 1 gold in round 2 if they support road_networks. Terms: `{"gets": {}, "gives": {}, "promises": [{"from": 0, "kind": "vote", "motion": "road_networks", "support": true, "to": 3}, {"amount": 1, "due_round": 2, "from": 3, "kind": "future_payment", "resource": "gold", "to": 0}]}`.
+- Seed 7700, round 1, seat 0 (negotiation_accept, vote_bargain): Player 0 accepts Player 3's offer of 1 gold in round 2 for supporting road_networks. Terms: `{"gets": {"gold": 0, "influence": 0, "mana": 0, "remnants": 0}, "gives": {"gold": 0, "influence": 0, "mana": 0, "remnants": 0}, "promises": [{"from": 0, "kind": "vote", "motion": "road_networks", "support": true, "to": 3}, {"amount": 1, "due_round": 2, "from": 3, "kind": "future_payment", "resource": "gold", "to": 0}]}`.
+- Seed 7700, round 1, seat 5 (negotiation_skip, unspecified): Declining negotiation. Focus on decisive action.
+- Seed 7700, round 1, seat 4 (negotiation_propose, vote_bargain): I propose that you, Player 1, support the 'road_networks' motion in exchange for 1 gold to be paid in round 2. This is a fair trade for your vote and helps both of us advance our objectives. Terms: `{"gets": {}, "gives": {}, "promises": [{"from": 1, "kind": "vote", "motion": "road_networks", "support": true, "to": 4}, {"amount": 1, "due_round": 2, "from": 4, "kind": "future_payment", "resource": "gold", "to": 1}]}`.
+- Seed 7700, round 1, seat 1 (negotiation_accept, vote_bargain): I accept your proposal to support the 'road_networks' motion in exchange for 1 gold in round 2. This arrangement aligns with our mutual interests. Terms: `{"gets": {"gold": 0, "influence": 0, "mana": 0, "remnants": 0}, "gives": {"gold": 0, "influence": 0, "mana": 0, "remnants": 0}, "promises": [{"from": 1, "kind": "vote", "motion": "road_networks", "support": true, "to": 4}, {"amount": 1, "due_round": 2, "from": 4, "kind": "future_payment", "resource": "gold", "to": 1}]}`.
+- Seed 7700, round 1, seat 1 (negotiation_counter, resource_trade): I counter with a trade: I will give you 1 mana for 1 gold. This exchange aligns our interests and enhances our resource flexibility moving forward. Terms: `{"gets": {"gold": 1}, "gives": {"mana": 1}, "promises": []}`.
+- Seed 7700, round 1, seat 0 (negotiation_accept, resource_trade): I accept your counter. This trade will strengthen our resource positions and foster mutual cooperation moving forward. Terms: `{"gets": {"gold": 1, "influence": 0, "mana": 0, "remnants": 0}, "gives": {"gold": 0, "influence": 0, "mana": 1, "remnants": 0}, "promises": []}`.
+- Seed 7700, round 1, seat 1 (negotiation_accept, resource_trade): I accept the trade of 1 gold for 1 mana. This collaboration will help both of us advance strategically. Terms: `{"gets": {"gold": 0, "influence": 0, "mana": 1, "remnants": 0}, "gives": {"gold": 1, "influence": 0, "mana": 0, "remnants": 0}, "promises": []}`.
+- Seed 7700, round 1, seat 0 (negotiation_reject, attack_contract): I must decline this offer. I lack the necessary resources to fulfill the terms. Terms: `{"gets": {"gold": 0, "influence": 0, "mana": 0, "remnants": 0}, "gives": {"gold": 1, "influence": 0, "mana": 0, "remnants": 0}, "promises": [{"from": 0, "kind": "attack_target", "target": 1, "through_round": 2, "to": 2}]}`.
+- Seed 7700, round 1, seat 0 (negotiation_accept, resource_trade): I accept your offer. Let's trade 1 gold for 1 mana. Terms: `{"gets": {"gold": 0, "influence": 0, "mana": 1, "remnants": 0}, "gives": {"gold": 1, "influence": 0, "mana": 0, "remnants": 0}, "promises": []}`.
+- Seed 7700, round 1, seat 0 (negotiation_counter, resource_trade): I counter with a trade: I will give you 1 mana in exchange for 1 gold. Terms: `{"gets": {"gold": 1}, "gives": {"mana": 1}, "promises": []}`.
+- Seed 7700, round 1, seat 5 (negotiation_accept, resource_trade): I accept your trade: I will give you 1 mana in exchange for 1 gold. Terms: `{"gets": {"gold": 1, "influence": 0, "mana": 0, "remnants": 0}, "gives": {"gold": 0, "influence": 0, "mana": 1, "remnants": 0}, "promises": []}`.
+- Seed 7700, round 1, seat 0 (negotiation_accept, resource_trade): I appreciate the offer. I'll accept it to strengthen our position with additional mana. Terms: `{"gets": {"gold": 1, "influence": 0, "mana": 0, "remnants": 0}, "gives": {"gold": 0, "influence": 0, "mana": 1, "remnants": 0}, "promises": []}`.
+- Seed 7700, round 2, seat 3 (negotiation_propose, vote_bargain): Player 5, I propose you support the imperial annexation motion in exchange for 1 gold at round 3. This deal secures your vote and benefits both our positions. Terms: `{"gets": {}, "gives": {}, "promises": [{"from": 5, "kind": "vote", "motion": "imperial_annexation", "support": true, "to": 3}, {"amount": 1, "due_round": 3, "from": 3, "kind": "future_payment", "resource": "gold", "to": 5}]}`.
+- Seed 7700, round 2, seat 5 (negotiation_accept, vote_bargain): Player 3, I accept your proposal. Your vote and the future payment of 1 gold at round 3 secure our alliance for the imperial annexation motion. Terms: `{"gets": {"gold": 0, "influence": 0, "mana": 0, "remnants": 0}, "gives": {"gold": 0, "influence": 0, "mana": 0, "remnants": 0}, "promises": [{"from": 5, "kind": "vote", "motion": "imperial_annexation", "support": true, "to": 3}, {"amount": 1, "due_round": 3, "from": 3, "kind": "future_payment", "resource": "gold", "to": 5}]}`.
+- Seed 7700, round 2, seat 5 (negotiation_propose, vote_agreement): Player 3, I propose you support imperial_annexation. This motion will strengthen our position and ensure stability across the realm. Will you commit your vote in exchange for my trust and future collaboration? Terms: `{"gets": {}, "gives": {}, "promises": [{"from": 3, "kind": "vote", "motion": "imperial_annexation", "support": true, "to": 5}]}`.
+- Seed 7700, round 2, seat 3 (negotiation_counter, resource_trade): Player 5, I counter your proposal. In exchange for my vote on imperial_annexation, I request 1 mana in return for giving you 1 gold. This trade aligns our interests and provides mutual benefit. Terms: `{"gets": {"mana": 1}, "gives": {"gold": 1}, "promises": []}`.
+- Seed 7700, round 2, seat 5 (negotiation_accept, resource_trade): Player 3, I accept your counter. Your support for imperial_annexation will strengthen our position and ensure stability across the realm. In exchange, I will provide you with 1 gold in return for 1 mana. This trade aligns our interests and provides mutual benefit. Terms: `{"gets": {"gold": 0, "influence": 0, "mana": 1, "remnants": 0}, "gives": {"gold": 1, "influence": 0, "mana": 0, "remnants": 0}, "promises": []}`.
+- Seed 7700, round 2, seat 0 (negotiation_propose, vote_agreement): Player 0 proposes a vote agreement to Player 2: Player 2 will support the motion 'imperial_annexation' in exchange for nothing. This is an opportunity to strengthen our position and ensure the success of this important measure. I urge your support as we work together towards a unified goal that benefits us all. Terms: `{"gets": {}, "gives": {}, "promises": [{"from": 2, "kind": "vote", "motion": "imperial_annexation", "support": true, "to": 0}]}`.
+- Seed 7700, round 2, seat 2 (negotiation_counter, resource_trade): Player 2 counters Player 0's vote agreement with a resource trade: in exchange for supporting the 'imperial_annexation' motion, Player 2 will receive 1 gold and give 1 mana. This ensures our support comes with tangible benefits, aligning our interests while strengthening our position. Terms: `{"gets": {"gold": 1}, "gives": {"mana": 1}, "promises": []}`.
+- Seed 7700, round 2, seat 0 (negotiation_accept, resource_trade): Player 0 accepts Player 2's counter: in exchange for supporting 'imperial_annexation', Player 2 will receive 1 gold and give 1 mana. This aligns our interests and strengthens our position. Terms: `{"gets": {"gold": 1, "influence": 0, "mana": 0, "remnants": 0}, "gives": {"gold": 0, "influence": 0, "mana": 1, "remnants": 0}, "promises": []}`.
+- Seed 7700, round 2, seat 1 (negotiation_propose, vote_bargain): I propose a bargain: Player 3 will support imperial_annexation in exchange for 1 gold due in round 3. Terms: `{"gets": {}, "gives": {}, "promises": [{"from": 2, "kind": "vote", "motion": "imperial_annexation", "support": true, "to": 1}, {"amount": 1, "due_round": 3, "from": 1, "kind": "future_payment", "resource": "gold", "to": 2}]}`.
+- Seed 7700, round 2, seat 2 (negotiation_accept, vote_bargain): I accept your proposal. Player 3 will support imperial_annexation in exchange for 1 gold due in round 3. Terms: `{"gets": {"gold": 0, "influence": 0, "mana": 0, "remnants": 0}, "gives": {"gold": 0, "influence": 0, "mana": 0, "remnants": 0}, "promises": [{"from": 2, "kind": "vote", "motion": "imperial_annexation", "support": true, "to": 1}, {"amount": 1, "due_round": 3, "from": 1, "kind": "future_payment", "resource": "gold", "to": 2}]}`.
+- Seed 7700, round 2, seat 2 (negotiation_skip, unspecified): I must decline to negotiate at this time.
+- Seed 7700, round 2, seat 4 (negotiation_propose, vote_bargain): I propose a vote bargain with Player 5: in exchange for their support on 'imperial_annexation,' I will provide them 1 gold in round 3. This ensures our collaboration towards passing the agenda. Terms: `{"gets": {}, "gives": {}, "promises": [{"from": 5, "kind": "vote", "motion": "imperial_annexation", "support": true, "to": 4}, {"amount": 1, "due_round": 3, "from": 4, "kind": "future_payment", "resource": "gold", "to": 5}]}`.
+- Seed 7700, round 2, seat 5 (negotiation_counter, resource_trade): I counter with a resource trade: I will give you 1 mana for 1 gold. This ensures mutual benefit while securing our vote collaboration. Terms: `{"gets": {"mana": 1}, "gives": {"gold": 1}, "promises": []}`.
+- Seed 7700, round 2, seat 4 (negotiation_accept, resource_trade): I accept the resource trade and maintain our vote collaboration. This ensures both mutual benefit and successful agenda passage. Terms: `{"gets": {"gold": 0, "influence": 0, "mana": 1, "remnants": 0}, "gives": {"gold": 1, "influence": 0, "mana": 0, "remnants": 0}, "promises": []}`.
+- Seed 7700, round 2, seat 3 (negotiation_propose, vote_bargain): Player 0, I propose you support the imperial annexation motion, and in return, I will pay you 1 gold in round 3. Let's work together to advance this agenda. Terms: `{"gets": {}, "gives": {}, "promises": [{"from": 0, "kind": "vote", "motion": "imperial_annexation", "support": true, "to": 3}, {"amount": 1, "due_round": 3, "from": 3, "kind": "future_payment", "resource": "gold", "to": 0}]}`.
+- Seed 7700, round 2, seat 0 (negotiation_counter, resource_trade): Player 3, I appreciate your offer but propose exchanging 1 mana for the 1 gold payment. This way, we both benefit from the trade while supporting the imperial annexation motion. Terms: `{"gets": {"gold": 1}, "gives": {"mana": 1}, "promises": []}`.
+- Seed 7700, round 2, seat 3 (negotiation_accept, resource_trade): Player 0, I accept your counter. Exchanging 1 mana for 1 gold while supporting the imperial annexation motion is a fair deal that benefits both of us. Let's move forward with this agreement. Terms: `{"gets": {"gold": 1, "influence": 0, "mana": 0, "remnants": 0}, "gives": {"gold": 0, "influence": 0, "mana": 1, "remnants": 0}, "promises": []}`.
+- Seed 7700, round 2, seat 5 (negotiation_propose, vote_bargain): Player 5 offers Player 4 a future payment of 1 gold in round 3 in exchange for their vote on the imperial_annexation motion. This deal secures crucial support, ensuring a stronger position in the council. Terms: `{"gets": {}, "gives": {}, "promises": [{"from": 4, "kind": "vote", "motion": "imperial_annexation", "support": true, "to": 5}, {"amount": 1, "due_round": 3, "from": 5, "kind": "future_payment", "resource": "gold", "to": 4}]}`.
+- Seed 7700, round 2, seat 4 (negotiation_accept, vote_bargain): Player 4 accepts Player 5's offer, securing a future payment of 1 gold in round 3 in exchange for their vote on the imperial_annexation motion. This strategic alliance strengthens both players' positions in the council. Terms: `{"gets": {"gold": 0, "influence": 0, "mana": 0, "remnants": 0}, "gives": {"gold": 0, "influence": 0, "mana": 0, "remnants": 0}, "promises": [{"from": 4, "kind": "vote", "motion": "imperial_annexation", "support": true, "to": 5}, {"amount": 1, "due_round": 3, "from": 5, "kind": "future_payment", "resource": "gold", "to": 4}]}`.
+- Seed 7700, round 2, seat 0 (negotiation_propose, vote_bargain): Player 4, I propose that you support the imperial annexation motion. In return, I will pay you 1 gold by round 3. This agreement benefits both of us by securing your crucial vote while rewarding your contribution to this important decision. Terms: `{"gets": {}, "gives": {}, "promises": [{"from": 4, "kind": "vote", "motion": "imperial_annexation", "support": true, "to": 0}, {"amount": 1, "due_round": 3, "from": 0, "kind": "future_payment", "resource": "gold", "to": 4}]}`.
+- Seed 7700, round 2, seat 4 (negotiation_accept, vote_bargain): Player 4, I accept your proposal. I will support the imperial annexation motion in exchange for 1 gold by round 3. This agreement benefits both of us by securing your crucial vote while rewarding your contribution to this important decision. Terms: `{"gets": {"gold": 0, "influence": 0, "mana": 0, "remnants": 0}, "gives": {"gold": 0, "influence": 0, "mana": 0, "remnants": 0}, "promises": [{"from": 4, "kind": "vote", "motion": "imperial_annexation", "support": true, "to": 0}, {"amount": 1, "due_round": 3, "from": 0, "kind": "future_payment", "resource": "gold", "to": 4}]}`.
+- Seed 7700, round 2, seat 1 (negotiation_propose, vote_bargain): I propose that Player 0 supports the imperial annexation motion in exchange for a future payment of 1 gold due in round 3. This agreement will help secure the necessary votes to pass the motion while providing compensation for their support. Terms: `{"gets": {}, "gives": {}, "promises": [{"from": 0, "kind": "vote", "motion": "imperial_annexation", "support": true, "to": 1}, {"amount": 1, "due_round": 3, "from": 1, "kind": "future_payment", "resource": "gold", "to": 0}]}`.
+- Seed 7700, round 2, seat 0 (negotiation_counter, resource_trade): In exchange for my vote, I will provide 1 mana in return for 1 gold. This trade aligns our interests and strengthens our position for future rounds. Terms: `{"gets": {"mana": 1}, "gives": {"gold": 1}, "promises": []}`.
+- Seed 7700, round 2, seat 1 (negotiation_reject, resource_trade): Rejecting your counter. The original proposal stands: my vote for imperial annexation in exchange for 1 gold due round 3. Terms: `{"gets": {"gold": 0, "influence": 0, "mana": 1, "remnants": 0}, "gives": {"gold": 1, "influence": 0, "mana": 0, "remnants": 0}, "promises": []}`.
+- Seed 7700, round 2, seat 2 (negotiation_propose, vote_bargain): Player 4, your vote is essential. I'll ensure you receive 1 gold by round 3 in exchange for your support on imperial_annexation. Terms: `{"gets": {}, "gives": {}, "promises": [{"from": 4, "kind": "vote", "motion": "imperial_annexation", "support": true, "to": 2}, {"amount": 1, "due_round": 3, "from": 2, "kind": "future_payment", "resource": "gold", "to": 4}]}`.
+- Seed 7700, round 2, seat 4 (negotiation_counter, resource_trade): Player 2, I'll support imperial_annexation if you ensure I receive 1 gold by round 3. This seems fair given the stakes. Terms: `{"gets": {"gold": 1}, "gives": {"mana": 1}, "promises": []}`.
+- Seed 7700, round 2, seat 2 (negotiation_accept, resource_trade): Player 2, your offer of 1 gold by round 3 is insufficient. I will support imperial_annexation only if you provide additional resources or concessions. Terms: `{"gets": {"gold": 1, "influence": 0, "mana": 0, "remnants": 0}, "gives": {"gold": 0, "influence": 0, "mana": 1, "remnants": 0}, "promises": []}`.
+- Seed 7700, round 2, seat 4 (negotiation_propose, vote_bargain): Player 3, in exchange for your crucial vote on imperial annexation, I promise you 1 gold by round 3. This ensures our success together. Terms: `{"gets": {}, "gives": {}, "promises": [{"from": 3, "kind": "vote", "motion": "imperial_annexation", "support": true, "to": 4}, {"amount": 1, "due_round": 3, "from": 4, "kind": "future_payment", "resource": "gold", "to": 3}]}`.
+- Seed 7700, round 2, seat 3 (negotiation_counter, resource_trade): Player 4, I will support imperial annexation in exchange for 1 gold by round 3. Additionally, I propose a trade: I will give you 1 mana if you give me 1 gold. This strengthens our partnership and ensures mutual benefit. Terms: `{"gets": {"mana": 1}, "gives": {"gold": 1}, "promises": []}`.
+- Seed 7700, round 2, seat 4 (negotiation_accept, resource_trade): Player 3, I accept your counter. Your support for imperial annexation and the mana trade are crucial. Let's ensure our success together. Terms: `{"gets": {"gold": 0, "influence": 0, "mana": 1, "remnants": 0}, "gives": {"gold": 1, "influence": 0, "mana": 0, "remnants": 0}, "promises": []}`.
+- Seed 7700, round 2, seat 3 (negotiation_propose, vote_agreement): I propose that you support the motion in exchange for nothing. This is a straightforward agreement to align our efforts towards passing the agenda. Terms: `{"gets": {}, "gives": {}, "promises": [{"from": 0, "kind": "vote", "motion": "imperial_annexation", "support": true, "to": 3}]}`.
+- Seed 7700, round 2, seat 0 (negotiation_counter, resource_trade): While I appreciate your proposal, I believe we can find a mutually beneficial arrangement. In exchange for my support, I propose a trade: I will provide you with 1 gold in return for 1 mana. This way, both of us gain something valuable from our collaboration. Terms: `{"gets": {"mana": 1}, "gives": {"gold": 1}, "promises": []}`.
+- Seed 7700, round 2, seat 3 (negotiation_accept, resource_trade): I accept your counter. This trade benefits both of us by providing necessary resources while supporting the agenda. Terms: `{"gets": {"gold": 0, "influence": 0, "mana": 1, "remnants": 0}, "gives": {"gold": 1, "influence": 0, "mana": 0, "remnants": 0}, "promises": []}`.
+- Seed 7700, round 2, seat 5 (negotiation_propose, vote_bargain): Player 5 proposes a vote bargain with Player 4: in exchange for their support on the imperial annexation motion, Player 5 promises to deliver 1 gold by round 3. This alliance strengthens our position and ensures a decisive outcome in the High Council. Terms: `{"gets": {}, "gives": {}, "promises": [{"from": 4, "kind": "vote", "motion": "imperial_annexation", "support": true, "to": 5}, {"amount": 1, "due_round": 3, "from": 5, "kind": "future_payment", "resource": "gold", "to": 4}]}`.
+- Seed 7700, round 2, seat 4 (negotiation_accept, vote_bargain): Player 4 accepts Player 5's proposal: in exchange for supporting the imperial annexation motion, Player 5 promises to deliver 1 gold by round 3. This collaboration enhances our strategic alignment and ensures a favorable outcome in the council proceedings. Terms: `{"gets": {"gold": 0, "influence": 0, "mana": 0, "remnants": 0}, "gives": {"gold": 0, "influence": 0, "mana": 0, "remnants": 0}, "promises": [{"from": 4, "kind": "vote", "motion": "imperial_annexation", "support": true, "to": 5}, {"amount": 1, "due_round": 3, "from": 5, "kind": "future_payment", "resource": "gold", "to": 4}]}`.
+- Seed 7700, round 2, seat 0 (negotiation_propose, vote_bargain): Player 2, I propose that in exchange for your support on imperial_annexation, I will provide you with 1 gold by round 3. This agreement benefits both of us: you gain the resources needed to strengthen your position, while I secure the votes necessary to pass this crucial motion. Terms: `{"gets": {}, "gives": {}, "promises": [{"from": 2, "kind": "vote", "motion": "imperial_annexation", "support": true, "to": 0}, {"amount": 1, "due_round": 3, "from": 0, "kind": "future_payment", "resource": "gold", "to": 2}]}`.
+- Seed 7700, round 2, seat 2 (negotiation_counter, resource_trade): Player 0, I'm willing to support imperial_annexation, but I need more than just 1 gold. How about exchanging 1 mana for that gold? This way, both of us benefit from the deal. Terms: `{"gets": {"mana": 1}, "gives": {"gold": 1}, "promises": []}`.
+- Seed 7700, round 2, seat 0 (negotiation_reject, resource_trade): Player 2, I must decline your counter. While I appreciate the effort to negotiate, I cannot fulfill the requested exchange at this time. Terms: `{"gets": {"gold": 0, "influence": 0, "mana": 1, "remnants": 0}, "gives": {"gold": 1, "influence": 0, "mana": 0, "remnants": 0}, "promises": []}`.
+- Seed 7700, round 2, seat 1 (negotiation_propose, vote_agreement): I propose a vote agreement with Player 0 to support the imperial annexation motion. This will help secure the necessary majority without additional costs. Terms: `{"gets": {}, "gives": {}, "promises": [{"from": 0, "kind": "vote", "motion": "imperial_annexation", "support": true, "to": 1}]}`.
+- Seed 7700, round 2, seat 0 (negotiation_accept, vote_agreement): I accept your proposal to support the imperial annexation motion. This collaboration will strengthen our position in the council without additional costs. Terms: `{"gets": {"gold": 0, "influence": 0, "mana": 0, "remnants": 0}, "gives": {"gold": 0, "influence": 0, "mana": 0, "remnants": 0}, "promises": [{"from": 0, "kind": "vote", "motion": "imperial_annexation", "support": true, "to": 1}]}`.
+- Seed 7700, round 2, seat 2 (negotiation_propose, vote_bargain): Player 4, I propose that if you support the imperial annexation, I will pay you 1 gold in round 3. Let's strengthen our position together. Terms: `{"gets": {}, "gives": {}, "promises": [{"from": 4, "kind": "vote", "motion": "imperial_annexation", "support": true, "to": 2}, {"amount": 1, "due_round": 3, "from": 2, "kind": "future_payment", "resource": "gold", "to": 4}]}`.
+- Seed 7700, round 2, seat 4 (negotiation_accept, vote_bargain): Player 2, I accept your proposal. Your support will strengthen our position in the council. Terms: `{"gets": {"gold": 0, "influence": 0, "mana": 0, "remnants": 0}, "gives": {"gold": 0, "influence": 0, "mana": 0, "remnants": 0}, "promises": [{"from": 4, "kind": "vote", "motion": "imperial_annexation", "support": true, "to": 2}, {"amount": 1, "due_round": 3, "from": 2, "kind": "future_payment", "resource": "gold", "to": 4}]}`.
+- Seed 7700, round 2, seat 4 (negotiation_propose, vote_agreement): Player 0, I propose you support imperial_annexation. Your influence is crucial to passing this motion. Terms: `{"gets": {}, "gives": {}, "promises": [{"from": 0, "kind": "vote", "motion": "imperial_annexation", "support": true, "to": 4}]}`.
+- Seed 7700, round 2, seat 0 (negotiation_counter, resource_trade): Player 4, I counter your proposal. In exchange for my vote on imperial_annexation, I request 1 gold in return for 1 mana. Terms: `{"gets": {"gold": 1}, "gives": {"mana": 1}, "promises": []}`.
+- Seed 7700, round 2, seat 4 (negotiation_accept, resource_trade): Player 0, I accept your counter. Your support for imperial_annexation is secured in exchange for 1 gold and 1 mana. Terms: `{"gets": {"gold": 1, "influence": 0, "mana": 0, "remnants": 0}, "gives": {"gold": 0, "influence": 0, "mana": 1, "remnants": 0}, "promises": []}`.
+- Seed 7700, round 2, seat 3 (negotiation_propose, vote_bargain): Player 0, I propose that you support the imperial annexation motion in exchange for 1 gold due in round 3. Your support is crucial for passing this motion, and this payment reflects the value of your vote. Terms: `{"gets": {}, "gives": {}, "promises": [{"from": 0, "kind": "vote", "motion": "imperial_annexation", "support": true, "to": 3}, {"amount": 1, "due_round": 3, "from": 3, "kind": "future_payment", "resource": "gold", "to": 0}]}`.
+- Seed 7700, round 2, seat 0 (negotiation_counter, resource_trade): Player 3, I counter your proposal. In exchange for my support of the imperial annexation motion, I request 1 gold in return for 1 mana. This trade aligns our interests and provides mutual benefit. Terms: `{"gets": {"mana": 1}, "gives": {"gold": 1}, "promises": []}`.
+- Seed 7700, round 2, seat 3 (negotiation_accept, resource_trade): Player 3, I accept your counter. Exchanging 1 gold for 1 mana aligns our interests and supports the imperial annexation motion effectively. Terms: `{"gets": {"gold": 0, "influence": 0, "mana": 1, "remnants": 0}, "gives": {"gold": 1, "influence": 0, "mana": 0, "remnants": 0}, "promises": []}`.
+- Seed 7700, round 2, seat 5 (negotiation_propose, vote_agreement): I propose a vote agreement to support the imperial annexation. This will strengthen our position and ensure stability in the empire. Terms: `{"gets": {}, "gives": {}, "promises": [{"from": 0, "kind": "vote", "motion": "imperial_annexation", "support": true, "to": 5}]}`.
+- Seed 7700, round 2, seat 0 (negotiation_counter, resource_trade): I counter your proposal with an offer: I will give you 1 Influence in exchange for 1 Gold. This trade aligns our interests and provides mutual benefit. Terms: `{"gets": {"gold": 1}, "gives": {"influence": 1}, "promises": []}`.
+- Seed 7700, round 2, seat 5 (negotiation_reject, resource_trade): I reject your counteroffer of 1 Influence for 1 Gold. Our priority should be securing votes to pass the imperial annexation motion, which will benefit us both in the long run. Terms: `{"gets": {"gold": 1, "influence": 0, "mana": 0, "remnants": 0}, "gives": {"gold": 0, "influence": 1, "mana": 0, "remnants": 0}, "promises": []}`.
+- Seed 7700, round 2, seat 0 (negotiation_propose, vote_bargain): Player 1, I propose you support imperial annexation. In return, I will pay you 1 gold in round 3. This is a fair exchange for your crucial vote. Terms: `{"gets": {}, "gives": {}, "promises": [{"from": 1, "kind": "vote", "motion": "imperial_annexation", "support": true, "to": 0}, {"amount": 1, "due_round": 3, "from": 0, "kind": "future_payment", "resource": "gold", "to": 1}]}`.
+- Seed 7700, round 2, seat 1 (negotiation_accept, vote_bargain): Player 0, I accept your proposal. Your future payment secures my vote on imperial annexation. Terms: `{"gets": {"gold": 0, "influence": 0, "mana": 0, "remnants": 0}, "gives": {"gold": 0, "influence": 0, "mana": 0, "remnants": 0}, "promises": [{"from": 1, "kind": "vote", "motion": "imperial_annexation", "support": true, "to": 0}, {"amount": 1, "due_round": 3, "from": 0, "kind": "future_payment", "resource": "gold", "to": 1}]}`.
+- Seed 7700, round 2, seat 1 (negotiation_propose, vote_bargain): I propose that you support the imperial_annexation motion. In return, I will pay you 1 gold in round 3. Terms: `{"gets": {}, "gives": {}, "promises": [{"from": 2, "kind": "vote", "motion": "imperial_annexation", "support": true, "to": 1}, {"amount": 1, "due_round": 3, "from": 1, "kind": "future_payment", "resource": "gold", "to": 2}]}`.
+- Seed 7700, round 2, seat 2 (negotiation_counter, resource_trade): I counter with a trade: I will give you 1 mana for 1 gold. This exchange benefits both of us and supports the imperial_annexation motion. Terms: `{"gets": {"gold": 1}, "gives": {"mana": 1}, "promises": []}`.
+- Seed 7700, round 2, seat 1 (negotiation_accept, resource_trade): I accept your counter: I will give you 1 gold for 1 mana. This exchange supports the imperial_annexation motion. Terms: `{"gets": {"gold": 1, "influence": 0, "mana": 0, "remnants": 0}, "gives": {"gold": 0, "influence": 0, "mana": 1, "remnants": 0}, "promises": []}`.
+- Seed 7700, round 2, seat 2 (negotiation_propose, vote_bargain): Player 5, I propose a bargain: your vote for imperial annexation in exchange for 1 gold by round 3. This aligns our interests and strengthens our position. Accept now to secure this deal. Terms: `{"gets": {}, "gives": {}, "promises": [{"from": 5, "kind": "vote", "motion": "imperial_annexation", "support": true, "to": 2}, {"amount": 1, "due_round": 3, "from": 2, "kind": "future_payment", "resource": "gold", "to": 5}]}`.
+- Seed 7700, round 2, seat 5 (negotiation_counter, resource_trade): Player 2, I counter with a trade: 1 mana for your 1 gold. This exchange aligns our interests and strengthens our position. Accept now to secure this deal. Terms: `{"gets": {"mana": 1}, "gives": {"gold": 1}, "promises": []}`.
+- Seed 7700, round 2, seat 4 (negotiation_propose, vote_bargain): Player 2, let's secure your vote now with a future payment of 1 gold in Round 3. Support imperial_annexation, and we both gain from this alliance. Terms: `{"gets": {}, "gives": {}, "promises": [{"from": 2, "kind": "vote", "motion": "imperial_annexation", "support": true, "to": 4}, {"amount": 1, "due_round": 3, "from": 4, "kind": "future_payment", "resource": "gold", "to": 2}]}`.
+- Seed 7700, round 2, seat 2 (negotiation_counter, resource_trade): I'll trade 1 mana for 1 gold. This exchange aligns our interests and strengthens our position in the council. Terms: `{"gets": {"mana": 1}, "gives": {"gold": 1}, "promises": []}`.
+- Seed 7700, round 2, seat 4 (negotiation_reject, resource_trade): Player 2, I must decline your counter. While the exchange of resources is tempting, securing your vote on imperial_annexation remains my priority. Let's explore alternative arrangements that align our interests more effectively. Terms: `{"gets": {"gold": 0, "influence": 0, "mana": 1, "remnants": 0}, "gives": {"gold": 1, "influence": 0, "mana": 0, "remnants": 0}, "promises": []}`.
+- Seed 7700, round 2, seat 1 (negotiation_counter, resource_trade): I'll offer 2 gold in exchange for your mana, fostering a stronger partnership. Terms: `{"gets": {}, "gives": {"gold": 2}, "promises": []}`.
+- Seed 7700, round 2, seat 0 (negotiation_reject, resource_trade): I must decline this offer as it does not align with our mutual interests. Let us seek a more balanced exchange. Terms: `{"gets": {"gold": 0, "influence": 0, "mana": 0, "remnants": 0}, "gives": {"gold": 2, "influence": 0, "mana": 0, "remnants": 0}, "promises": []}`.
+- Seed 7700, round 2, seat 0 (negotiation_reject, resource_trade): I must decline this offer as I currently lack the resources to fulfill it. Perhaps we can revisit negotiations in a future round when my position has improved. Terms: `{"gets": {"gold": 0, "influence": 0, "mana": 1, "remnants": 0}, "gives": {"gold": 1, "influence": 0, "mana": 0, "remnants": 0}, "promises": []}`.
+- Seed 7700, round 2, seat 0 (negotiation_reject, attack_contract): I must decline this offer. I cannot support an attack against myself. Terms: `{"gets": {"gold": 0, "influence": 0, "mana": 0, "remnants": 0}, "gives": {"gold": 1, "influence": 0, "mana": 0, "remnants": 0}, "promises": [{"from": 0, "kind": "attack_target", "target": 1, "through_round": 3, "to": 5}]}`.
+- Seed 7700, round 2, seat 0 (negotiation_reject, resource_trade): I must decline this offer as I currently lack the gold to fulfill it. Perhaps we can revisit this negotiation in a future round when my resources allow for such an exchange. Terms: `{"gets": {"gold": 0, "influence": 0, "mana": 1, "remnants": 0}, "gives": {"gold": 1, "influence": 0, "mana": 0, "remnants": 0}, "promises": []}`.
+- Seed 7700, round 2, seat 0 (negotiation_counter, resource_trade): I counter with an exchange of mana for gold. This trade aligns our interests, as I can provide mana while seeking much-needed gold to bolster my economy. Terms: `{"gets": {"gold": 1}, "gives": {"mana": 1}, "promises": []}`.
+- Seed 7700, round 2, seat 3 (negotiation_accept, resource_trade): I accept your counteroffer of mana for gold. This trade will strengthen both our economies and allow us to pursue our respective goals more effectively. Terms: `{"gets": {"gold": 1, "influence": 0, "mana": 0, "remnants": 0}, "gives": {"gold": 0, "influence": 0, "mana": 1, "remnants": 0}, "promises": []}`.
+
+### Promise outcomes
+
+- Seed 7700: vote from seat 2 to seat 1 — kept (vote_cast).
+- Seed 7700: future_payment from seat 1 to seat 2 — broken (payment_not_transferred).
+- Seed 7700: vote from seat 1 to seat 2 — kept (vote_cast).
+- Seed 7700: future_payment from seat 2 to seat 1 — kept (payment_transferred).
+- Seed 7700: vote from seat 1 to seat 4 — kept (vote_cast).
+- Seed 7700: future_payment from seat 4 to seat 1 — broken (payment_not_transferred).
+- Seed 7700: vote from seat 5 to seat 0 — kept (vote_cast).
+- Seed 7700: future_payment from seat 0 to seat 5 — broken (payment_not_transferred).
+- Seed 7700: vote from seat 0 to seat 2 — kept (vote_cast).
+- Seed 7700: future_payment from seat 2 to seat 0 — broken (payment_not_transferred).
+- Seed 7700: vote from seat 0 to seat 3 — kept (vote_cast).
+- Seed 7700: future_payment from seat 3 to seat 0 — kept (payment_transferred).
+- Seed 7700: vote from seat 1 to seat 4 — kept (vote_cast).
+- Seed 7700: future_payment from seat 4 to seat 1 — broken (payment_not_transferred).
+- Seed 7700: vote from seat 5 to seat 3 — kept (vote_cast).
+- Seed 7700: future_payment from seat 3 to seat 5 — kept (payment_transferred).
+- Seed 7700: vote from seat 2 to seat 1 — broken (vote_cast).
+- Seed 7700: future_payment from seat 1 to seat 2 — kept (payment_transferred).
+- Seed 7700: vote from seat 4 to seat 5 — kept (vote_cast).
+- Seed 7700: future_payment from seat 5 to seat 4 — broken (payment_not_transferred).
+- Seed 7700: vote from seat 4 to seat 0 — kept (vote_cast).
+- Seed 7700: future_payment from seat 0 to seat 4 — broken (payment_not_transferred).
+- Seed 7700: vote from seat 4 to seat 5 — kept (vote_cast).
+- Seed 7700: future_payment from seat 5 to seat 4 — broken (payment_not_transferred).
+- Seed 7700: vote from seat 0 to seat 1 — kept (vote_cast).
+- Seed 7700: vote from seat 4 to seat 2 — kept (vote_cast).
+- Seed 7700: future_payment from seat 2 to seat 4 — broken (payment_not_transferred).
+- Seed 7700: vote from seat 1 to seat 0 — broken (vote_cast).
+- Seed 7700: future_payment from seat 0 to seat 1 — broken (payment_not_transferred).
+
+## Exit interviews
+
+### Seed 7700 · Seat 0 · diplomat
+
+- **Pacing:** The game maintained a steady pace with active council and negotiation phases.
+- **Map flow:** The map was moderately contested with some players controlling more hexes, but overall, control didn't translate to higher VP.
+- **Politics:** Council effectiveness was notable with more motions passed than failed, indicating collaborative governance.
+- **Combat:** Combat was minimal with only one battle, suggesting a strategic avoidance of direct conflict.
+- **Economy pressure:** The economy showed moderate pressure with low builds and varied resource distribution, indicating varied player priorities.
+- **Best moment:** The pivotal moment was when Player 2 and 3 secured their high VP through objectives, highlighting the game's focus on goal achievement over combat.
+- **Biggest friction:** Negotiation dynamics were strained by broken promises, particularly in future payments, affecting trust among players.
+- **Would play again:** Yes
+- **Hypotheses:** Objective achievement may be the primary VP source, overshadowing other strategies. | High negotiation activity suggests it's a key strategic element.
+
+### Seed 7700 · Seat 1 · economist
+
+- **Pacing:** The game maintained a steady pace with consistent action counts and active council participation.
+- **Map flow:** Controlled hexes varied widely among players, reflecting diverse territorial strategies.
+- **Politics:** Strong consensus in the council suggests effective collaboration but may need checks to prevent motion overload.
+- **Combat:** Combat was minimal, with only one battle won by the attacker, indicating players may prefer non-confrontational strategies.
+- **Economy pressure:** High influence spending and active negotiation highlight a dynamic resource allocation environment.
+- **Best moment:** The game's economy was robust with high action counts, indicating active player engagement. The council showed strong collaboration with more motions passed than failed.
+- **Biggest friction:** Negotiation saw many promises broken, suggesting instability in alliances and potential for improved trust mechanisms.
+- **Would play again:** Yes
+- **Hypotheses:** Objective VP dominance suggests players need to balance their strategies more effectively. | Low combat engagement might indicate that other strategic paths are more rewarding, warranting further exploration.
+
+### Seed 7700 · Seat 2 · warmonger
+
+- **Pacing:** Game pacing was steady, allowing for strategic planning without dragging. As a warmonger, I appreciate the balance but seek more opportunities for swift, impactful decisions.
+- **Map flow:** The map dynamics were engaging, with territories offering strategic advantages. However, clearer pathways for expansion could further emphasize territorial control.
+- **Politics:** The council system worked effectively, with motions reflecting player strategies. More influence or quicker resolution mechanisms could heighten political intrigue.
+- **Combat:** Combat was pivotal but underutilized. The single decisive battle highlighted its potential, suggesting a need for more frequent or impactful engagements.
+- **Economy pressure:** The economy functioned well, with balanced resource distribution. However, as a warmonger, I seek more avenues to leverage resources into military dominance.
+- **Best moment:** The decisive battle where I secured a strategic victory, demonstrating the impact of focused military action.
+- **Biggest friction:** The limited combat opportunities, which as a warmonger, left me desiring more conflict-driven strategies and rewards.
+- **Would play again:** Yes
+- **Hypotheses:** Increasing the rewards for battle victories could enhance player engagement and strategic depth. | Introducing more scalable combat options might balance risk and reward, encouraging more frequent engagements.
+
+### Seed 7700 · Seat 3 · expander
+
+- **Pacing:** The game maintained a steady pace with active player engagement in both council motions and negotiations.
+- **Map flow:** Controlled hexes varied widely among players, with some having significantly more, indicating strategic territorial focus.
+- **Politics:** Council effectiveness was moderate with many yes votes but significant no votes, showing varied priorities among players.
+- **Combat:** Combat was minimal with only one battle won by the attacker, suggesting players focused on other strategies or avoided direct conflicts.
+- **Economy pressure:** The economy showed significant negotiation activity but limited sabotage, indicating a focus on deals over disruption.
+- **Best moment:** The high number of negotiations and offers accepted highlights active diplomacy, suggesting players prioritized alliances over conflict.
+- **Biggest friction:** Broken promises in future payments and votes indicate challenges in maintaining trust, affecting strategic decisions.
+- **Would play again:** Yes
+- **Hypotheses:** Players found objectives as an easier VP path than combat or sabotage, leading to higher VP through objectives. | Low sabotage and battles suggest players perceived other strategies as more rewarding or less risky.
+
+### Seed 7700 · Seat 4 · balanced
+
+- **Pacing:** The game maintained a steady pace with an average of 21.17 actions per player round, though the high avg_action_gap may suggest periods of inactivity or waiting.
+- **Map flow:** Player 3 controlled the most hexes (10), indicating a strong positional advantage, while others had varying degrees of control, affecting their influence and resource gathering.
+- **Politics:** Council dynamics were collaborative with more yes votes (29) than no (7), and motions passed (4) vs failed (2), indicating a tendency towards consensus.
+- **Combat:** Combat was minimal with only 1 battle and 2 retreats, suggesting that players preferred non-confrontational strategies or lacked opportunities for conflict.
+- **Economy pressure:** The economy showed low building activity (0.83 per player) and high avg_action_gap (96), possibly indicating resource constraints or strategic focus elsewhere.
+- **Best moment:** The moment when player 2 secured 4 VP through objectives stands out as a pivotal point, showcasing the effectiveness of objective-based strategies.
+- **Biggest friction:** Players experienced friction due to many broken promises (12) in negotiations, indicating challenges in maintaining commitments despite frequent promises made (29).
+- **Would play again:** Yes
+- **Hypotheses:** Low building rates may reflect either resource scarcity or strategic prioritization of other actions. | High number of broken promises suggests that negotiation strategies need more reliable mechanisms to maintain commitments.
+
+### Seed 7700 · Seat 5 · warmonger
+
+- **Pacing:** The game maintained a steady pace, with objectives driving progression effectively.
+- **Map flow:** Control of key areas was crucial, emphasizing early objective targeting.
+- **Politics:** Council dynamics were active but could benefit from more decisive motions to influence outcomes.
+- **Combat:** Combat was infrequent but impactful; increasing engagement could enhance gameplay.
+- **Economy pressure:** Economic strategies were balanced, with objectives being the primary VP source.
+- **Best moment:** The decisive uncontested capture was pivotal, showcasing the importance of strategic positioning.
+- **Biggest friction:** The rarity of battles suggests a possible underutilization of combat mechanics.
+- **Would play again:** Yes
+- **Hypotheses:** Increased combat frequency might accelerate dominance and VP acquisition.
+
+## Candidate rules questions
+
+These are triage inputs, not automatic canon or Ambiguity Ledger entries.
+
+- Seed 7700, seat 0, round 2: , but I need to ensure all terms are clear.
+- Seed 7700, seat 0, round 2: Is there any restriction on proposing resource trades during vote agreements?
+- Seed 7700, seat 0, round 2: Is the future_payment due_round of 3 acceptable given the current round is 2?
+- Seed 7700, seat 0, round 2: Is giving 1 Influence for 1 Gold a permissible resource trade under current rules?
+- Seed 7700, seat 1, round 1: Is there a mechanism for requesting additional information during negotiations, or should I proceed with the available options?
+- Seed 7700, seat 1, round 1: ,
+- Seed 7700, seat 2, round 1: Is there any rule that allows me to oppose without spending Influence? I don't see such an option in the rules provided.
+- Seed 7700, seat 2, round 1: Does 'use':false mean the card remains in hand after resolving?
+- Seed 7700, seat 2, round 2: Does the cost of 2 Influence apply per vote negotiated, regardless of deal type?
+- Seed 7700, seat 3, round 1: Is there ambiguity in how the tactical_reinforcements card's cost is applied when used as a strategy_secondary action?
+- Seed 7700, seat 3, round 2: , but I need to confirm if future payments are allowed during council negotiations.
+- Seed 7700, seat 3, round 2: Is there any restriction on accepting a counteroffer during negotiation?
+- Seed 7700, seat 3, round 2: None identified.
+- Seed 7700, seat 4, round 2: Is there any restriction on offering future payments during negotiations?
+- Seed 7700, seat 4, round 2: Clarify the effect of 'use' parameter in diplomatic_decree action; does it consume the card or not?
+- Seed 7700, seat 4, round 2: No rules ambiguity detected.
+- Seed 7700, seat 5, round 1: No ambiguity detected.
+- Seed 7700, seat 5, round 2: Is there any restriction on drafting Resource Surge given my current stats?
+
+## Decision moments
+
+- Seed 7700, seat 0, round 1 (strategy_draft): highlight=Drafting Arcane Ascendancy is advantageous due to its ability to increase mana and unlock discoveries early, aligning with Player 0's high mana pool and secret objective.
+- Seed 7700, seat 0, round 1 (council_propose): highlight=Passing allows saving Influence for future rounds where more impactful proposals can be made with better support.
+- Seed 7700, seat 0, round 1 (negotiation): highlight=I propose exchanging 1 mana for 1 gold. friction=calm.
+- Seed 7700, seat 0, round 1 (council_vote): highlight=Supporting the motion for road networks aligns with strategic goals and potential future benefits.
+- Seed 7700, seat 0, round 1 (negotiation): highlight=I will negotiate with Player 5 for their vote on the road_networks motion. In exchange, I promise them 1 gold in round 2. friction=, but I need to secure votes strategically.
+- Seed 7700, seat 0, round 1 (negotiation): highlight=I propose a trade where I give you 1 mana for 1 gold. This exchange aligns our interests and strengthens our position moving forward. friction=calm.
+- Seed 7700, seat 0, round 1 (council_vote): highlight=Supporting road networks aligns with fostering cooperation and strategic advantage.
+- Seed 7700, seat 0, round 1 (action): highlight=Using 'arcane_ascendancy' is efficient as it gains mana and allows free research, providing immediate strategic advantages with minimal AP cost. friction=,.
+- Seed 7700, seat 0, round 1 (research): highlight=Selected spellweave_doctrine for its synergy with arcane_ascendancy and recent mana surge, enhancing spellcasting capabilities.
+- Seed 7700, seat 0, round 1 (action): highlight=Forming a mutual non-aggression pact with Player1 strategically prevents early conflict, allowing both sides to focus on development.
+- Seed 7700, seat 0, round 1 (negotiation): highlight=acceptance. friction=calm.
+- Seed 7700, seat 0, round 1 (strategy_secondary): highlight=Gain resources without additional cost.
+- Seed 7700, seat 0, round 1 (strategy_secondary): highlight=Using tactical_reinforcements aligns with hidden_arsenal objective.
+- Seed 7700, seat 0, round 1 (strategy_secondary): highlight=Choosing to activate Economic Boom without using the card allows me to gain 5 Gold while preserving the card for future use, aligning with a strategic and resource-efficient playstyle as a diplomat.
+- Seed 7700, seat 0, round 1 (action): highlight=Researching 'waystones' enhances future movement flexibility, aligning with the road_networks theme and utilizing available resources effectively.
+- Seed 7700, seat 0, round 1 (research): highlight=Choosing 'mana_nexus' to leverage high mana for future flexibility.
+- Seed 7700, seat 0, round 1 (action): highlight=Researching 'sigiled_masonry' aligns with the active law of road networks, providing long-term strategic benefits as a diplomat.
+- Seed 7700, seat 0, round 1 (negotiation): highlight=I'll accept your offer. friction=, but let's see what we can do.
+- Seed 7700, seat 0, round 1 (action): highlight=Artifact purge draw is chosen to refresh the hand and gain flexibility for future turns despite limited AP.
+- Seed 7700, seat 0, round 2 (council_propose): highlight=Proposing imperial_annexation allows leading the discussion and leveraging aligned player objectives for support.
+- Seed 7700, seat 0, round 2 (council_vote): highlight=Using influence strategically to sway votes and secure passage of imperial_annexation benefits long-term objectives.
+- Seed 7700, seat 0, round 2 (negotiation): friction=0.
+- Seed 7700, seat 0, round 2 (negotiation): highlight=I propose a vote bargain with Player 4, promising them 1 gold by round 3 in exchange for their support on the imperial annexation motion. This alliance strengthens our position and ensures a favorable outcome. friction=, but I need to secure votes strategically.
+- Seed 7700, seat 0, round 2 (negotiation): highlight=I propose exchanging mana for gold to secure votes. friction=calm.
+- Seed 7700, seat 0, round 2 (council_vote): highlight=Supporting the motion increases our chances of passing it, even though success is uncertain due to limited influence.
+- Seed 7700, seat 0, round 2 (negotiation): highlight=I counter with a resource trade where I give 1 gold and receive 1 mana. This allows us both to benefit from supporting the agenda while addressing my resource needs. friction=I will consider your offer but propose an exchange of resources to better align our interests.
+- Seed 7700, seat 0, round 2 (negotiation): highlight=Player 2 has only 1 gold and needs votes, so offering them a future payment aligns our interests. friction=I need to secure votes for imperial_annexation. Offering Player 2 a future payment of gold in exchange for their support is a strategic move as they have low influence and limited resources, making them more likely to accept the deal.
+- Seed 7700, seat 0, round 2 (council_vote): highlight=Supporting the motion with lobbying aligns strategic goals, strengthens alliances, and ensures positive outcomes.
+- Seed 7700, seat 0, round 2 (negotiation): highlight=I counter your proposal with an offer: I will give you 1 Influence in exchange for 1 Gold. This trade aligns our interests and provides mutual benefit. friction=I counter your proposal with an offer: I will give you 1 Influence in exchange for 1 Gold. This trade aligns our interests and provides mutual benefit.
+- Seed 7700, seat 0, round 2 (council_vote): highlight=Opposing the motion strategically aims to prevent its passage, especially with limited Influence. This cautious approach considers potential opposition from other players and aligns with self-interest by avoiding unintended consequences of annexation.
+- Seed 7700, seat 0, round 2 (defender_retreat): highlight=Retreating to [-3, 1] offers strategic positioning along the road network, supporting future operations and maintaining control over key areas despite the harsh winter conditions.
+- Seed 7700, seat 0, round 2 (action): highlight=Played diplomatic decree to gain influence and take speaker role.
+- Seed 7700, seat 0, round 2 (strategy_secondary): highlight=Choosing action 1 to claim an adjacent neutral hex and gain 1 Population Pool. This move strategically expands my territory and increases my resource capacity for future actions.
+- Seed 7700, seat 0, round 2 (strategy_secondary): highlight=Using imperial_mandate gains Influence and draws a secret, aiding future strategies.
+- Seed 7700, seat 0, round 2 (action): highlight=Trades mana for gold to build resources and foster relations.
+- Seed 7700, seat 0, round 2 (strategy_secondary): highlight=Choosing action 0 provides immediate resource gains without consuming the card, preserving flexibility for future turns.
+- Seed 7700, seat 0, round 2 (action): highlight=Building the grove at [-2,1] is a strategic move to expand control and potentially fulfill objectives related to territory or structure building. It efficiently uses 1 AP, aligning with a diplomatic playstyle focused on expansion rather than conflict.
+- Seed 7700, seat 0, round 2 (action): highlight=Attaching the ley_line_conduit to hex [-2,1] supports strategic positioning and potential cooperation by enhancing road networks.
+- Seed 7700, seat 0, round 2 (action): highlight=Moving both units consolidates their position for better territorial control.
+- Seed 7700, seat 1, round 1 (strategy_draft): highlight=Resource Surge offers a balanced boost of Gold, Mana, and Influence, aligning with an economic strategy.
+- Seed 7700, seat 1, round 1 (council_propose): highlight=Passing conserves Influence for future strategic opportunities where Player 1's limited Influence can be more impactful.
+- Seed 7700, seat 1, round 1 (negotiation): highlight=resource_trade. friction=calm.
+- Seed 7700, seat 1, round 1 (negotiation): highlight=accept. friction=calm.
+- Seed 7700, seat 1, round 1 (negotiation): highlight=Accepting the offer provides immediate benefit with minimal risk.
+- Seed 7700, seat 1, round 1 (council_vote): highlight=Supporting road_networks with lobbying investment aligns with economic interests, enhancing connectivity for future gains.
+- Seed 7700, seat 1, round 1 (negotiation): highlight=Player 1 is considering Player 0's offer but seeks clarity on how supporting the motion will benefit them strategically. They are open to negotiation and may accept the proposal if their concerns are addressed. friction=I need more information about the potential benefits of supporting road_networks before committing to this deal.
+- Seed 7700, seat 1, round 1 (negotiation): highlight=I accept your offer of trading 1 mana for 1 gold. This exchange aligns our interests and strengthens our position moving forward. friction=, but I need to secure resources for future endeavors.
+- Seed 7700, seat 1, round 1 (negotiation): highlight=I propose that you, Player 1, support the 'road_networks' motion in exchange for 1 gold to be paid in round 2. This is a fair trade for your vote and helps both of us advance our objectives. friction=, but I need more information to make an informed decision.
+- Seed 7700, seat 1, round 1 (council_vote): highlight=Supporting the road_networks motion with limited Influence allows contributing to its passage without overextending resources.
+- Seed 7700, seat 1, round 1 (strategy_secondary): highlight=Gain 2 Mana and Research a Tier I Discovery.
+- Seed 7700, seat 1, round 1 (action): highlight=Playing 'resource_surge' provides immediate resource gains without AP cost, enhancing flexibility for future actions. friction=,.
+- Seed 7700, seat 1, round 1 (strategy_secondary): highlight=Expansion Strategy.
+- Seed 7700, seat 1, round 1 (strategy_secondary): highlight=Using tactical_reinforcements now provides immediate unit recruitment, enhancing my force's capabilities for current objectives and potential battles. The strategic advantage of having more units on the board outweighs the flexibility of saving the card for later.
+- Seed 7700, seat 1, round 1 (action): highlight=As an economist, converting resources for future flexibility is key. This trade optimizes my economy by turning excess gold into valuable influence.
+- Seed 7700, seat 1, round 1 (negotiation): highlight=Accepting this trade allows us to strengthen our alliance while gaining valuable resources. It's a fair exchange that benefits both parties.
+- Seed 7700, seat 1, round 1 (action): highlight=Playing 'relic_hunter' provides immediate resource benefits without consuming AP beyond the action itself, aligning with an economist's focus on efficient resource utilization. friction=No apparent ambiguity in rules.
+- Seed 7700, seat 1, round 1 (action): highlight=Building a mine to increase gold income aligns with an economic strategy.
+- Seed 7700, seat 1, round 2 (strategy_draft): highlight=Expansion Strategy offers direct growth benefits by increasing controlled hexes and population pool, crucial for future objectives and resource management.
+- Seed 7700, seat 1, round 2 (council_propose): highlight=Proposing imperial_annexation aligns with my strategic goals and allows me to leverage my influence for votes. friction=, but I'm confident in this decision.
+- Seed 7700, seat 1, round 2 (negotiation): friction=0.
+- Seed 7700, seat 1, round 2 (council_vote): highlight=Lobbying to secure passage of the motion while maintaining influence reserves.
+- Seed 7700, seat 1, round 2 (negotiation): highlight=future_payment. friction=, but I need more information on how future payments affect my resources.
+- Seed 7700, seat 1, round 2 (council_vote): highlight=Supporting my own motion is essential for passing imperial annexation. Without lobbying capacity, demonstrating commitment signals intent and may encourage others to align.
+- Seed 7700, seat 1, round 2 (negotiation): highlight=I accept your proposal to support imperial annexation in exchange for 1 gold in round 3. This deal aligns with our mutual interests and strengthens our position moving forward. friction=, but it's a fair exchange for my crucial vote.
+- Seed 7700, seat 1, round 2 (negotiation): friction=0.
+- Seed 7700, seat 1, round 2 (negotiation): highlight=I accept your counter to secure mutual benefits and support for imperial_annexation.
+- Seed 7700, seat 1, round 2 (strategy_secondary): highlight=Paying the cost for diplomatic_decree is justified to gain Influence and resolve an emergency motion, which can secure advantageous outcomes or VP.
+- Seed 7700, seat 1, round 2 (action): highlight=Playing 'expansion_strategy' allows me to claim an adjacent neutral hex and gain a Population Pool, which is crucial for growth and future resource generation.
+- Seed 7700, seat 1, round 2 (strategy_secondary): highlight=Using Imperial Mandate gains +1 Influence and discards the card. With high Influence (4), this solidifies my position for future bids or objectives, contributing to VP through hex control under Imperial Annexation.
+- Seed 7700, seat 1, round 2 (negotiation): highlight=I will give you 2 gold to strengthen our alliance.
+- Seed 7700, seat 1, round 2 (action): highlight=As an economist, I prioritize resource optimization. The resource trade allows me to convert surplus gold into mana, enhancing my flexibility for future actions.
+- Seed 7700, seat 1, round 2 (strategy_secondary): highlight=Choosing the free resource surge maximizes immediate gain without cost.
+- Seed 7700, seat 1, round 2 (action): highlight=Building a grove in hex [0, -3] to support long-term resource generation and population growth.
+- Seed 7700, seat 1, round 2 (action): highlight=Played 'hidden_cache' to gain gold, supporting future expansion under imperial_annexation.
+- Seed 7700, seat 2, round 1 (strategy_draft): highlight=As a warmonger, I prioritize military actions. Military Maneuvers offers immediate tactical advantages by enabling a free move and attack, allowing me to control the battlefield early.
+- Seed 7700, seat 2, round 1 (council_propose): highlight=As a warmonger, proposing road networks doesn't align with my objectives of gaining control and influence through military means. Passing allows me to conserve resources for more strategic advantages.
+- Seed 7700, seat 2, round 1 (negotiation): highlight=accept. friction=I accept your proposal. Your gold will secure my vote for 'road_networks', ensuring our victory in this round.
+- Seed 7700, seat 2, round 1 (council_vote): highlight=Opposing the motion costs Influence but prevents strategic advantages for others, aligning with a warmonger strategy to maintain battlefield dynamics. friction=I oppose the road networks motion, spending 2 Influence to block it. As a warmonger, I prefer to keep the board dynamic and prevent others from gaining logistical advantages that could make them harder to defeat. This move also hinders Player 3's agenda and potentially disrupts Player 2's secret objective of 'architect_of_control', which likely benefits from infrastructure improvements.
+- Seed 7700, seat 2, round 1 (negotiation): highlight=I will secure Player 0's vote for Road Networks with a future gold payment, ensuring our proposal passes and building strategic influence.
+- Seed 7700, seat 2, round 1 (council_vote): highlight=As a warmonger, supporting road networks could lead to more opportunities for military exploitation later in the game.
+- Seed 7700, seat 2, round 1 (strategy_secondary): highlight=Keep Arcane Ascendancy for future flexibility while gaining mana and researching a Tier I discovery. friction=f1.
+- Seed 7700, seat 2, round 1 (strategy_secondary): highlight=As a warmonger, I prioritize immediate resource gains to fuel military actions. Using 'resource_surge' now provides essential Gold and Mana for unit upgrades or reinforcements.
+- Seed 7700, seat 2, round 1 (action): highlight=Using 'military_maneuvers' to enable a strategic move followed by an attack maximizes aggressive potential with minimal resource cost.
+- Seed 7700, seat 2, round 1 (strategy_primary): highlight=Using military_maneuvers skips the move phase, allowing immediate attack for AP efficiency. As a warmonger, focusing on combat over movement aligns with aggressive strategies.
+- Seed 7700, seat 2, round 1 (strategy_secondary): highlight=Recruiting two additional units will bolster our military strength, enabling greater control and dominance on the board.
+- Seed 7700, seat 2, round 1 (strategy_secondary): highlight=Gain 5 Gold with no AP cost, conserving resources for military actions.
+- Seed 7700, seat 2, round 1 (action): highlight=Choosing an attack contract to gain gold while encouraging aggression.
+- Seed 7700, seat 2, round 1 (action): highlight=Moving multiple units towards an enemy position for an aggressive push.
+- Seed 7700, seat 2, round 1 (action): highlight=Moving units towards a strategic position near enemy territory for future attacks.
+- Seed 7700, seat 2, round 1 (action): highlight=Moving units closer to potential conflict zones sets me up for future attacks or defense. As a warmonger, engaging in combat is prioritized over other actions.
+- Seed 7700, seat 2, round 2 (strategy_draft): highlight=Economic Boom is chosen for its high Gold gain, supporting versatile future strategies and aligning with a warmonger's need for resources to facilitate aggressive actions.
+- Seed 7700, seat 2, round 2 (council_propose): highlight=Proposing imperial annexation is the bold move for a warmonger, leveraging influence to push an aggressive agenda despite costs.
+- Seed 7700, seat 2, round 2 (negotiation): highlight=Skipping negotiation due to insufficient Influence. friction=low.
+- Seed 7700, seat 2, round 2 (council_vote): highlight=As a warmonger, I oppose imperial annexation to prevent centralization of power and maintain opportunities for conflict.
+- Seed 7700, seat 2, round 2 (negotiation): highlight=Player 4's support is crucial for passing the motion. friction=, but I need to secure votes!
+- Seed 7700, seat 2, round 2 (negotiation): highlight=gold. friction=, but I need more from this deal.
+- Seed 7700, seat 2, round 2 (council_vote): highlight=As a warmonger, I support imperial annexation to expand control and resources for military strength.
+- Seed 7700, seat 2, round 2 (negotiation): highlight=I'll give you 1 mana if you give me 1 gold instead. friction=, but let's make this deal better for both of us.
+- Seed 7700, seat 2, round 2 (negotiation): highlight=I'll offer Player 4 a future payment of gold in exchange for their support on the imperial annexation vote. This strategic move will help ensure we have enough votes to pass the motion and expand our influence. friction=, but I need to secure more votes for the imperial annexation.
+- Seed 7700, seat 2, round 2 (council_vote): highlight=As a warmonger, supporting imperial annexation aligns with expansionist goals, despite limited influence to lobby others.
+- Seed 7700, seat 2, round 2 (negotiation): highlight=Mana for Gold Swap. friction=calm.
+- Seed 7700, seat 2, round 2 (council_vote): highlight=As a warmonger, I support imperial annexation to escalate tensions and create opportunities for conflict.
+- Seed 7700, seat 2, round 2 (strategy_secondary): highlight=Choosing the costed version of diplomatic_decree to gain Influence and Speaker role, setting up future agenda pushes.
+- Seed 7700, seat 2, round 2 (strategy_secondary): highlight=As a warmonger, I prioritize decisive action. Using the expansion_strategy card now secures immediate territory and population, fueling my aggressive expansion.
+- Seed 7700, seat 2, round 2 (action): highlight=Recruiting two infantry units increases my military strength, providing an immediate advantage for potential conflicts.
+- Seed 7700, seat 2, round 2 (strategy_secondary): highlight=As a warmonger, increasing influence is key for future dominance. Using Imperial Mandate gains +1 Influence, crucial for controlling regions and meeting objectives.
+- Seed 7700, seat 2, round 2 (action): highlight=Moving units strategically positions them for potential attacks or to control key areas, aligning with a warmonger's objective of asserting dominance through military strength.
+- Seed 7700, seat 2, round 2 (strategy_secondary): highlight=As a warmonger, I prioritize aggressive actions. While 'resource_surge' provides essential resources, it doesn't directly contribute to immediate combat advantages. However, given the legal choices, this is the best option available to strengthen my position for future conflicts.
+- Seed 7700, seat 2, round 2 (action): highlight=Moving towards enemy territories sets up for future attacks and maintains aggressive positioning.
+- Seed 7700, seat 2, round 2 (action): highlight=Moving units strategically positions forces for combat or control.
+- Seed 7700, seat 2, round 2 (action): highlight=As a warmonger, I prioritize disruption and strategic positioning. Using 'prospectors_find' on [3,-4] allows me to gain a resource advantage in a key area, setting the stage for future aggressive moves.
+- Seed 7700, seat 2, round 2 (action): highlight=Economic Boom provides immediate Gold, supporting future aggressive actions.
+- Seed 7700, seat 2, round 2 (action): highlight=Playing 'ley_line_surge' as a whisper card is advantageous for gaining mana or unit boosts, supporting an aggressive strategy to expand control and challenge stronger opponents.
+- Seed 7700, seat 3, round 1 (strategy_draft): highlight=Expansion Strategy allows claiming an adjacent neutral hex and increases the Population Pool, aligning with the expander playstyle focused on growth and territorial expansion.
+- Seed 7700, seat 3, round 1 (council_propose): highlight=Proposing 'road_networks' aligns with strategic goals and utilizes available Influence for potential lobbying.
+- Seed 7700, seat 3, round 1 (negotiation): highlight=I'll offer Player 0 a future payment of 1 gold in round 2 if they agree to support the road_networks motion. friction=, but I need more support for road networks.
+- Seed 7700, seat 3, round 1 (negotiation): highlight=Reject.
+- Seed 7700, seat 3, round 1 (council_vote): highlight=Using Influence to lobby for road_networks increases chances of passing a beneficial motion.
+- Seed 7700, seat 3, round 1 (council_vote): highlight=As an expander, supporting road networks aligns with my goal of efficient expansion and unit movement.
+- Seed 7700, seat 3, round 1 (strategy_secondary): highlight=Choosing to use Arcane Ascendancy allows gaining mana and researching a Tier I discovery, providing strategic advantages and securing resources before other players act.
+- Seed 7700, seat 3, round 1 (research): highlight=Selected 'golden_alchemy' to align with the secret objective 'mana_flood', enhancing mana generation capabilities.
+- Seed 7700, seat 3, round 1 (strategy_secondary): highlight=Gain resources without cost to improve position.
+- Seed 7700, seat 3, round 1 (action): highlight=Used expansion_strategy to gain a hex and population, enhancing growth and influence while conserving AP for future moves.
+- Seed 7700, seat 3, round 1 (strategy_primary): highlight=Using expansion_strategy skips the claim, draws a card, and saves AP for later use.
+- Seed 7700, seat 3, round 1 (strategy_secondary): highlight=Using tactical_reinforcements for its primary effect to recruit up to 2 units for free while respecting population costs is the correct strategic choice here.
+- Seed 7700, seat 3, round 1 (strategy_secondary): highlight=Playing Economic Boom to gain 5 Gold provides immediate resource advantage and sets up future plays.
+- Seed 7700, seat 3, round 1 (action): highlight=Performing a resource trade with player 0 to gain mana towards the 'mana_flood' objective while spending excess gold.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving unit 15 to [3, -2] expands control into a strategic position.
+- Seed 7700, seat 3, round 1 (action): highlight=Playing 'mercenary_company' on hex [3,1] to strategically expand influence and control a central location.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving through the portal allows strategic positioning for future objectives under the road_networks law.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via the portal allows efficient expansion towards objectives.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via the portal is strategic as it reinforces positions and sets up for future actions aligned with my secret objective of mana generation. This move is cost-effective and leverages the current mana surge to enhance positioning.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units through the portal maximizes control and aligns with expansion goals.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via the portal allows for efficient expansion and supports the mana flood objective by positioning units strategically.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units through the portal expands control and aligns with the mana_flood objective.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via the portal allows for efficient expansion and reinforces control over key areas, aligning with the expander strategy and leveraging available resources.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via portal expands my influence towards strategic objectives, aligning with the mana surge event and enhancing control over the board.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via the portal allows for efficient expansion and reinforces control over key areas, aligning with the expander strategy and leveraging available resources.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via portal expands my influence towards strategic objectives, aligning with the mana surge event and enhancing control over the board.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via the portal allows for efficient expansion and reinforces control over key areas, aligning with the expander strategy and leveraging available resources.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via portal expands my influence towards strategic objectives, aligning with the mana surge event and enhancing control over the board.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via the portal allows for efficient expansion and reinforces control over key areas, aligning with the expander strategy and leveraging available resources.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via portal expands my influence towards strategic objectives, aligning with the mana surge event and enhancing control over the board.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via the portal allows for efficient expansion and reinforces control over key areas, aligning with the expander strategy and leveraging available resources.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via portal expands my influence towards strategic objectives, aligning with the mana surge event and enhancing control over the board.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via the portal allows for efficient expansion and reinforces control over key areas, aligning with the expander strategy and leveraging available resources.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via portal expands my influence towards strategic objectives, aligning with the mana surge event and enhancing control over the board.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via the portal allows for efficient expansion and reinforces control over key areas, aligning with the expander strategy and leveraging available resources.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via portal expands my influence towards strategic objectives, aligning with the mana surge event and enhancing control over the board.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via the portal allows for efficient expansion and reinforces control over key areas, aligning with the expander strategy and leveraging available resources.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via portal expands my influence towards strategic objectives, aligning with the mana surge event and enhancing control over the board.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via the portal allows for efficient expansion and reinforces control over key areas, aligning with the expander strategy and leveraging available resources.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via portal expands my influence towards strategic objectives, aligning with the mana surge event and enhancing control over the board.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via the portal allows for efficient expansion and reinforces control over key areas, aligning with the expander strategy and leveraging available resources.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via portal expands my influence towards strategic objectives, aligning with the mana surge event and enhancing control over the board.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via the portal allows for efficient expansion and reinforces control over key areas, aligning with the expander strategy and leveraging available resources.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via portal expands my influence towards strategic objectives, aligning with the mana surge event and enhancing control over the board.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via the portal allows for efficient expansion and reinforces control over key areas, aligning with the expander strategy and leveraging available resources.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via portal expands my influence towards strategic objectives, aligning with the mana surge event and enhancing control over the board.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via the portal allows for efficient expansion and reinforces control over key areas, aligning with the expander strategy and leveraging available resources.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via portal expands my influence towards strategic objectives, aligning with the mana surge event and enhancing control over the board.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via the portal allows for efficient expansion and reinforces control over key areas, aligning with the expander strategy and leveraging available resources.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via portal expands my influence towards strategic objectives, aligning with the mana surge event and enhancing control over the board.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via the portal allows for efficient expansion and reinforces control over key areas, aligning with the expander strategy and leveraging available resources.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via portal expands my influence towards strategic objectives, aligning with the mana surge event and enhancing control over the board.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via the portal allows for efficient expansion and reinforces control over key areas, aligning with the expander strategy and leveraging available resources.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via portal expands my influence towards strategic objectives, aligning with the mana surge event and enhancing control over the board.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via the portal allows for efficient expansion and reinforces control over key areas, aligning with the expander strategy and leveraging available resources.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via portal expands my influence towards strategic objectives, aligning with the mana surge event and enhancing control over the board.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via the portal allows for efficient expansion and reinforces control over key areas, aligning with the expander strategy and leveraging available resources.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via portal expands my influence towards strategic objectives, aligning with the mana surge event and enhancing control over the board.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via the portal allows for efficient expansion and reinforces control over key areas, aligning with the expander strategy and leveraging available resources.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via portal expands my influence towards strategic objectives, aligning with the mana surge event and enhancing control over the board.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via the portal allows for efficient expansion and reinforces control over key areas, aligning with the expander strategy and leveraging available resources.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via portal expands my influence towards strategic objectives, aligning with the mana surge event and enhancing control over the board.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via the portal allows for efficient expansion and reinforces control over key areas, aligning with the expander strategy and leveraging available resources.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via portal expands my influence towards strategic objectives, aligning with the mana surge event and enhancing control over the board.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via the portal allows for efficient expansion and reinforces control over key areas, aligning with the expander strategy and leveraging available resources.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via portal expands my influence towards strategic objectives, aligning with the mana surge event and enhancing control over the board.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via the portal allows for efficient expansion and reinforces control over key areas, aligning with the expander strategy and leveraging available resources.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via portal expands my influence towards strategic objectives, aligning with the mana surge event and enhancing control over the board.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via the portal allows for efficient expansion and reinforces control over key areas, aligning with the expander strategy and leveraging available resources.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via portal expands my influence towards strategic objectives, aligning with the mana surge event and enhancing control over the board.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via the portal allows for efficient expansion and reinforces control over key areas, aligning with the expander strategy and leveraging available resources.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via portal expands my influence towards strategic objectives, aligning with the mana surge event and enhancing control over the board.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via the portal allows for efficient expansion and reinforces control over key areas, aligning with the expander strategy and leveraging available resources.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via portal expands my influence towards strategic objectives, aligning with the mana surge event and enhancing control over the board.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via the portal allows for efficient expansion and reinforces control over key areas, aligning with the expander strategy and leveraging available resources.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via portal expands my influence towards strategic objectives, aligning with the mana surge event and enhancing control over the board.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via the portal allows for efficient expansion and reinforces control over key areas, aligning with the expander strategy and leveraging available resources.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via portal expands my influence towards strategic objectives, aligning with the mana surge event and enhancing control over the board.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via the portal allows for efficient expansion and reinforces control over key areas, aligning with the expander strategy and leveraging available resources.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via portal expands my influence towards strategic objectives, aligning with the mana surge event and enhancing control over the board.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via the portal allows for efficient expansion and reinforces control over key areas, aligning with the expander strategy and leveraging available resources.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via portal expands my influence towards strategic objectives, aligning with the mana surge event and enhancing control over the board.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via the portal allows for efficient expansion and reinforces control over key areas, aligning with the expander strategy and leveraging available resources.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via portal expands my influence towards strategic objectives, aligning with the mana surge event and enhancing control over the board.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via the portal allows for efficient expansion and reinforces control over key areas, aligning with the expander strategy and leveraging available resources.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via portal expands my influence towards strategic objectives, aligning with the mana surge event and enhancing control over the board.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via the portal allows for efficient expansion and reinforces control over key areas, aligning with the expander strategy and leveraging available resources.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via portal expands my influence towards strategic objectives, aligning with the mana surge event and enhancing control over the board.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via the portal allows for efficient expansion and reinforces control over key areas, aligning with the expander strategy and leveraging available resources.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via portal expands my influence towards strategic objectives, aligning with the mana surge event and enhancing control over the board.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via the portal allows for efficient expansion and reinforces control over key areas, aligning with the expander strategy and leveraging available resources.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via portal expands my influence towards strategic objectives, aligning with the mana surge event and enhancing control over the board.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via the portal allows for efficient expansion and reinforces control over key areas, aligning with the expander strategy and leveraging available resources.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via portal expands my influence towards strategic objectives, aligning with the mana surge event and enhancing control over the board.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via the portal allows for efficient expansion and reinforces control over key areas, aligning with the expander strategy and leveraging available resources.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via portal expands my influence towards strategic objectives, aligning with the mana surge event and enhancing control over the board.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via the portal allows for efficient expansion and reinforces control over key areas, aligning with the expander strategy and leveraging available resources.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via portal expands my influence towards strategic objectives, aligning with the mana surge event and enhancing control over the board.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via the portal allows for efficient expansion and reinforces control over key areas, aligning with the expander strategy and leveraging available resources.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via portal expands my influence towards strategic objectives, aligning with the mana surge event and enhancing control over the board.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via the portal allows for efficient expansion and reinforces control over key areas, aligning with the expander strategy and leveraging available resources.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via portal expands my influence towards strategic objectives, aligning with the mana surge event and enhancing control over the board.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via the portal allows for efficient expansion and reinforces control over key areas, aligning with the expander strategy and leveraging available resources.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via portal expands my influence towards strategic objectives, aligning with the mana surge event and enhancing control over the board.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via the portal allows for efficient expansion and reinforces control over key areas, aligning with the expander strategy and leveraging available resources.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via portal expands my influence towards strategic objectives, aligning with the mana surge event and enhancing control over the board.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via the portal allows for efficient expansion and reinforces control over key areas, aligning with the expander strategy and leveraging available resources.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via portal expands my influence towards strategic objectives, aligning with the mana surge event and enhancing control over the board.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via the portal allows for efficient expansion and reinforces control over key areas, aligning with the expander strategy and leveraging available resources.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via portal expands my influence towards strategic objectives, aligning with the mana surge event and enhancing control over the board.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via the portal allows for efficient expansion and reinforces control over key areas, aligning with the expander strategy and leveraging available resources.
+- Seed 7700, seat 3, round 1 (action): highlight=Moving both units via portal expands my influence towards strategic objectives, aligning with the mana surge event and enhancing control over the board.
+- Seed 7700, seat 3, round 2 (strategy_draft): highlight=Drafted arcane_ascendancy to gain additional mana and advance discoveries, supporting long-term objectives.
+- Seed 7700, seat 3, round 2 (council_propose): highlight=Proposing imperial annexation allows me to lead the council, potentially gaining territory or resources. With 2 influence, I can secure at least one vote, and others might join for mutual benefit.
+- Seed 7700, seat 3, round 2 (negotiation): highlight=I'll offer Player 5 a future payment of 1 gold to support imperial annexation. friction=, but I need to secure votes without much influence.
+- Seed 7700, seat 3, round 2 (council_vote): highlight=Supporting imperial annexation aligns with strategic goals of expansion and influence.
+- Seed 7700, seat 3, round 2 (negotiation): highlight=I propose a vote bargain with Player 0 to support the imperial annexation motion in exchange for 1 gold in round 3. This strategic move aims to secure their vote, enhancing our chances of passing the proposal. friction=, but I'm not sure if the future payment is feasible given my current gold reserves.
+- Seed 7700, seat 3, round 2 (council_vote): highlight=Opposing the imperial annexation motion.
+- Seed 7700, seat 3, round 2 (negotiation): highlight=I propose that you support the motion in exchange for nothing. This is a straightforward agreement to align our efforts towards passing the agenda. friction=, I'm confident this will help secure the necessary votes for imperial annexation.
+- Seed 7700, seat 3, round 2 (negotiation): highlight=I accept your counter. This trade benefits both of us by providing necessary resources while supporting the agenda. friction=, but I need to secure resources for future endeavors.
+- Seed 7700, seat 3, round 2 (council_vote): highlight=Opposing the motion to prevent potential negative impacts.
+- Seed 7700, seat 3, round 2 (negotiation): highlight=I'll offer Player 0 a future payment of gold in exchange for their vote on the imperial annexation motion. This strategic move aligns with my goal to expand influence and secure the necessary votes for passage. friction=, but I need more gold to make this work.
+- Seed 7700, seat 3, round 2 (council_vote): highlight=Supporting the motion may help it pass and provide strategic advantages.
+- Seed 7700, seat 3, round 2 (action): highlight=Played 'Arcane Ascendancy' to boost mana and research a Tier I discovery, enhancing future flexibility.
+- Seed 7700, seat 3, round 2 (research): highlight=Warding Charm provides protection against enemy influence, which is crucial for maintaining control as an expander. This choice supports strategic growth by safeguarding territories from external interference.
+- Seed 7700, seat 3, round 2 (sandstride_retreat): highlight=Retreat is chosen to avoid losses from weakened units due to harsh winter conditions, allowing the player to conserve strength for more advantageous battles in the future. friction=The retreat option seems prudent given the harsh winter's impact on unit strength and the potential risks of engaging in a losing battle. Retreating allows for regrouping and preserving units for future objectives, especially with discoveries like 'warding_charm' that could enhance defense elsewhere.
+- Seed 7700, seat 3, round 2 (strategy_secondary): highlight=Choosing to use 'diplomatic_decree' (index 1) allows immediate gain of 2 Influence, taking the Speaker role, and resolving an emergency motion. This strategic move aligns with an expander playstyle by enhancing influence and controlling agenda flow.
+- Seed 7700, seat 3, round 2 (strategy_secondary): highlight=Claim an eligible adjacent neutral hex to expand influence and gain Population Pool, supporting expansion goals and objectives.
+- Seed 7700, seat 3, round 2 (action): highlight=Researching 'battle_runes' to unlock combat advantages and enhance future unit capabilities.
+- Seed 7700, seat 3, round 2 (action): highlight=Move unit via portal to [-2,-1]. friction=The move via portal seems strategically beneficial for controlling more hexes, aligning with my goals despite limited AP.
+- Seed 7700, seat 3, round 2 (strategy_secondary): highlight=Choosing the free resource surge maximizes resource gains while preserving AP for future actions. friction=.
+- Seed 7700, seat 3, round 2 (action): highlight=Played 'mercenary_company' on hex [2,1] to gain temporary units and disrupt enemy strategies.
+- Seed 7700, seat 3, round 2 (action): highlight=The player chooses a resource trade to gain mana, aligning with their secret objective of mana_flood.
+- Seed 7700, seat 3, round 2 (negotiation): highlight=accept. friction=I accept your counteroffer of mana for gold. This trade will strengthen both our economies and allow us to pursue our respective goals more effectively.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units via the portal consolidates forces at [3,-2], strategically reinforcing key areas under 'road_networks' law.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units via the portal to [-2,-1] strategically positions them for controlling key hexes or blocking opponents, aligning with the active law and agenda. friction=No apparent issues with the presented options.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units via portal to reinforce strategic hexes aligns with an expander strategy and leverages available resources effectively.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units via portal is efficient for controlling more hexes towards imperial_annexation.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units through the portal consolidates forces and maintains flexibility for future actions.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units via portal strategically expands control towards central hexes, supporting imperial annexation and frontier lord objectives.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units through the portal efficiently uses available actions without resource cost, supporting control and positioning.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units via portal strategically expands control towards central hexes, supporting imperial annexation and frontier lord objectives.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units through the portal efficiently uses available actions without resource cost, supporting control and positioning.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units via portal strategically expands control towards central hexes, supporting imperial annexation and frontier lord objectives.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units through the portal efficiently uses available actions without resource cost, supporting control and positioning.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units via portal strategically expands control towards central hexes, supporting imperial annexation and frontier lord objectives.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units through the portal efficiently uses available actions without resource cost, supporting control and positioning.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units via portal strategically expands control towards central hexes, supporting imperial annexation and frontier lord objectives.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units through the portal efficiently uses available actions without resource cost, supporting control and positioning.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units via portal strategically expands control towards central hexes, supporting imperial annexation and frontier lord objectives.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units through the portal efficiently uses available actions without resource cost, supporting control and positioning.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units via portal strategically expands control towards central hexes, supporting imperial annexation and frontier lord objectives.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units through the portal efficiently uses available actions without resource cost, supporting control and positioning.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units via portal strategically expands control towards central hexes, supporting imperial annexation and frontier lord objectives.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units through the portal efficiently uses available actions without resource cost, supporting control and positioning.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units via portal strategically expands control towards central hexes, supporting imperial annexation and frontier lord objectives.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units through the portal efficiently uses available actions without resource cost, supporting control and positioning.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units via portal strategically expands control towards central hexes, supporting imperial annexation and frontier lord objectives.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units through the portal efficiently uses available actions without resource cost, supporting control and positioning.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units via portal strategically expands control towards central hexes, supporting imperial annexation and frontier lord objectives.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units through the portal efficiently uses available actions without resource cost, supporting control and positioning.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units via portal strategically expands control towards central hexes, supporting imperial annexation and frontier lord objectives.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units through the portal efficiently uses available actions without resource cost, supporting control and positioning.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units via portal strategically expands control towards central hexes, supporting imperial annexation and frontier lord objectives.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units through the portal efficiently uses available actions without resource cost, supporting control and positioning.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units via portal strategically expands control towards central hexes, supporting imperial annexation and frontier lord objectives.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units through the portal efficiently uses available actions without resource cost, supporting control and positioning.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units via portal strategically expands control towards central hexes, supporting imperial annexation and frontier lord objectives.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units through the portal efficiently uses available actions without resource cost, supporting control and positioning.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units via portal strategically expands control towards central hexes, supporting imperial annexation and frontier lord objectives.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units through the portal efficiently uses available actions without resource cost, supporting control and positioning.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units via portal strategically expands control towards central hexes, supporting imperial annexation and frontier lord objectives.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units through the portal efficiently uses available actions without resource cost, supporting control and positioning.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units via portal strategically expands control towards central hexes, supporting imperial annexation and frontier lord objectives.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units through the portal efficiently uses available actions without resource cost, supporting control and positioning.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units via portal strategically expands control towards central hexes, supporting imperial annexation and frontier lord objectives.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units through the portal efficiently uses available actions without resource cost, supporting control and positioning.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units via portal strategically expands control towards central hexes, supporting imperial annexation and frontier lord objectives.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units through the portal efficiently uses available actions without resource cost, supporting control and positioning.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units via portal strategically expands control towards central hexes, supporting imperial annexation and frontier lord objectives.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units through the portal efficiently uses available actions without resource cost, supporting control and positioning.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units via portal strategically expands control towards central hexes, supporting imperial annexation and frontier lord objectives.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units through the portal efficiently uses available actions without resource cost, supporting control and positioning.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units via portal strategically expands control towards central hexes, supporting imperial annexation and frontier lord objectives.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units through the portal efficiently uses available actions without resource cost, supporting control and positioning.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units via portal strategically expands control towards central hexes, supporting imperial annexation and frontier lord objectives.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units through the portal efficiently uses available actions without resource cost, supporting control and positioning.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units via portal strategically expands control towards central hexes, supporting imperial annexation and frontier lord objectives.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units through the portal efficiently uses available actions without resource cost, supporting control and positioning.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units via portal strategically expands control towards central hexes, supporting imperial annexation and frontier lord objectives.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units through the portal efficiently uses available actions without resource cost, supporting control and positioning.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units via portal strategically expands control towards central hexes, supporting imperial annexation and frontier lord objectives.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units through the portal efficiently uses available actions without resource cost, supporting control and positioning.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units via portal strategically expands control towards central hexes, supporting imperial annexation and frontier lord objectives.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units through the portal efficiently uses available actions without resource cost, supporting control and positioning.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units via portal strategically expands control towards central hexes, supporting imperial annexation and frontier lord objectives.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units through the portal efficiently uses available actions without resource cost, supporting control and positioning.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units via portal strategically expands control towards central hexes, supporting imperial annexation and frontier lord objectives.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units through the portal efficiently uses available actions without resource cost, supporting control and positioning.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units via portal strategically expands control towards central hexes, supporting imperial annexation and frontier lord objectives.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units through the portal efficiently uses available actions without resource cost, supporting control and positioning.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units via portal strategically expands control towards central hexes, supporting imperial annexation and frontier lord objectives.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units through the portal efficiently uses available actions without resource cost, supporting control and positioning.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units via portal strategically expands control towards central hexes, supporting imperial annexation and frontier lord objectives.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units through the portal efficiently uses available actions without resource cost, supporting control and positioning.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units via portal strategically expands control towards central hexes, supporting imperial annexation and frontier lord objectives.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units through the portal efficiently uses available actions without resource cost, supporting control and positioning.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units via portal strategically expands control towards central hexes, supporting imperial annexation and frontier lord objectives.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units through the portal efficiently uses available actions without resource cost, supporting control and positioning.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units via portal strategically expands control towards central hexes, supporting imperial annexation and frontier lord objectives.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units through the portal efficiently uses available actions without resource cost, supporting control and positioning.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units via portal strategically expands control towards central hexes, supporting imperial annexation and frontier lord objectives.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units through the portal efficiently uses available actions without resource cost, supporting control and positioning.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units via portal strategically expands control towards central hexes, supporting imperial annexation and frontier lord objectives.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units through the portal efficiently uses available actions without resource cost, supporting control and positioning.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units via portal strategically expands control towards central hexes, supporting imperial annexation and frontier lord objectives.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units through the portal efficiently uses available actions without resource cost, supporting control and positioning.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units via portal strategically expands control towards central hexes, supporting imperial annexation and frontier lord objectives.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units through the portal efficiently uses available actions without resource cost, supporting control and positioning.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units via portal strategically expands control towards central hexes, supporting imperial annexation and frontier lord objectives.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units through the portal efficiently uses available actions without resource cost, supporting control and positioning.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units via portal strategically expands control towards central hexes, supporting imperial annexation and frontier lord objectives.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units through the portal efficiently uses available actions without resource cost, supporting control and positioning.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units via portal strategically expands control towards central hexes, supporting imperial annexation and frontier lord objectives.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units through the portal efficiently uses available actions without resource cost, supporting control and positioning.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units via portal strategically expands control towards central hexes, supporting imperial annexation and frontier lord objectives.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units through the portal efficiently uses available actions without resource cost, supporting control and positioning.
+- Seed 7700, seat 3, round 2 (action): highlight=Moving both units via portal strategically expands control towards central hexes, supporting imperial annexation and frontier lord objectives.
+- Seed 7700, seat 4, round 1 (strategy_draft): highlight=Economic Boom provides immediate gold, aligning with my secret objective of accumulating resources. This choice offers a straightforward benefit that supports my long-term strategy.
+- Seed 7700, seat 4, round 1 (council_propose): highlight=Passing conserves influence for future uses while allowing the council process to continue.
+- Seed 7700, seat 4, round 1 (council_vote): highlight=Supporting the road_networks motion with lobbying maximizes the chance of passage, aligning with strategic objectives.
+- Seed 7700, seat 4, round 1 (council_vote): highlight=Opposing the road networks motion.
+- Seed 7700, seat 4, round 1 (strategy_secondary): highlight=Choosing action 0 to gain 2 Gold, 2 Mana, and 1 Influence efficiently without additional costs.
+- Seed 7700, seat 4, round 1 (strategy_secondary): highlight=Using tactical_reinforcements allows recruiting up to 2 units for free, enhancing force strength without immediate cost.
+- Seed 7700, seat 4, round 1 (action): highlight=Played 'economic_boom' for +5 Gold, advancing towards 'golden_hoard'.
+- Seed 7700, seat 4, round 1 (action): highlight=Building a mine at [0,4] to increase gold production.
+- Seed 7700, seat 4, round 1 (action): highlight=Resource Trade for Gold. friction=.
+- Seed 7700, seat 4, round 1 (action): highlight=Played 'hidden_cache' to gain gold, aligning with the secret objective of accumulating gold ('golden_hoard'). This move directly contributes to achieving the objective by increasing available resources.
+- Seed 7700, seat 4, round 1 (action): highlight=Playing 'contraband' aligns with the player's economic focus, leveraging unit presence for gold gain.
+- Seed 7700, seat 4, round 1 (action): highlight=Researching 'battle_runes' to enhance combat effectiveness for future engagements.
+- Seed 7700, seat 4, round 2 (strategy_draft): highlight=Imperial Mandate offers immediate VP gain and additional Influence, providing direct benefits towards the game's objectives.
+- Seed 7700, seat 4, round 2 (council_propose): highlight=Passing conserves influence for future opportunities while avoiding potential losses from a failed proposal.
+- Seed 7700, seat 4, round 2 (negotiation): highlight=I need to assess each player's influence and potential willingness to support the motion before deciding which offer is most strategic. friction=, but I need more information about the players' influence and resources to make an informed decision.
+- Seed 7700, seat 4, round 2 (negotiation): highlight=accept. friction=I accept Player 4's counter offer of trading 1 mana for 1 gold while maintaining our vote collaboration on 'imperial_annexation.' This mutual exchange supports our shared objective effectively.
+- Seed 7700, seat 4, round 2 (council_vote): highlight=Supporting imperial annexation to align with expansionist strategies and potentially gain central benefits.
+- Seed 7700, seat 4, round 2 (negotiation): highlight=I will support the imperial annexation motion in exchange for 1 gold by round 3. This agreement secures my crucial vote while rewarding your contribution to this important decision. friction=0.
+- Seed 7700, seat 4, round 2 (negotiation): highlight=I'll secure Player 3's vote with a future payment. friction=, but I need more support to pass this motion.
+- Seed 7700, seat 4, round 2 (negotiation): highlight=Accepting the vote bargain secures support for the imperial annexation motion while ensuring future payment of 1 gold from Player 5. This alliance strengthens our position in the High Council.
+- Seed 7700, seat 4, round 2 (negotiation): highlight=I accept your proposal. friction=, but let's work together for mutual benefit.
+- Seed 7700, seat 4, round 2 (negotiation): highlight=I propose a vote agreement with Player 0 for imperial_annexation. Their influence will help secure passage.
+- Seed 7700, seat 4, round 2 (council_vote): highlight=Supporting the motion aims to secure an Imperial Mandate for future advantage.
+- Seed 7700, seat 4, round 2 (negotiation): highlight=I propose a vote bargain with Player 2: they support imperial_annexation, and I promise 1 gold in Round 3. This aligns our interests for mutual benefit.
+- Seed 7700, seat 4, round 2 (council_vote): highlight=Supporting the motion may align with my secret objective by potentially increasing resource control.
+- Seed 7700, seat 4, round 2 (strategy_secondary): highlight=Taking the Speaker role provides agenda control and influence gain, crucial for strategic advantage despite ambiguity about resource usage.
+- Seed 7700, seat 4, round 2 (strategy_secondary): highlight=Expanding into an adjacent neutral hex provides immediate Population Pool growth and strategic positioning.
+- Seed 7700, seat 4, round 2 (action): highlight=Played imperial_mandate to gain influence and potentially VP if controlling the Imperial Seat.
+- Seed 7700, seat 4, round 2 (action): highlight=Building a fortress at [1,3] provides defensive advantages and supports achieving the 'golden_hoard' objective by securing resource-rich areas.
+- Seed 7700, seat 4, round 2 (strategy_secondary): highlight=Gain immediate resources to support future actions.
+- Seed 7700, seat 4, round 2 (action): highlight=This move allows Player 4 to acquire mana by trading gold, enhancing flexibility for future actions. friction=No frustration detected.
+- Seed 7700, seat 4, round 2 (action): highlight=Played Contraband to gain immediate gold, aligning with the secret objective of Golden Hoard.
+- Seed 7700, seat 4, round 2 (action): highlight=Played 'Relic Hunter' to gain influence towards objectives.
+- Seed 7700, seat 5, round 1 (strategy_draft): highlight=Tactical Reinforcements allows drafting up to two free units, enhancing military strength for aggressive plays. As a warmonger, this aligns with the goal of increasing battlefield power early in the game.
+- Seed 7700, seat 5, round 1 (council_propose): highlight=Proposing road networks as a warmonger allows me to control council dynamics, leveraging influence for potential majority and strategic advantage.
+- Seed 7700, seat 5, round 1 (council_vote): highlight=Lobbying fully to support road networks for strategic advantage.
+- Seed 7700, seat 5, round 1 (council_vote): highlight=As a warmonger with the 'borderbreaker' objective, supporting road networks aids in expanding territory, aligning with strategic goals.
+- Seed 7700, seat 5, round 1 (strategy_secondary): highlight=Choosing action index 0 allows immediate resource gain without AP cost, aligning with a warmonger's strategy to maximize resources for aggressive play.
+- Seed 7700, seat 5, round 1 (action): highlight=Recruiting two units with the tactical_reinforcements card is a strong move to build military strength quickly as a warmonger.
+- Seed 7700, seat 5, round 1 (strategy_primary): highlight=Recruiting two cavalry units maximizes mobility and offensive potential, aligning with a warmonger's aggressive strategy.
+- Seed 7700, seat 5, round 1 (strategy_secondary): highlight=Choosing the cheaper action preserves AP for future aggressive plays.
+- Seed 7700, seat 5, round 1 (action): highlight=attack_contract. friction=f0.
+- Seed 7700, seat 5, round 1 (negotiation): highlight=I accept your trade: I will give you 1 mana in exchange for 1 gold.
+- Seed 7700, seat 5, round 1 (action): highlight=Moving unit to [-2, 3] positions for potential combat.
+- Seed 7700, seat 5, round 1 (action): highlight=Moving multiple units south to [-3,3] with index 1 is the most efficient and strategic choice for setting up an advantageous position.
+- Seed 7700, seat 5, round 1 (action): highlight=Moving multiple units towards [-4,3] to set up a potential attack next turn.
+- Seed 7700, seat 5, round 1 (exploration): highlight=Strategic choice: Preserving unit strength is crucial for aggressive play, so paying gold is preferable to losing a unit. friction=The warmonger prefers preserving units for battle over losing them to exploration events. Paying gold maintains combat readiness.
+- Seed 7700, seat 5, round 1 (action): highlight=Researching 'battle_runes' provides a significant combat advantage, aligning with the warmonger's strategy to dominate through powerful effects in battle.
+- Seed 7700, seat 5, round 1 (action): highlight=As a warmonger, positioning units near enemy forces is key. Playing 'prospectors_find' on [-2,3] sets up a strategic advantage for future combat.
+- Seed 7700, seat 5, round 2 (strategy_draft): highlight=Resource Surge provides essential boosts in Gold, Mana, and Influence, addressing multiple needs with a single draft. friction=I need more resources to strengthen my position.
+- Seed 7700, seat 5, round 2 (council_propose): highlight=Passing Imperial Annexation increases influence and VP, aligning with a warmonger's objectives.
+- Seed 7700, seat 5, round 2 (negotiation): friction=0.
+- Seed 7700, seat 5, round 2 (negotiation): friction=0.
+- Seed 7700, seat 5, round 2 (council_vote): highlight=As a warmonger, I seek to maximize influence and conflict. By supporting imperial annexation with full lobbying, I ensure the motion's passage, enhancing my strategic position.
+- Seed 7700, seat 5, round 2 (negotiation): highlight=vote_bargain with P4. friction=, but I need more support!
+- Seed 7700, seat 5, round 2 (council_vote): highlight=Supporting imperial annexation as a warmonger is strategically advantageous for expanding territory and increasing power.
+- Seed 7700, seat 5, round 2 (council_vote): highlight=As a warmonger, supporting imperial annexation aligns with seeking power and potential conflict, despite lacking influence to add votes.
+- Seed 7700, seat 5, round 2 (negotiation): highlight=I reject your counteroffer of 1 Influence for 1 Gold because it doesn't secure your vote on imperial annexation. Let's focus on what truly matters: our mutual success in the High Council. friction=, but I need your support to pass this motion.
+- Seed 7700, seat 5, round 2 (council_vote): highlight=As a warmonger, I support imperial_annexation to foster conflict and expansion. My vote contributes to potential passage, aligning with aggressive strategies.
+- Seed 7700, seat 5, round 2 (strategy_secondary): highlight=Choosing action index 1 to gain 2 Mana and research a Tier I discovery for free.
+- Seed 7700, seat 5, round 2 (research): highlight=Searing Salvo offers direct combat advantage, aligning with the warmonger's objective.
+- Seed 7700, seat 5, round 2 (action): highlight=Attacking hex [-4,2] aligns with my warmongering strategy by directly engaging opponents and potentially gaining resources through the attack contract trade.
+- Seed 7700, seat 5, round 2 (strategy_secondary): highlight=As a warmonger, gaining Influence and taking the Speaker role sets me up for future political leverage while maintaining aggressive playstyle flexibility.
+- Seed 7700, seat 5, round 2 (strategy_secondary): highlight=Using expansion_strategy for additional effects aligns with warmongering goals.
+- Seed 7700, seat 5, round 2 (action): highlight=Attacking target [-1,3] to assert dominance and control over strategic hexes aligns with a warmonger strategy.
+- Seed 7700, seat 5, round 2 (action): highlight=As a warmonger, leveraging the attack_contract to incite conflict aligns perfectly with my strategy. By encouraging Player 1 to target Player 0, I weaken potential threats indirectly while preserving my own resources for future conquests.
+- Seed 7700, seat 5, round 2 (action): highlight=Taking the resource_surge strategy card is a strategic move as it provides immediate resources without costing AP, aiding future aggressive actions.
+- Seed 7700, seat 5, round 2 (action): highlight=Moving multiple units into a strategic position to threaten enemy territories and set up for future attacks aligns with the warmonger playstyle's focus on aggressive expansion.
+
+---
+
+Model feedback is directional sim-only evidence. It does not replace human table play or promote rules to canon.

@@ -108,6 +108,30 @@
           "tags": ["design", "simulation", "agents", "playtest", "lords", "m6"]
         },
         {
+          "title": "M7 Full-Control Agents and Lord Rotation",
+          "path": "docs/plans/2026-07-16-m7-full-control-and-lord-rotation.md",
+          "description": "Executed protocol for independent Lord rotation and model control of every non-forced legal decision.",
+          "status": "internal",
+          "minutes": 5,
+          "tags": ["design", "simulation", "agents", "playtest", "lords", "m7"]
+        },
+        {
+          "title": "M7 Six-Player Lord Rotation",
+          "path": "docs/reports/2026-07-16-m7-six-player-lord-rotation.md",
+          "description": "Six canonical games rotating six Lords across fixed seat personas, with pacing and assignment signals.",
+          "status": "internal",
+          "minutes": 8,
+          "tags": ["design", "simulation", "agents", "playtest", "lords", "m7"]
+        },
+        {
+          "title": "M7 Full-Control Agent Smoke",
+          "path": "docs/reports/2026-07-16-m7-six-player-full-control-guarded.md",
+          "description": "Accelerated six-player validation of model control over every non-forced legal decision with loop protection.",
+          "status": "internal",
+          "minutes": 8,
+          "tags": ["design", "simulation", "agents", "playtest", "full-control", "m7"]
+        },
+        {
           "title": "Rules & Systems Index",
           "path": "rules_and_systems/INDEX.md",
           "description": "Rulebook draft table of contents and design red flags.",

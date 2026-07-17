@@ -233,6 +233,7 @@ class LLMPlaytestAgent:
         retries: int = 1,
         decision_round_min: int = 1,
         max_presented_choices: int = 80,
+        full_control: bool = False,
     ):
         self.provider = provider
         self.fallback = fallback
@@ -246,22 +247,28 @@ class LLMPlaytestAgent:
         self.retries = max(0, int(retries))
         self.decision_round_min = max(1, int(decision_round_min))
         self.max_presented_choices = max(2, int(max_presented_choices))
+        self.full_control = bool(full_control)
         self.annotations: list[dict] = []
         self.reflections: list[dict] = []
         self.interview: dict | None = None
         self.errors: list[dict] = []
         self._pending_negotiation_utterance: dict | None = None
+        self._portal_guard_round = 0
+        self._used_zero_cost_portal_routes: set[tuple] = set()
         self.stats = {
             "provider": provider.name,
             "model_decision_attempts": 0,
             "model_decisions": 0,
             "persona_delegations": 0,
+            "forced_choices": 0,
             "provider_calls": 0,
             "retries": 0,
             "fallbacks": 0,
             "invalid_responses": 0,
             "provider_seconds": 0.0,
             "shortlisted_decisions": 0,
+            "loop_guard_activations": 0,
+            "loop_choices_suppressed": 0,
             "reflection_failures": 0,
             "interview_failures": 0,
         }
@@ -297,6 +304,50 @@ class LLMPlaytestAgent:
         self.stats["shortlisted_decisions"] += 1
         return selected
 
+    def _guard_repeated_zero_cost_portals(
+        self, choices: list[dict], round_num: int,
+    ) -> list[dict]:
+        """Suppress repeated no-cost Portal routes for full-control model seats."""
+        if not self.full_control:
+            return choices
+        if round_num != self._portal_guard_round:
+            self._portal_guard_round = round_num
+            self._used_zero_cost_portal_routes.clear()
+        guarded: list[dict] = []
+        suppressed = 0
+        for choice in choices:
+            route = (
+                tuple(choice.get("from", [])),
+                tuple(choice.get("dest", [])),
+            )
+            repeated_portal = (
+                choice.get("type") == "move"
+                and int(choice.get("cost", -1)) == 0
+                and bool(choice.get("portal"))
+                and route in self._used_zero_cost_portal_routes
+            )
+            if repeated_portal:
+                suppressed += 1
+            else:
+                guarded.append(choice)
+        if suppressed and guarded:
+            self.stats["loop_guard_activations"] += 1
+            self.stats["loop_choices_suppressed"] += suppressed
+            return guarded
+        return choices
+
+    def _track_zero_cost_portal(self, choice: dict) -> None:
+        if (
+            self.full_control
+            and choice.get("type") == "move"
+            and int(choice.get("cost", -1)) == 0
+            and bool(choice.get("portal"))
+        ):
+            self._used_zero_cost_portal_routes.add((
+                tuple(choice.get("from", [])),
+                tuple(choice.get("dest", [])),
+            ))
+
     def _messages(self, task: str, payload: dict, phase: str) -> list[dict]:
         system = (
             "You are an Aeonis playtest agent, not the rules engine. Select only from the numbered legal "
@@ -322,9 +373,11 @@ class LLMPlaytestAgent:
 
     def choose(self, observation: dict, decision_point) -> dict:
         choices = decision_point.choices
-        if (
-            len(choices) <= 1
-            or decision_point.kind not in self.decision_kinds
+        if len(choices) <= 1:
+            self.stats["forced_choices"] += 1
+            return choices[0]
+        if not self.full_control and (
+            decision_point.kind not in self.decision_kinds
             or int(observation["state"].get("round", 1)) < self.decision_round_min
             or self.stats["model_decision_attempts"] >= self.max_decision_calls
         ):
@@ -332,7 +385,15 @@ class LLMPlaytestAgent:
             return self.fallback.choose(observation, decision_point)
 
         compact = compact_observation(observation, decision_point)
-        presented_choices = self._shortlist(choices)
+        eligible_choices = self._guard_repeated_zero_cost_portals(
+            choices, int(compact["round"]),
+        )
+        if len(eligible_choices) == 1:
+            self.stats["forced_choices"] += 1
+            return eligible_choices[0]
+        presented_choices = (
+            eligible_choices if self.full_control else self._shortlist(eligible_choices)
+        )
         payload = {
             "observation": compact,
             "legal_choice_count": len(choices),
@@ -394,7 +455,9 @@ class LLMPlaytestAgent:
                     "rules_question": _clean_optional(result.get("rules_question")),
                     **({"message": message, "intent": intent} if negotiation else {}),
                 })
-                return presented_choices[index]
+                selected = presented_choices[index]
+                self._track_zero_cost_portal(selected)
+                return selected
             except (ProviderError, TypeError, ValueError, KeyError) as exc:
                 error = str(exc)
                 self._record_error("decision", exc)
@@ -410,7 +473,9 @@ class LLMPlaytestAgent:
             "fallback": True,
             "error": error[:600],
         })
-        return self.fallback.choose(observation, decision_point)
+        selected = self.fallback.choose(observation, decision_point)
+        self._track_zero_cost_portal(selected)
+        return selected
 
     def pop_negotiation_utterance(self) -> dict | None:
         utterance = self._pending_negotiation_utterance
@@ -482,6 +547,7 @@ class LLMPlaytestAgent:
             "seat": self.seat,
             "persona": self.persona,
             "provider": self.provider.name,
+            "full_control": self.full_control,
             "annotations": list(self.annotations),
             "round_reflections": list(self.reflections),
             "exit_interview": dict(self.interview or {}),

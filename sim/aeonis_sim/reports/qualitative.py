@@ -64,16 +64,18 @@ def qualitative_report(records: list[dict], title: str = "Aeonis Agent Playtest 
     lines.extend([
         "## Reliability",
         "",
-        "| Seat-game | Provider calls | Decision attempts | Valid decisions | Persona delegations | Retries | Decision fallbacks | Qualitative failures | Model seconds |",
-        "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
+        "| Seat-game | Control | Provider calls | Decision attempts | Valid decisions | Forced choices | Persona delegations | Retries | Decision fallbacks | Qualitative failures | Model seconds |",
+        "| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
     ])
     for record, seat, payload in entries:
         stats = payload.get("stats", {})
         lines.append(
             f"| seed {record.get('seed')} / seat {seat} ({payload.get('persona', 'unknown')}) "
+            f"| {'full' if payload.get('full_control') else 'sampled'} "
             f"| {stats.get('provider_calls', 0)} | {stats.get('model_decision_attempts', 0)} "
             f"| {stats.get('model_decisions', 0)} "
-            f"| {stats.get('persona_delegations', 0)} | {stats.get('retries', 0)} "
+            f"| {stats.get('forced_choices', 0)} | {stats.get('persona_delegations', 0)} "
+            f"| {stats.get('retries', 0)} "
             f"| {stats.get('fallbacks', 0)} "
             f"| {stats.get('reflection_failures', 0) + stats.get('interview_failures', 0)} "
             f"| {stats.get('provider_seconds', 0)} |"

@@ -1,0 +1,45 @@
+{
+  "players": 6,
+  "games": 1,
+  "seed_base": 7700,
+  "report_title": "Aeonis Accelerated Six-Player Full-Control Agent Smoke",
+  "personas": [
+    "diplomat",
+    "economist",
+    "warmonger",
+    "expander",
+    "balanced",
+    "warmonger"
+  ],
+  "lord_asymmetry": {
+    "enabled": true,
+    "lords": [
+      "seraphel",
+      "vharok",
+      "elyndra",
+      "rakhis",
+      "nyxara",
+      "cassian"
+    ]
+  },
+  "pacing": {
+    "vp_threshold": 4
+  },
+  "llm_playtest": {
+    "enabled": true,
+    "seats": [0, 1, 2, 3, 4, 5],
+    "provider": {
+      "type": "ollama",
+      "model": "deepseek-r1:32b",
+      "base_url": "http://127.0.0.1:11434",
+      "timeout_seconds": 900,
+      "temperature": 0.2,
+      "num_ctx": 16384,
+      "num_predict": 2048
+    },
+    "full_control": true,
+    "max_decision_calls_per_seat": 0,
+    "max_round_reflections_per_seat": 0,
+    "retries": 1
+  }
+}

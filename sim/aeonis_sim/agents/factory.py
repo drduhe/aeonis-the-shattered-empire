@@ -74,6 +74,7 @@ def agents_from_config(config: dict, seed: int) -> dict[int, object]:
                 retries=int(seat_config.get("retries", 1)),
                 decision_round_min=int(seat_config.get("decision_round_min", 1)),
                 max_presented_choices=int(seat_config.get("max_presented_choices", 80)),
+                full_control=bool(seat_config.get("full_control", False)),
             )
         else:
             out[pid] = fallback

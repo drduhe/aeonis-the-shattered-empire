@@ -1,0 +1,55 @@
+{
+  "players": 6,
+  "games": 6,
+  "seed_base": 7690,
+  "report_title": "Aeonis Six-Player Lord and Persona Rotation",
+  "personas": [
+    "diplomat",
+    "economist",
+    "warmonger",
+    "expander",
+    "balanced",
+    "warmonger"
+  ],
+  "lord_asymmetry": {
+    "enabled": true,
+    "lords": [
+      "cassian",
+      "seraphel",
+      "vharok",
+      "elyndra",
+      "rakhis",
+      "nyxara"
+    ]
+  },
+  "assignment_rotation": {
+    "lords": true,
+    "personas": false,
+    "step": 1
+  },
+  "llm_playtest": {
+    "enabled": true,
+    "seats": [0, 1, 2, 3, 4, 5],
+    "provider": {
+      "type": "ollama",
+      "model": "deepseek-r1:32b",
+      "base_url": "http://127.0.0.1:11434",
+      "timeout_seconds": 900,
+      "temperature": 0.25,
+      "num_ctx": 16384,
+      "num_predict": 2048
+    },
+    "max_decision_calls_per_seat": 1,
+    "max_round_reflections_per_seat": 0,
+    "retries": 1,
+    "max_presented_choices": 80,
+    "seat_overrides": {
+      "0": {"decision_kinds": ["negotiation", "council_vote"], "decision_round_min": 2},
+      "1": {"decision_kinds": ["action"], "decision_round_min": 2},
+      "2": {"decision_kinds": ["action", "press"], "decision_round_min": 2},
+      "3": {"decision_kinds": ["action", "council_vote"], "decision_round_min": 2},
+      "4": {"decision_kinds": ["action"], "decision_round_min": 2},
+      "5": {"decision_kinds": ["negotiation", "action"], "decision_round_min": 2}
+    }
+  }
+}

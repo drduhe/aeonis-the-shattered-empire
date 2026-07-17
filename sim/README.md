@@ -55,6 +55,24 @@ Six-player assigned-Lord agent pilot:
 
 This two-game profile assigns one Lord and persona to every model-backed seat, samples two high-impact decisions per seat/game, and retains persona delegation for the remaining legal choices.
 
+Six-player Lord rotation (M7):
+
+    cd sim && python scripts/m5_agent_playtest.py \
+      --config configs/m7-six-player-lord-rotation-ollama.json \
+      --out ../playtest/agent_sessions/2026-07-16-m7-six-player-lord-rotation.jsonl \
+      --report ../docs/reports/2026-07-16-m7-six-player-lord-rotation.md
+
+The six-game campaign rotates Lords one seat per game while leaving personas fixed. `assignment_rotation` can rotate Lords and personas independently.
+
+Accelerated full-control smoke (M7):
+
+    cd sim && python scripts/m5_agent_playtest.py \
+      --config configs/m7-six-player-full-control-smoke-ollama.json \
+      --out ../playtest/agent_sessions/2026-07-16-m7-six-player-full-control-guarded.jsonl \
+      --report ../docs/reports/2026-07-16-m7-six-player-full-control-guarded.md
+
+Set `llm_playtest.full_control` to `true` to send every non-forced decision and its complete legal menu to the model. One-choice windows resolve automatically; provider validation failures retain the normal retry and persona safety fallback. The engine still enumerates, validates, and executes legal actions. The zero-cost Portal guard prevents one directed free route from being repeated in the same round.
+
 Tournament (balance campaign):
 
     cd sim && python3.11 -m aeonis_sim.runner.tournament \
